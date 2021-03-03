@@ -1,0 +1,61 @@
+.menu-container{
+    float: left;
+    background-color: rgba(255, 238, 0);  
+    width: 0;
+    height: 74vh;
+    margin-right: 4vh;
+    transition: all 0.9s ease-in-out; 
+    z-index: 0;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.botao-menu{
+    width: 0;
+    background-color: rgba(255, 238, 0);
+    transition: all 0.9s ease-in-out;
+}
+
+.check-menu:checked ~ .botao-menu, 
+.check-menu:checked ~ .menu-container{
+    width: 15%;
+}
+
+.check-menu{
+    display: none;
+}
+.menu-legenda{
+    margin-left: 8px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+.menu-container ul{    
+    list-style:none;    
+    font-weight: bolder;
+}
+
+.menu-container li{
+    color: white;
+    white-space: nowrap;
+}
+
+.menu-container li{
+    text-decoration: none;
+    padding: 0.5em 0.5em 0.5em 0.5em;       
+    -webkit-transition: all 0.9s ease-in-out;
+    transition: all 0.9s ease-in-out;
+}
+.menu-container li:hover{
+    text-decoration: underline;
+    background-color:white;
+    background-image:linear-gradient(to bottom, transparent 1px, rgba(0,0,0,.1) 1px);
+    background-size: auto 2px;
+    color: rgba(53, 49, 99, 0.959);;
+}
+
+a{
+    text-decoration: none;
+    color: white;
+}
