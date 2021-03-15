@@ -1,0 +1,38 @@
+
+
+.card-contas{
+    display: inline-block;
+    margin: 0.9%;
+    box-shadow: 5px 5px 10px black;
+    border-radius: 2%;
+    background-color: white;
+    min-width: 220px;  
+}
+
+.header-card{
+    text-align: center;
+    padding: 4%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    font-weight: bolder;
+}
+
+.card-content{
+    padding: 10%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.footer-card-contas{
+    display: inline-flex;
+    text-align: center;
+}
+
+.footer-card-link{
+    padding: 5%;
+}
+
+.btn-add-contas{
+    width: 100%;
+    text-align: center; 
+}
+
+

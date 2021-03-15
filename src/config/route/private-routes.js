@@ -1,15 +1,18 @@
 import { Redirect, Route } from "react-router-dom"
+import Template from "../../components/Template"
 import { isAuthenticated } from "../auth/auth"
 
 const PrivateRoutes =  ({ component: Component, ...rest })=>(
-    <Route { ...rest } render = {props => 
-        (
-            isAuthenticated()?(
-                <Component {...props} />
-            ):(
-                <Redirect to={{pathname : "/login", state: {from: props.location}}}/>
+    <Route { ...rest } render = {
+        props => 
+            (
+                isAuthenticated()?(
+                    <Template><Component {...props} /></Template>
+                ):(
+                    <Redirect to={{pathname : "/login", state: {from: props.location}}}/>
+                )
             )
-        )}
+        }
     />
 )
 

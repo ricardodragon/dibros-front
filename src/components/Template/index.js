@@ -1,7 +1,7 @@
 import Header from "../Header"
 import Menu from "../Menu"
 import Footer from "../Footer"
-import "./style.css"
+import "./template.css"
 
 function Template(props){
     return (

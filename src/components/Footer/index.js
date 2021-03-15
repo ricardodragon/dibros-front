@@ -1,8 +1,8 @@
-import './style.css';
+import './footer.css';
 
 function footer(){
     return (
-        <footer>
+        <footer className="footer-app">
             © 2021 Ricardo-Zoio All rights reserved.
         </footer>
     )

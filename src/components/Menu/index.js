@@ -5,7 +5,7 @@ import {
     FcBullish,  FcLineChart, FcMenu
 } from "react-icons/fc";
 import { Link } from "react-router-dom";
-import './style.css';
+import './menu.css';
 
 function menu(){
     return (
@@ -14,7 +14,7 @@ function menu(){
             <div className="botao-menu">
                 <label htmlFor="check-menu"><FcMenu size={35} style={{cursor: "pointer"}} htmlFor="check-menu"/></label>
             </div>
-            <nav className="menu-container">
+            <nav className="menu-conteudo">
                 <ul>
                     <li>
                         <Link to='/'><FcHome size={0}/><span className="menu-legenda">Home</span></Link> 
@@ -23,7 +23,7 @@ function menu(){
                         <Link to='/contas'><FcCollaboration size={0}/><span className="menu-legenda">Contas</span></Link>
                     </li>
                     <li>
-                        <Link to=''><FcBookmark size={0}/><span className="menu-legenda">Anúncios</span></Link>
+                        <Link to='/anuncios/0'><FcBookmark size={0}/><span className="menu-legenda">Anúncios</span></Link>
                     </li>
                     <li>                
                         <Link to=''><FcMultipleSmartphones size={0}/><span className="menu-legenda">Produtos</span></Link>

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { VscAccount } from "react-icons/vsc";
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import './style.css';
+import './header.css';
 import logo from './logo.png';
 import { Link } from 'react-router-dom';
 
@@ -28,17 +28,21 @@ function Header(){
     };
 
     return (
-        <header>
+        <header className="header-app">
             <div className="logo">
+            <Link to="/home"> 
                 <img alt="" height="50" width="100" src={logo} />
+            </Link> 
             </div>
             
             <div className="login">        
-                {usuario?capitalizeFirstLetter(usuario.username):""}<VscAccount size={40} onClick={handleClick}/>
+                {usuario?capitalizeFirstLetter(usuario.username):""}<VscAccount className="user-cursor" size={40} onClick={handleClick}/>
             </div>
 
-            <Menu style={{margin: "2% 2% 0 0"}} anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
-                <Link to='/login' onClick={sair}><MenuItem>Sair</MenuItem></Link>
+            <Menu className="user-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
+                <Link to='/login' onClick={sair}>
+                    <MenuItem>Sair</MenuItem>
+                </Link>
             </Menu>
         </header>
     )

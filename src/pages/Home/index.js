@@ -1,7 +1,7 @@
 
 function home(){
     return (
-        <p>Ola mundo</p>
+        <p>Home</p>
     )
 }
 

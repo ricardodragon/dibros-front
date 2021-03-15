@@ -1,4 +1,4 @@
-header {         
+.header-app {         
     top : 0;        
     width: 100%;    
     background-color: rgba(255, 238, 0);    
@@ -15,4 +15,20 @@ header {
     float: right;
     margin-right: 2%;    
     padding: 0.5%;                 
+}
+
+.user-cursor{
+    cursor: pointer;
+}
+
+.user-menu{
+    margin: 2% 2% 0 0;
+    color: black;
+    font-weight: bolder;
+}
+
+.user-menu-item{
+
+    color: black;
+    font-weight: bolder;
 }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './style.css'
+import './login.css'
 import Button from '@material-ui/core/Button';
 import { AiOutlineFacebook, AiOutlineGoogle } from "react-icons/ai";
 import TextField from '@material-ui/core/TextField';
@@ -25,6 +25,7 @@ function Login(props) {
         usuario[event.target.name] = event.target.value;
         setUsuario({...usuario});
     }
+    
     function login(event){
         event.preventDefault();
         axios.post('http://localhost:8080/auth/login', {username: usuario.usernameOrEmail, password: usuario.senha})
@@ -32,7 +33,7 @@ function Login(props) {
                 localStorage.setItem("token", response.headers['authorization']);
                 axios.get("http://localhost:8080/usuario").then(response =>{
                     localStorage.setItem("usuario", JSON.stringify(response.data));
-                    props.history.replace("/usuarios");
+                    props.history.replace("/");
                 })
             });
         
@@ -41,7 +42,7 @@ function Login(props) {
     return (
         <div className="background">
             <div className="conteudo-login">
-                <h1>Login</h1>
+                <h1 className="titulo-login">Login</h1>
                 <Button variant="contained" color="primary">
                     <AiOutlineFacebook size={25}/>
                     &nbsp;&nbsp;Entrar com facebook
