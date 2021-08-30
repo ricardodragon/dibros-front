@@ -8,14 +8,5 @@ const App = () => {
     });
     return <Routes/>
 }
-// function App() {
-//   return (
-//     <div className="app">
-//       <Header />
-//       <Menu/>
-//       <Footer/>
-//     </div>
-//   );
-// }
 
 export default App;

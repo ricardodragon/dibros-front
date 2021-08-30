@@ -27,6 +27,11 @@ function Anuncios(){
             <ul>
                 <div>
                     <AutoComplete setConta={setConta}/>
+                    <Link to="/anuncios/publicar" className="footer-card-link">
+                        <Button size="small" color="primary">
+                            Publicar
+                        </Button>
+                    </Link>
                 </div>
                 {   
                     anuncios.map((value, index) => {
