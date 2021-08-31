@@ -10,10 +10,12 @@ function Anuncios(){
     const [anuncios, setAnuncios] = useState([]);
     const [conta, setConta] = useState({});
 
-    const getAnuncios = async () => {
-        const response = await axios.get('http://localhost:8080/anuncios/by-user-id?id='+JSON.parse(localStorage.getItem("usuario")).id);
-        setAnuncios(anuncios.concat(response.data));
-    }
+    const getAnuncios = async () => 
+        setAnuncios(anuncios.concat((
+            await axios.get(
+                'http://localhost:8080/anuncios/by-user-id?id='+JSON.parse(localStorage.getItem("usuario")
+            ).id)
+        ).data));    
 
     useEffect(() => { getAnuncios() }, []);
 

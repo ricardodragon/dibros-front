@@ -6,10 +6,8 @@ function Categorias(){
     const [categorias, setCategorias] = useState([]);
     const [categoria, setCategoria] = useState({});
 
-    const getCategorias = async () => {
+    const getCategorias = async () => 
         setCategorias(categorias.concat((await axios.get('http://localhost:8080/categorias/MLB')).data));
-        console.log(categorias)
-    }
 
     useEffect(() => { getCategorias() }, []);
 
