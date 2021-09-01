@@ -13,12 +13,12 @@ function Categorias(){
 
     return (
         <>
-            <label for="categoria">Categoria : </label>  
+            <label htmlFor="categoria">Categoria : </label>  
             <select name="categoria" id="categoria">
                 {   
                     categorias.map((value, index) => {
                         return (
-                            <option name="index" value="index">{value.name}</option>
+                            <option key={index} name="index" value="index">{value.name}</option>
                         )
                     })
                 }
