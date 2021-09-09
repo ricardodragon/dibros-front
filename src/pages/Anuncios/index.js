@@ -2,13 +2,13 @@ import { Button } from "@material-ui/core";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import AutoComplete from "../../components/AutoComplete";
+import Contas from "../../components/Contas";
 
 import './style.css';
 
 function Anuncios(){
     const [anuncios, setAnuncios] = useState([]);
-    const [conta, setConta] = useState({});
+    const [contas, setContas] = useState([]);
 
     const getAnuncios = async () => 
         setAnuncios(anuncios.concat((
@@ -28,7 +28,7 @@ function Anuncios(){
         <>
             <ul>
                 <div>
-                    <AutoComplete setConta={setConta}/>
+                    <Contas onChange={setContas}/>
                     <Link to="/anuncios/publicar" className="footer-card-link">
                         <Button size="small" color="primary">
                             Publicar

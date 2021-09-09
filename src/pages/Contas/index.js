@@ -7,23 +7,19 @@ import './contas.css'
 import { Button, IconButton } from "@material-ui/core";
     
 function Contas(){
-    const [contas, setContas] = useState([]);
+    const [values, setValues] = useState({applicationUserId:JSON.parse(localStorage.getItem("usuario")).id, contas:[]});
     let { code } = queryString.parse(useLocation().search);
     
-
     if(code!==undefined)
         axios.post('http://localhost:8080/conta?code='+code+'&userId='+JSON.parse(localStorage.getItem("usuario")).id).then(response => {
-            setContas(contas => [...contas, response.data]); 
+            setValues({...values, contas:[...values.contas, response.data]}); 
         });
         
-    const getContas = async () => {
-        const response = await axios.get('http://localhost:8080/conta/all?id='+JSON.parse(localStorage.getItem("usuario")).id);
-        setContas(contas.concat(response.data.content));
-    }
-
-    useEffect(() => {
-        getContas();
-    }, []);
+    const setContas = async () => setValues({
+        ...values, 
+        contas:(await axios.get('http://localhost:8080/conta/all?id='+values.applicationUserId)).data
+    })
+    useEffect(() => setContas(), []);
 
     const redirectMeli = () => {
         window.location.href = "http://auth.mercadolivre.com.br/authorization?response_type=code&client_id=5401911184235214&redirect_uri=http://localhost:3000/contas";
@@ -35,14 +31,14 @@ function Contas(){
                 <AddShoppingCartIcon /> ADICIONAR CONTA
             </IconButton>
             {
-                contas.map((value, index) => {
+                values.contas.map((value, index) => {
                     return (
                         <div key={index} className="card-contas">
                             <div className="header-card">
                                 <h1>{value.nickname}</h1>
                             </div>
                             <div className="card-content">
-                                <label>ID: </label>{value.userId}
+                                <label>ID: </label>{value.id}
                             </div>
                             <div className="footer-card-contas">
                                 <Link to={"/anuncios/userId="+value.userId} className="footer-card-link">

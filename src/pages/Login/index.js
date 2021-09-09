@@ -7,6 +7,7 @@ import { yellow } from '@material-ui/core/colors';
 import { withStyles } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import bandeirasCartoes from './bandeiras-cartoes.jpg';
 
 const ColorButton = withStyles((theme) => ({
     root: {
@@ -19,16 +20,14 @@ const ColorButton = withStyles((theme) => ({
 }))(Button);
 
 function Login(props) {
-    const [usuario, setUsuario] = useState( { usernameOrEmail: '', senha: ''} )
+    const [values, setValues] = useState( {} )
     
-    function handleUsuario(event){
-        usuario[event.target.name] = event.target.value;
-        setUsuario({...usuario});
-    }
-    
-    function login(event){
+    const setUsuario = (event)=>
+        setValues({...values,usuario:{...values.usuario,[event.target.name]:event.target.value}})    
+        
+    const login = (event) => {
         event.preventDefault();
-        axios.post('http://localhost:8080/auth/login', {username: usuario.usernameOrEmail, password: usuario.senha})
+        axios.post('http://localhost:8080/auth/login', values.usuario)
             .then(response => {
                 localStorage.setItem("token", response.headers['authorization']);
                 axios.get("http://localhost:8080/usuario").then(response =>{
@@ -58,8 +57,8 @@ function Login(props) {
                 <p>OU</p>
                 <form onSubmit={login}>
                     <div className="form-input">
-                        <TextField onChange={handleUsuario} label="E-mail" id="usernameOrEmail" name="usernameOrEmail" />
-                        <TextField onChange={handleUsuario} label="Password" id="password" name="senha" type="password" />
+                        <TextField onChange={setUsuario} label="E-mail" id="username" name="username" />
+                        <TextField onChange={setUsuario} label="Password" id="password" name="password" type="password" />
                     </div>
                     <div className="btn-entrar">
                         <ColorButton variant="contained" type="submit" color="default">Entrar</ColorButton>
@@ -68,6 +67,7 @@ function Login(props) {
                         Não possui conta?<Link to="/registrar">Registre-se aqui</Link>
                     </div>
                 </form>
+                <img alt="" height="50" width="100" src={bandeirasCartoes} />
             </div>
         </div>
     )
