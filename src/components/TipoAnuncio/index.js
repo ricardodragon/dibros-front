@@ -1,27 +1,25 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import LabelSelect from "../LabelSelect";
 
 function TipoAnuncio(props){
     const [values, setValues] = useState({tiposAnuncio:[]});
 
-    const getTiposAnuncio = async () => {
-        console.log (props.categoria)
+    async function setTipoAnuncio(){              
         setValues({
             ...values, 
-            tiposAnuncio: (await axios.get('http://localhost:8080/conta/'+props.userMeliId+'/'+props.categoria)).data
+            tiposAnuncio: (await axios.get('http://localhost:8080/conta/'+props.conta.id+'/'+props.categoria)).data
         })
     }
-    useEffect(() => getTiposAnuncio(), []);
+    useEffect(() => 
+        setTipoAnuncio()
+    , [props]);
 
-    return(                                
-        <select name="tipo_anuncio" id="tipo_anuncio">
-            {   
-                values.tiposAnuncio.map((value, index) => {
-                    return (
-                        <option key={index} name="index" value="index">{value.name}</option>
-                    )
-                })
-            }
-        </select>            
+    return(  
+        <LabelSelect 
+            label={props.conta.email} 
+            id="tipo-anuncio" 
+            lista={values.tiposAnuncio} 
+            name="name" onChange={(event)=>{}}/>                                                 
     )
 }export default TipoAnuncio

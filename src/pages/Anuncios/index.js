@@ -7,17 +7,14 @@ import Contas from "../../components/Contas";
 import './style.css';
 
 function Anuncios(){
-    const [anuncios, setAnuncios] = useState([]);
-    const [contas, setContas] = useState([]);
+    const [values, setValues] = useState({anuncios:[]});   
 
-    const getAnuncios = async () => 
-        setAnuncios(anuncios.concat((
-            await axios.get(
-                'http://localhost:8080/anuncios/by-user-id?id='+JSON.parse(localStorage.getItem("usuario")
-            ).id)
-        ).data));    
+    const setAnuncios = async () => setValues({
+        ...values,
+        anuncios:values.anuncios.concat((await axios.get('http://localhost:8080/anuncios/user/'+JSON.parse(localStorage.getItem("usuario")).id)).data)
+    });    
 
-    useEffect(() => { getAnuncios() }, []);
+    useEffect(() => { setAnuncios() }, []);
 
     const formatDate = function(string){
         var optionsDate = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -28,7 +25,7 @@ function Anuncios(){
         <>
             <ul>
                 <div>
-                    <Contas onChange={setContas}/>
+                    <Contas onChange={(contas) => setValues({...values, contas:contas})}/>
                     <Link to="/anuncios/publicar" className="footer-card-link">
                         <Button size="small" color="primary">
                             Publicar
@@ -36,24 +33,24 @@ function Anuncios(){
                     </Link>
                 </div>
                 {   
-                    anuncios.map((value, index) => {
+                    values.anuncios.map((value, index) => {
                         return (
                             <li key={index} className="card-anuncios">
                                 <figure className="foto-lista-anuncio">
-                                    <img src={value.thumbnail}/>
+                                    <img src={value.body.thumbnail}/>
                                 </figure>
                                 <div className="anuncio-info">
-                                    <h3>{value.title}</h3>
+                                    <h3>{value.body.title}</h3>
                                     <div className="anuncio-especificacao">
-                                        <label>Preço: {value.price}</label>
-                                        <label>Quantidade: {value.available_quantity}</label>                                   
-                                        <label>Data/Hora ultima alteração: {formatDate(value.last_updated)}</label>
+                                        <label>Preço: {value.body.price}</label>
+                                        <label>Quantidade: {value.body.available_quantity}</label>                                   
+                                        <label>Data/Hora ultima alteração: {formatDate(value.body.last_updated)}</label>
                                         <Link to="/" className="footer-card-link">
                                             <Button size="small" color="primary">
                                                 Detalhes
                                             </Button>
                                         </Link>
-                                        <a target="blank" href={value.permalink} className="footer-card-link">
+                                        <a target="blank" href={value.body.permalink} className="footer-card-link">
                                             <Button size="small" color="primary">
                                                 MercadoLivre
                                             </Button>        
