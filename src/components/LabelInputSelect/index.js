@@ -7,7 +7,7 @@ function LabelInputSelect(props){
 
     return (
         <>
-            <LabelInput />
+            <LabelInput label={atributo.name} id={index} type="string"/> 
             <label style={{padding: "1%", fontWeight: "bolder"}} htmlFor={props.id}>{props.label} : </label>
             
             <select onChange={(event) => props.onChange(event, props.index)} id={props.id} >                

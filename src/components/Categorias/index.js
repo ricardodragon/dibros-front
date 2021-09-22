@@ -42,7 +42,7 @@ function Categorias(props){
             {
                 values.categorias.map((categoria, index) => { 
                     return (
-                        <LabelSelect id={index} lista={categoria.lista} onChange={(event)=>{addCategoria(event, index)}} value="id" label={""} name = "name"/>                        
+                        <LabelSelect id={index+categoria.id} lista={categoria.lista} onChange={(event)=>{addCategoria(event, index)}} value="id" label={""} name = "name"/>                        
                     )
                 })
             }

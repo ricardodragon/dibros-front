@@ -25,105 +25,12 @@ function menu(){
                     <li>
                         <Link to='/anuncios/0'><FcBookmark size={0}/><span className="menu-legenda">Anúncios</span></Link>
                     </li>
-                    <li>                
+                    <li>                    
                         <Link to=''><FcMultipleSmartphones size={0}/><span className="menu-legenda">Produtos</span></Link>
                     </li>
                     <li>                
                         <Link to='/usuarios'><FcPortraitMode size={0}/><span className="menu-legenda">Usuário</span></Link>
-                    </li>
-                    <li>
-                        <Link to=''><FcAssistant size={0}/><span className="menu-legenda">Perguntas</span></Link>
-                    </li>
-                    <li>
-                        <Link to=''><FcShipped size={0}/><span className="menu-legenda">Fretes</span></Link>
-                    </li>
-                    <li>                
-                        <Link to=''><FcBullish size={0}/><span className="menu-legenda">Metas</span></Link>
-                    </li>
-                    <li>                
-                        <Link to=''><FcLineChart size={0}/><span className="menu-legenda">Dashboard</span></Link>
-                    </li>
-                    <li>
-                        <Link to=''><FcHome size={0}/><span className="menu-legenda">Home</span> </Link>
-                    </li>
-                    <li>
-                        <Link to=''><FcCollaboration size={0}/><span className="menu-legenda">Contas</span></Link>
-                    </li>
-                    <li>
-                        <Link to=''><FcBookmark size={0}/><span className="menu-legenda">Anúncios</span></Link>
-                    </li>
-                    <li>                
-                        <Link to=''><FcMultipleSmartphones size={0}/><span className="menu-legenda">Produtos</span></Link>
-                    </li>
-                    <li>                
-                        <Link to=''><FcPortraitMode size={0}/><span className="menu-legenda">Usuário</span></Link>
-                    </li>
-                    <li>
-                        <Link to=''><FcAssistant size={0}/><span className="menu-legenda">Perguntas</span></Link>
-                    </li>
-                    <li>
-                        <Link to=''><FcShipped size={0}/><span className="menu-legenda">Fretes</span></Link>
-                    </li>
-                    <li>                
-                        <Link to=''><FcBullish size={0}/><span className="menu-legenda">Metas</span></Link>
-                    </li>
-                    <li>                
-                        <Link to=''><FcLineChart size={0}/><span className="menu-legenda">Dashboard</span></Link>
-                    </li>
-                    <li>
-                        <Link to=''><FcHome size={0}/><span className="menu-legenda">Home</span> </Link>
-                    </li>
-                    <li>
-                        <Link to=''><FcCollaboration size={0}/><span className="menu-legenda">Contas</span></Link>
-                    </li>
-                    <li>
-                        <Link to=''><FcBookmark size={0}/><span className="menu-legenda">Anúncios</span></Link>
-                    </li>
-                    <li>                
-                        <Link to=''><FcMultipleSmartphones size={0}/><span className="menu-legenda">Produtos</span></Link>
-                    </li>
-                    <li>                
-                        <Link to=''><FcPortraitMode size={0}/><span className="menu-legenda">Usuário</span></Link>
-                    </li>
-                    <li>
-                        <Link to=''><FcAssistant size={0}/><span className="menu-legenda">Perguntas</span></Link>
-                    </li>
-                    <li>
-                        <Link to=''><FcShipped size={0}/><span className="menu-legenda">Fretes</span></Link>
-                    </li>
-                    <li>                
-                        <Link to=''><FcBullish size={0}/><span className="menu-legenda">Metas</span></Link>
-                    </li>
-                    <li>                
-                        <Link to=''><FcLineChart size={0}/><span className="menu-legenda">Dashboard</span></Link>
-                    </li>
-                    <li>
-                        <Link to=''><FcHome size={0}/><span className="menu-legenda">Home</span> </Link>
-                    </li>
-                    <li>
-                        <Link to=''><FcCollaboration size={0}/><span className="menu-legenda">Contas</span></Link>
-                    </li>
-                    <li>
-                        <Link to=''><FcBookmark size={0}/><span className="menu-legenda">Anúncios</span></Link>
-                    </li>
-                    <li>                
-                        <Link to=''><FcMultipleSmartphones size={0}/><span className="menu-legenda">Produtos</span></Link>
-                    </li>
-                    <li>                
-                        <Link to=''><FcPortraitMode size={0}/><span className="menu-legenda">Usuário</span></Link>
-                    </li>
-                    <li>
-                        <Link to=''><FcAssistant size={0}/><span className="menu-legenda">Perguntas</span></Link>
-                    </li>
-                    <li>
-                        <Link to=''><FcShipped size={0}/><span className="menu-legenda">Fretes</span></Link>
-                    </li>
-                    <li>                
-                        <Link to=''><FcBullish size={0}/><span className="menu-legenda">Metas</span></Link>
-                    </li>
-                    <li>                
-                        <Link to=''><FcLineChart size={0}/><span className="menu-legenda">Dashboard</span></Link>
-                    </li>
+                    </li>                    
                 </ul>
             </nav>
         </div>

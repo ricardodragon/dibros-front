@@ -5,13 +5,13 @@ import { TextField } from "@material-ui/core";
 
 function Contas(props){
 
-    const [values, setValues] = useState({})     
+    const [values, setValues] = useState({contas:[]})     
 
     async function setContas(){
         setValues({...values,            
             contas:(
                 await axios.get('http://localhost:8080/conta/all?id='+JSON.parse(localStorage.getItem("usuario")).id)
-            ).data.concat({user_id:"0", nickname:"Todas as contas"})
+            ).data.concat({id:"0", nickname:"Todas as contas"})
         })
     }
 
@@ -20,10 +20,17 @@ function Contas(props){
     }, []);
 
     return (
-        <Autocomplete autoHighlight id="contas-combo" options={values.contas} getOptionLabel={(o) => o.nickname}
-            onChange={(event, conta) => { 
-                           
-                if(conta.user_id==="0")
+        <Autocomplete 
+            fullWidth={ false } 
+            autoComplete={ true }             
+            id="contas-combo" 
+            options={values.contas} 
+            getOptionLabel={(o) => o.nickname}
+            getOptionSelected={(option, value) => option.id === value.id}
+            onChange={(event, conta) => {                                 
+                if(!conta)
+                    props.onChange(undefined)
+                else if(conta.id==="0")
                     props.onChange(values.contas.slice(0, values.contas.length-1))
                 else
                     props.onChange([conta]) 

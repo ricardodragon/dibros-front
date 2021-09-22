@@ -4,6 +4,7 @@ import Categorias from "../../../components/Categorias";
 import Contas from "../../../components/Contas";
 import LabelInput from "../../../components/LabelInput";
 import TipoAnuncio from "../../../components/TipoAnuncio";
+import Variacoes from "../../../components/Variacoes";
 
 
 function Publicar(){
@@ -22,7 +23,7 @@ function Publicar(){
             <div>
                 <span style={{float: "left", width: "100%", padding: "1%"}}>
                     <label style={{padding: "1%", fontWeight: "bolder"}} htmlFor="conta">Conta : </label>
-                    <Contas onChange={(contas) => setValues({...values, contas})} id="conta"/>                   
+                    <Contas onChange={(contas) => { console.log(contas); setValues({...values, contas})}} id="conta"/>                   
                 </span>
             </div>
             {  
@@ -38,8 +39,7 @@ function Publicar(){
                     <div>
                         <span style={{float: "left", width: "100%", padding: "1%"}}>
                             <LabelInput label="Título : " id="titulo" type="text"/>   
-                            <LabelInput label="Subtítulo : " id="subtitulo" type="text"/>                                                        
-                           
+                            <LabelInput label="Subtítulo : " id="subtitulo" type="text"/>                                                                                   
                         </span>
                     </div>
                                     
@@ -56,15 +56,7 @@ function Publicar(){
                             <LabelInput label="Quantidade disponível : " id="qtd_disponivel" type="number"/>                             
                             <LabelInput label="Quantidade inicial : " id="qtd_inicial" type="number"/>                                                                                     
                         </span>                    
-                    </div>     
-                    <div>
-                        <span style={{float: "left", width: "100%",  padding: "1%"}}>
-                            <label style={{padding: "1%", fontWeight: "bolder"}} htmlFor="categoria">
-                                Categoria : 
-                            </label>  
-                            <Categorias onChange={(categoriaId) => setValues({...values, categoriaId})}/>                                                                                            
-                        </span>
-                    </div>
+                    </div> 
                     <div>
                         <span style={{float: "left", width: "100%",  padding: "1%"}}>
                             <label style={{padding: "1%", fontWeight: "bolder"}} htmlFor="tipo-anuncio">
@@ -74,18 +66,31 @@ function Publicar(){
                                 <TipoAnuncio conta={conta} categoria={values.categoriaId}/>
                             )}
                         </span>
+                    </div>    
+                    <div>
+                        <span style={{float: "left", width: "100%",  padding: "1%"}}>
+                            <label style={{padding: "1%", fontWeight: "bolder"}} htmlFor="categoria">
+                                Categoria : 
+                            </label>  
+                            <Categorias onChange={(categoriaId) => setValues({...values, categoriaId})}/>                                                                                            
+                        </span>
                     </div>
+                    
                     {/* <div>
                         <Garantias categoria={values.categoriaId}/> 
                     </div> */}
                     {  
                         values.categoriaId?
-                            <div>
+                            <div>                                
+                                <h5>Atributos</h5>
                                 <Atributos categoria={values.categoriaId}/> 
+                                <h5>Variacoes</h5>
+                                <Variacoes categoria={values.categoriaId} index={0}/>
                             </div>:""
                     }
+                    
                 </>
-                :null                                                        
+                :null
             }            
             
         </>

@@ -6,7 +6,7 @@ function LabelInput(props){
 
     return (
         <>
-            <label style={{padding: "1%", fontWeight: "bolder"}} htmlFor={props.id}>{props.label}</label>
+            <label htmlFor={props.id} style={{padding: "1%", fontWeight: "bolder"}} >{props.label}</label>
             <input id={props.id} placeholder={props.placeholder} type={props.type} onChange={(event) => {}}/>
         </>
     )
