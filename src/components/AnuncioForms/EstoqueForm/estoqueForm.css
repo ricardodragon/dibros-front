@@ -1,0 +1,9 @@
+.seta-baixo-estoque, .conteudo-estoque-form, #check-estoque-fieldset,
+#check-estoque-fieldset:checked ~ .seta-direita-estoque{
+    display: none;
+}
+
+#check-estoque-fieldset:checked ~ .seta-baixo-estoque,
+#check-estoque-fieldset:checked ~ .conteudo-estoque-form{    
+    display: unset;
+}

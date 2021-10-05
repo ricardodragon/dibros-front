@@ -1,7 +1,5 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import { TextField } from "@material-ui/core";
 
 function Contas(props){
 
@@ -10,9 +8,21 @@ function Contas(props){
     async function setContas(){
         setValues({...values,            
             contas:(
-                await axios.get('http://localhost:8080/conta/all?id='+JSON.parse(localStorage.getItem("usuario")).id)
-            ).data.concat({id:"0", nickname:"Todas as contas"})
+                await axios.get(
+                    'http://localhost:8080/conta/all?id='+JSON.parse(localStorage.getItem("usuario")).id
+                )
+            ).data.concat({id:"0", email:"Todas as contas"})
         })
+    }
+
+    const setConta = (event) => {                                         
+        const conta = values.contas.filter((value) => value.email==event.target.value)[0]
+        if(!conta)
+            props.onChange(undefined)
+        else if(conta.id==="0")
+            props.onChange(values.contas.slice(0, values.contas.length-1))
+        else
+            props.onChange([conta]) 
     }
 
     useEffect(() => {         
@@ -20,23 +30,15 @@ function Contas(props){
     }, []);
 
     return (
-        <Autocomplete 
-            fullWidth={ false } 
-            autoComplete={ true }             
-            id="contas-combo" 
-            options={values.contas} 
-            getOptionLabel={(o) => o.nickname}
-            getOptionSelected={(option, value) => option.id === value.id}
-            onChange={(event, conta) => {                                 
-                if(!conta)
-                    props.onChange(undefined)
-                else if(conta.id==="0")
-                    props.onChange(values.contas.slice(0, values.contas.length-1))
-                else
-                    props.onChange([conta]) 
-            }}
-            renderInput={(params) => <TextField {...params} variant="outlined" />}
-        />
+        <>
+            <input list="contas" type="text" onChange={setConta}/>
+            <datalist id="contas">                    
+                {               
+                    values.contas.map((value, index) => 
+                        <option key={index} value={value.email}>{value.nickname}</option>)                    
+                }
+            </datalist>
+        </>        
         
     )
 }

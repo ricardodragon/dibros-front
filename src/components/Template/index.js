@@ -9,6 +9,7 @@ function Template(props){
             <Header/>
             <Menu/>
             <div className="conteudo">
+                <h1>Nome da tela</h1>
                 {props.children}
             </div>
             <Footer/>

@@ -1,0 +1,9 @@
+.seta-baixo-variacoes, .conteudo-variacoes-form, #check-variacoes-fieldset,
+#check-variacoes-fieldset:checked ~ .seta-direita-variacoes{
+    display: none;
+}
+
+#check-variacoes-fieldset:checked ~ .seta-baixo-variacoes,
+#check-variacoes-fieldset:checked ~ .conteudo-variacoes-form{    
+    display: unset;
+}

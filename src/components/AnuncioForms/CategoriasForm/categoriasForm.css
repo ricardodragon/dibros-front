@@ -1,0 +1,10 @@
+
+.seta-baixo-categorias, .conteudo-categorias-form, #check-categorias-fieldset,
+#check-categorias-fieldset:checked ~ .seta-direita-categorias{
+    display: none;
+}
+
+#check-categorias-fieldset:checked ~ .seta-baixo-categorias,
+#check-categorias-fieldset:checked ~ .conteudo-categorias-form{    
+    display: unset;
+}

@@ -1,11 +1,18 @@
 import { useState } from "react";
-import Atributos from "../../../components/Atributos";
-import Categorias from "../../../components/Categorias";
-import Contas from "../../../components/Contas";
-import LabelInput from "../../../components/LabelInput";
-import TipoAnuncio from "../../../components/TipoAnuncio";
-import Variacoes from "../../../components/Variacoes";
-
+import FieldsetLegend from "../../../components/FieldsetLegend";
+import AnuncioForm from "../../../components/AnuncioForms/AnuncioForm";
+import MoedaForm from "../../../components/AnuncioForms/MoedaForm";
+import EstoqueForm from "../../../components/AnuncioForms/EstoqueForm";
+import TipoAnuncioForm from "../../../components/AnuncioForms/TipoAnuncioForm";
+import CategoriasForm from "../../../components/AnuncioForms/CategoriasForm";
+import AtributosForm from "../../../components/AnuncioForms/AtributosForm";
+import VariacoesForm from "../../../components/AnuncioForms/VariacoesForm";
+import "./publicar.css"
+import ContasForm from "../../../components/AnuncioForms/ContasForm";
+import ReplicarAnuncioForm from "../../../components/AnuncioForms/ReplicarAnuncioForm";
+import ImagensForm from "../../../components/AnuncioForms/ImagensForm";
+import DescricaoForm from "../../../components/AnuncioForms/DescricaoForm";
+import GarantiasForm from "../../../components/AnuncioForms/GarantiasForm";
 
 function Publicar(){
     
@@ -18,83 +25,25 @@ function Publicar(){
     }
 
     return (
-        <>
-            <h1>Publicar</h1>               
-            <div>
-                <span style={{float: "left", width: "100%", padding: "1%"}}>
-                    <label style={{padding: "1%", fontWeight: "bolder"}} htmlFor="conta">Conta : </label>
-                    <Contas onChange={(contas) => { console.log(contas); setValues({...values, contas})}} id="conta"/>                   
-                </span>
-            </div>
-            {  
-                values.contas?
-                <>
-                    <div>
-                        <span style={{float: "left", width: "100%", padding: "1%"}}>
-                            <LabelInput 
-                                type="text" label="Replicar ID : " 
-                                id="replicar" placeholder="digite um id de anuncio meli"/>                                                        
-                        </span>
-                    </div>     
-                    <div>
-                        <span style={{float: "left", width: "100%", padding: "1%"}}>
-                            <LabelInput label="Título : " id="titulo" type="text"/>   
-                            <LabelInput label="Subtítulo : " id="subtitulo" type="text"/>                                                                                   
-                        </span>
-                    </div>
-                                    
-                    <div>            
-                        <span style={{float: "left", width: "100%", padding: "1%"}}>
-                            <LabelInput label="Preço : " id="preco" type="number"/> 
-                            <LabelInput label="Preço Original : " id="original_price" type="number"/>                                                         
-                            <LabelInput label="Preço Base : " id="preco_base" type="number"/>                             
-                        </span>                    
-                    </div>
-                                                    
-                    <div>
-                        <span style={{float: "left", width: "100%", padding: "1%"}}>
-                            <LabelInput label="Quantidade disponível : " id="qtd_disponivel" type="number"/>                             
-                            <LabelInput label="Quantidade inicial : " id="qtd_inicial" type="number"/>                                                                                     
-                        </span>                    
-                    </div> 
-                    <div>
-                        <span style={{float: "left", width: "100%",  padding: "1%"}}>
-                            <label style={{padding: "1%", fontWeight: "bolder"}} htmlFor="tipo-anuncio">
-                                Tipo do anuncio por conta : 
-                            </label>  
-                            {values.contas.map( (conta)=>
-                                <TipoAnuncio conta={conta} categoria={values.categoriaId}/>
-                            )}
-                        </span>
-                    </div>    
-                    <div>
-                        <span style={{float: "left", width: "100%",  padding: "1%"}}>
-                            <label style={{padding: "1%", fontWeight: "bolder"}} htmlFor="categoria">
-                                Categoria : 
-                            </label>  
-                            <Categorias onChange={(categoriaId) => setValues({...values, categoriaId})}/>                                                                                            
-                        </span>
-                    </div>
-                    
-                    {/* <div>
-                        <Garantias categoria={values.categoriaId}/> 
-                    </div> */}
-                    {  
-                        values.categoriaId?
-                            <div>                                
-                                <h5>Atributos</h5>
-                                <Atributos categoria={values.categoriaId}/> 
-                                <h5>Variacoes</h5>
-                                <Variacoes categoria={values.categoriaId} index={0}/>
-                            </div>:""
-                    }
-                    
-                </>
-                :null
-            }            
-            
-        </>
+                                
+        <form>                            
+            <ContasForm onChange={(contas) => { setValues({...values, contas})}}/>
+            <ReplicarAnuncioForm/>
+            { values.contas? <TipoAnuncioForm contas={values.contas} categoria={values.categoriaId}/> : null }
+            <CategoriasForm onChange={(categoriaId) => setValues({...values, categoriaId})}/>                
+            <FieldsetLegend legend={"Anuncio"} id={"check-anuncio-fieldset"} classe="anuncio">                                              
+                <AnuncioForm/>                
+                <MoedaForm/>                
+                <EstoqueForm/>                                                                                  
+                <AtributosForm categoria={values.categoriaId}/>
+                <VariacoesForm categoria={values.categoriaId}/>                                            
+                <ImagensForm/>
+                <DescricaoForm/>
+                <GarantiasForm categoria={values.categoriaId}/>
+            </FieldsetLegend>    
+            <input className="botao-publicar" type="submit" value="Publicar"/>                                
+        </form>
+        
     )
 }
-
 export default Publicar

@@ -1,0 +1,9 @@
+.seta-baixo-moeda, .conteudo-moeda-form, #check-moeda-fieldset,
+#check-moeda-fieldset:checked ~ .seta-direita-moeda{
+    display: none;
+}
+
+#check-moeda-fieldset:checked ~ .seta-baixo-moeda,
+#check-moeda-fieldset:checked ~ .conteudo-moeda-form{    
+    display: unset;
+}

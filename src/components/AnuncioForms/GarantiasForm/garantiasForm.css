@@ -1,0 +1,9 @@
+.seta-baixo-garantias, .conteudo-garantias-form, #check-garantias-fieldset,
+#check-garantias-fieldset:checked ~ .seta-direita-garantias{
+    display: none;
+}
+
+#check-garantias-fieldset:checked ~ .seta-baixo-garantias,
+#check-garantias-fieldset:checked ~ .conteudo-garantias-form{    
+    display: unset;
+}

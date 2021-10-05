@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import LabelSelect from '../LabelSelect';
+import LabelSelect from '../../../LabelSelect';
 
 function Categorias(props){
 

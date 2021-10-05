@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap');
+
 /* http://meyerweb.com/eric/tools/css/reset/ 
    v2.0 | 20110126
    License: none (public domain)
@@ -10,7 +12,7 @@ del, dfn, em, img, ins, kbd, q, s, samp,
 small, strike, strong, sub, sup, tt, var,
 b, u, i, center,
 dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
+ form, label, legend,
 table, caption, tbody, tfoot, thead, tr, th, td,
 article, aside, canvas, details, embed, 
 figure, figcaption, footer, header, hgroup, 
@@ -32,6 +34,8 @@ footer, header, hgroup, menu, nav, section {
 body {
 	line-height: 1;
 	overflow: hidden;
+	background-color: rgba(24, 13, 71, 0.3);
+	
 }
 ol, ul {
 	list-style: none;
@@ -67,4 +71,12 @@ table {
 a{
 	text-decoration: none;
 	color: black;
+}
+input[type=submit]{
+	font-size: 15pt;
+}
+input{
+	font-family: 'Architects Daughter', cursive;
+	font-weight: bold;
+	padding: 0.2% 2% 0.2% 2%;	
 }

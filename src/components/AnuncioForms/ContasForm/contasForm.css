@@ -1,0 +1,9 @@
+.seta-baixo-contas, .conteudo-contas-form, #check-contas-fieldset,
+#check-contas-fieldset:checked ~ .seta-direita-contas{
+    display: none;
+}
+
+#check-contas-fieldset:checked ~ .seta-baixo-contas,
+#check-contas-fieldset:checked ~ .conteudo-contas-form{    
+    display: unset;
+}

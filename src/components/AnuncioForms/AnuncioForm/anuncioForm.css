@@ -1,0 +1,10 @@
+
+.seta-baixo-anuncios, .conteudo-anuncios-form, #check-anuncios-fieldset,
+#check-anuncios-fieldset:checked ~ .seta-direita-anuncios{
+    display: none;
+}
+
+#check-anuncios-fieldset:checked ~ .seta-baixo-anuncios,
+#check-anuncios-fieldset:checked ~ .conteudo-anuncios-form{    
+    display: unset;
+}

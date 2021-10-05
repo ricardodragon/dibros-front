@@ -37,7 +37,7 @@ function Anuncios(){
                         return (
                             <li key={index} className="card-anuncios">
                                 <figure className="foto-lista-anuncio">
-                                    <img src={value.body.thumbnail}/>
+                                    <img src={value.body.thumbnail} alt=""  />
                                 </figure>
                                 <div className="anuncio-info">
                                     <h3>{value.body.title}</h3>
@@ -50,9 +50,9 @@ function Anuncios(){
                                                 Detalhes
                                             </Button>
                                         </Link>
-                                        <a target="blank" href={value.body.permalink} className="footer-card-link">
+                                        <a target="_blank" rel="noreferrer" href={value.body.permalink} className="footer-card-link">
                                             <Button size="small" color="primary">
-                                                MercadoLivre
+                                                Mercado Livre
                                             </Button>        
                                         </a>
                                     </div>

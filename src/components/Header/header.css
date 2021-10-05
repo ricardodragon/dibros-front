@@ -1,7 +1,7 @@
 .header-app {         
     top : 0;        
     width: 100%;    
-    background-color: rgba(255, 238, 0);    
+    background-color: rgba(24, 13, 71);   
     /* background-image:linear-gradient(to bottom, transparent 0.2px, rgba(0,0,0,.2) 1px); */
     background-size: auto 2px;
 }
@@ -14,7 +14,8 @@
 .login{  
     float: right;
     margin-right: 2%;    
-    padding: 0.5%;                 
+    padding: 0.5%;  
+    color: white;
 }
 
 .user-cursor{

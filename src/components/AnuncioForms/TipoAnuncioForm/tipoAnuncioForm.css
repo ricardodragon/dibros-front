@@ -1,0 +1,11 @@
+
+.seta-baixo-tipo-anuncio, 
+.conteudo-tipo-anuncio-form,
+#check-tipo-anuncio-fieldset,
+#check-tipo-anuncio-fieldset:checked ~ .seta-direita-tipo-anuncio{
+    display: none;
+}
+#check-tipo-anuncio-fieldset:checked ~ .conteudo-tipo-anuncio-form,
+#check-tipo-anuncio-fieldset:checked ~ .seta-baixo-tipo-anuncio{    
+    display: unset;
+}

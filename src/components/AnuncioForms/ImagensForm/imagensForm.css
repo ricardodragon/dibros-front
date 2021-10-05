@@ -1,0 +1,9 @@
+.seta-baixo-imagens, .conteudo-imagens-form, #check-imagens-fieldset,
+#check-imagens-fieldset:checked ~ .seta-direita-imagens{
+    display: none;
+}
+
+#check-imagens-fieldset:checked ~ .seta-baixo-imagens,
+#check-imagens-fieldset:checked ~ .conteudo-imagens-form{    
+    display: unset;
+}
