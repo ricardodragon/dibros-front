@@ -32,7 +32,7 @@ footer, header, hgroup, menu, nav, section {
 	display: block;
 }
 body {
-	line-height: 1;
+	line-height: 2;
 	overflow: hidden;
 	background-color: rgba(24, 13, 71, 0.3);
 	
@@ -79,4 +79,9 @@ input{
 	font-family: 'Architects Daughter', cursive;
 	font-weight: bold;
 	padding: 0.2% 2% 0.2% 2%;	
+	border-radius: 12px;
+	cursor: pointer;			
+}
+select{
+	cursor: pointer;
 }

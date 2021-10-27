@@ -1,50 +1,47 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import LabelInput from '../../../LabelInput';
+import LabelSelect from '../../../LabelSelect';
 
 function Garantias(props){
         
-    const [values, setValues] = useState({})    
+    const [values, setValues] = useState({type:[], time:[], unit:"dias"})    
 
-    async function setGarantias(){            
-               
-        const response = (await axios.get('http://localhost:8080/garantias/'+props.categoria)).data
+    async function setGarantias(){                    
+        const response = (await axios.get('http://localhost:8080/garantias/'+props.categoria)).data        
         setValues({
             ...values,
-            type:response.filter(value => value.id=="WARRANTY_TYPE")[0],
-            time:response.filter(value => value.id=="WARRANTY_TIME")[0]
+            type:response.filter(value => value.id=="WARRANTY_TYPE")[0].values,
+            time:response.filter(value => value.id=="WARRANTY_TIME")[0].allowed_units
         })            
-
     }
 
-    useEffect(() => setGarantias() ,[props]);   
-    
-    
+    useEffect(() => setGarantias() ,[props.categoria]);           
         
+    const setType = (event) => {        
+        const tipoGarantia = JSON.parse(event.target.value);        
+        setValues({...values,tipoGarantia})        
+        props.setTipoGarantia({id:"WARRANTY_TYPE", value_id:tipoGarantia.id})        
+    }
+
+    const setTime = (event) =>                                               
+        props.setTipoGarantia({id:"WARRANTY_TIME", value_id:event+" "+values.unit})        
+    
     return (        
         <div>                                                     
-            <span style={{float: "left", width: "100%",  padding: "1%"}}>
-                <label style={{padding: "1%", fontWeight: "bolder"}} htmlFor="tipo-anuncio">Garantia : </label>                
-                <label style={{padding: "1%"}} htmlFor="tipo_garantia">Tipo de garantia : </label>                    
-                <select name="tipo_garantia" id="tipo_garantia" onChange={(event) => setValues({...values,tipoGarantia:event.target.value})}>   
-                    {                                                                              
-                        values.type?values.type.values.map(value => {
-                            return (<option key={value.id} id={value.id} name={value.id} value={value.id}>{value.name}</option>)
-                        }):null
-                    }
-                </select>                
-                {   
-                    values.tipoGarantia != "6150835"?
-                    <>
-                        <label style={{padding: "1%"}} htmlFor="garantia">Tempo da garantia : </label>
-                        <input id="garantia" type="number"/>                                    
-                        <label style={{padding: "1%"}} htmlFor="garantia">Unidade tempo da garantia : </label>
-                        <select name="garantias" id="garantias">                                                         
-                            {
-                                values.time?values.time.allowed_units.map(value => {
-                                    return (<option key={value.id} id={value.id} name={value.id} value={value.id}>{value.name}</option>)
-                                }):null
-                            }
-                        </select>
+            <span style={{float: "left", width: "100%",  padding: "1%"}}>                
+                <LabelSelect 
+                    id="tipo_garantia" lista={values.type} 
+                    name="name" value="id" label={"Tipo de garantia : "} 
+                    onChange={setType}/>                                           
+                {                       
+                    values.tipoGarantia!=undefined && values.tipoGarantia.id != "6150835"?
+                    <>                        
+                        <LabelInput onChange={setTime} label="Tempo da garantia : " id="tempo_garantia" type="number"/>
+                        <LabelSelect  
+                            id="un_tempo_garantia" lista={values.time} 
+                            name="name"value="id" label="Unidade tempo da garantia : " 
+                            onChange={event => setValues({...values, unit:JSON.parse(event.target.value).id})}/>               
                     </>:""
                 }
             </span>

@@ -36,10 +36,11 @@ function Header(){
             </div>
             
             <div className="login">        
-                {usuario?capitalizeFirstLetter(usuario.username):""}<VscAccount className="user-cursor" size={40} onClick={handleClick}/>
+                <VscAccount className="user-cursor" size={40} onClick={handleClick}/>
             </div>
 
             <Menu className="user-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
+                <MenuItem>Olá : {usuario?capitalizeFirstLetter(usuario.username):""}</MenuItem>
                 <Link to='/login' onClick={sair}>
                     <MenuItem>Sair</MenuItem>
                 </Link>

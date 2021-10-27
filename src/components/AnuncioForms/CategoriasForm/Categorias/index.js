@@ -19,22 +19,24 @@ function Categorias(props){
                 categorias:values.categorias.slice(0, index+1)
             });
             props.onChange(undefined)
-        }else    
-            axios.get('http://localhost:8080/categorias/'+event.target.value).then(response => {            
+        }else {
+            const categoria = JSON.parse(event.target.value)   
+            axios.get('http://localhost:8080/categorias/'+categoria.id).then(response => {            
                 if(response.data.children_categories.length==0) {          
                     setValues({
                         ...values,                     
                         categorias:values.categorias.slice(0, index+1)
                     });                
-                    props.onChange(event.target.value) 
+                    props.onChange(categoria.id) 
                 }
                 else{
                     setValues({...values,            
-                        categorias:values.categorias.slice(0, index+1).concat({id:event.target.value, lista:response.data.children_categories})
+                        categorias:values.categorias.slice(0, index+1).concat({id:categoria.id, lista:response.data.children_categories})
                     });
                     props.onChange(undefined)
                 }
             })
+        }
     }
     
     return (

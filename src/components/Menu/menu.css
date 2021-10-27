@@ -1,8 +1,8 @@
-.menu-conteudo{
-    float: left;
-    background-color: rgba(24, 13, 71);  
-    width: 15%;
-    height: 74vh;
+.menu-conteudo{  
+    float: left;  
+    background-color: rgba(24, 13, 71);      
+    width: 15%;    
+    height: 90vh;
     margin-right: 4vh;
     transition: all 0.9s ease-in-out; 
     z-index: 0;
@@ -10,13 +10,12 @@
     overflow-x: hidden;
 }
 
-.botao-menu{
-    width: 15%;
-    background-color: rgba(24, 13, 71);  
+.botao-menu{    
+    position: fixed;        
     transition: all 0.9s ease-in-out;
+    z-index: 1000;
 }
 
-.check-menu:checked ~ .botao-menu, 
 .check-menu:checked ~ .menu-conteudo{
     width: 0;
 }
@@ -25,11 +24,9 @@
     display: none;
 }
 .menu-legenda{
-    margin-left: 8px;
-    overflow: hidden;
+    margin-left: 2vh;    
     text-overflow: ellipsis;
 }
-
 
 .menu-conteudo ul{    
     list-style:none;    
@@ -47,10 +44,11 @@
     -webkit-transition: all 0.9s ease-in-out;
     transition: all 0.9s ease-in-out;
 }
+
 .menu-conteudo li:hover{
     text-decoration: underline;
-    background-color:white;
-    background-image:linear-gradient(to bottom, transparent 1px, rgba(0,0,0,.1) 1px);
+    background-color: white;
+    background-image: linear-gradient(to bottom, transparent 1px, rgba(0,0,0,.1) 1px);
     background-size: auto 2px;
     color: rgba(53, 49, 99, 0.959);;
 }

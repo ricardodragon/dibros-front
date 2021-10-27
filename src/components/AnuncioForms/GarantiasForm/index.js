@@ -6,7 +6,9 @@ function GarantiasForm(props){
 
     return(
         <FieldsetLegend legend={"Garantias"} id={"check-garantias-fieldset"} classe="garantias">            
-            <Garantias categoria={props.categoria}/>
+            <Garantias 
+                categoria={props.categoria} setTipoGarantia={props.setTipoGarantia} 
+                setTempoGarantia={props.setTempoGarantia}/>
         </FieldsetLegend>
     )
 }

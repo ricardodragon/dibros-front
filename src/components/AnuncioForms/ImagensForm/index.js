@@ -5,18 +5,17 @@ import "./imagensForm.css"
 function ImagensForm(props){
     const [values, setValues] = useState({files:[]})
 
-    const setImages = (event)=>{ 
+    const setImagens = (event)=>{ 
         const files = [];     
         Array.from(event.target.files).forEach(file => files.push(URL.createObjectURL(file))                                           )                                  
-        setValues({...values,files})                    
+        setValues({...values,files})  
+        props.setImagens(event.target.files)                  
     }
 
     return(
-        <FieldsetLegend legend={"Imagens"} id={"check-imagens-fieldset"} classe="imagens">              
-            <input accept="image/*" type="file" multiple onChange={setImages}/>
-            {
-                values.files.map(file =><img alt="" height="200" width="200" src={file}/>)
-            }
+        <FieldsetLegend legend={"Imagens"} id={props.id} classe={props.classe}>              
+            <input className="botao-add-atributo" accept="image/*" type="file" multiple onChange={setImagens}/>
+            {values.files.map(file =><img alt="" height="100" width="100" src={file}/>)}
         </FieldsetLegend>
     )
 }

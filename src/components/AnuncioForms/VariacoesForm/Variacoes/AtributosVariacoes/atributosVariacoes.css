@@ -1,0 +1,21 @@
+.seta-baixo-atributos-variacoes, .seta-baixo-imagens-variacao, .conteudo-atributos-variacoes-form,
+.conteudo-imagens-variacao-form, #check-imagens-variacao-fieldset, 
+#check-atributos-variacoes-fieldset,
+#check-atributos-variacoes-fieldset:checked ~ .seta-direita-atributos-variacoes,
+#check-imagens-variacao-fieldset:checked ~ .seta-direita-imagens-variacao{
+    display: none;
+}
+
+#check-imagens-variacao-fieldset:checked ~ .seta-baixo-imagens-variacao,
+#check-imagens-variacao-fieldset:checked ~ .conteudo-imagens-variacao-form,
+#check-atributos-variacoes-fieldset:checked ~ .seta-baixo-atributos-variacoes,
+#check-atributos-variacoes-fieldset:checked ~ .conteudo-atributos-variacoes-form{    
+    display: unset;
+}
+
+.botao-add-atributo{
+    background-color: rgb(39, 161, 15);
+    color: white;    
+    border-radius: 0.5em;    
+    font-size: 10pt !important;	
+}

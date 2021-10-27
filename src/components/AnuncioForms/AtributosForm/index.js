@@ -6,7 +6,7 @@ function AtributosForm(props){
 
     return(
         <FieldsetLegend legend="Atributos" id={"check-atributos-fieldset"} classe="atributos">
-             {props.categoria?<Atributos categoria={props.categoria}/>:<p style={{fontWeight: "bold", fontSize:"14pt", color:"red"}}>Preencha a categoria</p>}
+             {props.categoria?<Atributos onChange={event=>props.onChange(event)} categoria={props.categoria}/>:<p style={{fontWeight: "bold", fontSize:"14pt", color:"red"}}>Preencha a categoria</p>}
         </FieldsetLegend>
     )
 }

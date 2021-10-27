@@ -7,7 +7,7 @@ function EstoqueForm(props){
     
     return (
         <FieldsetLegend legend={"Estoque"} id={"check-estoque-fieldset"} classe="estoque">                                                                                     
-            <LabelInput label="Quantidade disponível : " id="qtd_disponivel" type="number"/>
+            <LabelInput label="Quantidade disponível : " id="qtd_disponivel" type="number" onChange={props.onChange}/>
             <LabelInput label="Quantidade inicial : " id="qtd_inicial" type="number"/>                        
         </FieldsetLegend>
     )

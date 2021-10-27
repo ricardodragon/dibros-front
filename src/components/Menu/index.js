@@ -9,14 +9,14 @@ import './menu.css';
 
 function menu(){
     return (
-        <div>
-            <input type="checkbox" className="check-menu" id="check-menu"/>
+        <>        
+            <input type="checkbox" className="check-menu" id="check-menu"/>    
             <div className="botao-menu">
                 <label htmlFor="check-menu"><FcMenu size={35} style={{cursor: "pointer"}} htmlFor="check-menu"/></label>
             </div>
             <nav className="menu-conteudo">
                 <ul>
-                    <li>
+                    <li style={{marginTop: "20%"}}>
                         <Link to='/'><FcHome size={0}/><span className="menu-legenda">Home</span></Link> 
                     </li>
                     <li>
@@ -33,7 +33,8 @@ function menu(){
                     </li>                    
                 </ul>
             </nav>
-        </div>
+            
+        </>
     )
 }
 
