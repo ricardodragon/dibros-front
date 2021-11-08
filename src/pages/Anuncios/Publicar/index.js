@@ -33,18 +33,16 @@ function Publicar(){
     
     const onSubmit = async event =>{      
         var formData = new FormData();
-        const anuncio = values.anuncio;
-        Array.from(values.imagens).forEach(element => formData.append('files', element));
         const config = { headers: {'content-type': 'multipart/form-data'} };                     
-        anuncio.pictures = (await axios.post('http://localhost:8080/anuncios/imagens/'+values.contas[0].id, formData)).data.filter(value => value.id!="Error")    
-        try{
-            Array.from(values.anuncio.variations).forEach(async (element, index) => {
-                var formData = new FormData();
-                Array.from(element.pictures).forEach(picture=> formData.append('files', picture));
-                anuncio.variations[index].pictures = (await axios.post('http://localhost:8080/anuncios/imagens/'+values.contas[0].id, formData)).data
-                console.log(anuncio);
-            })
-        }catch{console.log("Error")}
+        const anuncio = values.anuncio;
+        Array.from(values.imagens).forEach(element => formData.append('files', element));        
+        anuncio.pictures = (await axios.post('http://localhost:8080/anuncios/imagens/'+values.contas[0].id, formData)).data.filter(value => value.id!="Error")            
+        Array.from(values.anuncio.variations).forEach(async (element, index) => {
+            var formData = new FormData();
+            Array.from(element.pictures).forEach(picture=> formData.append('files', picture));
+            anuncio.variations[index].picture_ids = (await axios.post('http://localhost:8080/anuncios/imagens/'+values.contas[0].id, formData)).data.map(value=>value.id).filter(value=>value!="Error")            
+        })
+        axios.post('http://localhost:8080/anuncios', anuncio)
     }
     
     const setImages = (imagens) => setValues({...values, imagens})
@@ -55,21 +53,25 @@ function Publicar(){
                                     
             <ContasForm onChange={(contas) => { setValues({...values, contas})}}/>
             <ReplicarAnuncioForm/>
-            { values.contas? <TipoAnuncioForm contas={values.contas} categoria={values.categoriaId}/> : null }
-            <CategoriasForm onChange={(category_id) => setValues({...values, categoriaId:category_id, anuncio: {...values.anuncio, category_id}})}/>                
-            <FieldsetLegend legend={"Anuncio"} id={"check-anuncio-fieldset"} classe="anuncio">                                              
-                <AnuncioForm 
-                    onChangeTitulo={title => setValues({...values, anuncio: {...values.anuncio, title}})} 
-                    onChangeSubTitulo={subtitle=>setValues({...values, anuncio: {...values.anuncio, subtitle}})}/>                
-                <MoedaForm onChangePreco={price => setValues({...values, anuncio: {...values.anuncio, price}})} />                
-                <EstoqueForm onChange={available_quantity=>setValues({...values, anuncio: {...values.anuncio, available_quantity}})}/>                                                                                  
-                <AtributosForm categoria={values.categoriaId} onChange={setAtributo}/>                                
-                <ImagensForm id="check-imagens-fieldset" classe="imagens" setImagens={setImages}/>
-                <DescricaoForm/>
-                <GarantiasForm 
-                    setTipoGarantia={setGarantia} setTempoGarantia={setGarantia} categoria={values.categoriaId}/>
-                <VariacoesForm categoria={values.categoriaId} onChange={variations=>setValues({...values, anuncio: {...values.anuncio, variations}})}/>                                         
-            </FieldsetLegend>    
+            { values.contas? 
+                <>
+                    <TipoAnuncioForm contas={values.contas} categoria={values.categoriaId} onChange={listing_type_id=>setValues({...values, anuncio: {...values.anuncio, listing_type_id}})}/>
+                    <CategoriasForm onChange={(category_id) => setValues({...values, categoriaId:category_id, anuncio: {...values.anuncio, category_id}})}/>                
+                    <FieldsetLegend legend={"Anuncio"} id={"check-anuncio-fieldset"} classe="anuncio">                                              
+                        <AnuncioForm 
+                            onChangeTitulo={title => setValues({...values, anuncio: {...values.anuncio, title}})} 
+                            onChangeSubTitulo={subtitle=>setValues({...values, anuncio: {...values.anuncio, subtitle}})}/>                
+                        <MoedaForm onChangePreco={price => setValues({...values, anuncio: {...values.anuncio, price}})} />                
+                        <EstoqueForm onChange={available_quantity=>setValues({...values, anuncio: {...values.anuncio, available_quantity}})}/>                                                                                  
+                        <AtributosForm categoria={values.categoriaId} onChange={setAtributo}/>                                
+                        <ImagensForm id="check-imagens-fieldset" classe="imagens" setImagens={setImages}/>
+                        <DescricaoForm/>
+                        <GarantiasForm 
+                            setTipoGarantia={setGarantia} setTempoGarantia={setGarantia} categoria={values.categoriaId}/>
+                        <VariacoesForm categoria={values.categoriaId} onChange={variations=>setValues({...values, anuncio: {...values.anuncio, variations}})}/>                                         
+                    </FieldsetLegend>    
+                </>
+             : null }
             <input className="botao-publicar" type="submit"/>                                
         </form>        
     )

@@ -9,7 +9,7 @@ function TipoAnuncioForm(props){
         <FieldsetLegend legend={"Tipo do anuncio por conta"} id={"check-tipo-anuncio-fieldset"} classe="tipo-anuncio">
             {
                 props.contas.map((conta)=>
-                    <TipoAnuncio conta={conta} categoria={props.categoriaId}/>)
+                    <TipoAnuncio conta={conta} categoria={props.categoriaId} onChange={value=>props.onChange(value)}/>)
             }
         </FieldsetLegend>   
     )
