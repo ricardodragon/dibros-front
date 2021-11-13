@@ -5,10 +5,8 @@ import "./imagensForm.css"
 function ImagensForm(props){
     const [values, setValues] = useState({files:[]})
 
-    const setImagens = (event)=>{ 
-        const files = [];     
-        Array.from(event.target.files).forEach(file => files.push(URL.createObjectURL(file))                                           )                                  
-        setValues({...values,files})  
+    const setImagens = (event)=>{                 
+        setValues({...values, files:Array.from(event.target.files).map(file => URL.createObjectURL(file))});          
         props.setImagens(event.target.files)                  
     }
 

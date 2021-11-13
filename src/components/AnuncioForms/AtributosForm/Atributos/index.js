@@ -27,9 +27,7 @@ function Atributos(props){
     const setAtributoInput = (value_name, id) => {
         const a = values.atributos.filter(atributo => atributo.id == id)[0].values
             .filter(values => values.name.toUpperCase() == value_name.toUpperCase())[0]        
-        const value_id = a==undefined?undefined:a.id;   
-        value_name=value_name==undefined?"":value_name
-        value_id?props.onChange({id, value_id}):props.onChange({id, value_name})
+        props.onChange({id, value_name})
     }
 
     const setAtributoSelect = (event, id)=>{

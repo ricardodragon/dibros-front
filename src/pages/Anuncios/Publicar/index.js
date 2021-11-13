@@ -32,16 +32,17 @@ function Publicar(){
     }
     
     const onSubmit = async event =>{      
-        var formData = new FormData();
-        const config = { headers: {'content-type': 'multipart/form-data'} };                     
-        const anuncio = values.anuncio;
-        Array.from(values.imagens).forEach(element => formData.append('files', element));        
-        anuncio.pictures = (await axios.post('http://localhost:8080/anuncios/imagens/'+values.contas[0].id, formData)).data.filter(value => value.id!="Error")            
-        Array.from(values.anuncio.variations).forEach(async (element, index) => {
-            var formData = new FormData();
-            Array.from(element.pictures).forEach(picture=> formData.append('files', picture));
-            anuncio.variations[index].picture_ids = (await axios.post('http://localhost:8080/anuncios/imagens/'+values.contas[0].id, formData)).data.map(value=>value.id).filter(value=>value!="Error")            
-        })
+        var formData = new FormData();                           
+        const anuncio = values.anuncio;        
+        Array.from(values.imagens).forEach(element => formData.append('files', element));                
+        anuncio.pictures = (await axios.post('http://localhost:8080/anuncios/imagens/'+values.contas[0].id, formData)).data        
+        for(var index=0; index<values.anuncio.variations.length; index++) {                
+            formData = new FormData();
+            Array.from(anuncio.variations[index].pictures).forEach(picture=> formData.append('files', picture))
+            const data = (await axios.post('http://localhost:8080/anuncios/imagens/'+values.contas[0].id, formData)).data            
+            anuncio.variations[index].picture_ids = data.map(i => i.id)            
+            data.map(d=>anuncio.pictures.push(d))
+        }                
         axios.post('http://localhost:8080/anuncios', anuncio)
     }
     
