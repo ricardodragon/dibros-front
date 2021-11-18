@@ -16,7 +16,7 @@ function VariacoesForm(props){
 
     return (
         <FieldsetLegend legend={"Variacões"} id={"check-variacoes-fieldset"} classe="variacoes">
-            <Variacoes categoria={props.categoria} index={values.index} addVariacao={addVariacao}/>
+            <Variacoes autoComplete={values.variacoes.map(variacao=>variacao.attribute_combinations)} categoria={props.categoria} index={values.index} addVariacao={addVariacao}/>
             <ul>                
                 {
                     values.variacoes.map((variacao, index) => 
@@ -24,8 +24,8 @@ function VariacoesForm(props){
                             {variacao.attribute_combinations.map(att => 
                                 <span style={{paddingRight: "2%"}}><label style={{fontWeight: "bold"}}>{att.id} : </label>{att.value_name}</span>
                             )} 
-                            <input type="submit" value="Editar Variacao" className="botao-editar-variacao" onClick={(event)=>{}}/>   
-                            <input type="submit" value="Excluir Variacao" className="botao-excluir-variacao" onClick={(event)=>setValues({...values, variacoes: values.variacoes.filter((value, i)=>index!=i)})}/>                        
+                            <input type="button" value="Editar Variacao" className="botao-editar-variacao" onClick={(event)=>{}}/>   
+                            <input type="button" value="Excluir Variacao" className="botao-excluir-variacao" onClick={(event)=>setValues({...values, variacoes: values.variacoes.filter((value, i)=>index!=i)})}/>                        
                         </li>)                    
                 }
             </ul>            

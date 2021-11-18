@@ -17,7 +17,7 @@ import "./publicar.css"
 
 function Publicar(){
     
-    const [values, setValues] = useState({garantias:[], anuncio:{sale_terms:[], attributes:[]}});                  
+    const [values, setValues] = useState({pictures:[], garantias:[], anuncio:{sale_terms:[], attributes:[]}});                  
 
     const setGarantia = tipoGarantia => {
         const sale_terms = values.anuncio.sale_terms.filter(value => value.id != tipoGarantia.id)
@@ -33,20 +33,9 @@ function Publicar(){
     
     const onSubmit = async event =>{      
         var formData = new FormData();                           
-        const anuncio = values.anuncio;        
-        Array.from(values.imagens).forEach(element => formData.append('files', element));                
-        anuncio.pictures = (await axios.post('http://localhost:8080/anuncios/imagens/'+values.contas[0].id, formData)).data        
-        for(var index=0; index<values.anuncio.variations.length; index++) {                
-            formData = new FormData();
-            Array.from(anuncio.variations[index].pictures).forEach(picture=> formData.append('files', picture))
-            const data = (await axios.post('http://localhost:8080/anuncios/imagens/'+values.contas[0].id, formData)).data            
-            anuncio.variations[index].picture_ids = data.map(i => i.id)            
-            data.map(d=>anuncio.pictures.push(d))
-        }                
+        const anuncio = values.anuncio;                            
         axios.post('http://localhost:8080/anuncios', anuncio)
-    }
-    
-    const setImages = (imagens) => setValues({...values, imagens})
+    }       
 
     return (
                                 
@@ -65,7 +54,7 @@ function Publicar(){
                         <MoedaForm onChangePreco={price => setValues({...values, anuncio: {...values.anuncio, price}})} />                
                         <EstoqueForm onChange={available_quantity=>setValues({...values, anuncio: {...values.anuncio, available_quantity}})}/>                                                                                  
                         <AtributosForm categoria={values.categoriaId} onChange={setAtributo}/>                                
-                        <ImagensForm id="check-imagens-fieldset" classe="imagens" setImagens={setImages}/>
+                        <ImagensForm id="check-imagens-fieldset" classe="imagens" onChange={pictures=>setValues({...values, anuncio: {...values.anuncio, pictures}})}/>
                         <DescricaoForm/>
                         <GarantiasForm 
                             setTipoGarantia={setGarantia} setTempoGarantia={setGarantia} categoria={values.categoriaId}/>
