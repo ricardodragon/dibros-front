@@ -33,8 +33,11 @@ function Publicar(){
     
     const onSubmit = async event =>{      
         var formData = new FormData();                           
-        const anuncio = values.anuncio;                            
-        axios.post('http://localhost:8080/anuncios', anuncio)
+        const anuncio = values.anuncio;  
+        //{console.log(values.contas[0])}
+        for(const v of anuncio.variations)
+            anuncio.pictures = anuncio.pictures.concat(v.picture_ids.map(i=>{return {id:i}}))                        
+        axios.post('http://localhost:8080/anuncios/'+values.contas[0].id, anuncio)
     }       
 
     return (
@@ -43,6 +46,7 @@ function Publicar(){
                                     
             <ContasForm onChange={(contas) => { setValues({...values, contas})}}/>
             <ReplicarAnuncioForm/>
+            
             { values.contas? 
                 <>
                     <TipoAnuncioForm contas={values.contas} categoria={values.categoriaId} onChange={listing_type_id=>setValues({...values, anuncio: {...values.anuncio, listing_type_id}})}/>
@@ -54,7 +58,8 @@ function Publicar(){
                         <MoedaForm onChangePreco={price => setValues({...values, anuncio: {...values.anuncio, price}})} />                
                         <EstoqueForm onChange={available_quantity=>setValues({...values, anuncio: {...values.anuncio, available_quantity}})}/>                                                                                  
                         <AtributosForm categoria={values.categoriaId} onChange={setAtributo}/>                                
-                        <ImagensForm id="check-imagens-fieldset" classe="imagens" onChange={pictures=>setValues({...values, anuncio: {...values.anuncio, pictures}})}/>
+                        <ImagensForm id="check-imagens-fieldset" classe="imagens" onChange={pictures=>setValues({...values, anuncio: {...values.anuncio, pictures:pictures.map(i => {return {id:i}})}})}/>                                                
+                        {console.log(values.anuncio)}
                         <DescricaoForm/>
                         <GarantiasForm 
                             setTipoGarantia={setGarantia} setTempoGarantia={setGarantia} categoria={values.categoriaId}/>

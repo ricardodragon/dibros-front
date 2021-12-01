@@ -24,6 +24,7 @@ function VariacoesForm(props){
                             {variacao.attribute_combinations.map(att => 
                                 <span style={{paddingRight: "2%"}}><label style={{fontWeight: "bold"}}>{att.id} : </label>{att.value_name}</span>
                             )} 
+                            <span style={{paddingRight: "2%"}}><label style={{fontWeight: "bold"}}>Quantidade : </label>{variacao.available_quantity}</span>
                             <input type="button" value="Editar Variacao" className="botao-editar-variacao" onClick={(event)=>{}}/>   
                             <input type="button" value="Excluir Variacao" className="botao-excluir-variacao" onClick={(event)=>setValues({...values, variacoes: values.variacoes.filter((value, i)=>index!=i)})}/>                        
                         </li>)                    

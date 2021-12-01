@@ -12,16 +12,15 @@ function ImagensForm(props){
         var formData = new FormData();
         formData.append('files', event.target.files[0]);
         const id = (await axios.post('http://localhost:8080/anuncios/imagens/229790949', formData)).data
-        files.push({id,file:URL.createObjectURL(event.target.files[0])})        
-        setValues({...values, files});                                           
+        files.push({id:id.id,file:URL.createObjectURL(event.target.files[0])})        
+        setValues({...values, files});                                                 
         props.onChange(files.map(imagem=>imagem.id));
     }
 
-    const excluir = (id)=>{   
-                  
-        const files = values.files.map(file=>file.id!=id)     
-        setValues({...values, files:values.files.filter(file=>file.id!=id)});                                
-        props.onChange(files.map(imagem=>imagem.id).filter(imagem=>imagem!=id));
+    const excluir = (id)=>{                     
+        const files = values.files.filter(file=>file.id!=id)           
+        setValues({...values, files});                                
+        props.onChange(files.map(imagem=>imagem.id));
     }
 
     return(

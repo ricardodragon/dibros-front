@@ -17,20 +17,15 @@ function Variacoes(props){
         })               
     }useEffect(() => setAtributos() ,[props.categoria]); 
 
-    const setAttributes = (a, atributo) => {
+    const setAttributes = (value_name, atributo) => {
         const attributes = values.attributes.filter(value => value.id != atributo.id)
-        attributes.push({id:atributo.id, value_name:a})               
+        attributes.push({id:atributo.id, value_name})               
         setValues({...values, attributes})
     }    
 
     const addVariacao = event => { 
         event.preventDefault()
-        const variacao = {
-            ...values.variacao, 
-            attributes:values.attributes, 
-            pictures: values.imagens,
-            attribute_combinations: values.attribute_combinations
-        }                        
+        const variacao = {...values.variacao, attributes:values.attributes}                                
         setValues({...values, variacao})
         props.addVariacao(variacao)         
     }
@@ -40,11 +35,11 @@ function Variacoes(props){
 
             <AtributosVariacoes 
                 atributos={values.atributos.filter((value) => value.tags.allow_variations)} 
-                onChange={attribute_combinations => setValues({...values, attribute_combinations})}
+                onChange={attribute_combinations=>setValues({...values, variacao:{...values.variacao, attribute_combinations}})}
                 autoComplete={props.autoComplete}/>                                                          
                         
-            <LabelInput label="Preço : " id="preco_variacao" type="number" onChange={valor=>setValues({...values, variacao:{...values.variacao, price:valor}})}/>                                         
-            <LabelInput label="Quantidade disponível : " id="qtd_disponivel_varicao" type="number" onChange={valor=>setValues({...values, variacao:{...values.variacao, available_quantity:valor}})}/>                                                                                                                                                                                      
+            <LabelInput label="Preço : " id="preco_variacao" type="number" onChange={price=>setValues({...values, variacao:{...values.variacao, price}})}/>                                         
+            <LabelInput label="Quantidade disponível : " id="qtd_disponivel_varicao" type="number" onChange={available_quantity=>setValues({...values, variacao:{...values.variacao, available_quantity}})}/>                                                                                                                                                                                      
                          
             {
                 values.atributos.filter((value) => value.tags.variation_attribute).map((atributo, index) => 
