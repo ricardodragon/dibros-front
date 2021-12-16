@@ -1,7 +1,7 @@
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import LabelInput from '../../../LabelInput';
 import LabelSelect from '../../../LabelSelect';
+import axios from 'axios';
 
 
 function Atributos(props){
@@ -10,39 +10,34 @@ function Atributos(props){
     
 
     async function setAtributos(){                                                    
-        const atributos = (await axios.get('http://localhost:8080/atributos/'+props.categoria)).data
-        const domainId = (await axios.get('http://localhost:8080/categorias/'+props.categoria)).data.settings.catalog_domain;                         
-        
-        for(var i in atributos.filter((value) => value.value_type=="string"))                                      
+        const atributos = (await axios.get('http://localhost:8080/meli/atributos/'+props.categoria)).data.filter(a=>props.variacao?(!a.tags.read_only && a.tags.variation_attribute):!a.tags.read_only)            
+        const domainId = (await axios.get('http://localhost:8080/meli/categorias/'+props.categoria)).data.settings.catalog_domain;                                 
+        for(const i in atributos.filter((value) => value.value_type=="string")){
             try {
-                const values = (await axios.get('http://localhost:8080/atributos/top/'+domainId+"/"+atributos[i].id)).data                                                       
+                const values = (await axios.get('http://localhost:8080/meli/atributos/top/'+domainId+"/"+atributos[i].id)).data                                                       
                 atributos[i].values = values.length>0?values:atributos[i].values
-            }catch(err){}                          
-        
+            }catch(err){}
+        };                                           
         setValues({...values, atributos});               
-    }
-
-    useEffect(() => setAtributos() ,[props.categoria]);                             
-        
-    const setAtributoInput = (value_name, id) => {
-        const a = values.atributos.filter(atributo => atributo.id == id)[0].values
-            .filter(values => values.name.toUpperCase() == value_name.toUpperCase())[0]        
-        props.onChange({id, value_name})
-    }
-
-    const setAtributoSelect = (event, id)=>{
-        const value = JSON.parse(event.target.value);
-        props.onChange({id, value_id:value.id}); 
-    }
+    }useEffect(() => setAtributos() ,[props.categoria]);                               
 
     return ( 
-        <>            
+        <>                     
             {                               
-                values.atributos.map((atributo, index) => {
+                values.atributos.map((atributo, index) => {                    
                     if(atributo.value_type=="boolean")
-                        return <LabelSelect id={atributo.id} lista={atributo.values} value="id" name="name" label={atributo.name} onChange={setAtributoSelect}/>                        
-                    return <span>                        
-                        <LabelInput label={atributo.name} id={atributo.id} type="text" list={atributo.id+"-"+index} value={atributo.value} onChange={value=>setAtributoInput(value, atributo.id)}/>                        
+                        return <LabelSelect  
+                            id={atributo.id} label={atributo.name} 
+                            lista={atributo.values.map(v=>{return{selected:props.value.filter(a => a.id==atributo.id).length>0, id:v.id, name: v.name}})} 
+                            onChange={value_id=>props.onChange({id:atributo.id, name: atributo.name, value_id, value_name:atributo.values.filter(a=>a.id==value_id)[0].name})}/>                        
+                    return <>                        
+                        <LabelInput value={props.value.filter(a => a.id==atributo.id).map(a=>a.value_name)[0]} 
+                            label={atributo.name} id={atributo.id} type="text" list={atributo.id+"-"+index} 
+                            onChange={value_name=>props.onChange({
+                                id:atributo.id, name: atributo.name, 
+                                value_id:atributo.values?atributo.values.filter(a=>a.name.toUpperCase()==value_name.toUpperCase())[0].id:undefined, 
+                                value_name})}/>                        
+
                         <datalist id={atributo.id+"-"+index}>
                             {
                                 atributo.values?atributo.values.map((value, index) => {                                    
@@ -50,7 +45,7 @@ function Atributos(props){
                                 }):""
                             }       
                         </datalist>
-                    </span>
+                    </>
                 })
             }
         </>   

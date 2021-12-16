@@ -24,5 +24,12 @@
     background-color: rgb(190, 43, 38);
     color: white;    
     border-radius: 0.5em;    
-    font-size: 10pt !important;	
+    font-size: 8pt !important;	
+}
+
+.botao-editar-atributo{
+    background-color: rgb(25, 116, 190);
+    color: white;    
+    border-radius: 0.5em;    
+    font-size: 8pt !important;	
 }

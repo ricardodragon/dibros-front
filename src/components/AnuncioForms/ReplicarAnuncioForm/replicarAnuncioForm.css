@@ -1,9 +1,0 @@
-.seta-baixo-replicar-anuncio, .conteudo-replicar-anuncio-form, #check-replicar-anuncio-fieldset,
-#check-replicar-anuncio-fieldset:checked ~ .seta-direita-replicar-anuncio{
-    display: none;
-}
-
-#check-replicar-anuncio-fieldset:checked ~ .seta-baixo-replicar-anuncio,
-#check-replicar-anuncio-fieldset:checked ~ .conteudo-replicar-anuncio-form{    
-    display: unset;
-}

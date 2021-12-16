@@ -9,7 +9,7 @@ function CategoriasForm(props){
 
     return (
         <FieldsetLegend legend={"Categoria"} id={"check-categorias-fieldset"} classe="categorias">                                                         
-            <Categorias onChange={props.onChange}/>        
+                   
         </FieldsetLegend>
     )
 }

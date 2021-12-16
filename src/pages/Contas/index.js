@@ -6,24 +6,32 @@ import axios from "axios";
 import './contas.css'
 import { Button, IconButton } from "@material-ui/core";
     
-function Contas(){
+function Contas(props){
     const [values, setValues] = useState({applicationUserId:JSON.parse(localStorage.getItem("usuario")).id, contas:[]});
-    let { code } = queryString.parse(useLocation().search);
     
-    if(code!==undefined)
-        axios.post('http://localhost:8080/conta?code='+code+'&userId='+values.applicationUserId).then(response => {
-            setValues({...values, contas:[...values.contas, response.data]}); 
-        });
-    
-    async function setContas(){
+    const addContas = async () =>{
+        let { code } = queryString.parse(props.location.search);            
+        if(code)
+            setValues({
+                ...values, 
+                contas:[
+                    ...values.contas, 
+                    (await axios.post('http://localhost:8080/meli/contas?code='+code+'&userId='+values.applicationUserId)).data
+                ]
+            });
+    }
+
+    const setContas = async () => {
+        let { code } = queryString.parse(props.location.search);            
         setValues({
             ...values, 
-            contas:(await axios.get('http://localhost:8080/conta/all?id='+values.applicationUserId)).data
+            contas:(await axios.get('http://localhost:8080/meli/contas/all?id='+values.applicationUserId)).data
         })
     }
 
     useEffect(() => {
-        setContas();            
+        setContas();
+        addContas();                 
     }, []);
 
     const redirectMeli = () => {
@@ -46,7 +54,7 @@ function Contas(){
                                 <label>ID: </label>{value.id}
                             </div>
                             <div className="footer-card-contas">
-                                <Link to={"/anuncios/userId="+value.userId} className="footer-card-link">
+                                <Link to={"/anuncios/"+value.userId} className="footer-card-link">
                                     <Button size="small" color="primary">
                                         Anuncios
                                     </Button>

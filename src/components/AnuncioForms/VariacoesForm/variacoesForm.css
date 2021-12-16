@@ -3,8 +3,29 @@
     display: none;
 }
 
+.seta-baixo-variacoes-lista, .conteudo-variacoes-lista-form, #check-variacoes-lista-fieldset,
+#check-variacoes-lista-fieldset:checked ~ .seta-direita-variacoes-lista{
+    display: none;
+}
+
+.seta-baixo-attribute-combinations, .conteudo-attribute-combinations-form, #check-attribute-combinations-fieldset,
+#check-attribute-combinations-fieldset:checked ~ .seta-direita-attribute-combinations{
+    display: none;
+}
+
+
+#check-attribute-combinations-fieldset:checked ~ .seta-baixo-attribute-combinations,
+#check-attribute-combinations-fieldset:checked ~ .conteudo-attribute-combinations-form{    
+    display: unset;
+}
+
 #check-variacoes-fieldset:checked ~ .seta-baixo-variacoes,
 #check-variacoes-fieldset:checked ~ .conteudo-variacoes-form{    
+    display: unset;
+}
+
+#check-variacoes-lista-fieldset:checked ~ .seta-baixo-variacoes-lista,
+#check-variacoes-lista-fieldset:checked ~ .conteudo-variacoes-lista-form{    
     display: unset;
 }
 

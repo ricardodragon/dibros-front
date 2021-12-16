@@ -1,10 +1,22 @@
-.botao-add-variacao{
+
+
+.form-add-variacao-rodape{    
+    margin-top: 1%;    
+    padding-left: 50%; 
+}
+
+.botao-add-variacao{    
     background-color: rgb(39, 161, 15);
     color: white;    
     border-radius: 0.5em;    
-    font-size: 10pt !important;	   
-    float: right;
-    margin-top: 1%; 
+    font-size: 8pt !important;	           
+}
+
+.botao-cancelar-variacao{    
+    background-color: rgba(148, 16, 16, 0.986);
+    color: white;    
+    border-radius: 0.5em;    
+    font-size: 10pt !important;	           
 }
 
 .botao-excluir-variacao{
@@ -13,3 +25,5 @@
     border-radius: 0.5em;   
     font-size: 8pt !important;	 
 }
+
+

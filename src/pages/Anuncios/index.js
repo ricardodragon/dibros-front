@@ -11,7 +11,7 @@ function Anuncios(){
 
     const setAnuncios = async () => setValues({
         ...values,
-        anuncios:values.anuncios.concat((await axios.get('http://localhost:8080/anuncios/user/'+JSON.parse(localStorage.getItem("usuario")).id)).data)
+        anuncios:values.anuncios.concat((await axios.get('http://localhost:8080/meli/anuncios')).data)
     });    
 
     useEffect(() => { setAnuncios() }, []);
@@ -26,7 +26,7 @@ function Anuncios(){
             <ul>
                 <div>
                     <Contas onChange={(contas) => setValues({...values, contas:contas})}/>
-                    <Link to="/anuncios/publicar" className="footer-card-link">
+                    <Link to={"/anuncios/publicar/"+0+"/"+0} className="footer-card-link">
                         <Button size="small" color="primary">
                             Publicar
                         </Button>
@@ -54,7 +54,12 @@ function Anuncios(){
                                             <Button size="small" color="primary">
                                                 Mercado Livre
                                             </Button>        
-                                        </a>
+                                        </a>                                                                                
+                                        <Link to={"/anuncios/publicar/"+value.body.id+"/"+value.body.seller_id} className="footer-card-link">
+                                            <Button size="small" color="primary">
+                                                Replicar
+                                            </Button>        
+                                        </Link>
                                     </div>
                                 </div>
                             </li>

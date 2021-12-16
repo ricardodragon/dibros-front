@@ -1,43 +1,46 @@
-import { useState } from "react";
-import FieldsetLegend from "../../FieldsetLegend";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import "./imagensForm.css"
 
 function ImagensForm(props){
-    const [values, setValues] = useState({files:[]})
+
+    const [values, setValues] = useState({pictures:[]})
 
     const onChange = async (event)=>{  
-        event.preventDefault();
-        const files =  values.files;    
+        event.preventDefault();   
+        const pictures = values.pictures;   
         var formData = new FormData();
         formData.append('files', event.target.files[0]);
-        const id = (await axios.post('http://localhost:8080/anuncios/imagens/229790949', formData)).data
-        files.push({id:id.id,file:URL.createObjectURL(event.target.files[0])})        
-        setValues({...values, files});                                                 
-        props.onChange(files.map(imagem=>imagem.id));
+        pictures.push((await axios.post('http://localhost:8080/meli/anuncios/imagens/229790949', formData)).data);                                                                       
+        props.onChange(pictures);
     }
 
-    const excluir = (id)=>{                     
-        const files = values.files.filter(file=>file.id!=id)           
-        setValues({...values, files});                                
-        props.onChange(files.map(imagem=>imagem.id));
+    const excluir = (id) => {                     
+        const pictures = values.pictures.filter(img=>img.id!=id);                                  
+        props.onChange(pictures);
     }
 
-    return(
-        
-        <FieldsetLegend legend={"Imagens"} id={props.id} classe={props.classe}>          
-            <input className="botao-add-atributo" accept="image/*" type="file" onChange={onChange}/>
-            {values.files.map(imagem =>{ 
-                return <>
-                    <img alt="" height="100" width="100" src={imagem.file}/>
-                    <input 
-                        className="botao-excluir-atributo" type="button" 
-                        onClick={event=>{event.preventDefault();excluir(imagem.id);}}/>
-                </>
+    const setPictures = () => 
+        props.value!==undefined?            
+            setValues({...values, pictures:props.value}):undefined                
+    
+
+    useEffect(() => setPictures(), [props.value])
+
+    return(        
+        <>                           
+            <input className="botao-add-atributo" accept="image/*" type="file" onChange={onChange}/>                        
+            {values.pictures.map(imagem =>{ 
+                    return <>
+                        <img alt="" height="100" width="100" src={imagem.url?imagem.url:imagem.variations[0].url}/>
+                        <input 
+                            value="X" className="botao-excluir-atributo" type="button" 
+                            onClick={event=>{event.preventDefault();excluir(imagem.id);}}/>
+                    </>
                 }
             )}
             
-        </FieldsetLegend>
+        </>
     )
 }
 

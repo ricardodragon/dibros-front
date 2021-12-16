@@ -14,8 +14,8 @@ const Routes = ()=>(
             <Route exact path="/login" component={Login}></Route>
             <PrivateRoutes exact path={["/","/home"]} component={Home}/>
             <PrivateRoutes exact path="/usuarios" component={Usuarios}/>
-            <PrivateRoutes exact path="/contas" component={Contas}/>
-            <PrivateRoutes exact path="/anuncios/publicar" component={Publicar}/>
+            <PrivateRoutes exact path="/contas" component={Contas}/>                       
+            <PrivateRoutes exact path="/anuncios/publicar/:idAnuncio/:userId" component={Publicar}/>
             <PrivateRoutes exact path="/anuncios/:id" component={Anuncios}/>
             <Redirect to="/"/>
         </Switch>
