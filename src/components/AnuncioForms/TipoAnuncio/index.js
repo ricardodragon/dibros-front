@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import LabelSelect from "../../../LabelSelect";
+import LabelSelect from "../../Estrutura/LabelSelect";
 
 function TipoAnuncio(props){
 
@@ -17,9 +17,12 @@ function TipoAnuncio(props){
     , [props.categoria]);
 
     return(  
-        <LabelSelect 
-            label={props.conta.email} id="tipo-anuncio" 
-            lista={values.tiposAnuncio} name="name" onChange={(event) => props.onChange(JSON.parse(event.target.value).id)}/>                                                 
+        <>            
+            <label  style={{fontWeight:"bold", paddingLeft:"1%"}}>Tipo do Anuncio : </label>
+            <LabelSelect 
+                label={props.conta.email} id="tipo-anuncio" 
+                lista={values.tiposAnuncio} name="name" onChange={value => props.onChange(values.tiposAnuncio[value].id)}/>                                                 
+        </>
     )
     
 }export default TipoAnuncio

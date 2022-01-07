@@ -1,4 +1,4 @@
-import FieldsetLegend from "../../FieldsetLegend";
+import FieldsetLegend from "../../Estrutura/FieldsetLegend";
 import Garantias from "./Garantias";
 import "./garantiasForm.css"
 

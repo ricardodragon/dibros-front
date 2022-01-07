@@ -1,4 +1,4 @@
-import FieldsetLegend from "../../FieldsetLegend"
+import FieldsetLegend from "../../Estrutura/FieldsetLegend"
 import "./descricaoForm.css"
 
 function DescricaoForm(props){

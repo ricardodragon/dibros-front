@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import LabelSelect from '../../../LabelSelect';
+import LabelSelect from '../../../Estrutura/LabelSelect';
 
 function Categorias(props){
 
@@ -13,25 +13,25 @@ function Categorias(props){
 
     useEffect(() => setCategorias(), []);
     
-    function addCategoria(event, index){     
-        if(event.target.value == ""){
+    function addCategoria(index, i){                   
+        if(i == ""){
             setValues({...values,            
                 categorias:values.categorias.slice(0, index+1)
             });
             props.onChange(undefined)
         }else {
-            const categoria = JSON.parse(event.target.value)   
-            axios.get('http://localhost:8080/meli/categorias/'+categoria.id).then(response => {            
+            const categoria = values.categorias[index].lista[i].id   
+            axios.get('http://localhost:8080/meli/categorias/'+categoria).then(response => {            
                 if(response.data.children_categories.length==0) {          
                     setValues({
                         ...values,                     
                         categorias:values.categorias.slice(0, index+1)
                     });                
-                    props.onChange(categoria.id) 
+                    props.onChange(categoria) 
                 }
                 else{
                     setValues({...values,            
-                        categorias:values.categorias.slice(0, index+1).concat({id:categoria.id, lista:response.data.children_categories})
+                        categorias:values.categorias.slice(0, index+1).concat({id:categoria, lista:response.data.children_categories})
                     });
                     props.onChange(undefined)
                 }
@@ -44,7 +44,10 @@ function Categorias(props){
             {
                 values.categorias.map((categoria, index) => { 
                     return (
-                        <LabelSelect id={index+categoria.id} lista={categoria.lista} onChange={(event)=>{addCategoria(event, index)}} value="id" label={""} name = "name"/>                        
+                        <>
+                            <label style={{fontWeight:"bold", paddingLeft:"1%"}}>Categoria : </label>
+                            <LabelSelect id={categoria.id} lista={categoria.lista} onChange={(i)=>addCategoria(index, i)} value="id" label={""} name = "name"/>
+                        </>
                     )
                 })
             }

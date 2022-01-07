@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import LabelInput from '../../../LabelInput';
-import LabelSelect from '../../../LabelSelect';
+import LabelInput from '../../../Estrutura/LabelInput';
+import LabelSelect from '../../../Estrutura/LabelSelect';
 
 function Garantias(props){
         

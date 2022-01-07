@@ -1,46 +1,38 @@
 
 import axios from "axios";
 import { useEffect, useState } from "react"
-import LabelInput from "../../LabelInput";
+import LabelInput from "../../Estrutura/LabelInput";
 import "./atributosVariacoes.css"
+
 function AtributosVariacoesForm(props){    
-    const [values, setValues] = useState({atributos:[], attribute_combinations:[]})
+    const [values, setValues] = useState({atributos:[], novoAtributo:''})
     
     const addAtributo = (event)=>{
-        event.preventDefault();                    
-        props.onChange(values.atributos.filter((value) => value.id==values.nomeAtributo)>0?
-            {id:values.nomeAtributo}:
-            {name:values.nomeAtributo}
-        );    
+        event.preventDefault();                  
+        const a = values.atributos.filter(a=>a.id==values.novoAtributo)[0];        
+        props.onChange(props.attribute_combinations.concat({id: a?a.id:undefined, name: a?a.name:values.novoAtributo, value_id: '', value_name: ''}))                               
     }
-
-    const excluirAtributo = (event, index) =>{
-        event.preventDefault();        
-        props.excluirAtributo(index);
-    }    
-
+      
     const setAtributos = async () => setValues({
         ...values, 
-        atributos:props.value.categoria!=undefined?(await axios.get('http://localhost:8080/meli/atributos/'+props.value.categoria)).data.filter(value=>value.tags.allow_variations):values.atributos,
-        attribute_combinations: props.value.attribute_combinations        
-    });useEffect(() =>setAtributos(), [props.value]);
+        atributos:props.categoria!=undefined?(await axios.get('http://localhost:8080/meli/atributos/'+props.categoria)).data.filter(value=>value.tags.allow_variations):values.atributos        
+    });useEffect(() =>setAtributos(), [props.category_id]);
 
     return(        
-        <>       
-            {values.attribute_combinations.map((atributo, index) => 
+        <>                   
+            {props.attribute_combinations.map((atributo, index) => 
                 <>
-                    <LabelInput value={atributo.name} label={""} id={atributo.name} type="text" onChange={value=>props.onChange(value, index)}/>                                            
-                    <input type="submit" value="Excluir" className="botao-excluir-atributo" onClick={event=>excluirAtributo(event, index)}/>
+                    <LabelInput size={"8"} value={atributo.name} label={""} id={atributo.name} type="text" onChange={value=>props.onChange(props.attribute_combinations.map((a, i)=> i==index?{...a, name:value}:a))}/>                                            
+                    <input type="submit" value="Excluir" className="botao-excluir-atributo" onClick={event=>{event.preventDefault();props.onChange(props.attribute_combinations.filter((a, i)=>i!=index))}}/>
                 </>
-            )}          
-
-            <LabelInput label="Atributo personalizavel : " id="nome_atributo" list="atributos-variacao" type="text" onChange={(nomeAtributo)=>setValues({...values,nomeAtributo})}/>                                                                 
+            )}  
+            <LabelInput size={"8"}  label="Atributo : " id="nome_atributo" list="atributos-variacao" type="text" onChange={(novoAtributo)=>setValues({...values,novoAtributo})}/>                                                                 
             <datalist id="atributos-variacao">
                 {values.atributos.map((value, index) => 
                     <option key={index} value={value.id}>{value.name}</option>)}
             </datalist>      
 
-            <input type="submit" value="Adicionar Atributo" className="botao-add-atributo" onClick={addAtributo}/><br/>                                                                       
+            <input type="submit" value="Adicionar" className="botao-add-atributo" onClick={addAtributo}/><br/>                                                                       
         </>
     )
 }

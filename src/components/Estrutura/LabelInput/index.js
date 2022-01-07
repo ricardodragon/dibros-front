@@ -13,7 +13,7 @@ function LabelInput(props){
     return (
         <span style={{whiteSpace: "nowrap"}}>
             <label htmlFor={props.id} style={{padding: "1%", fontWeight: "bolder"}} >{props.label}</label>
-            <input disabled={props.disabled} value={props.value} id={props.id} placeholder={props.placeholder} type={props.type} list={props.list} onChange={onChange}/>
+            <input size={props.size} step={props.step} required={props.required} disabled={props.disabled} value={props.value} id={props.id} placeholder={props.placeholder} type={props.type} list={props.list} onChange={onChange}/>
         </span>
     )
 }

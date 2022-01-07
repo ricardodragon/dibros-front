@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import LabelInput from "../LabelInput";
+import LabelInput from "../Estrutura/LabelInput";
 
 function Contas(props){
 
@@ -32,7 +32,7 @@ function Contas(props){
 
     return (
         <>            
-            <LabelInput label="Conta : " placeholder="Digite a conta" id="conta" list="contas" type="text" onChange={setConta}/>            
+            <LabelInput required label="Conta : " placeholder="Digite a conta" id="conta" list="contas" type="text" onChange={setConta}/>            
             <datalist id="contas">                    
                 {               
                     values.contas.map((value, index) => 

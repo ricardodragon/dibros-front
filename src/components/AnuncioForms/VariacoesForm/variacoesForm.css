@@ -29,13 +29,6 @@
     display: unset;
 }
 
-.botao-editar-variacao{
-    background-color: rgba(1, 139, 252, 0.986);
-    color: white;    
-    border-radius: 0.5em;   
-    font-size: 8pt !important;
-}
-
 .botao-excluir-variacao{
     background-color: rgba(148, 16, 16, 0.986);
     color: white;    
