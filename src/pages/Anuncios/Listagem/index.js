@@ -1,12 +1,13 @@
 import { Button } from "@material-ui/core";
+import { yellow } from "@material-ui/core/colors";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Contas from "../../components/Contas";
+import Contas from "../../../components/Contas";
 
 import './style.css';
 
-function Anuncios(){
+function Listagem(){
     const [values, setValues] = useState({anuncios:[]});   
 
     const setAnuncios = async () => setValues({
@@ -26,7 +27,7 @@ function Anuncios(){
             <ul>
                 <div>
                     <Contas onChange={(contas) => setValues({...values, contas:contas})}/>
-                    <Link to={"/anuncios/publicar/"+0+"/"+0} className="footer-card-link">
+                    <Link to={"/anuncios/detalhes/"+0+"/"+0} className="footer-card-link">
                         <Button size="small" color="primary">
                             Publicar
                         </Button>
@@ -45,21 +46,22 @@ function Anuncios(){
                                         <label>Preço: {value.body.price}</label>
                                         <label>Quantidade: {value.body.available_quantity}</label>                                   
                                         <label>Data/Hora ultima alteração: {formatDate(value.body.last_updated)}</label>
-                                        <Link to="/" className="footer-card-link">
-                                            <Button size="small" color="primary">
-                                                Detalhes
-                                            </Button>
-                                        </Link>
-                                        <a target="_blank" rel="noreferrer" href={value.body.permalink} className="footer-card-link">
-                                            <Button size="small" color="primary">
-                                                Mercado Livre
-                                            </Button>        
-                                        </a>                                                                                
-                                        <Link to={"/anuncios/publicar/"+value.body.id+"/"+value.body.seller_id} className="footer-card-link">
-                                            <Button size="small" color="primary">
-                                                Replicar
-                                            </Button>        
-                                        </Link>
+                                        <div className="footer-card-link" style={{boxSizing:"content-box", padding:"1%"}}>
+                                            <Link to={"/anuncios/detalhes/"+value.body.id+"/"+value.body.seller_id}>
+                                                <Button size="small" color="primary">
+                                                    Detalhes
+                                                </Button>        
+                                            </Link>                                        
+                                            <Button 
+                                                size="small" style={{color:"yellow"}}
+                                                target="_blank" rel="noreferrer"                                                
+                                                href={value.body.permalink}>                                            
+                                                    Mercado Livre                                           
+                                            </Button> 
+                                            <Button size="small" color="secondary">
+                                                Excluir
+                                            </Button>                                                                                                                                                         
+                                        </div>
                                     </div>
                                 </div>
                             </li>
@@ -71,4 +73,4 @@ function Anuncios(){
     );
 }
 
-export default Anuncios
+export default Listagem

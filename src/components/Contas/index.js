@@ -32,7 +32,7 @@ function Contas(props){
 
     return (
         <>            
-            <LabelInput required label="Conta : " placeholder="Digite a conta" id="conta" list="contas" type="text" onChange={setConta}/>            
+            <LabelInput required label={props.label} placeholder="Digite a conta" id="conta" list="contas" type="text" onChange={setConta}/>            
             <datalist id="contas">                    
                 {               
                     values.contas.map((value, index) => 

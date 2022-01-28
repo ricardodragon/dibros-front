@@ -11,7 +11,7 @@ function Categorias(props){
             categorias:[{id:"MLB", lista:(await axios.get('http://localhost:8080/meli/dominios/MLB/categorias')).data}]
         });
 
-    useEffect(() => setCategorias(), []);
+    useEffect(() => setCategorias(), [props.disabled]);
     
     function addCategoria(index, i){                   
         if(i == ""){
@@ -40,14 +40,12 @@ function Categorias(props){
     }
     
     return (
-        <>                        
+        <>                    
+            <label style={{fontWeight:"bold", paddingLeft:"1%"}}>Categoria : </label>{props.categoria}    
             {
                 values.categorias.map((categoria, index) => { 
-                    return (
-                        <>
-                            <label style={{fontWeight:"bold", paddingLeft:"1%"}}>Categoria : </label>
-                            <LabelSelect id={categoria.id} lista={categoria.lista} onChange={(i)=>addCategoria(index, i)} value="id" label={""} name = "name"/>
-                        </>
+                    return (                                                    
+                        <LabelSelect disabled={props.disabled} id={categoria.id} lista={categoria.lista} onChange={(i)=>addCategoria(index, i)} value="id" label={""} name = "name"/>                        
                     )
                 })
             }

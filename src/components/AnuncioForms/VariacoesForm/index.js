@@ -1,4 +1,5 @@
 
+import { Button } from "@material-ui/core"
 import { useState } from "react"
 import { BsArrowsAngleExpand, BsArrowsAngleContract, BsCaretUpFill, BsCaretDownFill } from "react-icons/bs"
 import FieldsetLegend from "../../Estrutura/FieldsetLegend"
@@ -50,33 +51,33 @@ function VariacoesForm(props){
                         {/* {values.variationsByAttributes[k].map((variacao, index) => */}
                         {props.variations.map((variacao, index) =>
                             <li>
-                                <div style={{margin:"2% 0 2% 0", float:"left"}}>
+                                {!props.disabled?<div style={{margin:"2% 0 2% 0", float:"left"}}>
                                     {index>0?<BsCaretUpFill style={{cursor:"pointer"}} onClick={event=>{event.preventDefault();ordenaVariacao(index, "up")}}/>:""}
                                     {index<props.variations.length-1?<BsCaretDownFill style={{cursor:"pointer"}} onClick={event=>{event.preventDefault();ordenaVariacao(index, "down")}}/>:""}    
-                                </div>
-                                <div style={{margin:"2% 0 2% 5%", border: "0.1em solid black", borderRadius: "0.8em"}}> 
+                                </div>:null}
+                                <div style={{margin:"2% 0 1% 5%", border: "0.1em solid black", borderRadius: "0.8em"}}> 
                                     {!variacao.editar?<BsArrowsAngleExpand style={{cursor:"pointer"}} onClick={(event)=>{event.preventDefault();addVariacao({...variacao, editar:!variacao.editar}, index)}}/>:                                    
                                     <BsArrowsAngleContract style={{cursor:"pointer"}} onClick={(event)=>{event.preventDefault();addVariacao({...variacao, editar:!variacao.editar}, index)}}/>}                                       
                                     {!variacao.editar?
                                         <>
                                             {variacao.attribute_combinations.map((att, i) =>                                         
-                                                <LabelInput  value={att.value_name} label={att.name+" :"} id={att.id} type="text" onChange={value_name=>props.onChange(props.variations.map((v, vi)=>vi==index?{...v, attribute_combinations:v.attribute_combinations.map((a,ai)=>ai==i?{...att, value_name}:a)}:v))}/>                                                                                     
+                                                <LabelInput disabled={props.disabled} value={att.value_name} label={att.name+" :"} id={att.id} type="text" onChange={value_name=>props.onChange(props.variations.map((v, vi)=>vi==index?{...v, attribute_combinations:v.attribute_combinations.map((a,ai)=>ai==i?{...att, value_name}:a)}:v))}/>                                                                                     
                                             )} 
-                                            <LabelInput  value={variacao.price} label="Preço :" id="preco_variacao" type="number" onChange={price=>addVariacao({...variacao, price}, index)}/>                                         
+                                            <LabelInput disabled={props.disabled} value={variacao.price} label="Preço :" id="preco_variacao" type="number" onChange={price=>addVariacao({...variacao, price}, index)}/>                                         
 
                                             <LabelInput 
-                                                value={variacao.available_quantity} label="Qtd :" 
+                                                disabled={props.disabled}                                                 value={variacao.available_quantity} label="Qtd :" 
                                                 id="qtd_disponivel_varicao" type="number" style={{marginRight:"5%"}} onChange={available_quantity=>addVariacao({...variacao, available_quantity}, index)}/>                                                                                                                          
-                                        </>:
-                                        <>  
-                                            <Variacoes value={variacao} categoria={props.categoria} onChange={(variacao)=>addVariacao(variacao, index)}/>                                                                                                                                                                                                                                 
-                                        </>                                    
+                                        </>:<Variacoes disabled={props.disabled} value={variacao} categoria={props.categoria} onChange={(variacao)=>addVariacao(variacao, index)}/>                                                                                                                                                                                                                                 
                                     }
-                                    <input type="button" value="Copiar acima" className="botao-add-variacao" onClick={(event)=>{event.preventDefault();addIndex(JSON.parse(JSON.stringify(variacao)), index-1<0?index:index-1)}}/>                                                                                                                                                                                                                                                                                                                                                       
-                                    <input type="button" value="Excluir" className="botao-excluir-variacao" onClick={(event)=>{event.preventDefault();excluir(index)}}/>                                                                                                                                                                                                                                                                                                                                                    
-                                    <input type="button" value="Copiar abaixo" className="botao-add-variacao" onClick={(event)=>{event.preventDefault();addIndex(JSON.parse(JSON.stringify(variacao)), index)}}/>                                                                                                                                                                                                                                                                                                                                                       
-                                </div>                              
+                                    {!props.disabled?<div style={{marginLeft:"60%"}}>
+                                        <Button type="button" color="primary" onClick={(event)=>{event.preventDefault();addIndex(JSON.parse(JSON.stringify(variacao)), index-1<0?index:index-1)}}>Copiar acima</Button>                                                                                                                                                                                                                                                                                                                                                       
+                                        <Button type="button" color="secondary" onClick={(event)=>{event.preventDefault();excluir(index)}}>Excluir</Button>                                                                                                                                                                                                                                                                                                                                                    
+                                        <Button type="button" color="primary" onClick={(event)=>{event.preventDefault();addIndex(JSON.parse(JSON.stringify(variacao)), index)}}>Copiar abaixo</Button>                                                                                                                                                                                                                                                                                                                                                       
+                                    </div>:null}        
+                                </div>                                                              
                             </li>
+
                         )}
                     </>
                 {/* )}                 */}

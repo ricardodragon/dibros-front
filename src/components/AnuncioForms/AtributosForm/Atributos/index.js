@@ -26,12 +26,12 @@ function Atributos(props){
             {                               
                 values.atributos.map((atributo, index) => {                    
                     if(atributo.value_type=="boolean")
-                        return <LabelSelect  
+                        return <LabelSelect disabled={props.disabled}  
                             id={atributo.id} label={atributo.name} 
                             lista={atributo.values.map(v=>{return{selected:props.value.filter(a => a.id==atributo.id).length>0, id:v.id, name: v.name}})} 
                             onChange={value_id=>props.onChange({id:atributo.id, name: atributo.name, value_id, value_name:atributo.values.filter(a=>a.id==value_id)[0].name})}/>                        
                     return <>                        
-                        <LabelInput value={props.value.filter(a => a.id==atributo.id).map(a=>a.value_name)[0]} 
+                        <LabelInput  disabled={props.disabled} value={props.value.filter(a => a.id==atributo.id).map(a=>a.value_name)[0]} 
                             label={atributo.name} id={atributo.id} type="text" list={atributo.id+"-"+index} 
                             onChange={value_name=>props.onChange({
                                 id:atributo.id, name: atributo.name, 

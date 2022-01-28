@@ -29,13 +29,13 @@ function ImagensForm(props){
 
     return(        
         <>                           
-            <input className="botao-add-atributo" accept="image/*" type="file" onChange={onChange}/>                        
+            <input className="botao-add-atributo" accept="image/*"  disabled={props.disabled} type="file" onChange={onChange}/>                        
             {values.pictures.map(imagem =>{ 
                     return <>
                         <img alt="" height="100" width="100" src={imagem.url?imagem.url:imagem.variations[0].url}/>
-                        <input 
+                        {!props.disabled?<input                         
                             value="X" className="botao-excluir-atributo" type="button" 
-                            onClick={event=>{event.preventDefault();excluir(imagem.id);}}/>
+                            onClick={event=>{event.preventDefault();excluir(imagem.id);}}/>:null}
                     </>
                 }
             )}
