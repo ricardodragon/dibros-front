@@ -6,37 +6,32 @@ import axios from 'axios';
 
 function Atributos(props){
 
+    const dominio = "http://DESKTOP-DS0K2GT:8080"
     const [values, setValues] = useState({atributos:[]});
     
 
     async function setAtributos(){                                                    
-        const atributos = (await axios.get('http://localhost:8080/meli/atributos/'+props.categoria)).data.filter(a=>props.variacao?(!a.tags.read_only && a.tags.variation_attribute):!a.tags.read_only)            
-        const domainId = (await axios.get('http://localhost:8080/meli/categorias/'+props.categoria)).data.settings.catalog_domain;                                 
-        for(const i in atributos.filter((value) => value.value_type=="string")){
-            try {
-                const values = (await axios.get('http://localhost:8080/meli/atributos/top/'+domainId+"/"+atributos[i].id)).data                                                       
-                atributos[i].values = values.length>0?values:atributos[i].values
-            }catch(err){}
-        };                                           
-        setValues({...values, atributos});               
+        var atributos = (await axios.get(dominio+'/meli/atributos/'+props.categoria)).data.map(d=>{ return {...d, selected:d.tags.catalog_required}})
+        atributos = atributos.map(a => { 
+            var f = props.value.filter(aa=>a.id==aa.id);  
+            return {...a, selected:(f.length&&f[0].selected)||a.selected||a.tags.catalog_required, value_id: f.length?f[0].value_id:a.value_id, value_name:f.length?f[0].value_name:a.value_name}
+        });      
+        props.onChange(atributos)
     }useEffect(() => setAtributos() ,[props.categoria]);                               
 
     return ( 
         <>                     
             {                               
-                values.atributos.map((atributo, index) => {                    
+                props.value.filter(s => s.selected).map((atributo, index) => {                      
                     if(atributo.value_type=="boolean")
                         return <LabelSelect disabled={props.disabled}  
                             id={atributo.id} label={atributo.name} 
-                            lista={atributo.values.map(v=>{return{selected:props.value.filter(a => a.id==atributo.id).length>0, id:v.id, name: v.name}})} 
-                            onChange={value_id=>props.onChange({id:atributo.id, name: atributo.name, value_id, value_name:atributo.values.filter(a=>a.id==value_id)[0].name})}/>                        
+                            lista={atributo.values.map(a=>{return {name:a.name, selected: false}})}                             
+                            onChange={value_id=>props.onChange(props.value.filter(a=> a.id!=atributo.id).concat({...atributo, value_id:atributo.values[value_id].id, value_name:atributo.values[value_id].name}))}/>                        
                     return <>                        
-                        <LabelInput  disabled={props.disabled} value={props.value.filter(a => a.id==atributo.id).map(a=>a.value_name)[0]} 
+                        <LabelInput disabled={props.disabled} value={atributo.value_name} 
                             label={atributo.name} id={atributo.id} type="text" list={atributo.id+"-"+index} 
-                            onChange={value_name=>props.onChange({
-                                id:atributo.id, name: atributo.name, 
-                                value_id:atributo.values?atributo.values.filter(a=>a.name.toUpperCase()==value_name.toUpperCase())[0].id:undefined, 
-                                value_name})}/>                        
+                            onChange={value_name=>props.onChange(props.value.map(a=> a.id!=atributo.id?a:{...a, value_name}))}/>                        
 
                         <datalist id={atributo.id+"-"+index}>
                             {
@@ -53,3 +48,11 @@ function Atributos(props){
 }
 
 export default Atributos
+
+// const domainId = (await axios.get('http://localhost:8080/meli/categorias/'+props.categoria)).data.settings.catalog_domain;                                 
+// for(const i in atributos.filter((value) => value.value_type=="string")){
+//     try {
+//         const values = (await axios.get('http://localhost:8080/meli/atributos/top/'+domainId+"/"+atributos[i].id)).data                                                       
+//         atributos[i].values = values.length>0?values:atributos[i].values
+//     }catch(err){}
+// };     

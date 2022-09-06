@@ -5,8 +5,6 @@ import FieldsetLegend from "../../../components/Estrutura/FieldsetLegend";
 import AtributosForm from "../../../components/AnuncioForms/AtributosForm";
 import VariacoesForm from "../../../components/AnuncioForms/VariacoesForm";
 import ImagensForm from "../../../components/AnuncioForms/ImagensForm";
-import DescricaoForm from "../../../components/AnuncioForms/DescricaoForm";
-import GarantiasForm from "../../../components/AnuncioForms/GarantiasForm";
 import LabelInput from "../../../components/Estrutura/LabelInput";
 import Contas from "../../../components/Contas";
 import Categorias from "../../../components/AnuncioForms/CategoriasForm/Categorias";
@@ -18,15 +16,16 @@ function Detalhes(){
     
     let { idAnuncio } = useParams(); 
     let { userId } = useParams(); 
-
+    const dominio = "http://DESKTOP-DS0K2GT"
     
     const [values, setValues] = useState({editar:false,disabled:false,contas:[],anuncio:{pictures:[], sale_terms:[], attributes:[], variations:[]}, attribute_combinations:[]});                  
     
     const setAnuncio = async()=> {  
         if(idAnuncio==="0"&&userId==="0") return                     
-        const anuncio = (await axios.get('http://localhost:8080/meli/anuncios/'+idAnuncio+'/'+userId)).data;        
+        const anuncio = (await axios.get(dominio+':8080/meli/anuncios/'+idAnuncio+'/'+userId)).data;        
         anuncio.variations=anuncio.variations.map(v=>{return{...v, picture_ids:anuncio.pictures.filter(p=>v.picture_ids.includes(p.id))}});                                        
         anuncio.pictures = anuncio.pictures.filter(p => anuncio.variations.filter(v => v.picture_ids.map(pi=>pi.id).includes(p.id)).length==0);        
+        anuncio.attributes = anuncio.attributes.map(a => {return {...a, selected:1}})
         const attribute_combinations = anuncio.variations.length>0?anuncio.variations[0].attribute_combinations:values.attribute_combinations;
         setValues({...values, anuncio, attribute_combinations, disabled:true, editar:false});         
     }
@@ -41,31 +40,36 @@ function Detalhes(){
         setValues({...values, anuncio: {...values.anuncio, sale_terms}})    
     }
 
-    const setAtributo = atributo => {
-        const attributes = values.anuncio.attributes.filter(value => value.id != atributo.id)
-        atributo.value_name!=""?attributes.push(atributo):console.log("Erro")
+    const setAtributo = attributes => {        
         setValues({...values, anuncio: {...values.anuncio, attributes}})        
     }
     
     const onSubmit = async event =>{     
         event.preventDefault();  
         const anuncio = JSON.parse(JSON.stringify(values.anuncio));         
-        ["seller_id", "date_created", "permalink", "thumbnail", "last_updated", "stop_time", "initial_quantity", "sold_quantity", "base_price"].forEach(element => {           
-            delete anuncio[element]
-        });               
+        ["seller_id", "date_created", "permalink", "thumbnail", "last_updated", "stop_time", "initial_quantity", "sold_quantity", "base_price"].forEach(element => delete anuncio[element]); 
+        
+        for(const [a, value] of Object.entries(anuncio)) if(!anuncio[a]) delete anuncio[a]           
+
         anuncio.variations.map(v=>v.picture_ids).forEach(p=>anuncio.pictures = anuncio.pictures.filter(ap=>ap.id==p.id).length==0?anuncio.pictures.concat(p):anuncio.pictures)        
+        
         if(values.editar) edit(anuncio);            
+        
         else{                
             delete anuncio["id"]   
             anuncio.variations = anuncio.variations.map(v=> {v.picture_ids=v.picture_ids.map(p=>p.id); delete v.id; return v})                                                   
-            axios.post('http://localhost:8080/meli/anuncios/'+values.contas[0].id, anuncio)        
+            axios.post(dominio+':8080/meli/anuncios/'+values.contas[0].id, anuncio)        
         }
     }       
 
-    const edit = (anuncio) => {  
-        console.log("OI");                           
-        anuncio.variations = anuncio.variations.map(v=> {v.picture_ids=v.picture_ids.map(p=>p.id); return v})                                                   
-        axios.post('http://localhost:8080/meli/anuncios/'+userId, anuncio);        
+    const edit = (anuncio) => {            
+        ['buying_mode', 'category_id', 'condition', 'currency_id', 'listing_type_id'].forEach(element => {
+            delete anuncio[element]});                      
+        if(anuncio.variations.length>0){
+            anuncio.variations = anuncio.variations.map(v=> {v.picture_ids=v.picture_ids.map(p=>p.id); return v})
+            anuncio.available_quantity = null;anuncio.price = null;
+        }
+        axios.post(dominio+':8080/meli/anuncios/'+userId+'/'+idAnuncio, anuncio);
     }
 
     const setVariation = (variations) => setValues({...values, anuncio: {...values.anuncio, variations}})

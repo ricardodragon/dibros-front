@@ -8,6 +8,7 @@ import { Button, IconButton } from "@material-ui/core";
     
 function Contas(props){
     const [values, setValues] = useState({applicationUserId:JSON.parse(localStorage.getItem("usuario")).id, contas:[]});
+    const dominio = "http://DESKTOP-DS0K2GT:8080"
     
     const addContas = async () =>{
         let { code } = queryString.parse(props.location.search);            
@@ -16,7 +17,7 @@ function Contas(props){
                 ...values, 
                 contas:[
                     ...values.contas, 
-                    (await axios.post('http://localhost:8080/meli/contas?code='+code+'&userId='+values.applicationUserId)).data
+                    (await axios.post(dominio+'/meli/contas?code='+code+'&userId='+values.applicationUserId)).data
                 ]
             });
     }
@@ -25,7 +26,7 @@ function Contas(props){
         let { code } = queryString.parse(props.location.search);            
         setValues({
             ...values, 
-            contas:(await axios.get('http://localhost:8080/meli/contas/all?id='+values.applicationUserId)).data
+            contas:(await axios.get(dominio+'/meli/contas/all?id='+values.applicationUserId)).data
         })
     }
 
@@ -45,27 +46,17 @@ function Contas(props){
             </IconButton>
             {
                 values.contas.map((value, index) => {
-                    return (
+                    return (                        
                         <div key={index} className="card-contas">
-                            <div className="header-card">
-                                <h1>{value.nickname}</h1>
-                            </div>
-                            <div className="card-content">
-                                <label>ID: </label>{value.id}
-                            </div>
-                            <div className="footer-card-contas">
-                                <Link to={"/anuncios/"+value.userId} className="footer-card-link">
-                                    <Button size="small" color="primary">
-                                        Anuncios
-                                    </Button>
-                                </Link>
-                                <Link to="/" className="footer-card-link">
-                                    <Button size="small" color="primary">
-                                        Perguntas
-                                    </Button>        
-                                </Link>
-                            </div>
-                        </div>
+                            <span className="header-card h5">{value.nickname}</span>
+                            <hr/>                            
+                            <label>ID: </label>{value.id}                            
+                            <hr/>
+                            
+                            <Link to={"/anuncios/"+value.userId} className="link-primary">Anuncios</Link>
+                            &nbsp;&nbsp;                             
+                            <Link to="/" className="link-danger">Perguntas</Link>
+                        </div>                        
                     )
                 })
             }

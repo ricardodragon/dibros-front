@@ -7,7 +7,8 @@ import "./atributosVariacoes.css"
 
 function AtributosVariacoesForm(props){    
     const [values, setValues] = useState({atributos:[], novoAtributo:''})
-    
+    const dominio = "http://DESKTOP-DS0K2GT";
+
     const addAtributo = (event)=>{
         event.preventDefault();                  
         const a = values.atributos.filter(a=>a.id==values.novoAtributo)[0];        
@@ -16,7 +17,7 @@ function AtributosVariacoesForm(props){
       
     const setAtributos = async () => setValues({
         ...values, 
-        atributos:props.categoria!=undefined?(await axios.get('http://localhost:8080/meli/atributos/'+props.categoria)).data.filter(value=>value.tags.allow_variations):values.atributos        
+        atributos:props.categoria!=undefined?(await axios.get(dominio+':8080/meli/atributos/'+props.categoria)).data.filter(value=>value.tags.allow_variations):values.atributos        
     });useEffect(() =>setAtributos(), [props.category_id]);
 
     return(        

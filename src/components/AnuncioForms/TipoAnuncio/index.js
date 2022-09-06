@@ -5,11 +5,12 @@ import LabelSelect from "../../Estrutura/LabelSelect";
 function TipoAnuncio(props){
 
     const [values, setValues] = useState({tiposAnuncio:[]});
-
+    const dominio = "http://DESKTOP-DS0K2GT"
+    
     const setTiposAnuncio = async() =>           
         setValues({
             ...values, 
-            tiposAnuncio: (await axios.get('http://localhost:8080/meli/contas/'+props.conta.id+'/'+props.categoria)).data
+            tiposAnuncio: (await axios.get(dominio+':8080/meli/contas/'+props.conta.id+'/'+props.categoria)).data
         })
 
     useEffect(() => 

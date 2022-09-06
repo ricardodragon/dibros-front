@@ -24,13 +24,14 @@ function Login(props) {
     
     const setUsuario = (event)=>
         setValues({...values,usuario:{...values.usuario,[event.target.name]:event.target.value}})    
-        
+    const dominio = "http://DESKTOP-DS0K2GT"
+    
     const login = (event) => {
         event.preventDefault();
-        axios.post('http://localhost:8080/auth/login', values.usuario)
+        axios.post(dominio+':8080/auth/login', values.usuario)
             .then(response => {
                 localStorage.setItem("token", response.headers['authorization']);
-                axios.get("http://localhost:8080/usuario").then(response =>{
+                axios.get(dominio+":8080/usuario").then(response =>{
                     localStorage.setItem("usuario", JSON.stringify(response.data));
                     props.history.replace("/");
                 })

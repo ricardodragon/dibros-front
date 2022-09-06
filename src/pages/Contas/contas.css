@@ -4,30 +4,22 @@
     display: inline-block;
     margin: 0.9%;
     box-shadow: 5px 5px 10px black;
-    border-radius: 2%;
-    background-color: white;
-    min-width: 220px;  
-}
+    border-radius: 2%;    
+    width: 200px;    
+    box-sizing: border-box;
+    padding: 2em;
+    overflow-y: hidden;
+}   
 
 .header-card{
-    text-align: center;
-    padding: 4%;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    text-align: center;    
     font-weight: bolder;
-}
-
-.card-content{
-    padding: 10%;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    word-break: break-all;
 }
 
 .footer-card-contas{
     display: inline-flex;
     text-align: center;
-}
-
-.footer-card-link{
-    padding: 5%;
 }
 
 .btn-add-contas{

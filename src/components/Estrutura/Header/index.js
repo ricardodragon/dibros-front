@@ -31,12 +31,12 @@ function Header(){
         <header className="header-app">
             <div className="logo">
             <Link to="/home"> 
-                <img alt="" height="50" width="100" src={logo} />
+                <img alt="" height="90" width="150" src={logo} />
             </Link> 
             </div>
             
             <div className="login">        
-                <VscAccount className="user-cursor" size={40} onClick={handleClick}/>
+                <VscAccount className="user-cursor" size={60} onClick={handleClick}/>
             </div>
 
             <Menu className="user-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>

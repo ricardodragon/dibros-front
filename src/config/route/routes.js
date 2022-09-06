@@ -8,18 +8,16 @@ import Produtos from "../../pages/Produtos";
 import Detalhes from "../../pages/Anuncios/Detalhes";
 import Listagem from "../../pages/Anuncios/Listagem";
 
-
 const Routes = ()=>(
     <BrowserRouter>
         <Switch>
             <Route exact path="/login" component={Login}></Route>
-            <PrivateRoutes exact path={["/","/home"]} component={Home}/>
+            <PrivateRoutes exact path={["/","/home"]} component={Home} nome={"Seja bem vindo a FlexConnection!"}/>
             <PrivateRoutes exact path="/usuarios" component={Usuarios}/>
-            <PrivateRoutes exact path="/contas" component={Contas}/>                       
-            <PrivateRoutes exact path="/anuncios/detalhes/:idAnuncio/:userId" component={Detalhes}/>
-            {/* <PrivateRoutes exact path="/anuncios/editar/:idAnuncio/:userId" component={Publicar}/> */}
-            <PrivateRoutes exact path="/anuncios/:id" component={Listagem}/>
-            <PrivateRoutes exact path="/produtos" component={Produtos}/>
+            <PrivateRoutes exact path="/contas" nome={"Gerencie suas contas MercadoLivre"} component={Contas}/>                       
+            <PrivateRoutes exact path="/anuncios/detalhes/:idAnuncio/:userId" nome={"Anúncios - detalhes"} component={Detalhes}/>            
+            <PrivateRoutes exact path="/anuncios/:id" nome={"Anúncios"} component={Listagem}/>
+            <PrivateRoutes exact path="/produtos" nome={"Produtos"} component={Produtos}/>
             <Redirect to="/"/>
         </Switch>
     </BrowserRouter>

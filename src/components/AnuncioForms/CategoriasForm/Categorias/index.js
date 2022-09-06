@@ -3,15 +3,15 @@ import { useEffect, useState } from 'react';
 import LabelSelect from '../../../Estrutura/LabelSelect';
 
 function Categorias(props){
-
+    const dominio = "http://DESKTOP-DS0K2GT"
     const [values, setValues] = useState({categorias:[]});
       
     const setCategorias = async () => 
         setValues({...values,
-            categorias:[{id:"MLB", lista:(await axios.get('http://localhost:8080/meli/dominios/MLB/categorias')).data}]
+            categorias:[{id:"MLB", lista:(await axios.get(dominio+':8080/meli/dominios/MLB/categorias')).data}]
         });
 
-    useEffect(() => setCategorias(), [props.disabled]);
+    useEffect(() => setCategorias(), []);
     
     function addCategoria(index, i){                   
         if(i == ""){
@@ -21,7 +21,7 @@ function Categorias(props){
             props.onChange(undefined)
         }else {
             const categoria = values.categorias[index].lista[i].id   
-            axios.get('http://localhost:8080/meli/categorias/'+categoria).then(response => {            
+            axios.get(dominio+':8080/meli/categorias/'+categoria).then(response => {            
                 if(response.data.children_categories.length==0) {          
                     setValues({
                         ...values,                     

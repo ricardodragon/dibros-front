@@ -5,13 +5,14 @@ import "./imagensForm.css"
 function ImagensForm(props){
 
     const [values, setValues] = useState({pictures:[]})
-
+    const dominio = "http://DESKTOP-DS0K2GT"
+    
     const onChange = async (event)=>{  
         event.preventDefault();   
         const pictures = values.pictures;   
         var formData = new FormData();
         formData.append('files', event.target.files[0]);
-        pictures.push((await axios.post('http://localhost:8080/meli/anuncios/imagens/229790949', formData)).data);                                                                       
+        pictures.push((await axios.post(dominio+':8080/meli/anuncios/imagens/229790949', formData)).data);                                                                       
         props.onChange(pictures);
     }
 

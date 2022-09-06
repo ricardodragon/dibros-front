@@ -6,9 +6,10 @@ import LabelSelect from '../../../Estrutura/LabelSelect';
 function Garantias(props){
         
     const [values, setValues] = useState({type:[], time:[], unit:"dias"})    
+    const dominio = "http://DESKTOP-DS0K2GT"
 
     async function setGarantias(){                    
-        const response = (await axios.get('http://localhost:8080/meli/garantias/'+props.categoria)).data        
+        const response = (await axios.get(dominio+':8080/meli/garantias/'+props.categoria)).data        
         setValues({
             ...values,
             type:response.filter(value => value.id=="WARRANTY_TYPE")[0].values,

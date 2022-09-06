@@ -5,12 +5,13 @@ import LabelInput from "../Estrutura/LabelInput";
 function Contas(props){
 
     const [values, setValues] = useState({contas:[]})     
-
+    const dominio = "http://DESKTOP-DS0K2GT"
+    
     async function setContas(){
         setValues({...values,            
             contas:(
                 await axios.get(
-                    'http://localhost:8080/meli/contas/all?id='+JSON.parse(localStorage.getItem("usuario")).id
+                    dominio+':8080/meli/contas/all?id='+JSON.parse(localStorage.getItem("usuario")).id
                 )
             ).data.concat({id:"0", email:"Todas as contas"})
         })
