@@ -39,7 +39,7 @@ function VariacoesForm(props){
     
     return (
         
-        <FieldsetLegend legend={"Variacões"} id={"check-variacoes-fieldset"} classe="variacoes">  
+        <>  
                                                                                                                            
             {/* <LabelSelect label="Deseja agrupar por : " onChange={value=>setVariationsByAttributes(value)} lista={props.attribute_combinations} /> */}
             <ol>                     
@@ -66,7 +66,7 @@ function VariacoesForm(props){
                                             <LabelInput disabled={props.disabled} value={variacao.price} label="Preço :" id="preco_variacao" type="number" onChange={price=>addVariacao({...variacao, price}, index)}/>                                         
 
                                             <LabelInput 
-                                                disabled={props.disabled}                                                 value={variacao.available_quantity} label="Qtd :" 
+                                                disabled={props.disabled} value={variacao.available_quantity} label="Qtd :" 
                                                 id="qtd_disponivel_varicao" type="number" style={{marginRight:"5%"}} onChange={available_quantity=>addVariacao({...variacao, available_quantity}, index)}/>                                                                                                                          
                                         </>:<Variacoes disabled={props.disabled} value={variacao} categoria={props.categoria} onChange={(variacao)=>addVariacao(variacao, index)}/>                                                                                                                                                                                                                                 
                                     }
@@ -83,7 +83,7 @@ function VariacoesForm(props){
                 {/* )}                 */}
             </ol>                
             <input style={{float:"right"}} type="button" value="+" className="botao-add-variacao" onClick={(event)=>{event.preventDefault();props.onChange(props.variations.concat({attribute_combinations:props.attribute_combinations, attributes:[], available_quantity:0, picture_ids:[], price:0, sold_quantity:0}))}}/>
-        </FieldsetLegend>        
+        </>        
     )
 }
 

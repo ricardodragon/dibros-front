@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import "./imagensForm.css"
+import "./imagens.css"
 
-function ImagensForm(props){
+function Imagens(props){
 
     const [values, setValues] = useState({pictures:[]})
     const dominio = "http://DESKTOP-DS0K2GT"
@@ -29,20 +29,22 @@ function ImagensForm(props){
     useEffect(() => setPictures(), [props.value])
 
     return(        
-        <>                           
-            <input className="botao-add-atributo" accept="image/*"  disabled={props.disabled} type="file" onChange={onChange}/>                        
-            {values.pictures.map(imagem =>{ 
-                    return <>
-                        <img alt="" height="100" width="100" src={imagem.url?imagem.url:imagem.variations[0].url}/>
-                        {!props.disabled?<input                         
-                            value="X" className="botao-excluir-atributo" type="button" 
-                            onClick={event=>{event.preventDefault();excluir(imagem.id);}}/>:null}
-                    </>
-                }
-            )}
-            
+        <>     
+            <h5 className="h3">Imagens</h5>
+            <div style={{padding:'1.5em'}}>                       
+                <input className="form-control form-control-sm mb-1" accept="image/*" disabled={props.disabled} type="file" onChange={onChange}/>                                        
+                <div className="row">
+                {values.pictures.map(imagem =>{
+                    return<div className="col-3">                        
+                        <img src={imagem.url?imagem.url:imagem.variations[0].url} className="img-fluid" alt=""/>
+                        <button className="w-100 btn btn-sm btn-danger" onClick={event=>{event.preventDefault();excluir(imagem.id);}}>X</button>
+                    </div>                     
+                })}
+                </div>
+            </div>
+            <hr/>
         </>
     )
 }
 
-export default ImagensForm
+export default Imagens

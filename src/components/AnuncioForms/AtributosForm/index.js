@@ -4,13 +4,14 @@ import "./atributosForm.css"
 
 function AtributosForm(props){
 
-    return(
-        <FieldsetLegend legend="Atributos" id={"check-atributos-fieldset"} classe="atributos">            
+    return( 
+        <>
+            <h5 className="h3">Atributos</h5>                
             {props.categoria?
                 <Atributos disabled={props.disabled} value={props.value} onChange={event=>props.onChange(event)} 
                     categoria={props.categoria}/>
                 :<p style={{fontWeight: "bold", fontSize:"14pt", color:"red"}}>Preencha a categoria</p>}
-        </FieldsetLegend>
+        </>        
     )
 }
 

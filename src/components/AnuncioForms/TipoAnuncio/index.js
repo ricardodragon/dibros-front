@@ -18,11 +18,14 @@ function TipoAnuncio(props){
     , [props.categoria]);
 
     return(  
-        <>            
-            <label  style={{fontWeight:"bold", paddingLeft:"1%"}}>Tipo do Anuncio : </label>
-            <LabelSelect 
-                label={props.conta.email} id="tipo-anuncio" 
-                lista={values.tiposAnuncio} name="name" onChange={value => props.onChange(values.tiposAnuncio[value].id)}/>                                                 
+        <>  
+            <h5 className="h3">Tipo do Anuncio</h5>
+            <div style={{padding:'1.5em'}}>                             
+                <LabelSelect 
+                    label={props.conta.email} id="tipo-anuncio" 
+                    lista={values.tiposAnuncio} name="name" onChange={value => props.onChange(values.tiposAnuncio[value].id)}/>                                                 
+            </div>
+            <hr/>
         </>
     )
     

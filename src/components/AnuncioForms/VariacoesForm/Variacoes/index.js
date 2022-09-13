@@ -1,6 +1,6 @@
 import LabelInput from "../../../Estrutura/LabelInput";
 import Atributos from "../../AtributosForm/Atributos";
-import ImagensForm from "../../ImagensForm";
+import Imagens from "../../Imagens";
 import "./variacoes.css"
 
 function Variacoes(props){
@@ -34,10 +34,9 @@ function Variacoes(props){
                                              
             <Atributos disabled={props.disabled} variacao={true} value={props.value.attributes?props.value.attributes:[]} onChange={atributo=>props.onChange(props.value)} categoria={props.categoria}/>
             <br/>            
-            <ImagensForm 
+            <Imagens
                 disabled={props.disabled}
-                value={props.value.picture_ids} 
-                disabled={props.disabled}                
+                value={props.value.picture_ids}                           
                 onChange={picture_ids=>props.onChange({...props.value, picture_ids:picture_ids})}/>                        
         </>
     )

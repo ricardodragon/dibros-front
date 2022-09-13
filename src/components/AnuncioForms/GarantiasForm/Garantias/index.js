@@ -33,15 +33,15 @@ function Garantias(props){
             <span style={{float: "left", width: "100%",  padding: "1%"}}>                
                 <LabelSelect 
                     id="tipo_garantia" lista={values.type} 
-                    name="name" value="id" label={"Tipo de garantia : "} 
+                    name="name" value="id" label={"Tipo de garantia"} 
                     onChange={setType}/>                                           
                 {                       
                     values.tipoGarantia!=undefined && values.tipoGarantia.id != "6150835"?
                     <>                        
-                        <LabelInput onChange={setTime} label="Tempo da garantia : " id="tempo_garantia" type="number"/>
+                        <LabelInput onChange={setTime} label="Tempo da garantia" id="tempo_garantia" type="number"/>
                         <LabelSelect  
                             id="un_tempo_garantia" lista={values.time} 
-                            name="name"value="id" label="Unidade tempo da garantia : " 
+                            name="name"value="id" label="Unidade tempo da garantia" 
                             onChange={event => setValues({...values, unit:JSON.parse(event.target.value).id})}/>               
                     </>:""
                 }
