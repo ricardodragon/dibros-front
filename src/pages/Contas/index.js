@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
-import { useLocation, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import queryString from 'query-string';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import axios from "axios";
 import './contas.css'
-import { Button, IconButton } from "@material-ui/core";
+import { IconButton } from "@material-ui/core";
     
 function Contas(props){
     const [values, setValues] = useState({applicationUserId:JSON.parse(localStorage.getItem("usuario")).id, contas:[]});
-    const dominio = "http://DESKTOP-DS0K2GT:8080"
+    const dominio = process.env.REACT_APP_MELI_DOMAIN
     
     const addContas = async () =>{
         let { code } = queryString.parse(props.location.search);            
@@ -22,45 +22,44 @@ function Contas(props){
             });
     }
 
-    const setContas = async () => {
-        let { code } = queryString.parse(props.location.search);            
-        setValues({
-            ...values, 
-            contas:(await axios.get(dominio+'/meli/contas/all?id='+values.applicationUserId)).data
-        })
+    const setContas = async () => {                
+        setValues({...values, contas:(await axios.get(dominio+'/meli/contas/all?id='+values.applicationUserId)).data})
     }
 
-    useEffect(() => {
-        setContas();
-        addContas();                 
-    }, []);
+    useEffect(() => {setContas();addContas();}, []);
 
     const redirectMeli = () => {
-        window.location.href = "http://auth.mercadolivre.com.br/authorization?response_type=code&client_id=5401911184235214&redirect_uri=http://localhost:3000/contas";
+        //const uriRedirect = window.location.origin;
+        const uriRedirect = 'https://speed-store.ddns.net:3000'
+        window.location.href = `http://auth.mercadolivre.com.br/authorization?response_type=code&client_id=5401911184235214&redirect_uri=${uriRedirect}/contas`;
     }
 
     return (
-        <>            
+        <div className="row">            
             <IconButton color="primary" className="btn-add-contas" aria-label="Adicionar conta" onClick={redirectMeli}>
                 <AddShoppingCartIcon /> ADICIONAR CONTA
             </IconButton>
             {
                 values.contas.map((value, index) => {
                     return (                        
-                        <div key={index} className="card-contas">
-                            <span className="header-card h5">{value.nickname}</span>
-                            <hr/>                            
-                            <label>ID: </label>{value.id}                            
+                        <div key={index} className="card-contas col-md-3 col-sm-12">
+                            <span className="header-card h5">{value.nickname}</span>                                                        
                             <hr/>
-                            
-                            <Link to={"/anuncios/"+value.userId} className="link-primary">Anuncios</Link>
-                            &nbsp;&nbsp;                             
-                            <Link to="/" className="link-danger">Perguntas</Link>
+                            <label>id: </label>{value.id}                              
+                            <hr/>
+                            <span className="header-card"><label>email: </label><span style={{fontWeight:"bold"}}>{value.email}</span></span>
+                            <hr/>
+                            <div>
+                                <Link to={"/anuncios/"+value.id} className="btn-link">Anuncios</Link>
+                                &nbsp;&nbsp;  
+                                <button className="btn btn-danger btn-sm" onClick={event=>{event.preventDefault();axios.delete(dominio+'/meli/contas/'+value.idLocal);}}>Excluir</button>                       
+                            </div>
+                            {/* <Link to="/" className="link-danger">Perguntas</Link> */}
                         </div>                        
                     )
                 })
             }
-        </>
+        </div>
     )
 }
 

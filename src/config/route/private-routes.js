@@ -1,5 +1,5 @@
 import { Redirect, Route } from "react-router-dom"
-import Template from "../../components/Estrutura/Template"
+import Template from "../../estrutura/Template"
 import { isAuthenticated } from "../auth/auth"
 
 const PrivateRoutes = ({nome, component: Component, ...rest })=>    

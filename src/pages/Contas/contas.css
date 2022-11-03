@@ -1,20 +1,16 @@
 
 
 .card-contas{
-    display: inline-block;
     margin: 0.9%;
     box-shadow: 5px 5px 10px black;
     border-radius: 2%;    
-    width: 200px;    
-    box-sizing: border-box;
     padding: 2em;
-    overflow-y: hidden;
 }   
 
 .header-card{
-    text-align: center;    
-    font-weight: bolder;
-    word-break: break-all;
+    display: block;       
+    white-space: nowrap;    
+    overflow-x: scroll;
 }
 
 .footer-card-contas{

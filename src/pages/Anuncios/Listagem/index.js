@@ -1,35 +1,26 @@
 import { Button } from "@material-ui/core";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import Contas from "../../../components/Contas";
-import LabelInput from "../../../components/Estrutura/LabelInput";
-
+import { Link, useParams } from "react-router-dom";
 import './style.css';
 
 function Listagem(){
     const [values, setValues] = useState({anuncios:[]});   
-    const dominio = "http://DESKTOP-DS0K2GT"
-    
+    const dominio = process.env.REACT_APP_MELI_DOMAIN
+    let { id } = useParams(); 
+
     const setAnuncios = async () => setValues({
         ...values,
-        anuncios:values.anuncios.concat((await axios.get(dominio+':8080/meli/anuncios')).data)
+        anuncios:values.anuncios.concat((await axios.get(dominio+'/meli/anuncios/'+id)).data)
     });    
 
-    useEffect(() => { setAnuncios() }, []);
-
-    const formatDate = function(string){
-        console.log(string)
-        var optionsDate = { year: 'numeric', month: 'long', day: 'numeric' };        
-        return new Date(string).toLocaleTimeString([], optionsDate);
-    }
+    useEffect(() => setAnuncios() , []);   
 
     return (
         <>
             <ul>
-                <div>
-                    <Contas onChange={(contas) => setValues({...values, contas:contas})}/>
-                    <Link to={"/anuncios/detalhes/"+0+"/"+0} className="footer-card-link btn btn-sm btn-primary">
+                <div>                    
+                    <Link to={"/anuncios/detalhes/"+0+"/"+0} className="btn btn-sm btn-primary">
                             Publicar
                     </Link>
                 </div>

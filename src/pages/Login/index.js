@@ -24,19 +24,19 @@ function Login(props) {
     
     const setUsuario = (event)=>
         setValues({...values,usuario:{...values.usuario,[event.target.name]:event.target.value}})    
-    const dominio = "http://DESKTOP-DS0K2GT"
+    //const dominio = "http://flex-connection.ddns.net:3030"
+    const dominio = process.env.REACT_APP_MELI_DOMAIN;
     
     const login = (event) => {
         event.preventDefault();
-        axios.post(dominio+':8080/auth/login', values.usuario)
+        axios.post(dominio+'/auth/login', values.usuario)
             .then(response => {
                 localStorage.setItem("token", response.headers['authorization']);
-                axios.get(dominio+":8080/usuario").then(response =>{
+                axios.get(dominio+"/usuario").then(response =>{
                     localStorage.setItem("usuario", JSON.stringify(response.data));
                     props.history.replace("/");
                 })
-            });
-        
+            });        
     }
 
     return (
