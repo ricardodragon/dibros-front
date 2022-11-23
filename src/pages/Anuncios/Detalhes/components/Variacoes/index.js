@@ -1,12 +1,12 @@
 import LabelInput from "../../../../../estrutura/LabelInput";
 import Imagens from "../Imagens";
-import "./variacoes.css"
+import "./variacoes.css";
 
 function Variacoes(props){
     
     const setAtributoValue = (i, index, value_name) => {   
         const variations = props.variations;
-        variations[index].attribute_combinations[i].value_name = value_name
+        variations[index].attribute_combinations[i] = { ...variations[index].attribute_combinations[i], value_name } 
         props.onChange(variations)                        
     }
     
@@ -30,22 +30,19 @@ function Variacoes(props){
                     )}     
                     <div className="col">
                         <LabelInput 
-                            disabled={props.disabled} required={true}
+                            disabled={true} required={true}
                             value={variacao.available_quantity} label="Quantidade" 
                             id={index+"qtd_disponivel_varicao"} type="number" 
                             onChange={available_quantity=>props.onChange(props.variations.map((v,i)=>i==index?{...v, available_quantity}:v))}/>
-                    </div>                                 
+                    </div>      
+                    <LabelInput disabled={props.disabled}
+                            value={variacao.seller_custom_field} label={"SKU"} 
+                            id={variacao.sku} type="text" onChange={seller_custom_field=>props.onChange(props.variations.map((v,i)=>i==index?{...v, seller_custom_field}:v))}/>                              
                     <Imagens
                         disabled={props.disabled}
                         value={variacao.picture_ids}                           
-                        onChange={picture_ids=>props.onChange(props.variations.map((v,i)=>i==index?{...v, picture_ids}:v))}/> 
-                    {/* <div className="col">
-                        <LabelInput 
-                            disabled={props.disabled} required={true}
-                            value={variacao.price} label="Preço" id={index+"preco_variacao"} type="number" 
-                            onChange={price=>props.onChange(props.variations.map((v,i)=>i==index?{...v, price}:v))}/>                                                         
-                    </div>             */}
-                    {/* <Atributos disabled={props.disabled} variacao={true} value={variacao.attributes?variacao.attributes:[]} onChange={atributo=>props.onChange(variacao)} categoria={props.categoria}/> */}
+                        onChange={picture_ids=>props.onChange(props.variations.map((v,i)=>i==index?{...v, picture_ids}:v))}/>                     
+                    {/* <Atributos disabled={props.disabled} variacao={true} value={variacao.attributes?variacao.attributes:[]} onChange={attributes=>props.onChange(props.variations.map((x,i)=>i==index?{...x, attributes}:x))} categoria={props.categoria}/> */}
                     <br/>  
                     <button disabled={props.disabled} className="w-100 btn btn-sm btn-danger" onClick={(event)=>{event.preventDefault();excluir(index)}}>Excluir</button>                                                                                                                                                                                                                                                                                                                                                                                            
                     <button disabled={props.disabled} className="col-12 btn btn-sm btn-link" onClick={(event)=>{event.preventDefault();addIndex(JSON.parse(JSON.stringify(variacao)), index)}}>abaixo+</button>                                                                                                                                                                                                                                                                                                                                                       

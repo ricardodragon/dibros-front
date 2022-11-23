@@ -11,26 +11,29 @@ Atributos(props){
     async function setAtributos(){
         setValues({
             ...values,
-            atributosSelect: (await axios.get(dominio+'/meli/atributos/'+props.categoria)).data.filter(x=>!props.value.filter(y=>y.id==x.id).length),            
+            atributosSelect: (await axios.get(dominio+'/meli/atributos/'+props.categoria)).data.map(x=>x.value_id==-1?{...x,value_name:null,value_id:null}:x).filter(x=>props.variacao&&x.tags.variation_attribute||!props.variacao).filter(x=>!props.value.filter(y=>y.id==x.id).length),            
         })
     }useEffect(() => setAtributos() ,[props.categoria, props.value]);                               
 
     const addAtributo = event => {
-        event.preventDefault();        
-        props.onChange(props.value.concat(values.atributosSelect.filter((x, index)=>values.attCombo==-1||index==values.attCombo)))        
+        event.preventDefault();
+        // if(values.attCombo==-1)
+        // props.onChange(props.value.filter(x=>x.id))
+        //props.value.filter(x=> values.attCombo==-1&&x.value_id!=-1||values.attCombo==-1&&x.value_id!=null&&x.value_name==null||values.attCombo!=-1&&x.id!=values.atributosSelect[values.attCombo].id)       
+        props.onChange(props.value.filter(x=> values.attCombo==-1||x.id!=values.atributosSelect[values.attCombo].id).concat(values.atributosSelect.filter((x, index)=>values.attCombo==-1||index==values.attCombo)))        
         setValues({...values,atributosSelect:values.atributosSelect.filter((x, index)=>values.attCombo!=-1&&index!=values.attCombo)})
     }
 
-    const excluirAtributo = (event,index) => {
+    const excluirAtributo = (event,atributo) => {
         event.preventDefault();
-        setValues({...values, atributosSelect:[...values.atributosSelect, props.value[index]]})
-        props.onChange(props.value.filter((x,i)=>i!=index))      
+        setValues({...values, atributosSelect:[...values.atributosSelect, atributo]})
+        props.onChange(props.value.map(x=>x.id==atributo.id?{...x, value_id:null, value_name: null}:x))      
     }
     
     const editAtributo = (event, index) => { 
         event.preventDefault(); 
-        const value_name = event.target.value;
-        props.onChange(props.value.map((x,i)=>i==index?{...x, value_name}:x));
+        const value_name = event.target.value==""?null:event.target.value;
+        props.onChange(props.value.map((x,i)=>i==index?{...x, value_name, value_id:null}:x));
     }
 
     return ( 
@@ -50,16 +53,16 @@ Atributos(props){
                             if(x.value_type=="boolean") 
                                 return <div className='col pb-2 pt-2'>                                                                      
                                     <label htmlFor={x.id} style={{whiteSpace: "nowrap", }}>{x.name}</label>
-                                    <select required id={x.id} className='form-control form-control-sm' disabled={props.disabled} onChange={value_id=>props.onChange(props.value.filter(a=> a.id!=x.id).concat({...x, value_id:x.values[value_id].id, value_name:x.values[value_id].name}))}>
+                                    <select  id={x.id} className='form-control form-control-sm' disabled={props.disabled} onChange={value_id=>props.onChange(props.value.filter(a=> a.id!=x.id).concat({...x, value_id:x.values[value_id].id, value_name:x.values[value_id].name}))}>
                                         {x.values.map(v=><option value={v.id}>{v.name}</option>)}
                                     </select>                                    
-                                    <button disabled={props.disabled} onClick={event=>excluirAtributo(event,index)} className='w-100 btn btn-sm btn-danger'>X</button>                                    
+                                    {/* <button disabled={props.disabled} onClick={event=>excluirAtributo(event,x)} className='w-100 btn btn-sm btn-danger'>X</button>                                     */}
                                 </div>
                             else
                                 return <div className='col pb-2 pt-2' >
                                     <label htmlFor={x.id} style={{whiteSpace: "nowrap", overflow:"hidden"}}>{x.name}</label>
-                                    {<input required id={x.id} disabled={props.disabled} className='form-control form-control-sm' value={x.value_name} onChange={event=>editAtributo(event,index)}></input>}
-                                    <button disabled={props.disabled} onClick={event=>excluirAtributo(event,index)} className='w-100 btn btn-sm btn-danger'>X</button>
+                                    {<input  id={x.id} disabled={props.disabled} className='form-control form-control-sm' value={x.value_name} onChange={event=>editAtributo(event,index)}></input>}
+                                    {/* <button disabled={props.disabled} onClick={event=>excluirAtributo(event,x)} className='w-100 btn btn-sm btn-danger'>X</button> */}
                                 </div>
                         })
                     }

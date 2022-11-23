@@ -13,7 +13,7 @@ const Routes = ()=>(
         <Switch>
             <Route exact path="/login" component={Login}></Route>
             <PrivateRoutes exact path={["/","/home"]} component={Home} nome={"Seja bem vindo a FlexConnection!"}/>
-            <PrivateRoutes exact path="/usuarios" component={Usuarios}/>
+            <PrivateRoutes exact path="/usuarios" nome="Indentificação usuário" component={Usuarios}/>
             <PrivateRoutes exact path="/contas" nome={"Gerencie suas contas MercadoLivre"} component={Contas}/>                       
             <PrivateRoutes exact path="/anuncios/detalhes/:idAnuncio/:userId" nome={"Anúncios - detalhes"} component={Detalhes}/>            
             <PrivateRoutes exact path="/anuncios/:id" nome={"Anúncios"} component={Listagem}/>

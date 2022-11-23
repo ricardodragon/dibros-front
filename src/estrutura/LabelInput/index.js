@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 
 function 
 LabelInput(props){
@@ -5,7 +6,7 @@ LabelInput(props){
     // useEffect(() => {
     //     const timeOutId = setTimeout(() => setDisplayMessage(query), 500);
     //     return () => clearTimeout(timeOutId);
-    // }, [query]);
+    // }, [query]);    
 
     const onChange = event => {
         event.preventDefault();
