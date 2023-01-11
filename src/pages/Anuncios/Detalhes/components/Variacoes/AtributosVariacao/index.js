@@ -3,23 +3,24 @@ import axios from 'axios';
 
 function 
 
-Atributos(props){
+AtributosVariacao(props){
 
     const dominio = process.env.REACT_APP_MELI_DOMAIN
-    const [values, setValues] = useState({atributos:[]});
+    const [values, setValues] = useState({atributosSelect:[], attCombo:-1});
     
-    //console.log((await axios.get(dominio+'/meli/atributos/'+props.categoria)).data.sort((a, b) => a.value_type.localeCompare(b.value_type)));
-    const setAtributos = async() => setValues({
-        ...values,
-        atributos: props.categoria?(await axios.get(dominio+'/meli/atributos/'+props.categoria)).data.filter(x=>!props.value||props.value.filter(a=>a.id==x.id).length==0):values.atributos})
-
-    useEffect(() => setAtributos() ,[props.categoria, props.value]);                                    
+    async function setAtributos(){
+        setValues({
+            ...values,
+            atributosSelect: (await axios.get(dominio+'/meli/atributos/'+props.categoria)).data.map(x=>x.value_id==-1?{...x,value_name:null,value_id:null}:x).filter(x=>props.variacao&&x.tags.variation_attribute||!props.variacao).filter(x=>!props.value.filter(y=>y.id==x.id).length),            
+        })
+    }useEffect(() => setAtributos() ,[props.categoria, props.value]);                               
 
     const addAtributo = event => {
-        event.preventDefault();           
-        props.onChange(props.value.concat(values.atributos[values.attCombo]))                
+        event.preventDefault();        
+        props.onChange(props.value.filter(x=> values.attCombo==-1||x.id!=values.atributosSelect[values.attCombo].id).concat(values.atributosSelect.filter((x, index)=>values.attCombo==-1||index==values.attCombo)))        
+        setValues({...values,atributosSelect:values.atributosSelect.filter((x, index)=>values.attCombo!=-1&&index!=values.attCombo)})
     }
- 
+
     const excluirAtributo = (event,atributo) => {
         event.preventDefault();
         setValues({...values, atributosSelect:[...values.atributosSelect, atributo]})
@@ -29,53 +30,45 @@ Atributos(props){
     const editAtributo = (event, index) => { 
         event.preventDefault(); 
         const value_name = event.target.value==""?null:event.target.value;
-        props.value.map((x,i)=>i==index?{...x, value_name}:x)
-        props.onChange();
+        props.onChange(props.value.map((x,i)=>i==index?{...x, value_name, value_id:null}:x));
     }
 
     return ( 
-        <>            
+        <>
+            {/* {props.value.filter(x=> x.id=="GENDER").length>0?axios.post} */}
             <h5 className="h3">Atributos</h5> 
             <div style={{padding:'1.5em'}}>                
                 <div className="row">
                     <label htmlFor="atributos" className='col-form-label col' style={{whiteSpace:"nowrap", overflow:"hidden"}}>Adicionar atributo</label>
                     <select id="atributos" className='col form-control form-control-sm' onChange={event=>{event.preventDefault();setValues({...values, attCombo:event.target.value})}}>                                                            
                         <option selected value={-1}>Todos</option>
-                        {values.atributos                        
-                        .map((value, index) => <option key={index} value={index}>{value.name}</option>)}
+                        {values.atributosSelect.map((value, index) => <option key={index} value={index}>{value.name}</option>)}
                     </select> 
                     <button disabled={props.disabled} onClick={addAtributo} className="col btn btn-sm btn-success">Adicionar</button>                                   
                     <hr className="mt-2"/>
                     {
                         props.value.map((x,index)=>{
-
-                            if(x.value_type=="boolean")                               
+                            if(x.value_type=="boolean") 
                                 return <div className='col pb-2 pt-2'>                                                                      
-                                    <label htmlFor={x.id} style={{whiteSpace: "nowrap", }} value={x.value_name}>{x.name}</label>
+                                    <label htmlFor={x.id} style={{whiteSpace: "nowrap", }}>{x.name}</label>
                                     <select id={x.id} className='form-control form-control-sm' disabled={props.disabled} onChange={value_id=>props.onChange(props.value.filter(a=> a.id!=x.id).concat({...x, value_id:x.values[value_id].id, value_name:x.values[value_id].name}))}>
                                         {x.values.map(v=><option value={v.id}>{v.name}</option>)}
                                     </select>                                    
                                     {/* <button disabled={props.disabled} onClick={event=>excluirAtributo(event,x)} className='w-100 btn btn-sm btn-danger'>X</button>                                     */}
                                 </div>
-                            else                                                   
+                            else
                                 return <div className='col pb-2 pt-2' >
                                     <label htmlFor={x.id} style={{whiteSpace: "nowrap", overflow:"hidden"}}>{x.name}</label>
-                                    {<input list={x.id+"list"} id={x.id} disabled={props.disabled} className='form-control form-control-sm' value={x.value_name} onChange={event=>{ event.preventDefault(); props.onChange(props.value.map((x, ide)=>{
-                                        if(ide!=index)return {...x}
-                                        else{
-                                            var v = x.values&&x.values.length>0?x.values.filter(z=>z.name == event.target.value)[0]:undefined;                                                                                       
-                                            return {...x, value_id:v?v.id:undefined, value_name:v?v.name:event.target.value};
-                                        }                                     
-                                    }))}}></input>}                                             
+                                    {<input list={x.id+"list"} id={x.id} disabled={props.disabled} className='form-control form-control-sm' value={x.value_name} onChange={event=>editAtributo(event,index)}></input>}                                             
                                     <datalist id={x.id+"list"}>                    
                                         {               
                                             x.values?x.values.map((value, inde) => 
-                                                <option key={inde} value={value.name}>{value.name}</option>):""                    
+                                                <option key={inde} value={value.id}>{value.email}</option>):""                    
                                     
                                         }
                                     </datalist>
                                     {/* <button disabled={props.disabled} onClick={event=>excluirAtributo(event,x)} className='w-100 btn btn-sm btn-danger'>X</button> */}
-                                </div>                           
+                                </div>
                         })
                     }
                 </div>   
@@ -85,7 +78,7 @@ Atributos(props){
     )
 }
 
-export default Atributos
+export default AtributosVariacao
 
 
 // <>                     

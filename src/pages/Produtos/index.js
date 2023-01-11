@@ -8,8 +8,10 @@ function Produtos(){
     
     const [values, setValues] = useState({produtos:[], produto:{}})
     const dominio = process.env.REACT_APP_MELI_DOMAIN;
+    
+    const verificaProduto = () => values.produto.quantidade||values.produto.preco||values.produto.titulo;
 
-    const setProdutos = async() => setValues({...values,produtos:(await axios.get(dominio+"/produto/all")).data})
+    const setProdutos = async() => setValues({...values,produtos:(await axios.get(dominio+"/produto/all")).data, produto:{preco:"", quantidade:"", titulo:""}})
     useEffect(() => setProdutos(), []);
 
     return (
@@ -23,8 +25,8 @@ function Produtos(){
                     <LabelInput value={values.produto.quantidade} label="Quantidade: " placeholder="quantidade" id="quantidade" type="number" onChange={quantidade=>setValues({...values,produto:{...values.produto,quantidade}})}/>
                     <LabelInput value={values.produto.preco} label="Valor: " placeholder="valor" id="valor" type="number" step="0.2" onChange={preco=>setValues({...values,produto:{...values.produto,preco}})}/>
                     <LabelInput value={values.produto.titulo} label="Título: " placeholder="título" id="titulo" type="text" onChange={titulo=>setValues({...values,produto:{...values.produto,titulo}})}/>                    
-                    <input type="submit" value="enviar" className="btn btn-sm btn-success mt-2"/>    
-                    {values.produto.id?<input onClick={event => {event.preventDefault();setValues({...values, produto:{codigo:"",preco:"", quantidade:"", titulo:""}})}} type="submit" className="btn btn-sm btn-primary mt-2" value="Limpar"/>:""}                        
+                    <input disabled={!verificaProduto()} type="submit" value="enviar" className="btn btn-sm btn-success mt-2"/>    
+                    <input disabled={!verificaProduto()} onClick={event => {event.preventDefault();setProdutos()}} type="submit" className="btn btn-sm btn-primary mt-2" value="Limpar"/>                        
                 </fieldset>
             </form>
             <div className="table-responsive">

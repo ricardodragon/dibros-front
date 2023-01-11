@@ -37,12 +37,12 @@ function Variacoes(props){
                     </div>      
                     <LabelInput disabled={props.disabled}
                             value={variacao.seller_custom_field} label={"SKU"} 
-                            id={variacao.sku} type="text" onChange={seller_custom_field=>props.onChange(props.variations.map((v,i)=>i==index?{...v, seller_custom_field}:v))}/>                              
+                            id={variacao.seller_custom_field} type="text" onChange={seller_custom_field=>props.onChange(props.variations.map((v,i)=>i==index?{...v, seller_custom_field}:v))}/>                              
                     <Imagens
                         disabled={props.disabled}
                         value={variacao.picture_ids}                           
                         onChange={picture_ids=>props.onChange(props.variations.map((v,i)=>i==index?{...v, picture_ids}:v))}/>                     
-                    {/* <Atributos disabled={props.disabled} variacao={true} value={variacao.attributes?variacao.attributes:[]} onChange={attributes=>props.onChange(props.variations.map((x,i)=>i==index?{...x, attributes}:x))} categoria={props.categoria}/> */}
+                    {/* <AtributosVariacao disabled={props.disabled} variacao={true} value={variacao.attributes?variacao.attributes:[]} onChange={attributes=>props.onChange(props.variations.map((x,i)=>i==index?{...x, attributes}:x))} categoria={props.categoria}/> */}
                     <br/>  
                     <button disabled={props.disabled} className="w-100 btn btn-sm btn-danger" onClick={(event)=>{event.preventDefault();excluir(index)}}>Excluir</button>                                                                                                                                                                                                                                                                                                                                                                                            
                     <button disabled={props.disabled} className="col-12 btn btn-sm btn-link" onClick={(event)=>{event.preventDefault();addIndex(JSON.parse(JSON.stringify(variacao)), index)}}>abaixo+</button>                                                                                                                                                                                                                                                                                                                                                       
