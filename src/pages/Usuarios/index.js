@@ -8,12 +8,12 @@ function Usuarios(){
     const [values, setValues] = useState({usuarios:[], usuario:{}})
     const dominio = process.env.REACT_APP_MELI_DOMAIN;
 
-    const setUsuarios = async() => setValues({...values,usuarios:(await axios.get(dominio+"/usuario/all")).data})
+    const setUsuarios = async() => setValues({...values,usuarios:(await axios.get(dominio+"/auth/usuarios/all")).data})
     useEffect(() => setUsuarios(), []);
 
     return (
         <div className="p-2">            
-            <form className="mb-4" onSubmit={event => {event.preventDefault();values.usuario.id?axios.put(dominio+"/usuario", values.usuario).then(r=>setUsuarios()):axios.post(dominio+"/usuario", values.usuario).then(r=>setUsuarios())}}>                
+            <form className="mb-4" onSubmit={event => {event.preventDefault();values.usuario.id?axios.put(dominio+"/auth/usuarios", values.usuario).then(r=>setUsuarios()):axios.post(dominio+"/auth/usuarios", values.usuario).then(r=>setUsuarios())}}>                
                 <fieldset id="usuario" className="p-2" style={{overflow:"hidden"}}>
                     <legend>{values.usuario.id?"Editar":"Criar"} Usuário</legend>
                     {values.usuario.id?<h1>{values.usuario.id}</h1>:""}
@@ -44,7 +44,7 @@ function Usuarios(){
                                 <td>{u.username}</td>
                                 <td>{u.role}</td>
                                 <td>{u.role!="ADMIN"?<button className="btn btn-sm btn-primary" onClick={event=>{event.preventDefault();setValues({...values, usuario:u})}}>Editar</button>:""}</td>
-                                <td>{u.role!="ADMIN"?<button className="btn btn-sm btn-danger" onClick={event=>{event.preventDefault();axios.delete(dominio+"/usuario/"+u.id)}}>X</button>:""}</td>
+                                <td>{u.role!="ADMIN"?<button className="btn btn-sm btn-danger" onClick={event=>{event.preventDefault();axios.delete(dominio+"/usuario/"+u.id).then(r=>setUsuarios())}}>X</button>:""}</td>
                             </tr>
                         )}               
                     </tbody>    

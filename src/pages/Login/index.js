@@ -31,8 +31,8 @@ function Login(props) {
         event.preventDefault();
         axios.post(dominio+'/auth/login', values.usuario)
             .then(response => {
-                localStorage.setItem("token", response.headers['authorization']);
-                axios.get(dominio+"/usuario").then(response =>{
+                localStorage.setItem("token", response.headers['authorization']);                
+                axios.get(dominio+"/auth/usuarios").then(response =>{
                     localStorage.setItem("usuario", JSON.stringify(response.data));
                     props.history.replace("/");
                 })

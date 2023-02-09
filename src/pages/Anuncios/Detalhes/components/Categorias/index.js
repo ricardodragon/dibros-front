@@ -9,8 +9,8 @@ function Categorias(props){
       
     const setCategorias = async () => setValues({
         ...values,
-        categoria:props.category_id?(await axios.get(dominio+'/meli/categorias/'+props.category_id)).data:{},
-        categorias:[{id:"MLB", lista:(await axios.get(dominio+'/meli/dominios/MLB/categorias')).data}]          
+        categoria:props.category_id?(await axios.get(dominio+'/store/categorias/'+props.category_id)).data:{},
+        categorias:[{id:"MLB", lista:(await axios.get(dominio+'/store/dominios/MLB/categorias')).data}]          
     });        
 
     useEffect(() => setCategorias(), [props.category_id]);
@@ -20,7 +20,7 @@ function Categorias(props){
             setValues({...values, categorias:values.categorias.slice(0, index+1)});            
         else {
             var categoria = values.categorias[index].lista[i].id            
-            axios.get(dominio+'/meli/categorias/'+categoria).then(response => {            
+            axios.get(dominio+'/store/categorias/'+categoria).then(response => {            
                 if(response.data.children_categories.length==0) {                          
                     setValues({...values, categorias:values.categorias.slice(0, 1), categoria})
                     props.onChange(categoria)                     

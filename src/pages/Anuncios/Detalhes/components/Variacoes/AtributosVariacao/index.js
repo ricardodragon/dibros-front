@@ -11,7 +11,7 @@ AtributosVariacao(props){
     async function setAtributos(){
         setValues({
             ...values,
-            atributosSelect: (await axios.get(dominio+'/meli/atributos/'+props.categoria)).data.map(x=>x.value_id==-1?{...x,value_name:null,value_id:null}:x).filter(x=>props.variacao&&x.tags.variation_attribute||!props.variacao).filter(x=>!props.value.filter(y=>y.id==x.id).length),            
+            atributosSelect: (await axios.get(dominio+'/store/atributos/'+props.categoria)).data.map(x=>x.value_id==-1?{...x,value_name:null,value_id:null}:x).filter(x=>props.variacao&&x.tags.variation_attribute||!props.variacao).filter(x=>!props.value.filter(y=>y.id==x.id).length),            
         })
     }useEffect(() => setAtributos() ,[props.categoria, props.value]);                               
 

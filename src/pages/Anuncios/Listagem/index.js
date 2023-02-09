@@ -2,6 +2,7 @@ import { Button } from "@material-ui/core";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { FcHighPriority, FcCheckmark } from "react-icons/fc";
 import './style.css';
 
 function Listagem(){
@@ -11,7 +12,7 @@ function Listagem(){
 
     const setAnuncios = async () => setValues({
         ...values,
-        anuncios:values.anuncios.concat((await axios.get(dominio+'/meli/anuncios/'+id)).data)
+        anuncios:values.anuncios.concat((await axios.get(dominio+'/store/anuncios/'+id)).data)
     });    
 
     useEffect(() => setAnuncios() , []);   
@@ -28,12 +29,13 @@ function Listagem(){
                     values.anuncios.map((value, index) => {
                         return (
                             
-                            <div key={index} className="card mb-3" style={{maxWidth: "540px;"}}>  
+                            <div key={index} className="card m-4" style={{maxWidth: "540px;"}}>  
                                 <div style={{display: "flex",alignItems: "center"}} onClick={event=>{event.preventDefault();window.open(value.body.permalink);}}>
                                     <figcaption className="foto-lista-anuncio">
                                         <img src={value.body.thumbnail} alt=""  />                                    
                                     </figcaption>                                                                       
-                                    <span style={{display:"inline"}} className="h5">{value.body.title}</span>
+                                    <span style={{display:"inline"}} className="h5 p-4">{value.body.title}</span>                                    
+                                    <span className="h5">{value.body.status!="active"?<FcHighPriority/>:<FcCheckmark/>}</span>
                                 </div>
                                 <div className="card-body">                                    
                                     <div className="row">

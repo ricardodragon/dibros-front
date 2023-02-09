@@ -12,7 +12,7 @@ function Contas(props){
         setValues({...values,            
             contas:(
                 await axios.get(
-                    dominio+'/meli/contas/all?id='+JSON.parse(localStorage.getItem("usuario")).id
+                    dominio+'/store/contas/all?id='+JSON.parse(localStorage.getItem("usuario")).id
                 )
             ).data.concat({id:"0", email:"Todas as contas"})
         })
