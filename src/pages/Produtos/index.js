@@ -19,8 +19,7 @@ function Produtos(){
             <h4>Produtos</h4>
             <form className="mt-4" onSubmit={event => {event.preventDefault();values.produto.id?axios.put(dominio+"/produto", values.produto).then(r=>setProdutos()):axios.post(dominio+"/produto",values.produto).then(r=>setProdutos())}}>                
                 <fieldset id="usuario" className="p-2" style={{overflow:"hidden"}}>
-                    <legend>{values.produto.id?"Editar":"Criar"} Produto {values.produto.id}</legend>
-                    
+                    <legend>{values.produto.id?"Editar":"Criar"} Produto {values.produto.id}</legend>                    
                     {/* <LabelInput value={values.produto.codigo} label="Codigo: " placeholder="codigo" id="codigo" type="text" onChange={codigo=>setValues({...values,produto:{...values.produto,codigo}})}/> */}
                     <LabelInput value={values.produto.quantidade} label="Quantidade: " placeholder="quantidade" id="quantidade" type="number" onChange={quantidade=>setValues({...values,produto:{...values.produto,quantidade}})}/>
                     <LabelInput value={values.produto.preco} label="Valor: " placeholder="valor" id="valor" type="number" step="0.2" onChange={preco=>setValues({...values,produto:{...values.produto,preco}})}/>
