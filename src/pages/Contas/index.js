@@ -17,19 +17,20 @@ function Contas(props){
                 ...values, 
                 contas:[
                     ...values.contas, 
-                    (await axios.post(dominio+'/store/contas?code='+code+'&userId='+values.applicationUserId)).data
+                    (await axios.post(dominio+'/meli/contas?code='+code+'&userId='+values.applicationUserId)).data
                 ]
             });
     }
 
     const setContas = async () => {                
-        setValues({...values, contas:(await axios.get(dominio+'/store/contas/all?id='+values.applicationUserId)).data})
+        setValues({...values, contas:(await axios.get(dominio+'/meli/contas/all?id='+values.applicationUserId)).data})
     }
 
     useEffect(() => {setContas();addContas();}, []);
 
     const redirectMeli = () => {
         //const uriRedirect = window.location.origin;
+        
         const uriRedirect = 'https://speed-store.ddns.net:3000'
         window.location.href = `http://auth.mercadolivre.com.br/authorization?response_type=code&client_id=5401911184235214&redirect_uri=${uriRedirect}/contas`;
     }
@@ -52,7 +53,7 @@ function Contas(props){
                             <div>
                                 <Link to={"/anuncios/"+value.id} className="btn-link">Anuncios</Link>
                                 &nbsp;&nbsp;  
-                                <button className="btn btn-danger btn-sm" onClick={event=>{event.preventDefault();axios.delete(dominio+'/store/contas/'+value.idLocal);}}>Excluir</button>                       
+                                <button className="btn btn-danger btn-sm" onClick={event=>{event.preventDefault();axios.delete(dominio+'/meli/contas/'+value.idLocal);}}>Excluir</button>                       
                             </div>
                             {/* <Link to="/" className="link-danger">Perguntas</Link> */}
                         </div>                        

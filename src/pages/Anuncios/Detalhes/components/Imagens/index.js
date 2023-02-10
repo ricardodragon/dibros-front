@@ -12,7 +12,7 @@ function Imagens(props){
         const pictures = values.pictures;   
         var formData = new FormData();
         formData.append('files', event.target.files[0]);
-        pictures.push((await axios.post(dominio+'/store/anuncios/imagens/229790949', formData)).data);                                                                       
+        pictures.push((await axios.post(dominio+'/meli/anuncios/imagens/229790949', formData)).data);                                                                       
         props.onChange(pictures);
     }
 

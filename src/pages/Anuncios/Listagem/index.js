@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { FcHighPriority, FcCheckmark } from "react-icons/fc";
 import './style.css';
+import LabelInput from "../../../estrutura/LabelInput";
 
 function Listagem(){
     const [values, setValues] = useState({anuncios:[]});   
@@ -12,7 +13,7 @@ function Listagem(){
 
     const setAnuncios = async () => setValues({
         ...values,
-        anuncios:values.anuncios.concat((await axios.get(dominio+'/store/anuncios/'+id)).data)
+        anuncios:(await axios.get(dominio+'/meli/anuncios/'+id)).data
     });    
 
     useEffect(() => setAnuncios() , []);   
@@ -20,10 +21,12 @@ function Listagem(){
     return (
         <>
             <ul>
-                <div>                    
+                <div>      
+                    <LabelInput disabled={false} label="Anuncios diversos" id="diversos" type="text" onChange={diversos => setValues({...values, diversos})}/>                    
+                    <button className="btn btn-sm btn-primary" onClick={async event=>{event.preventDefault(); setValues({...values,anuncios:(await axios.get(dominio+'/meli/anuncios?q='+values.diversos)).data.map(x=>{ return {body:x}})})}}>Buscar</button>
                     <Link to={"/anuncios/detalhes/"+0+"/"+0} className="btn btn-sm btn-primary">
                             Publicar
-                    </Link>
+                    </Link>                    
                 </div>
                 {   
                     values.anuncios.map((value, index) => {
@@ -51,7 +54,7 @@ function Listagem(){
                                     </div>                                    
                                     
                                     <div className="footer-card-link" style={{boxSizing:"content-box", padding:"1%"}}>
-                                        <Link to={"/anuncios/detalhes/"+value.body.id+"/"+value.body.seller_id}>
+                                        <Link to={"/anuncios/detalhes/"+value.body.id+"/"+(value.body.seller_id?value.body.seller_id:0)}>
                                             <Button className="btn btn-primary btn-sm">Detalhes</Button>
                                         </Link>                                                                                
                                         <button className="btn btn-danger btn-sm">Excluir</button>   

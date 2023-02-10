@@ -11,7 +11,7 @@ Atributos(props){
     //console.log((await axios.get(dominio+'/meli/atributos/'+props.categoria)).data.sort((a, b) => a.value_type.localeCompare(b.value_type)));
     const setAtributos = async() => setValues({
         ...values,
-        atributos: props.categoria?(await axios.get(dominio+'/store/atributos/'+props.categoria)).data.filter(x=>!props.value||props.value.filter(a=>a.id==x.id).length==0):values.atributos})
+        atributos: props.categoria?(await axios.get(dominio+'/meli/atributos/'+props.categoria)).data.filter(x=>!props.value||props.value.filter(a=>a.id==x.id).length==0):values.atributos})
 
     useEffect(() => setAtributos() ,[props.categoria, props.value]);                                    
 

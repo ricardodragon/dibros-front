@@ -23,15 +23,15 @@ function Detalhes(){
     
     const [values, setValues] = useState({qtd:0, visits:0,editar:false,disabled:false,contas:[],anuncio:{pictures:[], sale_terms:[], attributes:[], variations:[]}, loader:true});                  
     
-    const setVisits = () => axios.get(dominio+'/store/anuncios/visits/'+userId+'/'+idAnuncio).then(r => setValues({...values, visits: r.data[idAnuncio]}));
+    const setVisits = () => axios.get(dominio+'/meli/anuncios/visits/'+userId+'/'+idAnuncio).then(r => setValues({...values, visits: r.data[idAnuncio]}));
 
     const setAnuncio = async()=> {          
         if(idAnuncio=="0"){setValues({...values, loader:false}); return}
         setVisits();
-        var anuncio = (await axios.get(dominio+'/store/anuncios/'+idAnuncio+'/'+userId)).data;                          
+        var anuncio = (await axios.get(dominio+'/meli/anuncios/'+idAnuncio+'/'+userId)).data;                          
         anuncio.variations = anuncio.variations.map(v=>{return{...v, picture_ids:anuncio.pictures.filter(p=>v.picture_ids.includes(p.id))}});                                        
         anuncio.pictures = anuncio.pictures.filter(p => anuncio.variations.filter(v => v.picture_ids.map(pi=>pi.id).includes(p.id)).length==0);                        
-        var d = (await axios.get(dominio+'/store/atributos/'+anuncio.category_id)).data.filter(x=>anuncio.attributes.filter(y=>y.id==x.id).length>0);
+        var d = (await axios.get(dominio+'/meli/atributos/'+anuncio.category_id)).data.filter(x=>anuncio.attributes.filter(y=>y.id==x.id).length>0);
         anuncio.attributes = d.map(x=> { var {value_id, value_name} = anuncio.attributes.filter(y=>y.id==x.id)[0]; return {...x, value_id, value_name}})            
         setValues({...values, anuncio, disabled:true, editar:false, loader:false});         
     }
@@ -51,7 +51,7 @@ function Detalhes(){
         if(values.editar) edit(anuncio);                    
         else{    
             delete anuncio["id"]   
-            axios.post(dominio+'/store/anuncios/'+values.contas[0].id, {...anuncio, variations:anuncio.variations.map(v=> {v.picture_ids=v.picture_ids.map(p=>p.id); delete v.id; return v})})
+            axios.post(dominio+'/meli/anuncios/'+values.contas[0].id, {...anuncio, variations:anuncio.variations.map(v=> {v.picture_ids=v.picture_ids.map(p=>p.id); delete v.id; return v})})
                 .then(response=>{setValues({...values, ok:true});setAnuncio(response.data.id)})
                 .catch(erro => {setValues({...values, loader:false, erro:JSON.stringify(erro.response.data)})});               
         }
@@ -59,7 +59,7 @@ function Detalhes(){
 
     const edit = (anuncio) => {                              
         if(anuncio.variations.length>0) anuncio.variations = anuncio.variations.map(v=> {v.picture_ids=v.picture_ids.map(p=>p.id); return v})            
-        axios.put(dominio+'/store/anuncios/'+userId+'/'+idAnuncio, anuncio).then(response => {setValues({...values, ok:true});setAnuncio(response.data.id)})//
+        axios.put(dominio+'/meli/anuncios/'+userId+'/'+idAnuncio, anuncio).then(response => {setValues({...values, ok:true});setAnuncio(response.data.id)})//
           .catch(error => {setValues({...values, loader:false, erro:JSON.stringify(error.response.data)})});       
     }
 
