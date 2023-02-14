@@ -9,14 +9,17 @@ import LabelInput from "../../../estrutura/LabelInput";
 function Listagem(){
     const [values, setValues] = useState({anuncios:[]});   
     const dominio = process.env.REACT_APP_MELI_DOMAIN
-    let { id } = useParams(); 
+    let { id, sku } = useParams();        
+    
+    const setAnuncios = async () => {
+        sku=sku=='undefined'?'':sku
+        setValues({
+            ...values, sku, id, 
+            anuncios:(await axios.get(dominio+'/meli/anuncios/list/'+id+'?sku='+sku)).data
+        })
+    };    
 
-    const setAnuncios = async () => setValues({
-        ...values,
-        anuncios:(await axios.get(dominio+'/meli/anuncios/'+id)).data
-    });    
-
-    useEffect(() => setAnuncios() , []);   
+    useEffect(() => setAnuncios() , [id, sku]);   
 
     return (
         <>
@@ -56,8 +59,9 @@ function Listagem(){
                                     <div className="footer-card-link" style={{boxSizing:"content-box", padding:"1%"}}>
                                         <Link to={"/anuncios/detalhes/"+value.body.id+"/"+(value.body.seller_id?value.body.seller_id:0)}>
                                             <Button className="btn btn-primary btn-sm">Detalhes</Button>
-                                        </Link>                                                                                
-                                        <button className="btn btn-danger btn-sm">Excluir</button>   
+                                        </Link> 
+                                        {value.body.status=="active"?<button onClick={event=>{event.preventDefault();axios.put(dominio+'/meli/anuncios/'+value.body.seller_id+'/'+value.body.id, {status:"paused"}).then(r=>alert("Deu"))}} className="btn btn-warning btn-sm">Pausar</button>:<button className="btn btn-info btn-sm" onClick={event=>{event.preventDefault();axios.put(dominio+'/meli/anuncios/'+value.body.seller_id+'/'+value.body.id, {status:"active"}).then(r=>alert("Deu"))}}>Ativar</button>}                                                                             
+                                        <button onClick={event=>{event.preventDefault();axios.put(dominio+'/meli/anuncios/'+value.body.seller_id+'/'+value.body.id, {status:"closed"}).then(r=>axios.put(dominio+'/meli/anuncios/'+value.body.seller_id+'/'+value.body.id, {deleted:"true"}).then(r=>alert("Deu")))}} className="btn btn-danger btn-sm">Excluir</button>   
                                     </div>
                                 </div>
                             

@@ -28,7 +28,7 @@ function Detalhes(){
     const setAnuncio = async()=> {          
         if(idAnuncio=="0"){setValues({...values, loader:false}); return}
         setVisits();
-        var anuncio = (await axios.get(dominio+'/meli/anuncios/'+idAnuncio+'/'+userId)).data;                          
+        var anuncio = (await axios.get(dominio+'/meli/anuncios/'+idAnuncio+'?userId='+userId)).data;                          
         anuncio.variations = anuncio.variations.map(v=>{return{...v, picture_ids:anuncio.pictures.filter(p=>v.picture_ids.includes(p.id))}});                                        
         anuncio.pictures = anuncio.pictures.filter(p => anuncio.variations.filter(v => v.picture_ids.map(pi=>pi.id).includes(p.id)).length==0);                        
         var d = (await axios.get(dominio+'/meli/atributos/'+anuncio.category_id)).data.filter(x=>anuncio.attributes.filter(y=>y.id==x.id).length>0);

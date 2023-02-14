@@ -16,7 +16,7 @@ const Routes = ()=>(
             <PrivateRoutes exact path="/usuarios" nome="Indentificação usuário" component={Usuarios}/>
             <PrivateRoutes exact path="/contas" nome={"Gerencie suas contas MercadoLivre"} component={Contas}/>                       
             <PrivateRoutes exact path="/anuncios/detalhes/:idAnuncio/:userId" nome={"Anúncios - detalhes"} component={Detalhes}/>            
-            <PrivateRoutes exact path="/anuncios/:id" nome={"Anúncios"} component={Listagem}/>
+            <PrivateRoutes exact path="/anuncios/:id/:sku" nome={"Anúncios"} component={Listagem}/>            
             <PrivateRoutes exact path="/produtos" nome={"Produtos"} component={Produtos}/>
             <Redirect to="/"/>
         </Switch>

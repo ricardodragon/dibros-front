@@ -51,7 +51,7 @@ function Contas(props){
                             <span className="header-card"><label>email: </label><span style={{fontWeight:"bold"}}>{value.email}</span></span>
                             <hr/>
                             <div>
-                                <Link to={"/anuncios/"+value.id} className="btn-link">Anuncios</Link>
+                                <Link to={"/anuncios/"+value.id+"/"+undefined} className="btn-link">Anuncios</Link>
                                 &nbsp;&nbsp;  
                                 <button className="btn btn-danger btn-sm" onClick={event=>{event.preventDefault();axios.delete(dominio+'/meli/contas/'+value.idLocal);}}>Excluir</button>                       
                             </div>
