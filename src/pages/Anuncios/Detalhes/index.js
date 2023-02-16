@@ -3,14 +3,14 @@ import { useParams } from "react-router";
 import axios from "axios";
 import { FcCheckmark, FcHighPriority } from "react-icons/fc";
 import { MdRefresh } from "react-icons/md";
-import TipoAnuncio from "./components/TipoAnuncio";
-import Categorias from "./components/Categorias";
-import Atributos from "./components/Atributos";
-import Imagens from "./components/Imagens";
-import AtributosVariacoes from "./components/AtributosVariacoes";
-import Variacoes from "./components/Variacoes";
+// import TipoAnuncio from "./components/TipoAnuncio";
+// import Categorias from "./components/Categorias";
+// import Atributos from "./components/Atributos";
+// import Imagens from "./components/Imagens";
+// import AtributosVariacoes from "./components/AtributosVariacoes";
+// import Variacoes from "./components/Variacoes";
 import LabelInput from "../../../estrutura/LabelInput";
-import Contas from "./components/Contas";
+// import Contas from "./components/Contas";
 import "./detalhes.css"
 
 function Detalhes(){
