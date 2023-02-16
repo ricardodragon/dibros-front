@@ -34,41 +34,41 @@ function Detalhes(){
 
     useEffect(()=> { setAnuncio() },[setAnuncio])
 
-    const setAtributo = attributes => setValues({...values, anuncio: {...values.anuncio, attributes}});
+    // const setAtributo = attributes => setValues({...values, anuncio: {...values.anuncio, attributes}});
     
-    const onSubmit = async event =>{
-        setValues({...values, loader:true})     
-        event.preventDefault();  
-        var anuncio = JSON.parse(JSON.stringify(values.anuncio));         
-        ["seller_id", "date_created", "permalink", "thumbnail", "last_updated", "stop_time", "initial_quantity", "sold_quantity", "base_price"].forEach(element => delete anuncio[element]);                 
-        for(const [a] of Object.entries(anuncio)) if(!anuncio[a]) delete anuncio[a]           
-        anuncio = anuncio.variations.length?{...anuncio, price:undefined, available_quantity:undefined}:anuncio
-        anuncio.variations.map(v=>v.picture_ids).forEach(p=>anuncio.pictures = anuncio.pictures.filter(ap=>ap.id===p.id).length===0?anuncio.pictures.concat(p):anuncio.pictures)                
-        if(values.editar) edit(anuncio);                    
-        else{    
-            delete anuncio["id"]   
-            axios.post(process.env.REACT_APP_MELI_DOMAIN+'/meli/anuncios/'+values.contas[0].id, {...anuncio, variations:anuncio.variations.map(v=> {v.picture_ids=v.picture_ids.map(p=>p.id); delete v.id; return v})})
-                .then(response=>{setValues({...values, ok:true});setAnuncio(response.data.id)})
-                .catch(erro => {setValues({...values, loader:false, erro:JSON.stringify(erro.response.data)})});               
-        }
-    }       
+    // const onSubmit = async event =>{
+    //     setValues({...values, loader:true})     
+    //     event.preventDefault();  
+    //     var anuncio = JSON.parse(JSON.stringify(values.anuncio));         
+    //     ["seller_id", "date_created", "permalink", "thumbnail", "last_updated", "stop_time", "initial_quantity", "sold_quantity", "base_price"].forEach(element => delete anuncio[element]);                 
+    //     for(const [a] of Object.entries(anuncio)) if(!anuncio[a]) delete anuncio[a]           
+    //     anuncio = anuncio.variations.length?{...anuncio, price:undefined, available_quantity:undefined}:anuncio
+    //     anuncio.variations.map(v=>v.picture_ids).forEach(p=>anuncio.pictures = anuncio.pictures.filter(ap=>ap.id===p.id).length===0?anuncio.pictures.concat(p):anuncio.pictures)                
+    //     if(values.editar) edit(anuncio);                    
+    //     else{    
+    //         delete anuncio["id"]   
+    //         axios.post(process.env.REACT_APP_MELI_DOMAIN+'/meli/anuncios/'+values.contas[0].id, {...anuncio, variations:anuncio.variations.map(v=> {v.picture_ids=v.picture_ids.map(p=>p.id); delete v.id; return v})})
+    //             .then(response=>{setValues({...values, ok:true});setAnuncio(response.data.id)})
+    //             .catch(erro => {setValues({...values, loader:false, erro:JSON.stringify(erro.response.data)})});               
+    //     }
+    // }       
 
-    const edit = (anuncio) => {                              
-        if(anuncio.variations.length>0) anuncio.variations = anuncio.variations.map(v=> {v.picture_ids=v.picture_ids.map(p=>p.id); return v})            
-        axios.put(process.env.REACT_APP_MELI_DOMAIN+'/meli/anuncios/'+userId+'/'+idAnuncio, anuncio).then(response => {setValues({...values, ok:true});setAnuncio(response.data.id)})//
-          .catch(error => {setValues({...values, loader:false, erro:JSON.stringify(error.response.data)})});       
-    }
+    // const edit = (anuncio) => {                              
+    //     if(anuncio.variations.length>0) anuncio.variations = anuncio.variations.map(v=> {v.picture_ids=v.picture_ids.map(p=>p.id); return v})            
+    //     axios.put(process.env.REACT_APP_MELI_DOMAIN+'/meli/anuncios/'+userId+'/'+idAnuncio, anuncio).then(response => {setValues({...values, ok:true});setAnuncio(response.data.id)})//
+    //       .catch(error => {setValues({...values, loader:false, erro:JSON.stringify(error.response.data)})});       
+    // }
 
-    const habilitarEdicao = event=>{event.preventDefault();setValues({...values, editar:true, disabled:!values.disabled})}
-    const habilitarReplica = event=>{event.preventDefault();setValues({...values, editar:false, disabled:!values.disabled})}    
-    const setVariation = (variations) => setValues({...values, anuncio: {...values.anuncio, variations}})
-    const sort = (v, name, fator=1) => setValues({...values, anuncio: {...values.anuncio, variations:[].concat(values.anuncio.variations).sort((a, b) =>(a["attribute_combinations"].filter(x=>x.name===name)[0].value_name).localeCompare(b["attribute_combinations"].filter(x=>x.name===name)[0].value_name)*fator).reverse()}})
+    // const habilitarEdicao = event=>{event.preventDefault();setValues({...values, editar:true, disabled:!values.disabled})}
+    // const habilitarReplica = event=>{event.preventDefault();setValues({...values, editar:false, disabled:!values.disabled})}    
+    // const setVariation = (variations) => setValues({...values, anuncio: {...values.anuncio, variations}})
+    // const sort = (v, name, fator=1) => setValues({...values, anuncio: {...values.anuncio, variations:[].concat(values.anuncio.variations).sort((a, b) =>(a["attribute_combinations"].filter(x=>x.name===name)[0].value_name).localeCompare(b["attribute_combinations"].filter(x=>x.name===name)[0].value_name)*fator).reverse()}})
     
-    const onChangeAttributeCombinations = (value, index)=> {        
-        const variations = values.anuncio.variations;
-        variations.forEach(v=>value?v.attribute_combinations[index]={...value, value_name:v.attribute_combinations[index]?v.attribute_combinations[index].value_name:''}:v.attribute_combinations = v.attribute_combinations.filter((x,i)=>i!==index))
-        setValues({...values, anuncio:{...values.anuncio, variations}});
-    }      
+    // const onChangeAttributeCombinations = (value, index)=> {        
+    //     const variations = values.anuncio.variations;
+    //     variations.forEach(v=>value?v.attribute_combinations[index]={...value, value_name:v.attribute_combinations[index]?v.attribute_combinations[index].value_name:''}:v.attribute_combinations = v.attribute_combinations.filter((x,i)=>i!==index))
+    //     setValues({...values, anuncio:{...values.anuncio, variations}});
+    // }      
 
     return ( 
         values.loader?<div style={{ position: "absolute", width:"100%", height:"100%", backgroundColor:"white", zIndex:"1000" }}>
@@ -82,7 +82,7 @@ function Detalhes(){
             <LabelInput readonly={true} label="Visitas" disabled={true} value={0}/>
 
             <button className="btn btn-sm btn-success" onClick={event=>{event.preventDefault();setVisits()}}><MdRefresh/></button>                                                                                                                                                    
-            <form onSubmit={event => {event.preventDefault();onSubmit(event);}}>                  
+            {/* <form onSubmit={event => {event.preventDefault();onSubmit(event);}}>                  
                 <div className="d-flex justify-content-end">
                     {!values.disabled?<button className="btn btn-secondary" onClick={event=>{event.preventDefault();setAnuncio()}}>Redefinir</button>:null}            
                     {values.disabled?<button className="btn btn-primary" onClick={habilitarReplica}>Replicar</button>:null}                    
@@ -120,7 +120,7 @@ function Detalhes(){
                         </>:undefined}
                 </div>                
                 {!values.disabled?<input disabled={!values.contas} style={{float:"right", }} className="btn btn-sm btn-success" type="submit" value="Enviar"/>:null}                                                                                                                      
-            </form> 
+            </form>  */}
         </>        
     )
 }
