@@ -3,7 +3,7 @@ import Routes from './config/route/routes';
 import "./reset.css" 
 
 
-const App = () => {
+const App = () => {      
     axios.interceptors.request.use(function (config) {
         config.headers.Authorization = localStorage.getItem("token");
         return config;

@@ -15,7 +15,7 @@ function AtributosVariacoes(props){
       
     const setAtributos = async () => setValues({
         ...values, 
-        atributos:props.categoria!==undefined?(await axios.get(dominio+'/store/atributos/'+props.categoria)).data.filter(value=>value.tags.allow_variations):values.atributos        
+        atributos:props.categoria!==undefined?(await axios.get(dominio+'/meli/atributos/'+props.categoria)).data.filter(value=>value.tags.allow_variations):values.atributos        
     });useEffect(() =>setAtributos(), [props.category_id]);
 
     return(        
