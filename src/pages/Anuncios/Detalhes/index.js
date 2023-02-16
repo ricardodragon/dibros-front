@@ -79,7 +79,7 @@ function Detalhes(){
         <>           
             <div className={"alert alert-success "+(values.ok?"":"visually-hidden")} role="alert"><FcCheckmark/> Anuncio enviado com sucesso</div>
             <div className={"alert alert-danger "+(values.erro?"":"visually-hidden")} role="alert"><FcHighPriority/>Erro: {values.erro}</div>
-            <LabelInput label="Visitas" disabled={true} value={values.visits}/>
+            <LabelInput readonly={true} label="Visitas" disabled={true} value={0}/>
 
             <button className="btn btn-sm btn-success" onClick={event=>{event.preventDefault();setVisits()}}><MdRefresh/></button>                                                                                                                                                    
             <form onSubmit={event => {event.preventDefault();onSubmit(event);}}>                  
