@@ -11,27 +11,14 @@ Atributos(props){
     //console.log((await axios.get(dominio+'/meli/atributos/'+props.categoria)).data.sort((a, b) => a.value_type.localeCompare(b.value_type)));
     const setAtributos = async() => setValues({
         ...values,
-        atributos: props.categoria?(await axios.get(dominio+'/meli/atributos/'+props.categoria)).data.filter(x=>!props.value||props.value.filter(a=>a.id==x.id).length==0):values.atributos})
+        atributos: props.categoria?(await axios.get(dominio+'/meli/atributos/'+props.categoria)).data.filter(x=>!props.value||props.value.filter(a=>a.id===x.id).length===0):values.atributos})
 
     useEffect(() => setAtributos() ,[props.categoria, props.value]);                                    
 
     const addAtributo = event => {
         event.preventDefault();           
         props.onChange(props.value.concat(values.atributos[values.attCombo]))                
-    }
- 
-    const excluirAtributo = (event,atributo) => {
-        event.preventDefault();
-        setValues({...values, atributosSelect:[...values.atributosSelect, atributo]})
-        props.onChange(props.value.map(x=>x.id==atributo.id?{...x, value_id:null, value_name: null}:x))      
-    }
-    
-    const editAtributo = (event, index) => { 
-        event.preventDefault(); 
-        const value_name = event.target.value==""?null:event.target.value;
-        props.value.map((x,i)=>i==index?{...x, value_name}:x)
-        props.onChange();
-    }
+    }            
 
     return ( 
         <>            
@@ -49,10 +36,10 @@ Atributos(props){
                     {
                         props.value.map((x,index)=>{
 
-                            if(x.value_type=="boolean")                               
+                            if(x.value_type==="boolean")                               
                                 return <div className='col pb-2 pt-2'>                                                                      
                                     <label htmlFor={x.id} style={{whiteSpace: "nowrap", }} value={x.value_name}>{x.name}</label>
-                                    <select id={x.id} className='form-control form-control-sm' disabled={props.disabled} onChange={value_id=>props.onChange(props.value.filter(a=> a.id!=x.id).concat({...x, value_id:x.values[value_id].id, value_name:x.values[value_id].name}))}>
+                                    <select id={x.id} className='form-control form-control-sm' disabled={props.disabled} onChange={value_id=>props.onChange(props.value.filter(a=> a.id!==x.id).concat({...x, value_id:x.values[value_id].id, value_name:x.values[value_id].name}))}>
                                         {x.values.map(v=><option value={v.id}>{v.name}</option>)}
                                     </select>                                    
                                     {/* <button disabled={props.disabled} onClick={event=>excluirAtributo(event,x)} className='w-100 btn btn-sm btn-danger'>X</button>                                     */}
@@ -61,9 +48,9 @@ Atributos(props){
                                 return <div className='col pb-2 pt-2' >
                                     <label htmlFor={x.id} style={{whiteSpace: "nowrap", overflow:"hidden"}}>{x.name}</label>
                                     {<input list={x.id+"list"} id={x.id} disabled={props.disabled} className='form-control form-control-sm' value={x.value_name} onChange={event=>{ event.preventDefault(); props.onChange(props.value.map((x, ide)=>{
-                                        if(ide!=index)return {...x}
+                                        if(ide!==index)return {...x}
                                         else{
-                                            var v = x.values&&x.values.length>0?x.values.filter(z=>z.name == event.target.value)[0]:undefined;                                                                                       
+                                            var v = x.values&&x.values.length>0?x.values.filter(z=>z.name === event.target.value)[0]:undefined;                                                                                       
                                             return {...x, value_id:v?v.id:undefined, value_name:v?v.name:event.target.value};
                                         }                                     
                                     }))}}></input>}                                             

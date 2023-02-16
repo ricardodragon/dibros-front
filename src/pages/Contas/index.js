@@ -26,7 +26,7 @@ function Contas(props){
         setValues({...values, contas:(await axios.get(dominio+'/meli/contas/all?id='+values.applicationUserId)).data})
     }
 
-    useEffect(() => {setContas();addContas();}, []);
+    useEffect(() => {setContas();addContas();return});
 
     const redirectMeli = () => {
         //const uriRedirect = window.location.origin;

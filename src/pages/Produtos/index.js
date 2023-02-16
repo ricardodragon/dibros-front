@@ -12,7 +12,7 @@ function Produtos(){
     const verificaProduto = () => values.produto.quantidade||values.produto.preco||values.produto.titulo;
 
     const setProdutos = async() => setValues({...values,produtos:(await axios.get(dominio+"/produto/all")).data, produto:{preco:"", quantidade:"", titulo:""}})
-    useEffect(() => setProdutos(), []);
+    useEffect(() => setProdutos());
 
     return (
         <div className="p-4">

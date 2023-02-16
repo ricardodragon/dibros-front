@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import axios from "axios";
-import { FcCheckmark, FcHighPriority, FcRefresh } from "react-icons/fc";
+import { FcCheckmark, FcHighPriority } from "react-icons/fc";
 import { MdRefresh } from "react-icons/md";
 import TipoAnuncio from "./components/TipoAnuncio";
 import Categorias from "./components/Categorias";
@@ -25,18 +25,18 @@ function Detalhes(){
     
     const setVisits = () => axios.get(dominio+'/meli/anuncios/visits/'+userId+'/'+idAnuncio).then(r => setValues({...values, visits: r.data[idAnuncio]}));
 
-    const setAnuncio = async()=> {          
-        if(idAnuncio=="0"){setValues({...values, loader:false}); return}
+    const setAnuncio = async(idAnuncio, userId)=> {          
+        if(idAnuncio==="0"){setValues({...values, loader:false}); return}
         setVisits();
         var anuncio = (await axios.get(dominio+'/meli/anuncios/'+idAnuncio+'?userId='+userId)).data;                          
         anuncio.variations = anuncio.variations.map(v=>{return{...v, picture_ids:anuncio.pictures.filter(p=>v.picture_ids.includes(p.id))}});                                        
-        anuncio.pictures = anuncio.pictures.filter(p => anuncio.variations.filter(v => v.picture_ids.map(pi=>pi.id).includes(p.id)).length==0);                        
-        var d = (await axios.get(dominio+'/meli/atributos/'+anuncio.category_id)).data.filter(x=>anuncio.attributes.filter(y=>y.id==x.id).length>0);
-        anuncio.attributes = d.map(x=> { var {value_id, value_name} = anuncio.attributes.filter(y=>y.id==x.id)[0]; return {...x, value_id, value_name}})            
+        anuncio.pictures = anuncio.pictures.filter(p => anuncio.variations.filter(v => v.picture_ids.map(pi=>pi.id).includes(p.id)).length===0);                        
+        var d = (await axios.get(dominio+'/meli/atributos/'+anuncio.category_id)).data.filter(x=>anuncio.attributes.filter(y=>y.id===x.id).length>0);
+        anuncio.attributes = d.map(x=> { var {value_id, value_name} = anuncio.attributes.filter(y=>y.id===x.id)[0]; return {...x, value_id, value_name}})            
         setValues({...values, anuncio, disabled:true, editar:false, loader:false});         
     }
 
-    useEffect(() => setAnuncio(), [idAnuncio, userId]);
+    useEffect(() => setAnuncio(idAnuncio, userId), [idAnuncio, userId]);
 
     const setAtributo = attributes => setValues({...values, anuncio: {...values.anuncio, attributes}})              
 
@@ -45,9 +45,9 @@ function Detalhes(){
         event.preventDefault();  
         var anuncio = JSON.parse(JSON.stringify(values.anuncio));         
         ["seller_id", "date_created", "permalink", "thumbnail", "last_updated", "stop_time", "initial_quantity", "sold_quantity", "base_price"].forEach(element => delete anuncio[element]);                 
-        for(const [a, value] of Object.entries(anuncio)) if(!anuncio[a]) delete anuncio[a]           
+        for(const [a] of Object.entries(anuncio)) if(!anuncio[a]) delete anuncio[a]           
         anuncio = anuncio.variations.length?{...anuncio, price:undefined, available_quantity:undefined}:anuncio
-        anuncio.variations.map(v=>v.picture_ids).forEach(p=>anuncio.pictures = anuncio.pictures.filter(ap=>ap.id==p.id).length==0?anuncio.pictures.concat(p):anuncio.pictures)                
+        anuncio.variations.map(v=>v.picture_ids).forEach(p=>anuncio.pictures = anuncio.pictures.filter(ap=>ap.id===p.id).length===0?anuncio.pictures.concat(p):anuncio.pictures)                
         if(values.editar) edit(anuncio);                    
         else{    
             delete anuncio["id"]   
@@ -66,11 +66,11 @@ function Detalhes(){
     const habilitarEdicao = event=>{event.preventDefault();setValues({...values, editar:true, disabled:!values.disabled})}
     const habilitarReplica = event=>{event.preventDefault();setValues({...values, editar:false, disabled:!values.disabled})}    
     const setVariation = (variations) => setValues({...values, anuncio: {...values.anuncio, variations}})
-    const sort = (v, name, fator=1) => setValues({...values, anuncio: {...values.anuncio, variations:[].concat(values.anuncio.variations).sort((a, b) =>(a["attribute_combinations"].filter(x=>x.name==name)[0].value_name).localeCompare(b["attribute_combinations"].filter(x=>x.name==name)[0].value_name)*fator).reverse()}})
+    const sort = (v, name, fator=1) => setValues({...values, anuncio: {...values.anuncio, variations:[].concat(values.anuncio.variations).sort((a, b) =>(a["attribute_combinations"].filter(x=>x.name===name)[0].value_name).localeCompare(b["attribute_combinations"].filter(x=>x.name===name)[0].value_name)*fator).reverse()}})
     
     const onChangeAttributeCombinations = (value, index)=> {        
         const variations = values.anuncio.variations;
-        variations.forEach(v=>value?v.attribute_combinations[index]={...value, value_name:v.attribute_combinations[index]?v.attribute_combinations[index].value_name:''}:v.attribute_combinations = v.attribute_combinations.filter((x,i)=>i!=index))
+        variations.forEach(v=>value?v.attribute_combinations[index]={...value, value_name:v.attribute_combinations[index]?v.attribute_combinations[index].value_name:''}:v.attribute_combinations = v.attribute_combinations.filter((x,i)=>i!==index))
         setValues({...values, anuncio:{...values.anuncio, variations}});
     }      
 
@@ -95,7 +95,7 @@ function Detalhes(){
                     <div className="d-flex justify-content-end">
                         {!values.disabled?<button className="btn btn-secondary" onClick={event=>{event.preventDefault();setAnuncio()}}>Redefinir</button>:null}            
                         {values.disabled?<button className="btn btn-primary" onClick={habilitarReplica}>Replicar</button>:null}                    
-                        {values.disabled&&userId!=0&&!values.editar?<button className="btn btn-info" onClick={habilitarEdicao}> Editar </button>:null}  
+                        {values.disabled&&userId!==0&&!values.editar?<button className="btn btn-info" onClick={habilitarEdicao}> Editar </button>:null}  
                     </div>            
                     {!values.disabled&&!values.editar?<Contas label={"Publicar em"} onChange={(contas) => { setValues({...values, contas})}} id="conta"/>:null}                                     
                     <Categorias disabled={values.disabled} onChange={(category_id) =>setValues({...values, anuncio:{...values.anuncio, category_id}})} category_id={values.anuncio.category_id}/>                        
@@ -143,20 +143,3 @@ function Detalhes(){
     )
 }
 export default Detalhes
-
-{/* :<p style={{fontWeight: "bold", fontSize:"14pt", color:"red"}}>Preencha a categoria</p>                                         */}              
-
-{/* <LabelSelect label="Ordenar crescente : " lista={values.anuncio.variations[0].attribute_combinations} onChange={value=>setValues({...values, variations: sort(values.anuncio.variations, value)})}/>                         */}
-
-{/* <LabelSelect label="Ordenar decrescente : " lista={values.anuncio.variations[0].attribute_combinations} onChange={value=>setValues({...values, variations: sort(values.anuncio.variations, value, -1)})}/>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           */}
-
-{/* <DescricaoForm />
-            {values.anuncio.category_id?<GarantiasForm setTipoGarantia={setGarantia} setTempoGarantia={setGarantia} categoria={values.anuncio.category_id}/>:null}*/}                
-
-// <LabelSelect label="Tipo de frete : " lista={(await axios.get('http://localhost:8080/meli/fretes/'+conta.id)).data.shipping_modes} onChange={value=>alert(value)}/>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
-
-// const setGarantia = tipoGarantia => {
-//     const sale_terms = values.anuncio.sale_terms.filter(value => value.id != tipoGarantia.id)
-//     sale_terms.push(tipoGarantia)
-//     setValues({...values, anuncio: {...values.anuncio, sale_terms}})    
-// }

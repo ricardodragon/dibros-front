@@ -9,7 +9,7 @@ function Usuarios(){
     const dominio = process.env.REACT_APP_MELI_DOMAIN;
 
     const setUsuarios = async() => setValues({...values,usuarios:(await axios.get(dominio+"/auth/usuarios/all")).data})
-    useEffect(() => setUsuarios(), []);
+    useEffect(() => setUsuarios());
 
     return (
         <div className="p-2">            
@@ -43,8 +43,8 @@ function Usuarios(){
                                 <td>{u.email}</td>
                                 <td>{u.username}</td>
                                 <td>{u.role}</td>
-                                <td>{u.role!="ADMIN"?<button className="btn btn-sm btn-primary" onClick={event=>{event.preventDefault();setValues({...values, usuario:u})}}>Editar</button>:""}</td>
-                                <td>{u.role!="ADMIN"?<button className="btn btn-sm btn-danger" onClick={event=>{event.preventDefault();axios.delete(dominio+"/usuario/"+u.id).then(r=>setUsuarios())}}>X</button>:""}</td>
+                                <td>{u.role!=="ADMIN"?<button className="btn btn-sm btn-primary" onClick={event=>{event.preventDefault();setValues({...values, usuario:u})}}>Editar</button>:""}</td>
+                                <td>{u.role!=="ADMIN"?<button className="btn btn-sm btn-danger" onClick={event=>{event.preventDefault();axios.delete(dominio+"/usuario/"+u.id).then(r=>setUsuarios())}}>X</button>:""}</td>
                             </tr>
                         )}               
                     </tbody>    

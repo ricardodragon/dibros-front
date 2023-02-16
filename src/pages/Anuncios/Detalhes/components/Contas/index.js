@@ -29,7 +29,7 @@ function Contas(props){
             props.onChange([conta]) 
     }
 
-    useEffect(()=>setContas(), []);
+    useEffect(()=>setContas());
 
     return (
         <>  

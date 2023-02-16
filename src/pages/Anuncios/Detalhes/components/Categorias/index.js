@@ -7,21 +7,21 @@ function Categorias(props){
     const dominio = process.env.REACT_APP_MELI_DOMAIN
     const [values, setValues] = useState({categorias:[], categoria:{}});
       
-    const setCategorias = async () => setValues({
+    const setCategorias = async (id=undefined) => setValues({
         ...values,
-        categoria:props.category_id?(await axios.get(dominio+'/meli/categorias/'+props.category_id)).data:{},
+        categoria:id?(await axios.get(dominio+'/meli/categorias/'+props.category_id)).data:{},
         categorias:[{id:"MLB", lista:(await axios.get(dominio+'/meli/dominios/MLB/categorias')).data}]          
     });        
 
-    useEffect(() => setCategorias(), [props.category_id]);
+    useEffect(() => setCategorias(props.category_id), [props.category_id]);
     
     function addCategoria(index, i){                   
-        if(i == "")
+        if(i === "")
             setValues({...values, categorias:values.categorias.slice(0, index+1)});            
         else {
             var categoria = values.categorias[index].lista[i].id            
             axios.get(dominio+'/meli/categorias/'+categoria).then(response => {            
-                if(response.data.children_categories.length==0) {                          
+                if(response.data.children_categories.length===0) {                          
                     setValues({...values, categorias:values.categorias.slice(0, 1), categoria})
                     props.onChange(categoria)                     
                 }

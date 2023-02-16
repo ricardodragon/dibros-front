@@ -17,16 +17,16 @@ function Imagens(props){
     }
 
     const excluir = (id) => {                     
-        const pictures = values.pictures.filter(img=>img.id!=id);                                  
+        const pictures = values.pictures.filter(img=>img.id!==id);                                  
         props.onChange(pictures);
     }
 
-    const setPictures = () => 
-        props.value!==undefined?            
-            setValues({...values, pictures:props.value}):undefined                
+    const setPictures = (value) => 
+        value!==undefined?            
+            setValues({...values, pictures:value}):undefined                
     
 
-    useEffect(() => setPictures(), [props.value])
+    useEffect(() => setPictures(props.value), [props.value])
 
     return(        
         <>                 

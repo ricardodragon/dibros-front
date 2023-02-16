@@ -13,7 +13,7 @@ function Variacoes(props){
     // const addVariacao = (variacao, index=-1)=> 
     //     props.onChange(index==-1?props.variations.concat(variacao):props.variations.map((v,i)=> index==i?variacao:v))          
     
-    const excluir = (index) => props.onChange(props.variations.filter((value, i)=>index!=i));    
+    const excluir = (index) => props.onChange(props.variations.filter((value, i)=>index!==i));    
     const addIndex = (variacao, i)=> props.onChange(props.variations.filter((v, index)=>index<=i).concat({...variacao, id:undefined}).concat(props.variations.filter((v, index)=>i<index)));                        
     
     return (
@@ -33,15 +33,15 @@ function Variacoes(props){
                             disabled={true} required={true}
                             value={variacao.available_quantity} label="Quantidade" 
                             id={index+"qtd_disponivel_varicao"} type="number" 
-                            onChange={available_quantity=>props.onChange(props.variations.map((v,i)=>i==index?{...v, available_quantity}:v))}/>
+                            onChange={available_quantity=>props.onChange(props.variations.map((v,i)=>i===index?{...v, available_quantity}:v))}/>
                     </div>      
                     <LabelInput disabled={props.disabled}
                             value={variacao.seller_custom_field} label={"SKU"} 
-                            id={variacao.seller_custom_field} type="text" onChange={seller_custom_field=>props.onChange(props.variations.map((v,i)=>i==index?{...v, seller_custom_field}:v))}/>                              
+                            id={variacao.seller_custom_field} type="text" onChange={seller_custom_field=>props.onChange(props.variations.map((v,i)=>i===index?{...v, seller_custom_field}:v))}/>                              
                     <Imagens
                         disabled={props.disabled}
                         value={variacao.picture_ids}                           
-                        onChange={picture_ids=>props.onChange(props.variations.map((v,i)=>i==index?{...v, picture_ids}:v))}/>                     
+                        onChange={picture_ids=>props.onChange(props.variations.map((v,i)=>i===index?{...v, picture_ids}:v))}/>                     
                     {/* <AtributosVariacao disabled={props.disabled} variacao={true} value={variacao.attributes?variacao.attributes:[]} onChange={attributes=>props.onChange(props.variations.map((x,i)=>i==index?{...x, attributes}:x))} categoria={props.categoria}/> */}
                     <br/>  
                     <button disabled={props.disabled} className="w-100 btn btn-sm btn-danger" onClick={(event)=>{event.preventDefault();excluir(index)}}>Excluir</button>                                                                                                                                                                                                                                                                                                                                                                                            
