@@ -7,30 +7,19 @@ import './contas.css'
 import { IconButton } from "@material-ui/core";
     
 function Contas(props){
-    const [values, setValues] = useState({applicationUserId:JSON.parse(localStorage.getItem("usuario")).id, contas:[]});
-    const dominio = process.env.REACT_APP_MELI_DOMAIN
-    
-    const addContas = async () =>{
-        let { code } = queryString.parse(props.location.search);            
+    const [values, setValues] = useState({contas:[]});        
+    const { code } = queryString.parse(props.location.search)
+
+    useEffect(() => {        
+        axios.get(process.env.REACT_APP_MELI_DOMAIN+'/meli/contas/all?id='+JSON.parse(localStorage.getItem("usuario")).id)
+        .then(res=> setValues({contas:res.data}))
+    }, []);
+    useEffect(() => {
         if(code)
-            setValues({
-                ...values, 
-                contas:[
-                    ...values.contas, 
-                    (await axios.post(dominio+'/meli/contas?code='+code+'&userId='+values.applicationUserId)).data
-                ]
-            });
-    }
+            axios.post(process.env.REACT_APP_MELI_DOMAIN+'/meli/contas?code='+code+'&userId='+JSON.parse(localStorage.getItem("usuario")).id).then(res=> setValues({contas:values.contas.concat(res.data)}))
+    }, [code, values.contas]);
 
-    const setContas = async () => {                
-        setValues({...values, contas:(await axios.get(dominio+'/meli/contas/all?id='+values.applicationUserId)).data})
-    }
-
-    useEffect(() => {setContas();addContas();return});
-
-    const redirectMeli = () => {
-        //const uriRedirect = window.location.origin;
-        
+    const redirectMeli = () => {                
         const uriRedirect = 'https://speed-store.ddns.net:3000'
         window.location.href = `http://auth.mercadolivre.com.br/authorization?response_type=code&client_id=5401911184235214&redirect_uri=${uriRedirect}/contas`;
     }
@@ -53,7 +42,7 @@ function Contas(props){
                             <div>
                                 <Link to={"/anuncios/"+value.id+"/"+undefined} className="btn-link">Anuncios</Link>
                                 &nbsp;&nbsp;  
-                                <button className="btn btn-danger btn-sm" onClick={event=>{event.preventDefault();axios.delete(dominio+'/meli/contas/'+value.idLocal);}}>Excluir</button>                       
+                                <button className="btn btn-danger btn-sm" onClick={event=>{event.preventDefault();axios.delete(process.env.REACT_APP_MELI_DOMAIN+'/meli/contas/'+value.idLocal);}}>Excluir</button>                       
                             </div>
                             {/* <Link to="/" className="link-danger">Perguntas</Link> */}
                         </div>                        

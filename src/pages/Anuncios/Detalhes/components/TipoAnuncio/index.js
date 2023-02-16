@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import LabelSelect from "../../../../../estrutura/LabelSelect";
 
 function TipoAnuncio(props){
@@ -7,12 +7,12 @@ function TipoAnuncio(props){
     const [values, setValues] = useState({tiposAnuncio:[]});
     const dominio = process.env.REACT_APP_MELI_DOMAIN
     
-    const setTiposAnuncio = async() => setValues({
+    const setTiposAnuncio = useCallback(async() => setValues({
         ...values, 
         tiposAnuncio: (await axios.get(dominio+'/meli/contas/'+props.conta.id+'/'+props.categoria)).data
-    })
+    }),[dominio, props.categoria, props.conta.id, values])
 
-    useEffect(() => setTiposAnuncio(), [props.categoria]);
+    useEffect(() => setTiposAnuncio(), [props.categoria, setTiposAnuncio]);
 
     return(  
         <>  

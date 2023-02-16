@@ -8,25 +8,18 @@ import LabelInput from "../../../estrutura/LabelInput";
 
 function Listagem(){
     const [values, setValues] = useState({anuncios:[]});   
-    const dominio = process.env.REACT_APP_MELI_DOMAIN
-    let { id, sku } = useParams();        
-    
-    const setAnuncios = async () => {
-        sku=sku==='undefined'?'':sku
-        setValues({
-            ...values, sku, id, 
-            anuncios:(await axios.get(dominio+'/meli/anuncios/list/'+id+'?sku='+sku)).data
-        })
-    };    
+    let { id, sku } = useParams();             
 
-    useEffect(() => setAnuncios());   
+    useEffect(() =>         
+        axios.get(process.env.REACT_APP_MELI_DOMAIN+'/meli/anuncios/list/'+id+'?sku='+sku==='undefined'?'':sku).then(res => setValues({anuncios:res.data}))
+    , [id, sku]);   
 
     return (
         <>
             <ul>
                 <div>      
                     <LabelInput disabled={false} label="Anuncios diversos" id="diversos" type="text" onChange={diversos => setValues({...values, diversos})}/>                    
-                    <button className="btn btn-sm btn-primary" onClick={async event=>{event.preventDefault(); setValues({...values,anuncios:(await axios.get(dominio+'/meli/anuncios?q='+values.diversos)).data.map(x=>{ return {body:x}})})}}>Buscar</button>
+                    <button className="btn btn-sm btn-primary" onClick={async event=>{event.preventDefault(); setValues({...values,anuncios:(await axios.get(process.env.REACT_APP_MELI_DOMAIN+'/meli/anuncios?q='+values.diversos)).data.map(x=>{ return {body:x}})})}}>Buscar</button>
                     <Link to={"/anuncios/detalhes/"+0+"/"+0} className="btn btn-sm btn-primary">
                             Publicar
                     </Link>                    
@@ -60,8 +53,8 @@ function Listagem(){
                                         <Link to={"/anuncios/detalhes/"+value.body.id+"/"+(value.body.seller_id?value.body.seller_id:0)}>
                                             <Button className="btn btn-primary btn-sm">Detalhes</Button>
                                         </Link> 
-                                        {value.body.status==="active"?<button onClick={event=>{event.preventDefault();axios.put(dominio+'/meli/anuncios/'+value.body.seller_id+'/'+value.body.id, {status:"paused"}).then(r=>alert("Deu"))}} className="btn btn-warning btn-sm">Pausar</button>:<button className="btn btn-info btn-sm" onClick={event=>{event.preventDefault();axios.put(dominio+'/meli/anuncios/'+value.body.seller_id+'/'+value.body.id, {status:"active"}).then(r=>alert("Deu"))}}>Ativar</button>}                                                                             
-                                        <button onClick={event=>{event.preventDefault();axios.put(dominio+'/meli/anuncios/'+value.body.seller_id+'/'+value.body.id, {status:"closed"}).then(r=>axios.put(dominio+'/meli/anuncios/'+value.body.seller_id+'/'+value.body.id, {deleted:"true"}).then(r=>alert("Deu")))}} className="btn btn-danger btn-sm">Excluir</button>   
+                                        {value.body.status==="active"?<button onClick={event=>{event.preventDefault();axios.put(process.env.REACT_APP_MELI_DOMAIN+'/meli/anuncios/'+value.body.seller_id+'/'+value.body.id, {status:"paused"}).then(r=>alert("Deu"))}} className="btn btn-warning btn-sm">Pausar</button>:<button className="btn btn-info btn-sm" onClick={event=>{event.preventDefault();axios.put(process.env.REACT_APP_MELI_DOMAIN+'/meli/anuncios/'+value.body.seller_id+'/'+value.body.id, {status:"active"}).then(r=>alert("Deu"))}}>Ativar</button>}                                                                             
+                                        <button onClick={event=>{event.preventDefault();axios.put(process.env.REACT_APP_MELI_DOMAIN+'/meli/anuncios/'+value.body.seller_id+'/'+value.body.id, {status:"closed"}).then(r=>axios.put(process.env.REACT_APP_MELI_DOMAIN+'/meli/anuncios/'+value.body.seller_id+'/'+value.body.id, {deleted:"true"}).then(r=>alert("Deu")))}} className="btn btn-danger btn-sm">Excluir</button>   
                                     </div>
                                 </div>
                             

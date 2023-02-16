@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useLayoutEffect, useState } from "react";
 import { useParams } from "react-router";
 import axios from "axios";
 import { FcCheckmark, FcHighPriority } from "react-icons/fc";
@@ -25,7 +25,7 @@ function Detalhes(){
     
     const setVisits = () => axios.get(dominio+'/meli/anuncios/visits/'+userId+'/'+idAnuncio).then(r => setValues({...values, visits: r.data[idAnuncio]}));
 
-    const setAnuncio = async(idAnuncio, userId)=> {          
+    const setAnuncio = useCallback(async() => {      
         if(idAnuncio==="0"){setValues({...values, loader:false}); return}
         setVisits();
         var anuncio = (await axios.get(dominio+'/meli/anuncios/'+idAnuncio+'?userId='+userId)).data;                          
@@ -34,9 +34,9 @@ function Detalhes(){
         var d = (await axios.get(dominio+'/meli/atributos/'+anuncio.category_id)).data.filter(x=>anuncio.attributes.filter(y=>y.id===x.id).length>0);
         anuncio.attributes = d.map(x=> { var {value_id, value_name} = anuncio.attributes.filter(y=>y.id===x.id)[0]; return {...x, value_id, value_name}})            
         setValues({...values, anuncio, disabled:true, editar:false, loader:false});         
-    }
+    },[dominio, idAnuncio, userId, values])
 
-    useEffect(() => setAnuncio(idAnuncio, userId), [idAnuncio, userId]);
+    useLayoutEffect(() => setAnuncio(), []);
 
     const setAtributo = attributes => setValues({...values, anuncio: {...values.anuncio, attributes}})              
 
@@ -78,8 +78,8 @@ function Detalhes(){
 
         <>       
             {values.loader?<div style={{ position: "absolute", width:"100%", height:"100%", backgroundColor:"white", zIndex:"1000" }}>
-                <div class="spinner-border p-5" style={{width: "3rem",height: "3rem", margin:"10% 0 0 30%"}} role="status">
-                    <span class="visually-hidden">Loading...</span>
+                <div className="spinner-border p-5" style={{width: "3rem",height: "3rem", margin:"10% 0 0 30%"}} role="status">
+                    <span className="visually-hidden">Loading...</span>
                 </div>                 
             </div>: 
             <>           

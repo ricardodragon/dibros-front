@@ -5,15 +5,25 @@ import LabelInput from "../../estrutura/LabelInput";
 
 function Usuarios(){
 
-    const [values, setValues] = useState({usuarios:[], usuario:{}})
-    const dominio = process.env.REACT_APP_MELI_DOMAIN;
+    const [values, setValues] = useState({usuarios:[], usuario:{email:"", username:"", password:""}})    
+    
+    useEffect(() => 
+        axios.get(process.env.REACT_APP_MELI_DOMAIN+"/auth/usuarios/all").then(usuarios => {setValues({usuarios:usuarios.data, usuario:{email:"", username:"", password:""}});}), 
+    []);
 
-    const setUsuarios = async() => setValues({...values,usuarios:(await axios.get(dominio+"/auth/usuarios/all")).data})
-    useEffect(() => setUsuarios());
+    const submit = event => {
+        event.preventDefault();
+        values.usuario.id?
+            axios.put(process.env.REACT_APP_MELI_DOMAIN+"/auth/usuarios", values.usuario).then(res => 
+                axios.get(process.env.REACT_APP_MELI_DOMAIN+"/auth/usuarios/all").then(usuarios => {setValues({usuarios:usuarios.data, usuario:{email:"", username:"", password:""}});})):
+            axios.post(process.env.REACT_APP_MELI_DOMAIN+"/auth/usuarios", values.usuario).then(res => 
+                axios.get(process.env.REACT_APP_MELI_DOMAIN+"/auth/usuarios/all").then(usuarios => {setValues({usuarios:usuarios.data, usuario:{email:"", username:"", password:""}});}))
+        
+    }
 
     return (
         <div className="p-2">            
-            <form className="mb-4" onSubmit={event => {event.preventDefault();values.usuario.id?axios.put(dominio+"/auth/usuarios", values.usuario).then(r=>setUsuarios()):axios.post(dominio+"/auth/usuarios", values.usuario).then(r=>setUsuarios())}}>                
+            <form className="mb-4" onSubmit={submit}>                
                 <fieldset id="usuario" className="p-2" style={{overflow:"hidden"}}>
                     <legend>{values.usuario.id?"Editar":"Criar"} Usuário</legend>
                     {values.usuario.id?<h1>{values.usuario.id}</h1>:""}
@@ -38,13 +48,13 @@ function Usuarios(){
                     </thead> 
                     <tbody>                
                         {values.usuarios.map((u,index)=>
-                            <tr>
+                            <tr key={u.id}>
                                 <th scope="row">{index}</th>
                                 <td>{u.email}</td>
                                 <td>{u.username}</td>
                                 <td>{u.role}</td>
                                 <td>{u.role!=="ADMIN"?<button className="btn btn-sm btn-primary" onClick={event=>{event.preventDefault();setValues({...values, usuario:u})}}>Editar</button>:""}</td>
-                                <td>{u.role!=="ADMIN"?<button className="btn btn-sm btn-danger" onClick={event=>{event.preventDefault();axios.delete(dominio+"/usuario/"+u.id).then(r=>setUsuarios())}}>X</button>:""}</td>
+                                <td>{u.role!=="ADMIN"?<button className="btn btn-sm btn-danger" onClick={event=>{event.preventDefault();axios.delete(process.env.REACT_APP_MELI_DOMAIN+"/usuario/"+u.id)}}>X</button>:""}</td>
                             </tr>
                         )}               
                     </tbody>    
