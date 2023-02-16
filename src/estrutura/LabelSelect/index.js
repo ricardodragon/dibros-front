@@ -5,7 +5,7 @@ function LabelSelect(props){
         <div>           
             <label className="p-1" htmlFor={props.id}>{props.label}</label>
             <select required={props.required} className='form-control form-control-sm' disabled={props.disabled} onChange={(event) => {event.preventDefault();props.onChange(event.target.value)}} id={props.id}>                                                            
-                <option selected></option>
+                <option></option>
                 {   
                     props.lista.map((value, index) => {                        
                         return (
