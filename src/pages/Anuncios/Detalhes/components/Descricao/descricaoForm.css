@@ -1,9 +1,0 @@
-.seta-baixo-descricao, .conteudo-descricao-form, #check-descricao-fieldset,
-#check-descricao-fieldset:checked ~ .seta-direita-descricao{
-    display: none;
-}
-
-#check-descricao-fieldset:checked ~ .seta-baixo-descricao,
-#check-descricao-fieldset:checked ~ .conteudo-descricao-form{    
-    display: unset;
-}
