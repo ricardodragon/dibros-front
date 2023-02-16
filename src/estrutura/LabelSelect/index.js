@@ -9,7 +9,7 @@ function LabelSelect(props){
                 {   
                     props.lista.map((value, index) => {                        
                         return (
-                            <option key={index} selected={value.selected} value={index}>{value.name}</option>
+                            <option key={index} value={index}>{value.name}</option>
                         )
                     })
                 }

@@ -17,12 +17,12 @@ function Detalhes(){
     
     const {idAnuncio, userId} = useParams();  
 
-    const [values, setValues] = useState({anuncio:{title:'', variations:[]}, disable: true, loader:true});                  
+    const [values, setValues] = useState({anuncio:{title:'', price:0, available_quantity:0, variations:[], attributes:[], category_id:''}, disable: true, loader:true});                  
     
     const setVisits = () => axios.get(process.env.REACT_APP_MELI_DOMAIN+'/meli/anuncios/visits/'+userId+'/'+idAnuncio).then(r => setValues({...values, visits: r.data[idAnuncio]}));
 
     const setAnuncio = useCallback(()=>{        
-        if(idAnuncio==="0"){setValues({anuncio:{title:'', variations:[]}, loader:false, disable: false}); return}
+        if(idAnuncio==="0"){setValues({anuncio:{title:'', price:0, available_quantity:0, attributes:[], variations:[]}, loader:false, disable: false}); return}
         axios.get(process.env.REACT_APP_MELI_DOMAIN+'/meli/anuncios/'+idAnuncio+'?userId='+userId)
             .then(anuncio=> {
                 anuncio.data.variations = anuncio.data.variations?.map(v=>{return{...v, picture_ids:anuncio.data.pictures.filter(p=>v.picture_ids.includes(p.id))}});
@@ -107,18 +107,19 @@ function Detalhes(){
                 <Imagens  disabled={values.disabled} value={values.anuncio.pictures} onChange={pictures=>setValues({...values, anuncio: {...values.anuncio, pictures}})}/>                                                                                                                                                  
                 <h5 className="h3">Variações</h5>                                                      
                 <div className="row" style={{padding:'1.5em'}}>                      
-                    <div className="col"><label>Total</label><p className="fw-bolder">{(values.anuncio.variations?values.anuncio.variations.length:0)+" Variações"}</p><input value="+" className="btn btn-sm btn-primary mb-4 p-1" onClick={(event)=>{event.preventDefault();setValues({...values, anuncio:{...values.anuncio, variations:values.anuncio.variations.concat({attribute_combinations:values.anuncio.variations.length>0?values.anuncio.variations[0].attribute_combinations.map(a=>{return {...a,value_name:'', value_id:''}}):[], attributes:[], available_quantity:0, picture_ids:[], price:0, sold_quantity:0})}})}}/></div>
+                    <div className="col"><label>Total</label><p className="fw-bolder">{(values.anuncio.variations?values.anuncio.variations.length:0)+" Variações"}</p><input readOnly={true} value="+" className="btn btn-sm btn-primary mb-4 p-1" onClick={(event)=>{event.preventDefault();setValues({...values, anuncio:{...values.anuncio, variations:values.anuncio.variations.concat({attribute_combinations:values.anuncio.variations.length>0?values.anuncio.variations[0].attribute_combinations.map(a=>{return {...a,value_name:'', value_id:''}}):[], attributes:[], available_quantity:0, picture_ids:[], price:0, sold_quantity:0})}})}}/></div>
                     <div className="col"><label>Quantidade</label><p className="fw-bolder">{values.anuncio.variations&&values.anuncio.variations.length>0?values.anuncio.variations.map(v=>parseInt(v.available_quantity)).reduce((prev, next)=>(prev+next)):0} Itens</p> </div>
                     <h5 style={{textAlign:"center"}}>Atributos da Variação</h5>                    
                     <hr/>
                     {values.anuncio.variations?
                         <><AtributosVariacoes disabled={values.disabled} categoria={values.anuncio.category_id} attribute_combinations={values.anuncio.variations&&values.anuncio.variations.length>0?values.anuncio.variations[0].attribute_combinations:[]} onChange={onChangeAttributeCombinations}/>                        
-                        <LabelInput value={values.anuncio.variations.length>0?values.anuncio.variations[0].price:values.anuncio.price   } disabled={values.disabled}  label="Preço : " id="variations-price" type="number" step="0.1" placeholder="Alterar todos" onChange={price=>setValues({...values, anuncio:{...values.anuncio, variations:values.anuncio.variations.map(v=>{return{...v, price}})}})}/>                                                                                                                                             
+                        <LabelInput value={values.anuncio.variations.length>0?values.anuncio.variations[0].price:values.anuncio.price} disabled={values.disabled}  label="Preço : " id="variations-price" type="number" step="0.1" placeholder="Alterar todos" onChange={price=>setValues({...values, anuncio:{...values.anuncio, variations:values.anuncio.variations.map(v=>{return{...v, price}})}})}/>                                                                                                                                             
                         <LabelInput value={values.qtd} disabled={values.disabled}  label="Quantidades : " id="variations-price" type="number" step="0.1" placeholder="Alterar todos" onChange={available_quantity=>setValues({...values,qtd:available_quantity, anuncio:{...values.anuncio, variations:values.anuncio.variations.map(v=>{return{...v, available_quantity}})}})}/>                                                                                                                                             
                         {values.anuncio.variations.length>0?<><label htmlFor="sort">Ordenar por : </label><select defaultValue={"Ola"} id="sort" className='col form-control form-control-sm' disabled={values.disabled} onChange={event=>{event.preventDefault();sort(values.variations, event.target.value)}}><option ></option>{values.anuncio.variations[0].attribute_combinations.map((x, i)=><option key={i} value={x.name}>{x.name}</option>)}</select></>:""}
-                        <Variacoes disabled={values.disabled} variations={values.anuncio.variations} categoria={values.anuncio.category_id} onChange={setVariation}/></>:undefined}
+                        <Variacoes disabled={values.disabled} variations={values.anuncio.variations} categoria={values.anuncio.category_id} onChange={setVariation}/>
+                        </>:undefined}
                 </div>                
-                {!values.disabled?<input disabled={!values.contas} style={{float:"right", }} className="btn btn-sm btn-success" type="submit" value="Enviar"/>:null}                                                                                                                     
+                {!values.disabled?<input disabled={!values.contas} style={{float:"right", }} className="btn btn-sm btn-success" type="submit" value="Enviar"/>:null}                                                                                                                      
             </form> 
         </>        
     )

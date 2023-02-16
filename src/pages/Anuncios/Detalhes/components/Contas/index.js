@@ -27,7 +27,7 @@ function Contas(props){
         <>  
             <h5 className="h3">Conta</h5>
             <div style={{padding:'1.5em'}}>
-                <LabelInput lassName="form-control" required label={props.label} placeholder="Digite a conta" id="conta" list="contas" type="text" onChange={setConta}/>            
+                <LabelInput className="form-control" value={""} required label={props.label} placeholder="Digite a conta" id="conta" list="contas" type="text" onChange={setConta}/>            
                 <datalist id="contas">                    
                     {               
                         values.contas.map((value, index) => 

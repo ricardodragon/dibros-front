@@ -21,13 +21,13 @@ function Variacoes(props){
             {props.variations.map((variacao, index) =>                
                 <div key={index} className="border rounded m-3 p-2">                    
                     <button disabled={props.disabled} className="col-12 btn btn-sm btn-link" onClick={(event)=>{event.preventDefault();addIndex(JSON.parse(JSON.stringify(variacao)), index-1<0?index:index-1)}}>+acima</button>                                                                                                                                                                                                                                                                                                                                                                                                                               
-                    {variacao.attribute_combinations.map((atributo, i) =>                                   
-                        <LabelInput required={true}
-                            key={i} 
-                            disabled={props.disabled}
+                    {variacao.attribute_combinations.map((atributo, i) => {                               
+                        return <LabelInput required={true}
+                            key={i} disabled={props.disabled}
                             value={atributo.value_name} label={atributo.name?atributo.name:atributo.id} 
                             id={(atributo.id?atributo.id:atributo.name)+index} type="text" 
                             onChange={value=>setAtributoValue(i, index, value)}/>                                                            
+                    }
                     )}     
                     <div className="col">
                         <LabelInput 
@@ -37,7 +37,7 @@ function Variacoes(props){
                             onChange={available_quantity=>props.onChange(props.variations.map((v,i)=>i===index?{...v, available_quantity}:v))}/>
                     </div>      
                     <LabelInput disabled={props.disabled}
-                            value={variacao.seller_custom_field} label={"SKU"} 
+                            value={variacao.seller_custom_field?variacao.seller_custom_field:""} label={"SKU"} 
                             id={variacao.seller_custom_field} type="text" onChange={seller_custom_field=>props.onChange(props.variations.map((v,i)=>i===index?{...v, seller_custom_field}:v))}/>                              
                     <Imagens
                         disabled={props.disabled}
