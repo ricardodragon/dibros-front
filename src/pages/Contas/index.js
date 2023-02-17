@@ -20,7 +20,7 @@ function Contas(props){
     }, [code, values.contas]);
 
     const redirectMeli = () => {                
-        const uriRedirect = 'https://speed-store.ddns.net:3000'
+        const uriRedirect = 'https://dibros.up.railway.app/'
         window.location.href = `http://auth.mercadolivre.com.br/authorization?response_type=code&client_id=5401911184235214&redirect_uri=${uriRedirect}/contas`;
     }
 
