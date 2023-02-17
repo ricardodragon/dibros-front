@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { useParams } from "react-router-dom";
 import { FcCheckmark, FcHighPriority } from "react-icons/fc";
 // import { MdRefresh } from "react-icons/md";
@@ -12,10 +12,11 @@ import Imagens from "./components/Imagens";
 import Contas from "./components/Contas";
 
 import "./detalhes.css"
+import axios from "axios";
 
 function Detalhes(){
 
-    const { userId} = useParams(); 
+    const { idAnuncio, userId} = useParams(); 
     
     
     const [values, setValues] = useState({anuncio:{title:'', price:0, available_quantity:0, variations:[], attributes:[], category_id:''}, disable: true, loader:false});                  
