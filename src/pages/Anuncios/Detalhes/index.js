@@ -1,8 +1,8 @@
 import { useState } from "react"
 import { useParams } from "react-router-dom";
 // import axios from "axios";
-import { FcCheckmark, FcHighPriority } from "react-icons/fc";
-import { MdRefresh } from "react-icons/md";
+// import { FcCheckmark, FcHighPriority } from "react-icons/fc";
+// import { MdRefresh } from "react-icons/md";
 import LabelInput from "../../../estrutura/LabelInput";
 import TipoAnuncio from "./components/TipoAnuncio";
 import Categorias from "./components/Categorias";
@@ -46,10 +46,10 @@ function Detalhes(){
             </div>                 
         </div>:   
         <>
-            <div className={"alert alert-success "+(values.ok?"":"visually-hidden")} role="alert"><FcCheckmark/> Anuncio enviado com sucesso</div>
+            {/* <div className={"alert alert-success "+(values.ok?"":"visually-hidden")} role="alert"><FcCheckmark/> Anuncio enviado com sucesso</div>
             <div className={"alert alert-danger "+(values.erro?"":"visually-hidden")} role="alert"><FcHighPriority/>Erro: {values.erro}</div>
             <LabelInput readonly={true} label="Visitas" disabled={true} value={0}/>
-            <button className="btn btn-sm btn-success" onClick={event=>{event.preventDefault();}}><MdRefresh/></button>                                                                                                                                                    
+            <button className="btn btn-sm btn-success" onClick={event=>{event.preventDefault();}}><MdRefresh/></button>                                                                                                                                                     */}
             <form onSubmit={event => {event.preventDefault();}}> 
                 <div className="d-flex justify-content-end">
                     {!values.disabled?<button className="btn btn-secondary" onClick={event=>{event.preventDefault();}}>Redefinir</button>:null}            
