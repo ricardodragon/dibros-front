@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { useParams } from "react-router-dom";
 import LabelInput from "../../../estrutura/LabelInput";
 import TipoAnuncio from "./components/TipoAnuncio";
@@ -10,13 +10,27 @@ import Categorias from "./components/Categorias";
 import Contas from "./components/Contas";
 
 import "./detalhes.css"
+import axios from "axios";
 
 function Detalhes(){
 
-    const {userId} = useParams(); 
+    const {idAnuncio, userId} = useParams(); 
 
     const [values, setValues] = useState({anuncio:{title:'', price:0, available_quantity:0, variations:[], attributes:[], category_id:''}, disable: true, loader:true});                  
-    
+
+    const setAnuncio = useCallback(()=>{        
+        if(idAnuncio==="0"){setValues({anuncio:{title:'', price:0, available_quantity:0, attributes:[], variations:[]}, loader:false, disable: false}); return}
+        axios.get(process.env.REACT_APP_MELI_DOMAIN+'/meli/anuncios/'+idAnuncio+'?userId='+userId)
+            .then(anuncio=> {
+                anuncio.data.variations = anuncio.data.variations?.map(v=>{return{...v, picture_ids:anuncio.data.pictures.filter(p=>v.picture_ids.includes(p.id))}});
+                anuncio.data.pictures = anuncio.data.pictures?.filter(p => anuncio.data.variations.filter(v => v.picture_ids.map(pi=>pi.id).includes(p.id)).length===0)                        
+                axios.get(process.env.REACT_APP_MELI_DOMAIN+'/meli/atributos/'+anuncio.data.category_id)
+                    .then(res => {anuncio.data.attributes = res.data.map(x=> { if(anuncio.data.attributes.filter(y=>y.id===x.id).length){ const {value_id, value_name} = anuncio.data.attributes.filter(y=>y.id===x.id)[0]; return {...x, value_id, value_name}}else return x});setValues({anuncio:anuncio.data, disable: false, loader:false})})                
+            })
+    }, [idAnuncio, userId])
+
+    useEffect(()=> { setAnuncio() },[setAnuncio])
+
     const habilitarEdicao = event=>{event.preventDefault();setValues({...values, editar:true, disabled:!values.disabled})}
     const habilitarReplica = event=>{event.preventDefault();setValues({...values, editar:false, disabled:!values.disabled})}    
 
