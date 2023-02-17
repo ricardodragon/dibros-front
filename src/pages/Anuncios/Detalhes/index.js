@@ -5,7 +5,7 @@ import { FcCheckmark, FcHighPriority } from "react-icons/fc";
 import LabelInput from "../../../estrutura/LabelInput";
 import TipoAnuncio from "./components/TipoAnuncio";
 import Categorias from "./components/Categorias";
-// import Atributos from "./components/Atributos";
+import Atributos from "./components/Atributos";
 import Imagens from "./components/Imagens";
 // import AtributosVariacoes from "./components/AtributosVariacoes";
 // import Variacoes from "./components/Variacoes";
@@ -37,7 +37,7 @@ function Detalhes(){
 
     const habilitarEdicao = event=>{event.preventDefault();setValues({...values, editar:true, disabled:!values.disabled})}
     const habilitarReplica = event=>{event.preventDefault();setValues({...values, editar:false, disabled:!values.disabled})}    
-    // const setAtributo = attributes => setValues({...values, anuncio: {...values.anuncio, attributes}});
+    const setAtributo = attributes => setValues({...values, anuncio: {...values.anuncio, attributes}});
     const sort = (v, name, fator=1) => setValues({...values, anuncio: {...values.anuncio, variations:[].concat(values.anuncio.variations).sort((a, b) =>(a["attribute_combinations"].filter(x=>x.name===name)[0].value_name).localeCompare(b["attribute_combinations"].filter(x=>x.name===name)[0].value_name)*fator).reverse()}})
     // const setVariation = (variations) => setValues({...values, anuncio: {...values.anuncio, variations}})
 
@@ -77,7 +77,7 @@ function Detalhes(){
                     </>:undefined}
                 </div>
                 <hr/>   
-                {/* <Atributos disabled={values.disabled} value={values.anuncio.attributes} categoria={values.anuncio.category_id} onChange={setAtributo}/>                             */}
+                <Atributos disabled={values.disabled} value={values.anuncio.attributes} categoria={values.anuncio.category_id} onChange={setAtributo}/>                            
                                     
                 <h5 className="h3">Imagens</h5>
                 <Imagens  disabled={values.disabled} value={values.anuncio.pictures} onChange={pictures=>setValues({...values, anuncio: {...values.anuncio, pictures}})}/>                                                                                                                                                  
