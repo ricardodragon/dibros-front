@@ -11,7 +11,7 @@ function Listagem(){
     let { id, sku } = useParams();             
 
     useEffect(() =>         
-        axios.get(process.env.REACT_APP_MELI_DOMAIN+'/meli/anuncios/list/'+id+'?sku='+sku==='undefined'?'':sku).then(res => setValues({anuncios:res.data}))
+        axios.get(process.env.REACT_APP_MELI_DOMAIN+'/meli/anuncios/list/'+id+'?sku='+(sku === "undefined"?'':sku)).then(res => setValues({anuncios:res.data}))
     , [id, sku]);   
 
     return (
