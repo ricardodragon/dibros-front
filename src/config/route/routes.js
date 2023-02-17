@@ -5,7 +5,7 @@ import PrivateRoutes from "./private-routes";
 import Usuarios from "../../pages/Usuarios"
 import Contas from "../../pages/Contas"
 import Produtos from "../../pages/Produtos";
-import Detalhes from "../../pages/Anuncios/Detalhes";
+// import Detalhes from "../../pages/Anuncios/Detalhes";
 import Listagem from "../../pages/Anuncios/Listagem";
 
 const Routes = ()=>(
