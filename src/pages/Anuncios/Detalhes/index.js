@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useParams } from "react-router-dom";
 import { FcCheckmark, FcHighPriority } from "react-icons/fc";
-import { MdRefresh } from "react-icons/md";
+// import { MdRefresh } from "react-icons/md";
 import LabelInput from "../../../estrutura/LabelInput";
 import TipoAnuncio from "./components/TipoAnuncio";
 import Categorias from "./components/Categorias";
@@ -12,13 +12,12 @@ import Categorias from "./components/Categorias";
 import Contas from "./components/Contas";
 
 import "./detalhes.css"
-import axios from "axios";
 
 function Detalhes(){
 
-    const { idAnuncio, userId} = useParams(); 
+    const { userId} = useParams(); 
     
-    const setVisits = () => axios.get(process.env.REACT_APP_MELI_DOMAIN+'/meli/anuncios/visits/'+userId+'/'+idAnuncio).then(r => setValues({...values, visits: r.data[idAnuncio]}));
+    //const setVisits = () => axios.get(process.env.REACT_APP_MELI_DOMAIN+'/meli/anuncios/visits/'+userId+'/'+idAnuncio).then(r => setValues({...values, visits: r.data[idAnuncio]}));
     
     const [values, setValues] = useState({anuncio:{title:'', price:0, available_quantity:0, variations:[], attributes:[], category_id:''}, disable: true, loader:false});                  
     
@@ -34,8 +33,8 @@ function Detalhes(){
         <>
             <div className={"alert alert-success "+(values.ok?"":"visually-hidden")} role="alert"><FcCheckmark/> Anuncio enviado com sucesso</div>
             <div className={"alert alert-danger "+(values.erro?"":"visually-hidden")} role="alert"><FcHighPriority/>Erro: {values.erro}</div>
-            <LabelInput readonly={true} label="Visitas" disabled={true} value={0}/>
-            <button className="btn btn-sm btn-success" onClick={event=>{event.preventDefault();setVisits()}}><MdRefresh/></button>                                                                                                                                                    
+            {/* <LabelInput readonly={true} label="Visitas" disabled={true} value={0}/> */}
+            {/* <button className="btn btn-sm btn-success" onClick={event=>{event.preventDefault();setVisits()}}><MdRefresh/></button>                                                                                                                                                     */}
             <form onSubmit={event => {event.preventDefault();}}> 
                 <div className="d-flex justify-content-end">
                     {!values.disabled?<button className="btn btn-secondary" onClick={event=>{event.preventDefault();}}>Redefinir</button>:null}            
