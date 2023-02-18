@@ -1,14 +1,14 @@
 import { useCallback, useEffect, useState } from "react"
 import { useParams } from "react-router-dom";
 import { FcCheckmark, FcHighPriority } from "react-icons/fc";
-import { MdRefresh } from "react-icons/md";
+// import { MdRefresh } from "react-icons/md";
 import LabelInput from "../../../estrutura/LabelInput";
 import TipoAnuncio from "./components/TipoAnuncio";
 import Categorias from "./components/Categorias";
 import Atributos from "./components/Atributos";
 import Imagens from "./components/Imagens";
 // import AtributosVariacoes from "./components/AtributosVariacoes";
-// import Variacoes from "./components/Variacoes";
+import Variacoes from "./components/Variacoes";
 import Contas from "./components/Contas";
 
 import "./detalhes.css"
@@ -32,14 +32,14 @@ function Detalhes(){
         })
     }, [idAnuncio, userId])
     
-    const setVisits = () => axios.get(process.env.REACT_APP_MELI_DOMAIN+'/meli/anuncios/visits/'+userId+'/'+idAnuncio).then(r => setValues({...values, visits: r.data[idAnuncio]}));
+    //const setVisits = () => axios.get(process.env.REACT_APP_MELI_DOMAIN+'/meli/anuncios/visits/'+userId+'/'+idAnuncio).then(r => setValues({...values, visits: r.data[idAnuncio]}));
     useEffect(()=> { setAnuncio() },[setAnuncio])
 
     const habilitarEdicao = event=>{event.preventDefault();setValues({...values, editar:true, disabled:!values.disabled})}
     const habilitarReplica = event=>{event.preventDefault();setValues({...values, editar:false, disabled:!values.disabled})}    
     const setAtributo = attributes => setValues({...values, anuncio: {...values.anuncio, attributes}});
     const sort = (v, name, fator=1) => setValues({...values, anuncio: {...values.anuncio, variations:[].concat(values.anuncio.variations).sort((a, b) =>(a["attribute_combinations"].filter(x=>x.name===name)[0].value_name).localeCompare(b["attribute_combinations"].filter(x=>x.name===name)[0].value_name)*fator).reverse()}})
-    // const setVariation = (variations) => setValues({...values, anuncio: {...values.anuncio, variations}})
+    const setVariation = (variations) => setValues({...values, anuncio: {...values.anuncio, variations}})
 
     // const onChangeAttributeCombinations = (value, index)=> {        
     //     const variations = values.anuncio.variations;
@@ -57,8 +57,8 @@ function Detalhes(){
         <>
             <div className={"alert alert-success "+(values.ok?"":"visually-hidden")} role="alert"><FcCheckmark/> Anuncio enviado com sucesso</div>
             <div className={"alert alert-danger "+(values.erro?"":"visually-hidden")} role="alert"><FcHighPriority/>Erro: {values.erro}</div>
-            <LabelInput readonly={true} label="Visitas" disabled={true} value={0}/>
-            <button className="btn btn-sm btn-success" onClick={event=>{event.preventDefault();setVisits()}}><MdRefresh/></button>                                                                                                                                                    
+            {/* <LabelInput readonly={true} label="Visitas" disabled={true} value={0}/> */}
+            {/* <button className="btn btn-sm btn-success" onClick={event=>{event.preventDefault();setVisits()}}><MdRefresh/></button>                                                                                                                                                     */}
             <form onSubmit={event => {event.preventDefault();}}> 
                 <div className="d-flex justify-content-end">
                     {!values.disabled?<button className="btn btn-secondary" onClick={event=>{event.preventDefault();}}>Redefinir</button>:null}            
@@ -93,7 +93,7 @@ function Detalhes(){
                         <LabelInput value={values.anuncio.variations.length>0?values.anuncio.variations[0].price:values.anuncio.price} disabled={values.disabled}  label="Preço : " id="variations-price" type="number" step="0.1" placeholder="Alterar todos" onChange={price=>setValues({...values, anuncio:{...values.anuncio, variations:values.anuncio.variations.map(v=>{return{...v, price}})}})}/>                                                                                                                                             
                         <LabelInput value={values.qtd} disabled={values.disabled}  label="Quantidades : " id="variations-price" type="number" step="0.1" placeholder="Alterar todos" onChange={available_quantity=>setValues({...values,qtd:available_quantity, anuncio:{...values.anuncio, variations:values.anuncio.variations.map(v=>{return{...v, available_quantity}})}})}/>                                                                                                                                             
                         {values.anuncio.variations.length>0?<><label htmlFor="sort">Ordenar por : </label><select defaultValue={"Ola"} id="sort" className='col form-control form-control-sm' disabled={values.disabled} onChange={event=>{event.preventDefault();sort(values.variations, event.target.value)}}><option ></option>{values.anuncio.variations[0].attribute_combinations.map((x, i)=><option key={i} value={x.name}>{x.name}</option>)}</select></>:""}
-                        {/* <Variacoes disabled={values.disabled} variations={values.anuncio.variations} categoria={values.anuncio.category_id} onChange={setVariation}/> */}
+                        <Variacoes disabled={values.disabled} variations={values.anuncio.variations} categoria={values.anuncio.category_id} onChange={setVariation}/>
                         </>:undefined}
                 </div>                
                 {!values.disabled?<input disabled={!values.contas} style={{float:"right", }} className="btn btn-sm btn-success" type="submit" value="Enviar"/>:null}                                                                                                                                              
