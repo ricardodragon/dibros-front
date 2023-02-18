@@ -7,7 +7,7 @@ import TipoAnuncio from "./components/TipoAnuncio";
 import Categorias from "./components/Categorias";
 import Atributos from "./components/Atributos";
 import Imagens from "./components/Imagens";
-// import AtributosVariacoes from "./components/AtributosVariacoes";
+import AtributosVariacoes from "./components/AtributosVariacoes";
 import Variacoes from "./components/Variacoes";
 import Contas from "./components/Contas";
 
@@ -41,11 +41,11 @@ function Detalhes(){
     const sort = (v, name, fator=1) => setValues({...values, anuncio: {...values.anuncio, variations:[].concat(values.anuncio.variations).sort((a, b) =>(a["attribute_combinations"].filter(x=>x.name===name)[0].value_name).localeCompare(b["attribute_combinations"].filter(x=>x.name===name)[0].value_name)*fator).reverse()}})
     const setVariation = (variations) => setValues({...values, anuncio: {...values.anuncio, variations}})
 
-    // const onChangeAttributeCombinations = (value, index)=> {        
-    //     const variations = values.anuncio.variations;
-    //     variations.forEach(v=>value?v.attribute_combinations[index]={...value, value_name:v.attribute_combinations[index]?v.attribute_combinations[index].value_name:''}:v.attribute_combinations = v.attribute_combinations.filter((x,i)=>i!==index))
-    //     setValues({...values, anuncio:{...values.anuncio, variations}});
-    // }      
+    const onChangeAttributeCombinations = (value, index)=> {        
+        const variations = values.anuncio.variations;
+        variations.forEach(v=>value?v.attribute_combinations[index]={...value, value_name:v.attribute_combinations[index]?v.attribute_combinations[index].value_name:''}:v.attribute_combinations = v.attribute_combinations.filter((x,i)=>i!==index))
+        setValues({...values, anuncio:{...values.anuncio, variations}});
+    }      
 
         
     return (               
@@ -57,7 +57,7 @@ function Detalhes(){
         <>
             <div className={"alert alert-success "+(values.ok?"":"visually-hidden")} role="alert"><FcCheckmark/> Anuncio enviado com sucesso</div>
             <div className={"alert alert-danger "+(values.erro?"":"visually-hidden")} role="alert"><FcHighPriority/>Erro: {values.erro}</div>
-            <LabelInput readonly={true} label="Visitas" disabled={true} value={0}/>
+            {/* <LabelInput readonly={true} label="Visitas" disabled={true} value={0}/> */}
             {/* <button className="btn btn-sm btn-success" onClick={event=>{event.preventDefault();setVisits()}}><MdRefresh/></button>                                                                                                                                                     */}
             <form onSubmit={event => {event.preventDefault();}}> 
                 <div className="d-flex justify-content-end">
