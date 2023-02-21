@@ -24,15 +24,13 @@ function Login(props) {
     
     const setUsuario = (event)=>
         setValues({...values,usuario:{...values.usuario,[event.target.name]:event.target.value}})    
-    //const dominio = "http://flex-connection.ddns.net:3030"
-    const dominio = process.env.REACT_APP_MELI_DOMAIN;
     
     const login = (event) => {
         event.preventDefault();
-        axios.post(dominio+'/auth/login', values.usuario)
+        axios.post(process.env.REACT_APP_MELI_DOMAIN+'/auth/login', values.usuario)
             .then(response => {
                 localStorage.setItem("token", response.headers['authorization']);                
-                axios.get(dominio+"/auth/usuarios").then(response =>{
+                axios.get(process.env.REACT_APP_MELI_DOMAIN+"/auth/usuarios").then(response =>{
                     localStorage.setItem("usuario", JSON.stringify(response.data));
                     props.history.replace("/");
                 })
