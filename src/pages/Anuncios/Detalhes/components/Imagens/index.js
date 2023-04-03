@@ -25,16 +25,14 @@ function Imagens(props){
 
     return(        
         <>                 
-            <div style={{padding:'1.5em'}}>                       
-                <input className="form-control form-control-sm m-2" accept="image/*" disabled={props.disabled} type="file" onChange={onChange}/>                                        
-                <div className="row">
-                    {values.pictures.map((imagem, index) =>{
-                        return<div key={index} className="row" style={{boxSizing:"content-box"}}>                        
-                            <img style={{height:'4em', width:'4em'}} src={imagem.url?imagem.url:imagem.variations[0].url} alt="" />
-                            <button disabled={props.disabled} className="w-100 btn btn-sm btn-danger" onClick={event=>{event.preventDefault();excluir(imagem.id);}}>X</button>
-                        </div>                     
-                    })}
-                </div>
+            <input className="form-control form-control-sm m-2" accept="image/*" disabled={props.disabled} type="file" onChange={onChange}/>                                        
+            <div style={{display: "flex"}}>
+                {values.pictures.map((imagem, index) =>{
+                    return<div key={index} className="row" style={{boxSizing:"content-box"}}>                        
+                        <img style={{height:'4em', width:'4em'}} src={imagem.url?imagem.url:imagem.variations[0].url} alt="" />
+                        <button disabled={props.disabled} className="w-100 btn btn-sm btn-danger" onClick={event=>{event.preventDefault();excluir(imagem.id);}}>X</button>
+                    </div>                     
+                })}
             </div>
             <hr/>
         </>

@@ -10,7 +10,7 @@ Atributos(props){
     //console.log((await axios.get(process.env.REACT_APP_MELI_DOMAIN+'/meli/atributos/'+props.categoria)).data.sort((a, b) => a.value_type.localeCompare(b.value_type)));
     useEffect(() => {
         if(props.categoria)
-            axios.get(process.env.REACT_APP_MELI_DOMAIN+'/meli/atributos/'+props.categoria).then(res => res.data.filter(x=>!props.value||props.value.filter(a=>a.id===x.id).length===0))
+            axios.get(process.env.REACT_APP_MELI_DOMAIN+'/meli/atributos/'+props.categoria).then(res => { res.data.filter(x=>!props.value||props.value.filter(a=>a.id===x.id).length===0);})
     },[props.categoria, props.value]);                                    
 
     const addAtributo = event => {

@@ -26,8 +26,7 @@ function Listagem(){
                 </div>
                 {   
                     values.anuncios.map((value, index) => {
-                        return (
-                            
+                        return (                            
                             <div key={index} className="card m-4" style={{maxWidth: "540px;"}}>  
                                 <div style={{display: "flex",alignItems: "center"}} onClick={event=>{event.preventDefault();window.open(value.body.permalink);}}>
                                     <figcaption className="foto-lista-anuncio">
@@ -47,17 +46,15 @@ function Listagem(){
                                         <div className="col-sm-12 col-md-6">
                                             <label>Última alteração</label>&nbsp;<span style={{fontWeight:"bold"}}>{new Date(value.body.last_updated).toLocaleString()}</span>                                            
                                         </div>
-                                    </div>                                    
-                                    
+                                    </div>                                                                        
                                     <div className="footer-card-link" style={{boxSizing:"content-box", padding:"1%"}}>
                                         <Link to={"/anuncios/detalhes/"+value.body.id+"/"+(value.body.seller_id?value.body.seller_id:0)}>
                                             <Button className="btn btn-primary btn-sm">Detalhes</Button>
                                         </Link> 
                                         {value.body.status==="active"?<button onClick={event=>{event.preventDefault();axios.put(process.env.REACT_APP_MELI_DOMAIN+'/meli/anuncios/'+value.body.seller_id+'/'+value.body.id, {status:"paused"}).then(r=>alert("Deu"))}} className="btn btn-warning btn-sm">Pausar</button>:<button className="btn btn-info btn-sm" onClick={event=>{event.preventDefault();axios.put(process.env.REACT_APP_MELI_DOMAIN+'/meli/anuncios/'+value.body.seller_id+'/'+value.body.id, {status:"active"}).then(r=>alert("Deu"))}}>Ativar</button>}                                                                             
                                         <button onClick={event=>{event.preventDefault();axios.put(process.env.REACT_APP_MELI_DOMAIN+'/meli/anuncios/'+value.body.seller_id+'/'+value.body.id, {status:"closed"}).then(r=>axios.put(process.env.REACT_APP_MELI_DOMAIN+'/meli/anuncios/'+value.body.seller_id+'/'+value.body.id, {deleted:"true"}).then(r=>alert("Deu")))}} className="btn btn-danger btn-sm">Excluir</button>   
-                                    </div>
-                                </div>
-                            
+                                    </div>                                    
+                                </div>                            
                             </div>
                         )
                     })
