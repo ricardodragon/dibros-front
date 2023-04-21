@@ -16,7 +16,7 @@ function menu(){
                         <Link to='/'><FcHome size={0}/><span className="menu-legenda">Home</span></Link> 
                     </li>
                     <li>
-                        <Link to='/contas'><FcCollaboration size={0}/><span className="menu-legenda">Contas</span></Link>
+                        <Link to='/meli/contas'><FcCollaboration size={0}/><span className="menu-legenda">Contas</span></Link>
                     </li>
                     {/* <li>
                         <Link to={'/anuncios/'+undefined}><FcBookmark size={0}/><span className="menu-legenda">Anúncios</span></Link>

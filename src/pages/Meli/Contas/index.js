@@ -40,7 +40,7 @@ function Contas(props){
                             <span className="header-card"><label>email: </label><span style={{fontWeight:"bold"}}>{value.email}</span></span>
                             <hr/>
                             <div>
-                                <Link to={"/anuncios/"+value.id+"/"+undefined} className="btn-link">Anuncios</Link>
+                                <Link to={"/meli/anuncios/"+value.id+"/"+undefined} className="btn-link">Anuncios</Link>
                                 &nbsp;&nbsp;  
                                 <button className="btn btn-danger btn-sm" onClick={event=>{event.preventDefault();axios.delete(process.env.REACT_APP_MELI_DOMAIN+'/meli/contas/'+value.idLocal);}}>Excluir</button>                       
                             </div>

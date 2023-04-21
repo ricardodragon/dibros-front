@@ -13,7 +13,7 @@ import Contas from "./components/Contas";
 import "./detalhes.css"
 import axios from "axios";
 
-function Detalhes(){
+function Anuncio(){
 
     const { idAnuncio, userId} = useParams(); 
         
@@ -131,4 +131,4 @@ function Detalhes(){
         </>
     )
 }
-export default Detalhes
+export default Anuncio

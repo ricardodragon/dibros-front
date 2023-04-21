@@ -3,21 +3,29 @@ import Home from "../../pages/Home"
 import Login from "../../pages/Login"
 import PrivateRoutes from "./private-routes";
 import Usuarios from "../../pages/Usuarios"
-import Contas from "../../pages/Contas"
 import Produtos from "../../pages/Produtos";
-import Detalhes from "../../pages/Anuncios/Detalhes";
-import Listagem from "../../pages/Anuncios/Listagem";
+import Contas from "../../pages/Meli/Contas"
+import MeliAnuncios from "../../pages/Meli/Anuncios";
+import MeliAnuncio from "../../pages/Meli/Anuncio";
+import Anuncios from "../../pages/Anuncios";
+import Template from "../../estrutura/Template";
 
 const Routes = ()=>(
     <BrowserRouter>
         <Switch>
+            {/* Estrutra Auth etc */}
             <Route exact path="/login" component={Login}></Route>
             <PrivateRoutes exact path={["/","/home"]} component={Home} nome={"Seja bem vindo a dibros-store!"}/>
             <PrivateRoutes exact path="/usuarios" nome="Indentificação usuário" component={Usuarios}/>
-            <PrivateRoutes exact path="/contas" nome={"Gerencie suas contas MercadoLivre"} component={Contas}/>                       
-            <PrivateRoutes exact path="/anuncios/detalhes/:idAnuncio/:userId" nome={"Anúncios - detalhes"} component={Detalhes}/>            
-            <PrivateRoutes exact path="/anuncios/:id/:sku" nome={"Anúncios"} component={Listagem}/>            
+            
+            {/* e-commerce dibros */}
+            <Template nome={"Anuncios dibros-store"}><Route exact path="/anuncios" nome={"Anuncios dibros-store"} component={Anuncios}></Route></Template>
             <PrivateRoutes exact path="/produtos" nome={"Produtos"} component={Produtos}/>
+            
+            {/* sub rota do e-commerce meli */}            
+            <PrivateRoutes exact path="/meli/contas" nome={"Gerencie suas contas MercadoLivre"} component={Contas}/>                       
+            <PrivateRoutes exact path="/meli/anuncio/:idAnuncio/:userId" nome={"Anúncios - detalhes"} component={MeliAnuncio}/>            
+            <PrivateRoutes exact path="/anuncios/:id/:sku" nome={"Anúncios"} component={MeliAnuncios}/>                                    
             <Redirect to="/"/>
         </Switch>
     </BrowserRouter>

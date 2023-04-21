@@ -20,7 +20,7 @@ function Listagem(){
                 <div>      
                     <LabelInput disabled={false} label="Anuncios diversos" id="diversos" type="text" onChange={diversos => setValues({...values, diversos})}/>                    
                     <button className="btn btn-sm btn-primary" onClick={async event=>{event.preventDefault(); setValues({...values,anuncios:(await axios.get(process.env.REACT_APP_MELI_DOMAIN+'/meli/anuncios?q='+values.diversos)).data.map(x=>{ return {body:x}})})}}>Buscar</button>
-                    <Link to={"/anuncios/detalhes/"+0+"/"+0} className="btn btn-sm btn-primary">
+                    <Link to={"/meli/anuncio/"+0+"/"+0} className="btn btn-sm btn-primary">
                             Publicar
                     </Link>                    
                 </div>
