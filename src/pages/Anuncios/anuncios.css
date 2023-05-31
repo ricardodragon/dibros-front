@@ -1,5 +1,6 @@
 .card-anuncio{
     border: 1px solid rgba(0, 0 , 0, 0.1);
+    border-radius: 1em;
     padding: 4%;   
     margin-bottom: 4%; 
 }
@@ -8,4 +9,11 @@
     min-width: 100%; 
     max-width: 100%; 
     max-height: 16em;
+}
+
+@media(min-width: 600px) { 
+    .card-anuncio{
+        width: 34%;
+        margin-left: 30%;
+    }
 }

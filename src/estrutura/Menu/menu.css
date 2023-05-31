@@ -1,12 +1,5 @@
-/* @media screen and (max-width: 480px) {
-    .menu{
-        width: 100%;
-    } 
-} */
-
 .menu-conteudo{      
-    /* background-color: rgb(22, 53, 104);          */
-    background-color: red;
+    background-color: rgba(0, 0, 0, 0.9);
     width: 100%;    
     height: 100%;    
     transition: all 0.9s ease-in-out; 

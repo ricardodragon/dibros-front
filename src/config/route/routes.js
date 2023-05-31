@@ -9,23 +9,27 @@ import MeliAnuncios from "../../pages/Meli/Anuncios";
 import MeliAnuncio from "../../pages/Meli/Anuncio";
 import Anuncios from "../../pages/Anuncios";
 import Template from "../../estrutura/Template";
+import NovaSenha from "../../pages/NovaSenha";
+import Lojas from "../../pages/Lojas";
 
 const Routes = ()=>(
     <BrowserRouter>
         <Switch>
             {/* Estrutra Auth etc */}
             <Route exact path="/login" component={Login}></Route>
+            <Route exact path="/nova-senha/:token" component={NovaSenha}></Route>
             <PrivateRoutes exact path={["/","/home"]} component={Home} nome={"Seja bem vindo a dibros-store!"}/>
             <PrivateRoutes exact path="/usuarios" nome="Indentificação usuário" component={Usuarios}/>
             
             {/* e-commerce dibros */}
-            <PrivateRoutes exact path="/produtos" nome={"Produtos"} component={Produtos}/>
-            
+            <PrivateRoutes exact path="/lojas" nome={"Lojas dibros-store"} component={Lojas}/>
+            <PrivateRoutes exact path="/produtos/:id" nome={"Produtos"} component={Produtos}/>
+            <PrivateRoutes exact path="/anuncios" nome={"Anuncios dibros-store"} component={Anuncios}/>            
+
             {/* sub rota do e-commerce meli */}            
             <PrivateRoutes exact path="/meli/contas" nome={"Gerencie suas contas MercadoLivre"} component={Contas}/>                       
             <PrivateRoutes exact path="/meli/anuncios/:id/:sku" nome={"Anúncios"} component={MeliAnuncios}/>                                    
-            <PrivateRoutes exact path="/meli/anuncio/:idAnuncio/:userId" nome={"Anúncios - detalhes"} component={MeliAnuncio}/>            
-            <Template nome={"Anuncios dibros-store"}><Route exact path="/anuncios" nome={"Anuncios dibros-store"} component={Anuncios}></Route></Template>
+            <PrivateRoutes exact path="/meli/anuncio/:idAnuncio/:userId" nome={"Anúncios - detalhes"} component={MeliAnuncio}/>                        
             <Redirect to="/"/>
         </Switch>
     </BrowserRouter>

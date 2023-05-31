@@ -12,11 +12,7 @@ function Header(){
     
     const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
-    };
-    
-    const capitalizeFirstLetter = (string) => {
-        return string.charAt(0).toUpperCase() + string.slice(1);
-    }
+    };    
 
     const handleClose = () => {
       setAnchorEl(null);
@@ -40,10 +36,8 @@ function Header(){
             </div>
 
             <Menu className="user-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
-                <MenuItem>Olá : {usuario?capitalizeFirstLetter(usuario.username):""}</MenuItem>
-                <Link to='/login' onClick={sair}>
-                    <MenuItem>Sair</MenuItem>
-                </Link>
+                <MenuItem>Olá : {usuario?usuario.username:""}</MenuItem>
+                <Link to='/login' onClick={sair}><MenuItem>Sair</MenuItem></Link>
             </Menu>
         </header>
     )
