@@ -12,9 +12,6 @@ function menu(){
             </div>
             <nav className="menu-conteudo">
                 <ul>
-                    <li style={{marginTop: "20%"}}>
-                        <Link to='/'><FcHome size={0}/><span className="menu-legenda">Home</span></Link> 
-                    </li>                    
                     <li>
                         <Link to={'/lojas'}><FcBookmark size={0}/><span className="menu-legenda">Lojas</span></Link>
                     </li>
@@ -22,7 +19,7 @@ function menu(){
                         <Link to={'/produtos/'+0}><FcMultipleSmartphones size={0}/><span className="menu-legenda">Produtos</span></Link>
                     </li>
                     <li>                    
-                        <Link to={'/anuncios'}><FcMultipleSmartphones size={0}/><span className="menu-legenda">Anuncios</span></Link>
+                        <Link to={'/anuncio'}><FcMultipleSmartphones size={0}/><span className="menu-legenda">Anunciar</span></Link>
                     </li>
                     <li>
                         <Link to='/meli/contas'><FcCollaboration size={0}/><span className="menu-legenda">Contas</span></Link>

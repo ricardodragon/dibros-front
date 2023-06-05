@@ -1,39 +1,27 @@
 
-import axios from 'axios';
-import { useEffect, useState } from 'react';
-import { Link } from "react-router-dom";
-import LabelInput from '../../estrutura/LabelInput';
-import './style.css';
-import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
 
-function Produtos(props){
+
+function Anuncio(props){
     
-    const [values, setValues] = useState({lojas:[], produtos:[], produto:{imagem: "", preco:"", quantidade:"", titulo:"", lojaDTO:{nome:"",id:""}}})    
-    const { id } = useParams();
-
-    const verificaProduto = () => values.produto.quantidade||values.produto.preco||values.produto.titulo;
-     
+    const [values, setValues] = useState({})    
+    
     useEffect(() => 
-        axios.get(process.env.REACT_APP_MELI_DOMAIN+(id>0?"/loja/produto/loja/"+id:"/loja/produto")).then(res => 
-            axios.get(process.env.REACT_APP_MELI_DOMAIN+"/loja/lojas").then(response =>
-                setValues({lojas:response.data,produtos:res.data, produto:{imagem: "", preco:"", quantidade:"", titulo:"", lojaDTO:{nome:"",id:""}}})))            
+        console.log("Anunciar")        
     , []);
 
     const submit = event => {
         event.preventDefault();
         var formData = new FormData();
-        formData.append('file', values.produto.imagem);
-        formData.append('produtoDTO', new Blob([JSON.stringify(values.produto)], {type: "application/json"}));
-        axios.post(process.env.REACT_APP_MELI_DOMAIN+"/loja/produto", formData).then(res => 
-            axios.get(process.env.REACT_APP_MELI_DOMAIN+"/loja/produto").then(res => {setValues({...values, produtos:res.data, produto:{imagem: "", preco:"", quantidade:"", titulo:"", lojaDTO:{id:"", nome:""}}})}))                
+        formData.append('files', undefined);
+        formData.append('anuncioDTO', new Blob([JSON.stringify(undefined)], {type: "application/json"}));        
     }
 
     return (
         <div className="p-4">
-            <h4>Produtos</h4>
+            <h4>Anunciar</h4>
             <form className="mt-4" onSubmit={submit}>                
                 <fieldset id="usuario" className="p-2" style={{overflow:"hidden", borderRadius:"0.9em"}}>                    
-                    <legend>{values.produto.id?"Editar":"Criar"} Produto {values.produto.id}</legend>                                        
+                    <legend>{undefined?"Editar":"Criar"} Anucio {undefined}</legend>                                        
                     <LabelInput value={values.produto.quantidade} label="Quantidade: " placeholder="quantidade" id="quantidade" type="number" onChange={quantidade=>setValues({...values,produto:{...values.produto,quantidade}})}/>
                     <LabelInput value={values.produto.preco} label="Valor: " placeholder="valor" id="valor" type="number" step="0.2" onChange={preco=>setValues({...values,produto:{...values.produto,preco}})}/>
                     <LabelInput value={values.produto.titulo} label="Título: " placeholder="título" id="titulo" type="text" onChange={titulo=>setValues({...values,produto:{...values.produto,titulo}})}/>                                                                                         
@@ -91,7 +79,3 @@ function Produtos(props){
 }
 
 export default Produtos
-
-// values.produto.id?
-            // axios.put(process.env.REACT_APP_MELI_DOMAIN+"/loja/produto", values.produto).then(res => 
-            //     axios.get(process.env.REACT_APP_MELI_DOMAIN+"/loja/produto").then(res => {setValues({...values, produtos:res.data, produto:{preco:"", quantidade:"", titulo:"", lojaDTO:{id:"", nome:""}}})})):

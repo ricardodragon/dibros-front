@@ -8,7 +8,7 @@ function Template(props){
         <>
             <Header/>            
             <Menu/>            
-            <div className="conteudo">
+            <div className="conteudo" >
                 <div style={{marginBottom: '100px'}}>
                     <h2>{props.nome}</h2>
                     <hr/>

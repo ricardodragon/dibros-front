@@ -26,8 +26,7 @@ function Login(props) {
     return (
         <div className="background">
             <div className="conteudo-login">
-                <h1 className="titulo-login">Login</h1>
-                
+                <h1 className="titulo-login">Login</h1>                
                 <form onSubmit={login}>
                     <div className="form-input">
                         <TextField onChange={setUsuario} label="E-mail" id="username" name="username" />
