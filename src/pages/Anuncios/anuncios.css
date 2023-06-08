@@ -1,8 +1,7 @@
 .card-anuncio{
     border: 1px solid rgba(0, 0 , 0, 0.1);
     border-radius: 1em;
-    padding: 4%;   
-    margin-bottom: 4%; 
+    margin-bottom: 4%;
 }
 
 .img-anuncio{
