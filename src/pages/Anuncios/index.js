@@ -1,7 +1,4 @@
 import { useEffect, useState } from 'react';
-import { AiOutlineLike } from "react-icons/ai";
-import { FaRegCommentDots } from "react-icons/fa";
-import { MdAddShoppingCart } from "react-icons/md";
 
 
 import "./anuncios.css"
@@ -27,9 +24,9 @@ function Anuncios(){
                 <picture><img src={process.env.REACT_APP_MELI_DOMAIN+anuncio.imagemPath} className='img-anuncio' alt="Anúncio"/></picture>
                 
                 <div style={{borderTop:"1px solid rgba(0, 0 , 0, 0.1)", textAlign:"center", fontSize:"11pt", padding:"2%"}}>
-                    <div style={{display:"inline-block", width: "33%"}}><a href="/home" style={{textDecoration:"none"}}><AiOutlineLike style={{paddingRight:"2%"}}/>Like</a></div>                    
-                    <div style={{display:"inline-block", width: "33%"}}><a href="/home" style={{textDecoration:"none"}}><FaRegCommentDots style={{paddingRight:"2%"}}/>Comentarios</a></div>
-                    <div style={{display:"inline-block", width: "33%"}}><a href="/home" style={{textDecoration:"none"}}><MdAddShoppingCart style={{paddingRight:"2%"}}/>Comprar</a></div>
+                    <div style={{display:"inline-block", width: "33%"}}><a href="/home" style={{textDecoration:"none"}}>👍 Like</a></div>                    
+                    <div style={{display:"inline-block", width: "33%"}}><a href="/home" style={{textDecoration:"none"}}>💬 Comentarios</a></div>
+                    <div style={{display:"inline-block", width: "33%"}}><a href="/home" style={{textDecoration:"none"}}>🛒 Comprar</a></div>
                 </div>
                 {/* <div>
                     <img src={perfil} style={{borderRadius: "50%", display: "inline", width:"2em", height:"2em"}}/>

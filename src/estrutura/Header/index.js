@@ -26,7 +26,7 @@ function Header(){
     return (
         <header className="header-app">
             <div className="logo">
-            <Link to="/home"> 
+            <Link to="/"> 
                 <img alt="" height="90" width="150" src={logo} />
             </Link> 
             </div>

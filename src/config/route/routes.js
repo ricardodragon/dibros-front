@@ -7,10 +7,9 @@ import Contas from "../../pages/Meli/Contas"
 import MeliAnuncios from "../../pages/Meli/Anuncios";
 import MeliAnuncio from "../../pages/Meli/Anuncio";
 import Anuncios from "../../pages/Anuncios";
-import Template from "../../estrutura/Template";
+import Anuncio from "../../pages/Anuncio";
 import NovaSenha from "../../pages/NovaSenha";
 import Lojas from "../../pages/Lojas";
-import Anuncio from "../../pages/Meli/Anuncio";
 
 const Routes = ()=>(
     <BrowserRouter>

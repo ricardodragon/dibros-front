@@ -1,11 +1,11 @@
 
-import { FcHome, FcCollaboration, FcMultipleSmartphones, FcPortraitMode, FcMenu, FcBookmark} from "react-icons/fc";
+import { FcCollaboration, FcMultipleSmartphones, FcMenu, FcBookmark} from "react-icons/fc";
 import { Link } from "react-router-dom";
 import './menu.css';
 
 function menu(){
     return (
-        <div style={{float:"left"}} className="menu">        
+        <div style={{float:"left", position:"fixed", top:"5.6em"}} className="menu">        
             <input type="checkbox" className="check-menu" id="check-menu"/>    
             <div className="botao-menu">
                 <label htmlFor="check-menu"><FcMenu size={35} style={{cursor: "pointer"}} htmlFor="check-menu"/></label>
