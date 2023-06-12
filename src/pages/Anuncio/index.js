@@ -24,48 +24,65 @@ function Anuncio(props){
     const addProdutoDTO = event => {
         event.preventDefault();
         axios.get(process.env.REACT_APP_MELI_DOMAIN+"/loja/produto/"+values.produtoID).then(r=>
-            setValues({...values, anuncio:{...values.anuncio, anuncioProdutosDTO:[...values.anuncio.anuncioProdutosDTO, {produtoDTO:r.data, imagemPath:r.data.imagemPath}]}})
+            r.data?setValues({...values, anuncio:{...values.anuncio, anuncioProdutosDTO:[...values.anuncio.anuncioProdutosDTO, {produtoDTO:r.data, imagemPath:r.data.imagemPath}]}}):""
         )
     }
     return (
         <div className="p-4">
             <h4>Anunciar</h4>
 
-            <form className="mt-4" onSubmit={submit}>                
-                <fieldset id="anuncio" className="p-2" style={{overflow:"hidden", borderRadius:"0.9em"}}>             
-                    <legend>{undefined?"Editar":"Criar"} Anucio {undefined}</legend>                                        
-                    <label style={{whiteSpace:"nowrap", fontSize:"8pt"}} className="p-1" htmlFor='loja'>Loja :</label>     
-                    <select id="loja" style={{borderRadius:"0.9em"}} className='col form-control form-control-sm' onChange={async event=> setValues({...values, anuncio:{...values.anuncio, idLoja:event.target.value}})}>                                                            
+            <form className="mt-4" onSubmit={submit}><legend></legend>                        
+                <fieldset id="anuncio" className="p-1 mb-2" style={{borderRadius:"0.3em"}}><legend>{values.anuncio.id?"Editar":"Criar"} Anucio {values.anuncio.id}</legend>                                        
+                    <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} className="p-1" htmlFor='loja'>Loja : </label>     
+                    <select id="loja" style={{display:"inline", width:"75%"}} onChange={async event=> setValues({...values, anuncio:{...values.anuncio, idLoja:event.target.value}})}>                                                            
                         <option value={0}>Selecione uma loja</option>
                         {values.lojas.map(l => <option selected={l.id==values.anuncio.idLoja} key={l.id} value={l.id}>{l.nome}</option>)}
-                    </select>        
-                    
-                    <LabelInput value={values.anuncio.preco} label="Valor: " placeholder="valor" id="valor" type="number" step="0.2" onChange={preco=>setValues({...values,anuncio:{...values.anuncio,preco}})}/>
-                    <LabelInput value={values.anuncio.titulo} label="Legenda: " placeholder="legenda" id="legenda" type="text" onChange={legenda=>setValues({...values,anuncio:{...values.anuncio,legenda}})}/>                                                                                                                                                
-                    
-                    <label style={{whiteSpace:"nowrap", fontSize:"8pt"}} className="p-1 mt-3" htmlFor='imagem'>Foto do anuncio :</label>
-                    <input id='imagem' className={"form-control form-control-sm mb-3"} label="Foto: " placeholder="foto" type="file" accept='image/*' onChange={event => setValues({...values, anuncio:{...values.anuncio, imagem:event.target.files[0]}})}/>                                    
+                    </select>                   
+                    <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} className="p-1" htmlFor="legenda">Legenda : </label>            
+                    <input id="legenda" style={{width:"75%"}} placeholder="legenda" onChange={event=>setValues({...values,anuncio:{...values.anuncio,legenda:event.target.value}})} value={values.anuncio.legenda} required={props.required} type="text"/>                                                                      
+                </fieldset>
+                <fieldset id="imagens" className="p-1 mb-2"  style={{borderRadius:"0.3em"}}><legend>Fotos do Anúncio</legend>  
+                    <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} className="p-1 mt-3" htmlFor='imagem'>Fotos :</label>
+                    <input id='imagem' size="8" label="Foto: " style={{width:"75%"}}  placeholder="foto" type="file" accept='image/*' onChange={event => setValues({...values, anuncio:{...values.anuncio, imagem:event.target.files[0]}})}/>                                    
                     {values.anuncio.imagemPath&&<img style={{width:"3em", height:"3em"}} src={process.env.REACT_APP_MELI_DOMAIN+values.anuncio.imagemPath}/>}
                     {values.anuncio.imagem&&<img style={{width:"3em", height:"3em"}} src={URL.createObjectURL(values.anuncio.imagem)}/>}            
-                    
-                    {values.anuncio.idLoja&&
-                    <>                        
-                        <label htmlFor="produto">Produto : </label>
-                        <input placeholder="Id do produto" size="15" id="produto" type="number" value={values.produtoID} onChange={event=> setValues({...values, produtoID:event.target.value})}/>                        
-                        <button disabled={!values.produtoID} style={{cursor:"pointer", border:"none", backgroundColor:"white"}} onClick={addProdutoDTO}>➕</button>
-                    </>}
-
-                    {values.anuncio.anuncioProdutosDTO&&values.anuncio.anuncioProdutosDTO.map(x=> <div style={{display:"flex", alignItems: "center"}}>
-                        <div style={{flex: 1, display: "inline-block", textOverflow: "ellipsis", maxWidth: "13ch", overflow: "hidden", whiteSpace: "nowrap"}}>{x.produtoDTO.titulo}</div>, 
-                        <img style={{width:"2em", height:"2em", display:"inline"}} src={process.env.REACT_APP_MELI_DOMAIN+x.imagemPath}/>, 
-                        <input type="text" step="0.1" min="0" max="9999" value={x.preco}/>
-                    </div>)}   
-
-                    <div>
-                        <input disabled={!verificaAnuncio()} type="submit" value="enviar" className="btn btn-sm btn-success mt-2"/>    
-                        <input disabled={!verificaAnuncio()} onClick={event => {event.preventDefault();setValues({...values, anuncio:{preco:"", quantidade:"", titulo:"", lojaDTO:{id:"", nome:""}}})}} type="submit" className="btn btn-sm btn-primary mt-2" value="Limpar"/>                        
-                    </div>
                 </fieldset>
+                {values.anuncio.idLoja&&values.anuncio.idLoja!=0&&
+                    <fieldset id="produtos" className="p-1" style={{borderRadius:"0.3em"}}><legend>Produtos do Anúncio</legend>  
+                        <label  style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} htmlFor="produto">Id Produto : </label>
+                        <input style={{width:"60%"}} placeholder="Id do produto" size="15" step="any" id="produto" type="number" value={values.produtoID} onChange={event=> setValues({...values, produtoID:event.target.value})}/>                        
+                        <button disabled={!values.produtoID||values.anuncio.anuncioProdutosDTO.filter(x => x.produtoDTO.id==values.produtoID).length} style={{cursor:"pointer", border:"none", backgroundColor:"white", width:"5%"}} onClick={addProdutoDTO}>➕</button>
+                        <div className="table-responsive">
+                            <table className="table">
+                                <thead className="thead-light">
+                                    <tr className="table-light">
+                                        <th scope="col">ID</th>
+                                        <th scope="col"></th>
+                                        <th scope="col">Título</th>
+                                        <th scope="col">Preco</th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                </thead> 
+                                <tbody> 
+                                    {values.anuncio.anuncioProdutosDTO&&values.anuncio.anuncioProdutosDTO.map((p, i)=> 
+                                        <tr key={p.produtoDTO.id} style={{whiteSpace: "nowrap"}}>
+                                            <td>{p.produtoDTO.id}</td>
+                                            <td>🔃<img style={{width:"2em", height:"2em", display:"inline"}} src={process.env.REACT_APP_MELI_DOMAIN+p.imagemPath}/></td>
+                                            <td style={{ textOverflow: "ellipsis", maxWidth: "13ch", overflow: "hidden", whiteSpace: "nowrap"}}>{p.produtoDTO.titulo}</td>                            
+                                            <td style={{fontWeight: "bold"}}><input id={p.produtoDTO.id+"input"} type="number" step="0.1" min="0" max="9999" style={{width:"80%"}} value={p.preco} onChange={event=>setValues({...values, anuncio:{...values.anuncio, anuncioProdutosDTO:values.anuncio.anuncioProdutosDTO.map(x=>{return x.produtoDTO.id===p.produtoDTO.id?{...x, preco:event.target.value}:x})}})}/></td>                                                                                             
+                                            <td><button className="btn btn-sm btn-danger" onClick={event=>{event.preventDefault();setValues({...values, anuncio:{...values.anuncio, anuncioProdutosDTO:values.anuncio.anuncioProdutosDTO.filter(x => x.produtoDTO.id!==p.produtoDTO.id)}})}}>X</button></td>
+                                        </tr>
+                                    )}               
+                                </tbody>    
+                            </table> 
+                        </div>
+                    </fieldset>
+                }
+
+                <div>
+                    <input disabled={!verificaAnuncio()} type="submit" value="enviar" className="btn btn-sm btn-success mt-2"/>    
+                    <input disabled={!verificaAnuncio()} onClick={event => {event.preventDefault();setValues({...values, anuncio:{legenda:"", lojaDTO:{id:"", nome:""}, anuncioProdutosDTO:[]}})}} type="submit" className="btn btn-sm btn-primary mt-2" value="Limpar"/>                        
+                </div>
             </form>
 
             <div className="table-responsive mt-3">

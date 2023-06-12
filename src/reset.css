@@ -75,14 +75,21 @@ a{
 input[type=submit]{
 	font-size: 15pt;
 }
+input[type=submit],input[type=file]{
+	cursor: pointer;
+}
 input{
 	font-family: 'Architects Daughter', cursive;
 	padding: 0.2% 0.8% 0.2% 0.8%;	
 	border-radius: 0.3em;	
 	border: 1px solid #ccc;
-	box-sizing: border-box;
-	cursor: pointer;			
+	box-sizing: border-box;				
 }
+
 select{
-	cursor: pointer;
+	font-family: 'Architects Daughter', cursive;
+	padding: 0.2% 0.8% 0.2% 0.8%;	
+	border-radius: 0.3em;	
+	border: 1px solid #ccc;
+	box-sizing: border-box;
 }
