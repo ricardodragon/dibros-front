@@ -93,3 +93,8 @@ select{
 	border: 1px solid #ccc;
 	box-sizing: border-box;
 }
+
+.table > :not(caption) > * > *{
+	padding-top: 0 !important;
+	padding-bottom: 0 !important;
+}

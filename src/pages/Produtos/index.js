@@ -29,8 +29,7 @@ function Produtos(props){
     }
 
     return (
-        <div className="p-4">
-            <h4>Produtos</h4>
+        <div>
             <form className="mt-4" onSubmit={submit}>                
                 <fieldset id="usuario" className="p-2" style={{overflow:"hidden", borderRadius:"0.9em"}}>                    
                     <legend>{values.produto.id?"Editar":"Criar"} Produto {values.produto.id}</legend>                                        
@@ -60,12 +59,14 @@ function Produtos(props){
                     <thead className="thead-light">
                         <tr className="table-light">
                             <th scope="col">ID/SKU</th>
+                            <th></th>
                             <th scope="col">Título</th>
                             <th scope="col">Preço</th>
                             <th scope="col">Qtd</th>
                             <th scope="col">Meli</th>  
                             <th scope="col">Amazon</th>  
                             <th scope="col">Shopee</th>  
+                            <th></th>
                         </tr>
                     </thead> 
                     <tbody> 
