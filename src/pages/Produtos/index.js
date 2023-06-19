@@ -22,10 +22,10 @@ function Produtos(props){
     const submit = event => {
         event.preventDefault();
         var formData = new FormData();
-        formData.append('file', values.produto.imagem);
-        formData.append('produtoDTO', new Blob([JSON.stringify(values.produto)], {type: "application/json"}));
-        axios.post(process.env.REACT_APP_MELI_DOMAIN+"/loja/produto", formData).then(res => 
-            axios.get(process.env.REACT_APP_MELI_DOMAIN+"/loja/produto").then(res => {setValues({...values, produtos:res.data, produto:{imagem: "", preco:"", quantidade:"", titulo:"", lojaDTO:{id:"", nome:""}}})}))                
+        formData.append('files', values.produto.imagem);        
+        axios.post(process.env.REACT_APP_MELI_DOMAIN+'/imagem/imagem', formData).then(imagens =>
+            axios.post(process.env.REACT_APP_MELI_DOMAIN+"/loja/produto", {...values.produto, imagemPath:imagens.data[0]?imagens.data[0]:values.produto.imagemPath}).then(response => 
+                setValues({...values, produto:{imagem: "", preco:"", quantidade:"", titulo:"", lojaDTO:{id:"", nome:""}}, produtos:values.produto.id?values.produtos.map(x=>x.id===values.produto.id?response.data:x):values.produtos.concat(response.data)})))                
     }
 
     return (
@@ -81,7 +81,7 @@ function Produtos(props){
                                 <td><Link onClick={event=>event.stopPropagation()} target="_blank" to={"/anuncios/"+0+"/"+p.id} className="btn-link">Anuncios</Link></td>
                                 <td></td>
                                 <td></td>                                
-                                <td onClick={event=>{event.preventDefault();axios.delete(process.env.REACT_APP_MELI_DOMAIN+"/produto/"+p.id).then(r=>axios.get(process.env.REACT_APP_MELI_DOMAIN+"/produto/all").then(res => {setValues({...values, produtos:res.data, produto:{preco:"", quantidade:"", titulo:""}})}))}}>❌</td>
+                                <td onClick={event=>{event.stopPropagation();event.preventDefault();axios.delete(process.env.REACT_APP_MELI_DOMAIN+"/produto/"+p.id).then(r=>axios.get(process.env.REACT_APP_MELI_DOMAIN+"/produto/all").then(res => {setValues({...values, produtos:res.data, produto:{preco:"", quantidade:"", titulo:""}})}))}}>❌</td>
                             </tr>
                         )}               
                     </tbody>    

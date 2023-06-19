@@ -29,7 +29,7 @@ function Login(props) {
                 <h1 className="titulo-login">Login</h1>                
                 <form onSubmit={login}>
                     <div className="form-input">
-                        <TextField onChange={setUsuario} label="E-mail" id="username" name="username" />
+                        <TextField onChange={setUsuario} label="E-mail" id="email" name="email" />
                         <TextField onChange={setUsuario} label="Password" id="password" name="password" type="password" />
                     </div>                    
                     <input className='btn btn-dark btn-sm mt-3' type="submit" color="black" value={"Entrar"}/><br/>

@@ -4,7 +4,7 @@ import "./reset.css"
 
 
 const App = () => {      
-    axios.interceptors.request.use(function (config) {
+    axios.interceptors.request.use(function (config) {             
         config.headers.Authorization = localStorage.getItem("token");
         return config;
     });

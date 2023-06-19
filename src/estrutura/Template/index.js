@@ -5,17 +5,17 @@ import "./template.css"
 function Template(props){
       
     return (
-        <>
+        <div>
             <Header/>            
             <Menu/>            
-            <div className="conteudo">
+            <div className="conteudo" onClick={event=>{document.getElementById("check-menu").checked=false;}}>
                 <div style={{marginBottom: '100px'}}>
                     <h2>{props.nome}</h2>
                     <hr/>
                     {props.children}                    
                 </div>
             </div>                        
-        </>
+        </div>
     )
 }
 

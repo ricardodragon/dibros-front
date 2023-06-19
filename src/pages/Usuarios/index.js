@@ -5,7 +5,7 @@ import LabelInput from "../../estrutura/LabelInput";
 
 function Usuarios(){
 
-    const [values, setValues] = useState({usuarios:[], usuario:{email:"", username:"", password:""}})    
+    const [values, setValues] = useState({usuarios:[], usuario:{email:"", email:"", password:""}})    
     
     useEffect(() => 
         axios.get(process.env.REACT_APP_MELI_DOMAIN+"/auth/usuarios/all").then(usuarios => {setValues({usuarios:usuarios.data, usuario:{email:"", username:"", password:""}});}), 
@@ -28,7 +28,6 @@ function Usuarios(){
                     <legend>{values.usuario.id?"Editar":"Criar"} Usuário</legend>
                     {values.usuario.id?<h1>{values.usuario.id}</h1>:""}
                     <LabelInput value={values.usuario.email} label="Email : " placeholder="email" id="email" type="email" onChange={email=>{setValues({...values, usuario:{...values.usuario,email}})}}/>                    
-                    <LabelInput value={values.usuario.username} label="Nome de usuario : " placeholder="nome de usuario" id="username" type="text" onChange={username=>{setValues({...values, usuario:{...values.usuario,username}})}}/>                    
                     <LabelInput value={values.usuario.password} label="Senha : " placeholder="password" id="password" type="password" onChange={password=>{setValues({...values, usuario:{...values.usuario,password}})}}/>
                     <input type="submit" value="enviar" className="btn btn-sm btn-success mt-2"/>    
                     {values.usuario.id?<input onClick={event => {event.preventDefault();setValues({...values, usuario:{username:"",password:"", email:""}})}} type="submit" className="btn btn-sm btn-primary mt-2" value="Limpar"/>:""}                        
@@ -51,7 +50,7 @@ function Usuarios(){
                             <tr key={u.id}>
                                 <th scope="row">{index}</th>
                                 <td>{u.email}</td>
-                                <td>{u.username}</td>
+                                <td>{u.email}</td>
                                 <td>{u.role}</td>
                                 <td>{u.role!=="ADMIN"?<button className="btn btn-sm btn-primary" onClick={event=>{event.preventDefault();setValues({...values, usuario:u})}}>Editar</button>:""}</td>
                                 <td>{u.role!=="ADMIN"?<button className="btn btn-sm btn-danger" onClick={event=>{event.preventDefault();axios.delete(process.env.REACT_APP_MELI_DOMAIN+"/usuario/"+u.id)}}>X</button>:""}</td>

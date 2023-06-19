@@ -12,15 +12,14 @@
 }
 
 .login{  
-    float: right;
-    margin-right: 2%;    
-    padding: 0.9%;  
-    color: white;
-}
-
-.user-cursor{
+    float: right;        
+    margin: 0.7%;          
+    width: 4.5em;
+    height: 4.5em;
+    border-radius: 50%;
     cursor: pointer;
 }
+
 
 .user-menu{
     margin: 2% -3%;

@@ -16,32 +16,4 @@
     box-shadow: 0px 0px 1000px #ccc;
 }
 
-.form-input{
-    text-align: center;
-}
-
-.btn-entrar{
-    margin-top: 10%;
-}
-
-.titulo-login{
-    font-size: 22pt;
-    margin-bottom: 5%;
-}
-
-.footer-login{
-    font-size: 11pt;
-    margin-top: 10%;
-}
-.footer-login a{
-    font-weight: bold;
-    margin-left: 5px;
-    color: #4e129c;
-    transition: 0.4s;
-    cursor: pointer;
-}
-
-.footer-login a:hover{
-    color: #7d2ae8;
-}
     

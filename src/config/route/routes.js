@@ -1,7 +1,6 @@
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import PrivateRoutes from "./private-routes";
 import Login from "../../pages/Login"
-import Usuarios from "../../pages/Usuarios"
 import Produtos from "../../pages/Produtos";
 import Contas from "../../pages/Meli/Contas"
 import MeliAnuncios from "../../pages/Meli/Anuncios";
@@ -10,6 +9,7 @@ import Anuncios from "../../pages/Anuncios";
 import Anuncio from "../../pages/Anuncio";
 import NovaSenha from "../../pages/NovaSenha";
 import Lojas from "../../pages/Lojas";
+import Perfil from "../../pages/Perfil";
 
 const Routes = ()=>(
     <BrowserRouter>
@@ -17,8 +17,9 @@ const Routes = ()=>(
             {/* Estrutra Auth etc */}
             <Route exact path="/login" component={Login}></Route>
             <Route exact path="/nova-senha/:token" component={NovaSenha}></Route>
-            <PrivateRoutes exact path="/usuarios" nome="Indentificação usuário" component={Usuarios}/>
-            
+            {/* <PrivateRoutes exact path="/usuarios" nome="Indentificação usuário" component={Usuarios}/> */}
+            <PrivateRoutes exact path="/perfil" nome="Indentificação usuário" component={Perfil}/>
+
             {/* e-commerce dibros */}
             <PrivateRoutes exact path="/lojas" nome={"Lojas"} component={Lojas}/>
             <PrivateRoutes exact path="/produtos/:id" nome={"Produtos"} component={Produtos}/>

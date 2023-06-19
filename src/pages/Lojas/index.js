@@ -16,11 +16,11 @@ function Lojas(props) {
     const enviar = event => { 
         event.preventDefault();           
         var formData = new FormData();
-        formData.append('file', values.loja.imagem);
-        formData.append('lojaDTO', new Blob([JSON.stringify(values.loja)], {type: "application/json"}));
-        values.loja.id?
-            axios.put(process.env.REACT_APP_MELI_DOMAIN+'/loja/lojas', formData).then(callBackForm):
-            axios.post(process.env.REACT_APP_MELI_DOMAIN+'/loja/lojas', formData).then(callBackForm);                                                                       
+        formData.append('files', values.loja.imagem);
+        axios.post(process.env.REACT_APP_MELI_DOMAIN+'/imagem/imagem', formData).then(imagens =>
+            values.loja.id?
+                axios.put(process.env.REACT_APP_MELI_DOMAIN+'/loja/lojas', {...values.loja, imagemPath:imagens.data[0]?imagens.data[0]:values.loja.imagemPath}).then(callBackForm):
+                axios.post(process.env.REACT_APP_MELI_DOMAIN+'/loja/lojas', {...values.loja, imagemPath:imagens.data[0]?imagens.data[0]:values.loja.imagemPath}).then(callBackForm))            
     }
     
     const callBackForm = response => setValues({
@@ -41,7 +41,7 @@ function Lojas(props) {
                 {values.loja.imagemPath&&<img style={{width:"3em", height:"3em", borderRadius: "5px"}} src={process.env.REACT_APP_MELI_DOMAIN+values.loja.imagemPath}/>}
                 {values.loja.imagem&&<img style={{width:"3em", height:"3em", borderRadius: "5px"}} src={URL.createObjectURL(values.loja.imagem)}/>}                            
             </fieldset>
-            <input disabled={!verificaLoja()} type="submit" value="enviar" className="btn btn-sm btn-success mt-2" s/>    
+            <input disabled={!verificaLoja()} type="submit" value="enviar" className="btn btn-sm btn-success mt-2" />    
             <input disabled={!verificaLoja()} onClick={event => {event.preventDefault();setValues({...values, loja:{nome:"", imagemPath:"", imagem:""}})}} type="submit" className="btn btn-sm btn-primary mt-2" value="Limpar"/>                        
         </form>
         <div className="table-responsive mt-4">
@@ -63,7 +63,7 @@ function Lojas(props) {
                             <td><img style={{width:"2em", height:"2em"}} src={process.env.REACT_APP_MELI_DOMAIN+l.imagemPath}/></td>                            
                             <td style={{fontWeight: "bold"}}>{l.nome}</td>                                                                                         
                             <td style={{fontWeight: "bold"}}><a onClick={event=>event.stopPropagation()} href={"/produtos/"+l.id}>Produtos</a></td>                                                                                         
-                            <td onClick={event=>{event.preventDefault();axios.delete(process.env.REACT_APP_MELI_DOMAIN+"/loja/lojas/"+l.id).then(r=>axios.get(process.env.REACT_APP_MELI_DOMAIN+"/loja/lojas").then(res => {setValues({...values, lojas:res.data, loja:{nome:"", imagemPath: "", imagem:""}})}))}}>❌</td>
+                            <td onClick={event=>{event.stopPropagation();event.preventDefault();axios.delete(process.env.REACT_APP_MELI_DOMAIN+"/loja/lojas/"+l.id).then(r=>axios.get(process.env.REACT_APP_MELI_DOMAIN+"/loja/lojas").then(res => {setValues({...values, lojas:res.data, loja:{nome:"", imagemPath: "", imagem:""}})}))}}>❌</td>
                         </tr>
                         <tr></tr>
                     </>                    
