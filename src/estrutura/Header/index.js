@@ -26,7 +26,7 @@ function Header(){
                                
             <img className="login" src={process.env.REACT_APP_MELI_DOMAIN+values.usuario.imagemPath} onClick={handleClick}/>
             
-            <Menu className="user-menu" anchorEl={values.anchorEl} keepMounted open={Boolean(values.anchorEl)} onClose={handleClose}>
+            <Menu className="user-menu" anchorEl={values.anchorEl} keepMounted open={values.anchorEl} onClose={handleClose}>
                 <Link to='/perfil'><MenuItem>Olá : {values.usuario.nome?values.usuario.nome:values.usuario.email} ✏️</MenuItem></Link>
                 <Link to='/login' onClick={sair}><MenuItem>Sair</MenuItem></Link>
             </Menu>
