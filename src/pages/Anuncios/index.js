@@ -29,7 +29,10 @@ function Anuncios(){
 
     const postLikeComentario = (event, anuncio, comentario) => {
         event.preventDefault();
-        axios.post(process.env.REACT_APP_MELI_DOMAIN+"/loja/comentario/"+comentario.id).then(r=>setValues({...values, anuncios:values.anuncios.map(x=> x.id===anuncio.id?{...x, inputComentario:"", comentariosDTO:x.comentariosDTO.map(c=>c.id==comentario.id?{...c, likeComentariosDTO:c.likeComentariosDTO.concat({idUsuario:JSON.parse(localStorage.getItem("usuario")).id, idComentario:c.id})}:c)}:x)}));
+        axios.post(process.env.REACT_APP_MELI_DOMAIN+"/loja/comentario/"+comentario.id).then(r=>setValues({...values, anuncios:values.anuncios.map(x=> x.id===anuncio.id?{...x, inputComentario:"", comentariosDTO:x.comentariosDTO.map(c=>{ 
+            if(c.id===comentario.id) return {...c, likeComentariosDTO:c.likeComentariosDTO.concat({idUsuario:JSON.parse(localStorage.getItem("usuario")).id, idComentario:c.id})}
+            else if(c.comentariosDTO.filter(cc=>cc.id===comentario.id).length) return {...c, comentariosDTO:c.comentariosDTO.map(cc=>cc.id===comentario.id? {...cc, likeComentariosDTO:cc.likeComentariosDTO.concat({idUsuario:JSON.parse(localStorage.getItem("usuario")).id, idComentario:c.id})}:cc)}                
+            else return c})}:x)}));
     }
     
     const deleteLikeComentario = (event, anuncio, comentario) => {
@@ -68,19 +71,26 @@ function Anuncios(){
                 </div>
                 
                 
-                {anuncio.expandComentario&&anuncio.comentariosDTO.map(x=> 
+                {anuncio.expandComentario&&anuncio.comentariosDTO.filter(x=>!x.idComentario).map(x=> 
                     <div style={{fontSize:"10pt", width:"100%", paddingLeft:"2%", paddingBottom:"4%"}}> 
-                        <img src={process.env.REACT_APP_MELI_DOMAIN+x.usuarioDTO.imagemPath} style={{borderRadius: "50%", float:"left", width:"2em", height:"2em"}}/>                                      
+                        <div style={{height:"100%", position:"absolute", float:"left"}}>
+                            <img src={process.env.REACT_APP_MELI_DOMAIN+x.usuarioDTO.imagemPath} style={{borderRadius: "50%", width:"2em", height:"2em"}}/>                                      
+                        </div>
                         {x.likeComentariosDTO.filter(lc=>lc.idUsuario===JSON.parse(localStorage.getItem("usuario")).id).length?
                             <p onClick={event=>deleteLikeComentario(event, anuncio, x)} style={{float:"right", paddingRight:"2%", cursor:"pointer"}} >❤️</p>:
                             <p onClick={event=>postLikeComentario(event, anuncio, x)} style={{float:"right", paddingRight:"2%", cursor:"pointer"}}>🤍</p>}                        
-                        <p style={{marginBottom:"0"}}>
-                            <label style={{fontSize:"8pt", fontWeight:"bolder", textOverflow: "ellipsis", paddingRight:"2%"}}>{x.usuarioDTO.nome||x.usuarioDTO.email} :</label>
-                            {x.texto}
-                        </p>
-                        <p style={{display:"inline-block", paddingRight:"4%", marginBottom:"0"}}>{x.likeComentariosDTO.length} curtidas</p>
-                        <p style={{display:"inline-block", marginBottom:"0"}}>Responder</p>
-                        <p style={{marginBottom:"0"}}>⎯ Ver mais 0 respostas</p>
+                        <p style={{margin:"0 2% 0 2.3em"}}><p style={{whiteSpace: "nowrap", fontSize:"8pt", fontWeight:"bolder", textOverflow: "ellipsis", overflow:"hidden", marginBottom:"0"}}>{x.usuarioDTO.nome||x.usuarioDTO.email}</p>{x.texto}</p>
+                        <p style={{margin:"0 4% 0 2.3em", display:"inline-block"}}>{x.likeComentariosDTO.length} curtidas</p>Responder
+                        {x.comentariosDTO.length>0&&<p style={{marginBottom:"0", marginLeft:"2.3em"}}>⎯ Ver mais {x.comentariosDTO.length} respostas</p>}
+                        {x.comentariosDTO.map(cc=> 
+                            <div style={{marginLeft:"2.3em"}}>
+                                <img src={process.env.REACT_APP_MELI_DOMAIN+x.usuarioDTO.imagemPath} style={{borderRadius: "50%", float:"left", width:"2em", height:"2em"}}/>
+                                {cc.likeComentariosDTO.filter(lc=>lc.idUsuario===JSON.parse(localStorage.getItem("usuario")).id).length?
+                                <p onClick={event=>deleteLikeComentario(event, anuncio, cc)} style={{float:"right", paddingRight:"2%", cursor:"pointer"}} >❤️</p>:
+                                <p onClick={event=>postLikeComentario(event, anuncio, cc)} style={{float:"right", paddingRight:"2%", cursor:"pointer"}}>🤍</p>}                        
+                                <p style={{margin:"0 2% 0 2.3em"}}><p style={{whiteSpace: "nowrap", fontSize:"8pt", fontWeight:"bolder", textOverflow: "ellipsis", overflow:"hidden", marginBottom:"0"}}>{cc.usuarioDTO.nome||cc.usuarioDTO.email}</p>{cc.texto}</p>
+                            </div>
+                        )}
                     </div>
                 )}
                 {anuncio.expandComentario&&<>
