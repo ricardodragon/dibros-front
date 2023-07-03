@@ -10,8 +10,6 @@ function Template(props){
             <Menu/>            
             <div className="conteudo" onClick={event=>{document.getElementById("check-menu").checked=false;}}>
                 <div style={{marginBottom: '100px'}}>
-                    <h2>{props.nome}</h2>
-                    <hr/>
                     {props.children}                    
                 </div>
             </div>                        

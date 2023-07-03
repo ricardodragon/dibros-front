@@ -10,6 +10,7 @@ import Anuncio from "../../pages/Anuncio";
 import NovaSenha from "../../pages/NovaSenha";
 import Lojas from "../../pages/Lojas";
 import Perfil from "../../pages/Perfil";
+import AnuncioCompra from "../../pages/AnuncioCompra";
 
 const Routes = ()=>(
     <BrowserRouter>
@@ -25,6 +26,7 @@ const Routes = ()=>(
             <PrivateRoutes exact path="/produtos/:id" nome={"Produtos"} component={Produtos}/>
             <PrivateRoutes exact path={["/"]} nome={"dibros-store"} component={Anuncios}/>
             <PrivateRoutes exact path="/anuncio" nome={"Gerenciamento de anuncios"} component={Anuncio}/>            
+            <PrivateRoutes exact path="/anuncio-compra/:id" nome={""} component={AnuncioCompra}/>            
 
             {/* sub rota do e-commerce meli */}            
             <PrivateRoutes exact path="/meli/contas" nome={"Gerencie suas contas MercadoLivre"} component={Contas}/>                       
