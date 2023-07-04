@@ -8,7 +8,7 @@ function Template(props){
         <div>
             <Header/>            
             <Menu/>            
-            <div className="conteudo" onClick={event=>{document.getElementById("check-menu").checked=false;}}>
+            <div className="conteudo" onClick={event=>{document.getElementById("check-menu").checked=false;document.getElementById("user-menu").style.display="none"}}>
                 <div style={{marginBottom: '100px'}}>
                     {props.children}                    
                 </div>

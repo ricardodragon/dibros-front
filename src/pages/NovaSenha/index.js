@@ -35,7 +35,7 @@ function NovaSenha(props) {
             <div className="conteudo-login">
                 <form onSubmit={novoUsuario}>
                     <fieldset id="loja" className="p-1 mb-2" style={{borderRadius:"0.3em"}}><legend>Cadastro de ususario</legend>                                    
-                        {values.usuario.imagem&&<img style={{width:"3em", height:"3em", borderRadius: "5px", display:"inline-block"}} src={URL.createObjectURL(values.usuario.imagem)}/>}<br/>
+                        {values.usuario.imagem&&<img alt="imagem de perfil" style={{width:"3em", height:"3em", borderRadius: "5px", display:"inline-block"}} src={URL.createObjectURL(values.usuario.imagem)}/>}<br/>
                         <label htmlFor='imagem' className="p-1" style={{backgroundColor: "#3498db", borderRadius: "5px", color: "#fff", cursor: "pointer"}}>📷 Foto</label>
                         <input id='imagem' name="imagem" style={{display:"none"}} type="file" accept='image/*' onChange={event=>setValues({...values, usuario:{...values.usuario, imagem:event.target.files[0]}})}/>                        
                         <input className="m-2" required onChange={setUsuario} placeholder="Nome" id="nome" name="nome" type="text"/>                        

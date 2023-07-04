@@ -4,6 +4,9 @@
     width: 100%;    
     background-color: rgba(0, 0, 0, 0.9);
     background-size: auto 2px;
+    height: 3.72em;
+    padding: 0.3em;
+    z-index: 100;
 }
 
 .logo{    
@@ -12,10 +15,9 @@
 }
 
 .login{  
-    float: right;        
-    margin: 0.7%;          
-    width: 4.5em;
-    height: 4.5em;
+    float: right;                     
+    width: 3em;
+    height: 3em;
     border-radius: 50%;
     cursor: pointer;
 }

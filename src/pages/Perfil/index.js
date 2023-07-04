@@ -4,8 +4,8 @@ import axios from 'axios';
 
 function Perfil(props) {
 
-    const [values, setValues] = useState({anchorEl:false, usuario:{}})    
-    useEffect(() => axios.get(process.env.REACT_APP_MELI_DOMAIN+"/auth/usuarios").then(response=>setValues({...values, usuario:response.data})), [])
+    const [values, setValues] = useState({usuario:{}})    
+    useEffect(() => axios.get(process.env.REACT_APP_MELI_DOMAIN+"/auth/usuarios").then(response=>setValues({usuario:response.data})), [])
 
     const setUsuario = (event) => setValues({...values,usuario:{...values.usuario,[event.target.name]:event.target.value}})    
     const setImagemUsuario = (event) => setValues({...values, usuario:{...values.usuario, imagem:event.target.files[0]}})
@@ -24,7 +24,7 @@ function Perfil(props) {
 
     return <form onSubmit={enviar}>
         <fieldset id="usuario" className="p-4 mb-2" style={{borderRadius:"0.3em"}}><legend>Informações de usuário ID {values.usuario.id}</legend>
-            {(values.usuario.imagem||values.usuario.imagemPath)&&<img style={{width:"6em", height:"6em", borderRadius: "5px", display:"inline-block"}} src={values.usuario.imagemPath?process.env.REACT_APP_MELI_DOMAIN+values.usuario.imagemPath:URL.createObjectURL(values.usuario.imagem)}/>}
+            {(values.usuario.imagem||values.usuario.imagemPath)&&<img alt="Imagem de perfil" style={{width:"6em", height:"6em", borderRadius: "5px", display:"inline-block"}} src={values.usuario.imagemPath?process.env.REACT_APP_MELI_DOMAIN+values.usuario.imagemPath:URL.createObjectURL(values.usuario.imagem)}/>}
             <p>
                 <label htmlFor='imagem' className="p-1" style={{backgroundColor: "#3498db", borderRadius: "5px", color: "#fff", cursor: "pointer"}}>📷 Foto</label>
                 <input id='imagem' style={{display:"none"}} type="file" accept='image/*' name="imagem" onChange={setImagemUsuario}/>
