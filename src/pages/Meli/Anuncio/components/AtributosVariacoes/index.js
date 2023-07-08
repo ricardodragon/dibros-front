@@ -6,6 +6,7 @@ import "./atributosVariacoes.css"
 
 function AtributosVariacoes(props){    
     const [values, setValues] = useState({atributos:[], novoAtributo:''})
+    const host = window.location.protocol+ "//" + window.location.hostname+":7080";
 
     const addAtributo = (event)=>{
         event.preventDefault();                          
@@ -13,7 +14,7 @@ function AtributosVariacoes(props){
     }
       
     useEffect(() => props.categoria!==undefined?
-        axios.get(process.env.REACT_APP_MELI_DOMAIN+'/meli/atributos/'+props.categoria).then(res=> res.data.filter(value=>value.tags.allow_variations)):undefined
+        axios.get(host+'/meli/atributos/'+props.categoria).then(res=> res.data.filter(value=>value.tags.allow_variations)):undefined
     , [props.categoria]);
 
     return(        

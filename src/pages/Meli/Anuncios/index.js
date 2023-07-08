@@ -9,9 +9,10 @@ import LabelInput from "../../../estrutura/LabelInput";
 function Listagem(){
     const [values, setValues] = useState({anuncios:[]});   
     let { id, sku } = useParams();             
+    const host = window.location.protocol+ "//" + window.location.hostname+":7080";
 
     useEffect(() =>         
-        axios.get(process.env.REACT_APP_MELI_DOMAIN+'/meli/anuncios/list/'+id+'?sku='+(sku === "undefined"?'':sku)).then(res => setValues({anuncios:res.data}))
+        axios.get(host+'/meli/anuncios/list/'+id+'?sku='+(sku === "undefined"?'':sku)).then(res => setValues({anuncios:res.data}))
     , [id, sku]);   
 
     return (
@@ -19,7 +20,7 @@ function Listagem(){
             <ul>
                 <div>      
                     <LabelInput disabled={false} label="Anuncios diversos" id="diversos" type="text" onChange={diversos => setValues({...values, diversos})}/>                    
-                    <button className="btn btn-sm btn-primary" onClick={async event=>{event.preventDefault(); setValues({...values,anuncios:(await axios.get(process.env.REACT_APP_MELI_DOMAIN+'/meli/anuncios?q='+values.diversos)).data.map(x=>{ return {body:x}})})}}>Buscar</button>
+                    <button className="btn btn-sm btn-primary" onClick={async event=>{event.preventDefault(); setValues({...values,anuncios:(await axios.get(host+'/meli/anuncios?q='+values.diversos)).data.map(x=>{ return {body:x}})})}}>Buscar</button>
                     <Link to={"/meli/anuncio/"+0+"/"+0} className="btn btn-sm btn-primary">
                             Publicar
                     </Link>                    
@@ -51,8 +52,8 @@ function Listagem(){
                                         <Link to={"/anuncios/detalhes/"+value.body.id+"/"+(value.body.seller_id?value.body.seller_id:0)}>
                                             <Button className="btn btn-primary btn-sm">Detalhes</Button>
                                         </Link> 
-                                        {value.body.status==="active"?<button onClick={event=>{event.preventDefault();axios.put(process.env.REACT_APP_MELI_DOMAIN+'/meli/anuncios/'+value.body.seller_id+'/'+value.body.id, {status:"paused"}).then(r=>alert("Deu"))}} className="btn btn-warning btn-sm">Pausar</button>:<button className="btn btn-info btn-sm" onClick={event=>{event.preventDefault();axios.put(process.env.REACT_APP_MELI_DOMAIN+'/meli/anuncios/'+value.body.seller_id+'/'+value.body.id, {status:"active"}).then(r=>alert("Deu"))}}>Ativar</button>}                                                                             
-                                        <button onClick={event=>{event.preventDefault();axios.put(process.env.REACT_APP_MELI_DOMAIN+'/meli/anuncios/'+value.body.seller_id+'/'+value.body.id, {status:"closed"}).then(r=>axios.put(process.env.REACT_APP_MELI_DOMAIN+'/meli/anuncios/'+value.body.seller_id+'/'+value.body.id, {deleted:"true"}).then(r=>alert("Deu")))}} className="btn btn-danger btn-sm">Excluir</button>   
+                                        {value.body.status==="active"?<button onClick={event=>{event.preventDefault();axios.put(host+'/meli/anuncios/'+value.body.seller_id+'/'+value.body.id, {status:"paused"}).then(r=>alert("Deu"))}} className="btn btn-warning btn-sm">Pausar</button>:<button className="btn btn-info btn-sm" onClick={event=>{event.preventDefault();axios.put(host+'/meli/anuncios/'+value.body.seller_id+'/'+value.body.id, {status:"active"}).then(r=>alert("Deu"))}}>Ativar</button>}                                                                             
+                                        <button onClick={event=>{event.preventDefault();axios.put(host+'/meli/anuncios/'+value.body.seller_id+'/'+value.body.id, {status:"closed"}).then(r=>axios.put(host+'/meli/anuncios/'+value.body.seller_id+'/'+value.body.id, {deleted:"true"}).then(r=>alert("Deu")))}} className="btn btn-danger btn-sm">Excluir</button>   
                                     </div>                                    
                                 </div>                            
                             </div>

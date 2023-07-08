@@ -18,19 +18,20 @@ function Anuncio(){
     const { idAnuncio, userId} = useParams(); 
         
     const [values, setValues] = useState({anuncio:{title:'', price:0, available_quantity:0, variations:[], attributes:[], category_id:''}, disabled: true, loader:false});                  
-    
+    const host = window.location.protocol+ "//" + window.location.hostname+":7080";
+
     const setAnuncio = useCallback(()=>{        
         if(idAnuncio==="0"){setValues({anuncio:{title:'', price:0, available_quantity:0, attributes:[], variations:[]}, loader:false, disabled: false}); return}
-        axios.get(process.env.REACT_APP_MELI_DOMAIN+'/meli/anuncios/'+idAnuncio+'?userId='+userId)
+        axios.get(host+'/meli/anuncios/'+idAnuncio+'?userId='+userId)
             .then(anuncio=> {
                 anuncio.data.variations = anuncio.data.variations?.map(v=>{return{...v, picture_ids:anuncio.data.pictures.filter(p=>v.picture_ids.includes(p.id))}});
                 anuncio.data.pictures = anuncio.data.pictures?.filter(p => anuncio.data.variations.filter(v => v.picture_ids.map(pi=>pi.id).includes(p.id)).length===0)                        
-                axios.get(process.env.REACT_APP_MELI_DOMAIN+'/meli/atributos/'+anuncio.data.category_id)
+                axios.get(host+'/meli/atributos/'+anuncio.data.category_id)
                 .then(res => {anuncio.data.attributes = res.data.map(x=> { if(anuncio.data.attributes.filter(y=>y.id===x.id).length){ const {value_id, value_name} = anuncio.data.attributes.filter(y=>y.id===x.id)[0]; return {...x, value_id, value_name}}else return x});setValues({anuncio:anuncio.data, disabled:true, loader:false, editar:userId!=="0"&&idAnuncio!=="0"})})                
             })
     }, [idAnuncio, userId])
     
-    const setVisits = () => axios.get(process.env.REACT_APP_MELI_DOMAIN+'/meli/anuncios/visits/'+userId+'/'+idAnuncio).then(r => setValues({...values, visits: r.data[idAnuncio]}));
+    const setVisits = () => axios.get(host+'/meli/anuncios/visits/'+userId+'/'+idAnuncio).then(r => setValues({...values, visits: r.data[idAnuncio]}));
     useEffect(()=> { setAnuncio() },[setAnuncio])
 
     const onSubmit = () => {
@@ -43,7 +44,7 @@ function Anuncio(){
         if(values.editar) edit(anuncio);                    
         else{    
             delete anuncio["id"]   
-            axios.post(process.env.REACT_APP_MELI_DOMAIN+'/meli/anuncios/'+values.contas[0].id, {...anuncio, variations:anuncio.variations.map(v=> {v.picture_ids=v.picture_ids.map(p=>p.id); delete v.id; return v})})
+            axios.post(host+'/meli/anuncios/'+values.contas[0].id, {...anuncio, variations:anuncio.variations.map(v=> {v.picture_ids=v.picture_ids.map(p=>p.id); delete v.id; return v})})
                 .then(response=>{setValues({...values, ok:true});setAnuncio(response.data.id)})
                 .catch(erro => {setValues({...values, loader:false, erro:JSON.stringify(erro.response.data)})});               
         }
@@ -51,7 +52,7 @@ function Anuncio(){
 
     const edit = (anuncio) => {                              
         if(anuncio.variations.length>0) anuncio.variations = anuncio.variations.map(v=> {v.picture_ids=v.picture_ids.map(p=>p.id); return v})            
-        axios.put(process.env.REACT_APP_MELI_DOMAIN+'/meli/anuncios/'+userId+'/'+idAnuncio, anuncio).then(response => {setValues({...values, ok:true});setAnuncio(response.data.id)})//
+        axios.put(host+'/meli/anuncios/'+userId+'/'+idAnuncio, anuncio).then(response => {setValues({...values, ok:true});setAnuncio(response.data.id)})//
             .catch(error => {setValues({...values, loader:false, erro:JSON.stringify(error.response.data)})});       
     }
 

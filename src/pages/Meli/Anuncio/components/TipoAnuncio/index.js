@@ -5,9 +5,10 @@ import LabelSelect from "../../../../../estrutura/LabelSelect";
 function TipoAnuncio(props){
 
     const [values, setValues] = useState({tiposAnuncio:[]});
-    
+    const host = window.location.protocol+ "//" + window.location.hostname+":7080";
+
     useEffect(() => 
-        axios.get(process.env.REACT_APP_MELI_DOMAIN+'/meli/contas/'+props.conta.id+'/'+props.categoria).then(res=> setValues({tiposAnuncio:res.data}))
+        axios.get(host+'/meli/contas/'+props.conta.id+'/'+props.categoria).then(res=> setValues({tiposAnuncio:res.data}))
     , [props.categoria, props.conta]);
 
     return(  

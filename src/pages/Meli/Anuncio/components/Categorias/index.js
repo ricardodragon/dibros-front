@@ -6,14 +6,15 @@ import LabelSelect from "../../../../../estrutura/LabelSelect";
 function Categorias(props){
 
     const [values, setValues] = useState({categorias:[], categoria:{}});
+    const host = window.location.protocol+ "//" + window.location.hostname+":7080";
 
     useEffect(() => 
         props.category_id?
-            axios.get(process.env.REACT_APP_MELI_DOMAIN+'/meli/categorias/'+props.category_id).then(res => 
-                axios.get(process.env.REACT_APP_MELI_DOMAIN+'/meli/dominios/MLB/categorias')
+            axios.get(host+'/meli/categorias/'+props.category_id).then(res => 
+                axios.get(host+'/meli/dominios/MLB/categorias')
                     .then(resp => setValues({categorias:[{id:"MLB", lista:resp.data}], categoria:res.data}))
             )
-        :axios.get(process.env.REACT_APP_MELI_DOMAIN+'/meli/dominios/MLB/categorias')
+        :axios.get(host+'/meli/dominios/MLB/categorias')
             .then(resp => setValues({categorias:[{id:"MLB", lista:resp.data}], categoria:{}}))
     , [props.category_id]);
     
@@ -22,7 +23,7 @@ function Categorias(props){
             setValues({...values, categorias:values.categorias.slice(0, index+1)});            
         else {
             var categoria = values.categorias[index].lista[i].id            
-            axios.get(process.env.REACT_APP_MELI_DOMAIN+'/meli/categorias/'+categoria).then(response => {            
+            axios.get(host+'/meli/categorias/'+categoria).then(response => {            
                 if(response.data.children_categories.length===0) {                          
                     setValues({...values, categorias:values.categorias.slice(0, 1), categoria})
                     props.onChange(categoria)                     

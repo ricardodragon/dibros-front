@@ -6,7 +6,8 @@ import LabelInput from '../../../../../estrutura/LabelInput';
 function Contas(props){
 
     const [values, setValues] = useState({contas:[]})     
-    
+    const host = window.location.protocol+ "//" + window.location.hostname+":7080";
+
     const setConta = (email) => {  
         const conta = values.contas.filter((value) => value.email===email)[0]
         if(!conta)
@@ -18,7 +19,7 @@ function Contas(props){
     }
 
     useEffect(()=>
-        axios.get(process.env.REACT_APP_MELI_DOMAIN+'/meli/contas/all?id='+JSON.parse(localStorage.getItem("usuario")).id)
+        axios.get(host+'/meli/contas/all?id='+JSON.parse(localStorage.getItem("usuario")).id)
             .then(res=> setValues({contas: res.data.concat({id:"0", email:"Todas as contas"})}))
     , []);
 

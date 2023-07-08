@@ -5,13 +5,14 @@ import "./imagens.css"
 function Imagens(props){
 
     const [values, setValues] = useState({pictures:[]})
-    
+    const host = window.location.protocol+ "//" + window.location.hostname+":7080";
+
     const onChange = async (event)=>{  
         event.preventDefault();   
         const pictures = values.pictures;   
         var formData = new FormData();
         formData.append('files', event.target.files[0]);
-        pictures.push((await axios.post(process.env.REACT_APP_MELI_DOMAIN+'/meli/anuncios/imagens/229790949', formData)).data);                                                                       
+        pictures.push((await axios.post(host+'/meli/anuncios/imagens/229790949', formData)).data);                                                                       
         props.onChange(pictures);
     }
 

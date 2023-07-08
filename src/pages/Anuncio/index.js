@@ -4,10 +4,11 @@ import axios from "axios";
 function Anuncio(props){
     
     const [values, setValues] = useState({lojas:[], anuncios:[], anuncio:{preco:"", legenda:"", lojaDTO:{nome:"",id:""}, anuncioProdutosDTO:[]}})    
-    
+    const host = window.location.protocol+ "//" + window.location.hostname+":7080";
+
     useEffect(() => 
-        axios.get(process.env.REACT_APP_MELI_DOMAIN+("/loja/anuncio/usuario")).then(res => 
-            axios.get(process.env.REACT_APP_MELI_DOMAIN+"/loja/lojas").then(response =>                
+        axios.get(host+("/loja/anuncio/usuario")).then(res => 
+            axios.get(host+"/loja/lojas").then(response =>                
                 setValues({lojas:response.data,anuncios:res.data, anuncio:{preco:"", legenda:"", lojaDTO:{nome:"",id:""}, anuncioProdutosDTO:[]}})))                  
     , []);
 
@@ -15,11 +16,11 @@ function Anuncio(props){
         event.preventDefault();
         var formData = new FormData(); var i = 0; var anuncio = values.anuncio;            
         [values.anuncio].concat(values.anuncio.anuncioProdutosDTO).filter(x=>x.imagem).map(x=>x.imagem).forEach(x=>formData.append("files", x));                       
-        axios.post(process.env.REACT_APP_MELI_DOMAIN+'/imagem/imagem', formData).then(imagens =>{                        
+        axios.post(host+'/imagem/imagem', formData).then(imagens =>{                        
             if(anuncio.imagem) anuncio.imagemPath = imagens.data[i++];
             anuncio.anuncioProdutosDTO = anuncio.anuncioProdutosDTO.map(x=>x.imagem?{...x, imagemPath:imagens.data[i++]}:x);
-            anuncio.id?axios.put(process.env.REACT_APP_MELI_DOMAIN+'/loja/anuncio', anuncio).then(callBackForm):
-                axios.post(process.env.REACT_APP_MELI_DOMAIN+'/loja/anuncio', anuncio).then(callBackForm)
+            anuncio.id?axios.put(host+'/loja/anuncio', anuncio).then(callBackForm):
+                axios.post(host+'/loja/anuncio', anuncio).then(callBackForm)
         }); 
     }
     
@@ -32,7 +33,7 @@ function Anuncio(props){
 
     const addProduto = event => {
         event.preventDefault();
-        axios.get(process.env.REACT_APP_MELI_DOMAIN+"/loja/produto/"+values.produtoID+"/"+values.anuncio.idLoja).then(r=>
+        axios.get(host+"/loja/produto/"+values.produtoID+"/"+values.anuncio.idLoja).then(r=>
             r.data?setValues({...values, anuncio:{...values.anuncio, anuncioProdutosDTO:[...values.anuncio.anuncioProdutosDTO, {imagemPath:r.data.imagemPath, preco:r.data.preco, idAnuncio:values.anuncio.id, idProduto:r.data.id, produtoDTO:r.data}]}}):""
         )
     }
@@ -51,7 +52,7 @@ function Anuncio(props){
                 <fieldset id="imagens" className="p-1 mb-2"  style={{borderRadius:"0.3em"}}><legend>Fotos</legend>  
                     <label htmlFor='imagem' className="p-1" style={{backgroundColor: "#3498db", borderRadius: "5px", color: "#fff", cursor: "pointer"}}>📁 Upload</label>
                     <input id='imagem' label="Foto: " style={{display:"none"}} type="file" accept='image/*' onChange={event =>event.target.files[0]?setValues({...values, anuncio:{...values.anuncio, imagemPath:undefined,imagem:event.target.files[0]}}):""}/>                                    
-                    <img alt="" style={{width:"3em", height:"3em"}} src={values.anuncio.imagem?URL.createObjectURL(values.anuncio.imagem):process.env.REACT_APP_MELI_DOMAIN+values.anuncio.imagemPath}/>
+                    <img alt="" style={{width:"3em", height:"3em"}} src={values.anuncio.imagem?URL.createObjectURL(values.anuncio.imagem):host+values.anuncio.imagemPath}/>
                 </fieldset>
                 {values.anuncio.idLoja&&
                     <fieldset id="produtos" className="p-1" style={{borderRadius:"0.3em"}}><legend>Produtos do Anúncio</legend>  
@@ -76,7 +77,7 @@ function Anuncio(props){
                                             <td>
                                                 <label style={{cursor: "pointer"}} htmlFor={"imagem - "+p.idProduto}>🔃</label>
                                                 <input accept='image/*' onChange={event=>event.target.files[0]?setValues({...values, anuncio:{...values.anuncio, anuncioProdutosDTO:values.anuncio.anuncioProdutosDTO.map(x=>{return x.idProduto===p.idProduto?{...x, imagemPath:undefined, imagem:event.target.files[0]}:x})}}):""} id={"imagem - "+p.idProduto} type="file" style={{display:'none'}} />
-                                                <img alt="" style={{width:"2em", height:"2em", display:"inline"}} src={p.imagem?URL.createObjectURL(p.imagem):process.env.REACT_APP_MELI_DOMAIN+p.imagemPath}/>
+                                                <img alt="" style={{width:"2em", height:"2em", display:"inline"}} src={p.imagem?URL.createObjectURL(p.imagem):host+p.imagemPath}/>
                                             </td>
                                             <td style={{ textOverflow: "ellipsis", maxWidth: "13ch", overflow: "hidden", whiteSpace: "nowrap"}}>{p.produtoDTO.titulo}</td>                            
                                             <td style={{fontWeight: "bold"}}><input id={p.idProduto+"input"} type="number" step="0.1" style={{width:"80%"}} value={p.preco} onChange={event=>setValues({...values, anuncio:{...values.anuncio, anuncioProdutosDTO:values.anuncio.anuncioProdutosDTO.map(x=>{return x.idProduto===p.idProduto?{...x, preco:event.target.value}:x})}})}/></td>                                                                                             
@@ -111,10 +112,10 @@ function Anuncio(props){
                         {values.anuncios.map(a=>
                             <tr key={a.id} style={{cursor:"pointer", whiteSpace: "nowrap"}} onClick={event=>{event.preventDefault();window.scrollTo(0, 0);setValues({...values, anuncio:{...a, loja:a.lojaDTO}});document.getElementsByClassName("conteudo")[0].scrollTo(0, 0)}}>
                                 <td>{a.id}</td>
-                                <td><img style={{width:"2em", height:"2em"}} alt={"Foto do anuncio "+a.legenda} src={process.env.REACT_APP_MELI_DOMAIN+a.imagemPath}/></td>                            
+                                <td><img style={{width:"2em", height:"2em"}} alt={"Foto do anuncio "+a.legenda} src={host+a.imagemPath}/></td>                            
                                 <td style={{fontWeight: "bold"}}>{a.legenda}</td>                                                             
                                 <td style={{fontWeight: "bold"}}>{a.anuncioProdutosDTO.length}</td>                                                                                             
-                                <td onClick={event=>{event.stopPropagation();event.preventDefault();axios.delete(process.env.REACT_APP_MELI_DOMAIN+"/loja/anuncio/"+a.id).then(response=>setValues({...values, anuncio:a.id===values.anuncio.id?{preco:"", legenda:"", imagem:"", lojaDTO:{nome:"",id:""}, anuncioProdutosDTO:[]}:values.anuncio, anuncios:values.anuncios.filter(x=>x.id!==a.id)}))}}>❌</td>
+                                <td onClick={event=>{event.stopPropagation();event.preventDefault();axios.delete(host+"/loja/anuncio/"+a.id).then(response=>setValues({...values, anuncio:a.id===values.anuncio.id?{preco:"", legenda:"", imagem:"", lojaDTO:{nome:"",id:""}, anuncioProdutosDTO:[]}:values.anuncio, anuncios:values.anuncios.filter(x=>x.id!==a.id)}))}}>❌</td>
                             </tr>
                         )}               
                     </tbody>    

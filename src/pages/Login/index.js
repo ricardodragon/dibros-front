@@ -2,26 +2,27 @@ import React, { useState } from 'react';
 import './login.css'
 import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
+import { Link } from '@material-ui/core';
 
 
 function Login(props) {
     const [values, setValues] = useState( {} )
-    
+    const host = window.location.protocol+ "//" + window.location.hostname+":7080";//host
     const setUsuario = (event)=>
         setValues({...values,usuario:{...values.usuario,[event.target.name]:event.target.value}})    
         
     const login = (event) => {
         event.preventDefault();
-        axios.post(process.env.REACT_APP_MELI_DOMAIN+'/auth/login', values.usuario).then(response => {
+        axios.post(host+'/auth/login', values.usuario).then(response => {
             localStorage.setItem("token", response.headers['authorization']);                
-            axios.get(process.env.REACT_APP_MELI_DOMAIN+"/auth/usuarios").then(response =>{
+            axios.get(host+"/auth/usuarios").then(response =>{
                 localStorage.setItem("usuario", JSON.stringify(response.data));
                 props.history.replace("/");
             })
         });        
     }
 
-    const enviaLink = event=>{event.preventDefault();axios.post(process.env.REACT_APP_MELI_DOMAIN+"/auth/usuarios/email-token?email="+values.email, null)};
+    const enviaLink = event=>{event.preventDefault();axios.post(host+"/auth/usuarios/email-token?email="+values.email+"&esqueci=true", null)};
     
     return (
         <div className="background">
@@ -33,11 +34,16 @@ function Login(props) {
                         <TextField onChange={setUsuario} label="Password" id="password" name="password" type="password" />
                     </div>                    
                     <input className='btn btn-dark btn-sm mt-3' type="submit" color="black" value={"Entrar"}/><br/>
-                    <div className="btn btn-primary btn-sm mt-3" onClick={event=>{event.preventDefault();setValues({...values, registro:!values.registro})}}>Registre-se</div>
-                    {values.registro&&<>
+                    <Link style={{display:"block", cursor:"pointer"}} onClick={event=>{event.preventDefault();setValues({...values, registro:false, email:"", esqueceu:!values.esqueceu})}}>Esqueceu a senha?</Link>
+                    {values.esqueceu&&<div style={{display:"block"}}>
                         <div><TextField onChange={event => setValues({...values, email:event.target.value})} label="E-mail" id="email" name="email"/></div>
                         <div className="btn btn-success btn-sm mt-3" onClick={enviaLink}>Enviar link</div>
-                    </>}
+                    </div>}
+                    <div className="btn btn-primary btn-sm mt-3" onClick={event=>{event.preventDefault();setValues({...values, registro:!values.registro, esqueceu:false})}}>Registre-se</div>
+                    {values.registro&&<div style={{display:"block"}}>
+                        <div><TextField onChange={event => setValues({...values, email:event.target.value})} label="E-mail" id="email" name="email"/></div>
+                        <div className="btn btn-success btn-sm mt-3" onClick={enviaLink}>Enviar link</div>
+                    </div>}
                 </form>
             </div>
         </div>

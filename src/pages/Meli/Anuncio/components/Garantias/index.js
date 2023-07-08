@@ -6,7 +6,7 @@
 // function Garantias(props){
         
 //     const [values, setValues] = useState({type:[], time:[], unit:"dias"})    
-//     const dominio = process.env.REACT_APP_MELI_DOMAIN
+//     const dominio = host
 
 //     async function setGarantias(){                    
 //         const response = (await axios.get(dominio+'/meli/garantias/'+props.categoria)).data        
