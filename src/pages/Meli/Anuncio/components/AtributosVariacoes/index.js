@@ -15,7 +15,7 @@ function AtributosVariacoes(props){
       
     useEffect(() => props.categoria!==undefined?
         axios.get(host+'/meli/atributos/'+props.categoria).then(res=> res.data.filter(value=>value.tags.allow_variations)):undefined
-    , [props.categoria]);
+    , [props.categoria, host]);
 
     return(        
         <div className="row">                   

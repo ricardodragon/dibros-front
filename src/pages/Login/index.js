@@ -7,12 +7,12 @@ import { Link } from '@material-ui/core';
 
 function Login(props) {
     const [values, setValues] = useState( {} )
-    const host = window.location.protocol+ "//" + window.location.hostname+":7080";//host
+    const host = "http://"+window.location.hostname+":7080"; //"https://" + window.location.hostname+":7080";//host
     const setUsuario = (event)=>
         setValues({...values,usuario:{...values.usuario,[event.target.name]:event.target.value}})    
         
     const login = (event) => {
-        event.preventDefault();
+        event.preventDefault();        
         axios.post(host+'/auth/login', values.usuario).then(response => {
             localStorage.setItem("token", response.headers['authorization']);                
             axios.get(host+"/auth/usuarios").then(response =>{

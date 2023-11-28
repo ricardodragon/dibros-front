@@ -16,7 +16,7 @@ function Categorias(props){
             )
         :axios.get(host+'/meli/dominios/MLB/categorias')
             .then(resp => setValues({categorias:[{id:"MLB", lista:resp.data}], categoria:{}}))
-    , [props.category_id]);
+    , [props.category_id, host]);
     
     function addCategoria(index, i){                   
         if(i === "")

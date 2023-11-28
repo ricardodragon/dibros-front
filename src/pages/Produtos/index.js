@@ -11,13 +11,13 @@ function Produtos(props){
     const [values, setValues] = useState({lojas:[], produtos:[], produto:{imagem: "", preco:"", quantidade:"", titulo:"", lojaDTO:{nome:"",id:""}}})    
     const { id } = useParams();
 
-    const host = window.location.protocol+ "//" + window.location.hostname+":7080";
+    const host = "http://" + window.location.hostname+":7080";
 
     useEffect(() => 
         axios.get(host+(id>0?"/loja/produto/loja/"+id:"/loja/produto")).then(res => 
             axios.get(host+"/loja/lojas").then(response =>
                 setValues({lojas:response.data,produtos:res.data, produto:{imagem: "", preco:"", quantidade:"", titulo:"", lojaDTO:{nome:"",id:""}}})))            
-    , [id]);
+    , [id, host]);
 
     const submit = event => {
         event.preventDefault();

@@ -9,7 +9,7 @@ function TipoAnuncio(props){
 
     useEffect(() => 
         axios.get(host+'/meli/contas/'+props.conta.id+'/'+props.categoria).then(res=> setValues({tiposAnuncio:res.data}))
-    , [props.categoria, props.conta]);
+    , [props.categoria, props.conta, host]);
 
     return(  
         <div key={props.key}>  

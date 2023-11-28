@@ -18,7 +18,7 @@ function Anuncio(){
     const { idAnuncio, userId} = useParams(); 
         
     const [values, setValues] = useState({anuncio:{title:'', price:0, available_quantity:0, variations:[], attributes:[], category_id:''}, disabled: true, loader:false});                  
-    const host = window.location.protocol+ "//" + window.location.hostname+":7080";
+    const host = "http://" + window.location.hostname+":7080";
 
     const setAnuncio = useCallback(()=>{        
         if(idAnuncio==="0"){setValues({anuncio:{title:'', price:0, available_quantity:0, attributes:[], variations:[]}, loader:false, disabled: false}); return}
@@ -29,7 +29,7 @@ function Anuncio(){
                 axios.get(host+'/meli/atributos/'+anuncio.data.category_id)
                 .then(res => {anuncio.data.attributes = res.data.map(x=> { if(anuncio.data.attributes.filter(y=>y.id===x.id).length){ const {value_id, value_name} = anuncio.data.attributes.filter(y=>y.id===x.id)[0]; return {...x, value_id, value_name}}else return x});setValues({anuncio:anuncio.data, disabled:true, loader:false, editar:userId!=="0"&&idAnuncio!=="0"})})                
             })
-    }, [idAnuncio, userId])
+    }, [idAnuncio, userId, host])
     
     const setVisits = () => axios.get(host+'/meli/anuncios/visits/'+userId+'/'+idAnuncio).then(r => setValues({...values, visits: r.data[idAnuncio]}));
     useEffect(()=> { setAnuncio() },[setAnuncio])

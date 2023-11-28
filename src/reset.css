@@ -34,7 +34,8 @@ footer, header, hgroup, menu, nav, section {
 body {
 	line-height: 2;
 	overflow: hidden !important;
-	/* background-color: rgba(24, 13, 71, 0.3) !important;	 */
+	color: white !important;	
+	background-color: rgb(0, 0, 0) !important;	
 }
 ol, ul {
 	list-style: none;

@@ -14,11 +14,11 @@ function Contas(props){
     useEffect(() => {        
         axios.get(host+'/meli/contas/all?id='+JSON.parse(localStorage.getItem("usuario")).id)
         .then(res=> setValues({contas:res.data}))
-    }, []);
+    }, [host]);
     useEffect(() => {
         if(code)
             axios.post(host+'/meli/contas?code='+code+'&userId='+JSON.parse(localStorage.getItem("usuario")).id).then(res=> setValues({contas:values.contas.concat(res.data)}))
-    }, [code, values.contas]);
+    }, [code, values.contas, host]);
 
     const redirectMeli = () => {                
         const uriRedirect = 'https://dibros.up.railway.app'

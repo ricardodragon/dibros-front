@@ -4,11 +4,11 @@ import axios from 'axios';
 import {useParams} from "react-router-dom";
 
 function NovaSenha(props) {
-    const [values, setValues] = useState( {usuario:{}, esqueci:new URLSearchParams((props.location.search)).get('esqueci')} )
+    const [values, setValues] = useState( {usuario:{}, esqueci:new URLSearchParams((props.location.search)).get('esqueci')==="true"} )
     const { token } = useParams(props.location.search);
 
         
-    const host = window.location.protocol+ "//" + window.location.hostname+":7080";
+    const host = "http://" + window.location.hostname+":7080";
 
     const setUsuario = (event)=>
         setValues({...values,usuario:{...values.usuario,[event.target.name]:event.target.value}})    
@@ -37,7 +37,7 @@ function NovaSenha(props) {
         <div className="background">    
             <div className="conteudo-login">
                 <form onSubmit={novoUsuario}>
-                    <fieldset id="loja" className="p-1 mb-2" style={{borderRadius:"0.3em"}}><legend>Cadastro de {!values.esqueci?'nova senha':'ususario'}</legend>                                    
+                    <fieldset id="loja" className="p-1 mb-2" style={{borderRadius:"0.3em"}}><legend>Cadastro de {values.esqueci?'nova senha':'ususario'}</legend>                                    
                         {!values.esqueci&&<>
                             {values.usuario.imagem&&<img alt="imagem de perfil" style={{width:"3em", height:"3em", borderRadius: "5px", display:"inline-block"}} src={URL.createObjectURL(values.usuario.imagem)}/>}<br/>
                             <label htmlFor='imagem' className="p-1" style={{backgroundColor: "#3498db", borderRadius: "5px", color: "#fff", cursor: "pointer"}}>📷 Foto</label>

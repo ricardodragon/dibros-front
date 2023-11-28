@@ -7,6 +7,8 @@ function Usuarios(){
 
     const [values, setValues] = useState({usuarios:[], usuario:{email:"", email:"", password:""}})    
     
+    const host = "http://" + window.location.hostname+":7080";
+
     useEffect(() => 
         axios.get(host+"/auth/usuarios/all").then(usuarios => {setValues({usuarios:usuarios.data, usuario:{email:"", username:"", password:""}});}), 
     []);
