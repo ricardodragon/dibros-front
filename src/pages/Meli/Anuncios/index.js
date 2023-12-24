@@ -33,7 +33,7 @@ function Listagem(){
                                     <figcaption className="foto-lista-anuncio">
                                         <img src={value.body.thumbnail} alt=""  />                                    
                                     </figcaption>                                                                       
-                                    <span style={{display:"inline"}} className="h5 p-4">{value.body.title}</span>                                    
+                                    <a style={{display:"inline"}} className="h5 p-4">{value.body.title}</a>                                    
                                     <span className="h5">{value.body.status!=="active"?<FcHighPriority/>:<FcCheckmark/>}</span>
                                 </div>
                                 <div className="card-body">                                    
@@ -49,7 +49,7 @@ function Listagem(){
                                         </div>
                                     </div>                                                                        
                                     <div className="footer-card-link" style={{boxSizing:"content-box", padding:"1%"}}>
-                                        <Link to={"/anuncios/detalhes/"+value.body.id+"/"+(value.body.seller_id?value.body.seller_id:0)}>
+                                        <Link to={"/meli/anuncio/"+value.body.id+"/"+(value.body.seller_id?value.body.seller_id:0)}>
                                             <Button className="btn btn-primary btn-sm">Detalhes</Button>
                                         </Link> 
                                         {value.body.status==="active"?<button onClick={event=>{event.preventDefault();axios.put(host+'/meli/anuncios/'+value.body.seller_id+'/'+value.body.id, {status:"paused"}).then(r=>alert("Deu"))}} className="btn btn-warning btn-sm">Pausar</button>:<button className="btn btn-info btn-sm" onClick={event=>{event.preventDefault();axios.put(host+'/meli/anuncios/'+value.body.seller_id+'/'+value.body.id, {status:"active"}).then(r=>alert("Deu"))}}>Ativar</button>}                                                                             

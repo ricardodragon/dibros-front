@@ -9,7 +9,6 @@ import Imagens from "./components/Imagens";
 import AtributosVariacoes from "./components/AtributosVariacoes";
 import Variacoes from "./components/Variacoes";
 import Contas from "./components/Contas";
-
 import "./detalhes.css"
 import axios from "axios";
 
@@ -81,17 +80,16 @@ function Anuncio(){
                 <span className="visually-hidden">Loading...</span>
             </div>                 
         </div>:   
-        <>
+        <div className="p-4">
             <div className={"alert alert-success "+(values.ok?"":"visually-hidden")} role="alert"><FcCheckmark/> Anuncio enviado com sucesso</div>
             <div className={"alert alert-danger "+(values.erro?"":"visually-hidden")} role="alert"><FcHighPriority/>Erro: {values.erro}</div>
-            <LabelInput readonly={true} label="Visitas" disabled={true} value={values.visits}/>
-            <p style={{cursor:"pointer"}} onClick={event=>{event.preventDefault();setVisits()}}>🔄</p>                                                                                                                                                    
-            <form onSubmit={event => {event.preventDefault();onSubmit()}}> 
-                <div className="d-flex justify-content-end">
-                    {!values.disabled&&<button className="btn btn-secondary" onClick={event=>{event.preventDefault();setAnuncio()}}>Redefinir</button>}            
-                    {values.disabled&&<button className="btn btn-primary" onClick={habilitarReplica}>Replicar</button>}                    
-                    {values.editar&&<button className="btn btn-info" onClick={habilitarEdicao}> Editar </button>}  
-                </div>
+            <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"20%", fontWeight:"bold"}}>Visitas : </label>
+            <input disabled style={{width:"65%", marginRight:"5%"}} value={values.visits}/>
+            <input style={{width:"10%"}} className="btn btn-sm btn-primary" onClick={event=>{event.preventDefault();setVisits()}} value={"🔄 Atualizar"}/>
+            <form onSubmit={event => {event.preventDefault();onSubmit()}} className="mt-2"> 
+                {!values.disabled&&<button style={{width:"50%"}} className="btn btn-secondary" onClick={event=>{event.preventDefault();setAnuncio()}}>Redefinir</button>}            
+                {values.disabled&&<button style={{width:"50%"}} className="btn btn-primary" onClick={habilitarReplica}>Replicar</button>}                    
+                {values.editar&&<button style={{width:"50%"}} className="btn btn-info" onClick={habilitarEdicao}> Editar </button>}  
                 {!values.disabled&&!values.editar&&<Contas label={"Publicar em"} value={values.contas&&values.contas.length>0?values.contas[0].email:''} onChange={(contas) => { setValues({...values, contas})}} id="conta"/>}                                     
                 <Categorias disabled={values.disabled} onChange={(category_id) =>setValues({...values, anuncio:{...values.anuncio, category_id}})} category_id={values.anuncio.category_id}/>                        
                 {values.anuncio.category_id&&values.contas&&values.contas.map((conta)=><TipoAnuncio key={conta.id} conta={conta} categoria={values.anuncio.category_id} onChange={listing_type_id=>setValues({...values, anuncio: {...values.anuncio, listing_type_id}})}/>)}                                                                    
@@ -105,31 +103,34 @@ function Anuncio(){
                 </div>
                 <hr/>   
                 <Atributos disabled={values.disabled} value={values.anuncio.attributes} categoria={values.anuncio.category_id} onChange={setAtributo}/>                            
-                
-                {values.anuncio.location&&Object.entries(values.anuncio.location).forEach((key, value)=>{
-                    console.log(key, value);
-                    // <Atributos disabled={values.disabled} value={[]} categoria={values.anuncio.category_id} onChange={attributes=>console.log(attributes)}/>                            
-                })}
                                     
                 <h5 className="h3">Imagens</h5>
                 <Imagens disabled={values.disabled} value={values.anuncio.pictures} onChange={pictures=>setValues({...values, anuncio: {...values.anuncio, pictures}})}/>                                                                                                                                                  
+                <hr/>
                 <h5 className="h3">Variações</h5>                                                      
-                <div className="row" style={{padding:'1.5em'}}>                      
-                    <div className="col"><label>Total</label><p className="fw-bolder">{(values.anuncio.variations?values.anuncio.variations.length:0)+" Variações"}</p><input readOnly={true} value="+" className="btn btn-sm btn-primary mb-4 p-1" onClick={(event)=>{event.preventDefault();setValues({...values, anuncio:{...values.anuncio, variations:values.anuncio.variations.concat({attribute_combinations:values.anuncio.variations.length>0?values.anuncio.variations[0].attribute_combinations.map(a=>{return {...a,value_name:'', value_id:''}}):[], attributes:[], available_quantity:0, picture_ids:[], price:0, sold_quantity:0})}})}}/></div>
-                    <div className="col"><label>Quantidade</label><p className="fw-bolder">{values.anuncio.variations&&values.anuncio.variations.length>0?values.anuncio.variations.map(v=>parseInt(v.available_quantity)).reduce((prev, next)=>(prev+next)):0} Itens</p> </div>
+                <div style={{padding:'1.5em'}}>                      
+                    <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"20%", fontWeight:"bold"}}>Total : </label>
+                    <input disabled style={{width:"80%"}} value={(values.anuncio.variations?values.anuncio.variations.length:0) + " Variações"}/>
+                    <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"20%", fontWeight:"bold"}}>Quantidade : </label>
+                    <input disabled style={{width:"80%"}} value={values.anuncio.variations&&values.anuncio.variations.length>0?values.anuncio.variations.map(v=>parseInt(v.available_quantity)).reduce((prev, next)=>(prev+next))+" Itens":0 + " Itens"}/>                    
                     <h5 style={{textAlign:"center"}}>Atributos da Variação</h5>                    
                     <hr/>
                     {values.anuncio.variations&&<>
-                        <AtributosVariacoes disabled={values.disabled} categoria={values.anuncio.category_id} attribute_combinations={values.anuncio.variations&&values.anuncio.variations.length>0?values.anuncio.variations[0].attribute_combinations:[]} onChange={onChangeAttributeCombinations}/>                        
-                        <LabelInput value={values.anuncio.variations.length>0?values.anuncio.variations[0].price:values.anuncio.price} disabled={values.disabled}  label="Preço : " id="variations-price" type="number" step="0.1" placeholder="Alterar todos" onChange={price=>setValues({...values, anuncio:{...values.anuncio, variations:values.anuncio.variations.map(v=>{return{...v, price}})}})}/>                                                                                                                                             
-                        <LabelInput value={values.qtd} disabled={values.disabled}  label="Quantidades : " id="variations-price" type="number" step="0.1" placeholder="Alterar todos" onChange={available_quantity=>setValues({...values,qtd:available_quantity, anuncio:{...values.anuncio, variations:values.anuncio.variations.map(v=>{return{...v, available_quantity}})}})}/>
-                        {values.anuncio.variations.length>0&&<><label htmlFor="sort">Ordenar por : </label><select defaultValue={"Ola"} id="sort" className='col form-control form-control-sm' disabled={values.disabled} onChange={event=>{event.preventDefault();sort(values.variations, event.target.value)}}><option></option><option value={"SKU"}>SKU</option>{values.anuncio.variations[0].attribute_combinations.map((x, i)=><option key={i} value={x.name}>{x.name}</option>)}</select></>}
+                        <AtributosVariacoes disabled={values.disabled} categoria={values.anuncio.category_id} attribute_combinations={values.anuncio.variations&&values.anuncio.variations.length>0?values.anuncio.variations[0].attribute_combinations:[]} onChange={onChangeAttributeCombinations}/>                                                
+                        <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"20%", fontWeight:"bold"}} disabled={values.disabled} htmlFor="variations-price">Preço : </label>
+                        <input disabled={values.disabled} style={{width:"80%"}} type="number" step="0.1" placeholder="Alterar todos" id="variations-price" value={values.anuncio.variations.length>0?values.anuncio.variations[0].price:values.anuncio.price} onChange={price=>setValues({...values, anuncio:{...values.anuncio, variations:values.anuncio.variations.map(v=>{return{...v, price}})}})}/>                                                
+
+                        {values.anuncio.variations.length>0&&<>
+                            <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"20%", fontWeight:"bold", marginTop:"2%"}} htmlFor="sort">Ordenar por : </label>
+                            <select defaultValue={"Ola"} id="sort" style={{width:"80%"}} disabled={values.disabled} onChange={event=>{event.preventDefault();sort(values.variations, event.target.value)}}><option></option><option value={"SKU"}>SKU</option>{values.anuncio.variations[0].attribute_combinations.map((x, i)=><option key={i} value={x.name}>{x.name}</option>)}</select>
+                        </>}
+                        <input value="+" className="btn btn-sm btn-primary mb-4 mt-4 p-1 w-100" onClick={(event)=>{event.preventDefault();setValues({...values, anuncio:{...values.anuncio, variations:values.anuncio.variations.concat({attribute_combinations:values.anuncio.variations.length>0?values.anuncio.variations[0].attribute_combinations.map(a=>{return {...a,value_name:'', value_id:''}}):[], attributes:[], available_quantity:0, picture_ids:[], price:0, sold_quantity:0})}})}}/>
                         <Variacoes disabled={values.disabled} variations={values.anuncio.variations} categoria={values.anuncio.category_id} onChange={setVariation}/>
                     </>}
                 </div>                
                 {!values.disabled&&<input style={{float:"right", }} className="btn btn-sm btn-success" type="submit" value="Enviar"/>}
             </form>
-        </>
+        </div>
     )
 }
 export default Anuncio

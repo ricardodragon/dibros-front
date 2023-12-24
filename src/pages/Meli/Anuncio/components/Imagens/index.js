@@ -24,8 +24,8 @@ function Imagens(props){
     useEffect(() => props.value!==undefined?setValues({pictures:props.value}):undefined, [props.value])
 
     return(        
-        <>                 
-            <input className="form-control form-control-sm m-2" accept="image/*" disabled={props.disabled} type="file" onChange={onChange}/>                                        
+        <div style={{padding:'1.5em'}}>                 
+            <input accept="image/*" disabled={props.disabled} type="file" onChange={onChange}/>                                        
             <div style={{display: "flex"}}>
                 {values.pictures.map((imagem, index) =>{
                     return<div key={index} className="row" style={{boxSizing:"content-box"}}>                        
@@ -33,9 +33,8 @@ function Imagens(props){
                         <button disabled={props.disabled} className="w-100 btn btn-sm btn-danger" onClick={event=>{event.preventDefault();excluir(imagem.id);}}>X</button>
                     </div>                     
                 })}
-            </div>
-            <hr/>
-        </>
+            </div>            
+        </div>
     )
 }
 

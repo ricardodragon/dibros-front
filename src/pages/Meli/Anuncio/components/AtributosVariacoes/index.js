@@ -2,6 +2,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react"
 import LabelInput from "../../../../../estrutura/LabelInput";
+import { FcCheckmark } from "react-icons/fc";
 import "./atributosVariacoes.css"
 
 function AtributosVariacoes(props){    
@@ -18,22 +19,24 @@ function AtributosVariacoes(props){
     , [props.categoria, host]);
 
     return(        
-        <div className="row">                   
-            <div className="col">
-                <LabelInput size={"8"}  disabled={props.disabled} label="Atributo" id="nome_atributo" list="atributos-variacao" type="text" onChange={(novoAtributo)=>setValues({...values,novoAtributo})}/>                                                                 
-                <datalist id="atributos-variacao">
-                    {values.atributos.map((value, index) => 
-                        <option key={index} value={value.id}>{value.name}</option>)}
-                </datalist>   
-                <button disabled={props.disabled} className="w-100 btn btn-sm btn-success" onClick={addAtributo}>Adicionar</button><br/>                                                                       
-            </div>
+        <span >                   
+            
+            <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"20%", fontWeight:"bold"}} disabled={values.disabled} htmlFor="variations-price">Atributo : </label>
+            <input list="atributos-variacao" size={"8"} disabled={props.disabled} style={{width:"45%", marginRight:"5%"}} type="text" placeholder="Adicione atributos" id="nome_atributo" onChange={(novoAtributo)=>setValues({...values,novoAtributo})}/>                                                
+            <datalist id="atributos-variacao">
+                {values.atributos.map((value, index) => 
+                    <option key={index} value={value.id}>{value.name}</option>)}
+            </datalist>                   
+            <button disabled={props.disabled} className="btn btn-sm btn-success" style={{width:"30%"}} onClick={addAtributo}>Adicionar</button>                                                                       
+
             {props.attribute_combinations.map((atributo, index) => 
-                <div key={index} className="col">
-                    <LabelInput required={true} disabled={props.disabled} size={"8"} value={atributo.name} label={atributo.name} id={atributo.name} type="text" onChange={value=>props.onChange({name:value, id:null},index)}/>                                            
-                    <button disabled={props.disabled} className="w-100 btn btn-sm btn-danger" onClick={event=>{event.preventDefault();props.onChange(undefined, index)}}>Excluir</button>
+                <div key={index}>
+                    <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"20%", fontWeight:"bold"}} disabled={values.disabled} htmlFor="variations-price">{atributo.name+" :"}</label>
+                    <input value={atributo.name} required={true} disabled={props.disabled} size={"8"} style={{width:"45%", marginRight:"5%"}} type="text" placeholder={"Digite a/o : "+atributo.name} id={atributo.name} onChange={value=>props.onChange({name:value, id:null},index)}/>                                                                                                               
+                    <button disabled={props.disabled} className="btn btn-sm btn-danger" style={{width:"30%"}} onClick={event=>{event.preventDefault();props.onChange(undefined, index)}}>Excluir</button>                                                                       
                 </div>
             )}                 
-        </div>
+        </span>
     )
 }
 

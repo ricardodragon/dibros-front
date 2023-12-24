@@ -11,18 +11,20 @@ function Contas(props){
     const { code } = queryString.parse(props.location.search)
     const host = window.location.protocol+ "//" + window.location.hostname+":7080";
 
-    useEffect(() => {        
-        axios.get(host+'/meli/contas/all?id='+JSON.parse(localStorage.getItem("usuario")).id)
-        .then(res=> setValues({contas:res.data}))
-    }, [host]);
     useEffect(() => {
         if(code)
-            axios.post(host+'/meli/contas?code='+code+'&userId='+JSON.parse(localStorage.getItem("usuario")).id).then(res=> setValues({contas:values.contas.concat(res.data)}))
+            axios.post(host+'/meli/contas?code='+code+'&userId='+JSON.parse(localStorage.getItem("usuario")).id).then(res=> 
+                axios.get(host+'/meli/contas/all?id='+JSON.parse(localStorage.getItem("usuario")).id)
+                    .then(res=> setValues({contas:res.data}))
+            )
+        else
+            axios.get(host+'/meli/contas/all?id='+JSON.parse(localStorage.getItem("usuario")).id)
+                .then(res=> setValues({contas:res.data}))
     }, [code, values.contas, host]);
 
     const redirectMeli = () => {                
-        const uriRedirect = 'https://dibros.up.railway.app'
-        window.location.href = `http://auth.mercadolivre.com.br/authorization?response_type=code&client_id=5401911184235214&redirect_uri=${uriRedirect}/contas`;
+        const uriRedirect = 'https://dibros.com.br/contas'
+        window.location.href = `https://auth.mercadolivre.com.br/authorization?response_type=code&client_id=5401911184235214&redirect_uri=${uriRedirect}`;
     }
 
     return (

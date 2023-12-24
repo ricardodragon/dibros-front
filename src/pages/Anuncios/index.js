@@ -11,7 +11,7 @@ function Anuncios(){
     const host = "http://" + window.location.hostname+":7080";
     
     useEffect(() => 
-        axios.get(host+"/loja/anuncio").then(res => setValues({anuncios:res.data}))
+        axios.get(host+"/loja/anuncio?page="+"0"+"&size="+"10").then(res => setValues({anuncios:res.data}))
     , [host]);
 
 
