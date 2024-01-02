@@ -33,7 +33,7 @@ function Listagem(){
                                     <figcaption className="foto-lista-anuncio">
                                         <img src={value.body.thumbnail} alt=""  />                                    
                                     </figcaption>                                                                       
-                                    <a style={{display:"inline"}} className="h5 p-4">{value.body.title}</a>                                    
+                                    <a href="/#" style={{display:"inline"}} className="h5 p-4">{value.body.title}</a>                                    
                                     <span className="h5">{value.body.status!=="active"?<FcHighPriority/>:<FcCheckmark/>}</span>
                                 </div>
                                 <div className="card-body">                                    

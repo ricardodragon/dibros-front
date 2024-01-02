@@ -11,13 +11,13 @@ function AnuncioCompra(props){
 
     useEffect(() => 
         axios.get(host+"/loja/anuncio/"+id).then(res => setValues({anuncio:res.data}))
-    , [host]);
+    , [host, id]);
 
     return (
         <Template props={props}>
         <div style={{textAlign:"center"}}>
             
-            <img src={host+values.anuncio.imagemPath} style={{width:"100%", height:"29em"}}/>            
+            <img src={host+values.anuncio.imagemPath} alt="" style={{width:"100%", height:"29em"}}/>            
             <div>
                 <h1>Capinha para celulares iphone</h1>
                 <div style={{display:"inline-flex", width:"100%", overflowX:"scroll"}}>

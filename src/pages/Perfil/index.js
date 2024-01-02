@@ -41,16 +41,3 @@ function Perfil(props) {
 }
 
 export default Perfil;
-
-{/* <p>
-    <label style={{whiteSpace:"nowrap", width:"25%", fontWeight:"bold"}} className="p-1" htmlFor='nome'>Email : </label>     
-    <input required disabled id="email" value={values.usuario.email} style={{width:"75%"}} type="text" name="email"/>
-</p>
-<p>
-    <label style={{whiteSpace:"nowrap", width:"25%", fontWeight:"bold"}} className="p-1" htmlFor='nome'>Senha : </label>     
-    <input id="password" value={values.usuario.password} style={{width:"75%"}} type="password" name="password" onChange={setUsuario}/>
-</p>
-<p style={{width:"100%"}}>
-    <label style={{width:"25%", fontWeight:"bold"}} className="p-1" htmlFor='nome'>Confirmar senha : </label>     
-    <input id="comfirmPassword" style={{width:"75%"}} value={values.usuario.comfirmPassword} type="password" name="comfirmPassword" onChange={setUsuario}/>
-</p> */}

@@ -1,8 +1,6 @@
 
 import axios from "axios";
 import { useEffect, useState } from "react"
-import LabelInput from "../../../../../estrutura/LabelInput";
-import { FcCheckmark } from "react-icons/fc";
 import "./atributosVariacoes.css"
 
 function AtributosVariacoes(props){    
