@@ -8,7 +8,7 @@ import loader from "./../../assets/loadinfo.gif";
 function Anuncios(){
          
     const [values, setValues] = useState({anuncios:[]})    
-    const host = "http://" + window.location.hostname+":7080";
+    const host = "https://dibros.ddns.net:7080";
     
     useEffect(() => 
         axios.get(host+`/loja/anuncio?page=${0}&size=${10}`).then(res => setValues({anuncios:res.data}))

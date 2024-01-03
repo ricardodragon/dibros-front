@@ -4,7 +4,7 @@ import axios from "axios";
 function Anuncio(props){
     
     const [values, setValues] = useState({lojas:[], anuncios:[], anuncio:{preco:"", legenda:"", lojaDTO:{nome:"",id:""}, anuncioProdutosDTO:[]}})    
-    const host = "http://" + window.location.hostname+":7080";
+    const host = "https://dibros.ddns.net:7080";
 
     useEffect(() => 
         axios.get(host+("/loja/anuncio/usuario")).then(res => 

@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 function Lojas(props) {
     
     const [values, setValues] = useState( {lojas:[], loja:{nome:"", imagemPath:"", imagem:""}} )
-    const host = "http://" + window.location.hostname+":7080";
+    const host = "https://dibros.ddns.net:7080";
 
     const verificaLoja = () => values.loja.nome||values.loja.imagem||values.loja.imagemPath;
 

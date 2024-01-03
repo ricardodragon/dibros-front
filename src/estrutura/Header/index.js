@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 function Header(){
     const [values, setValues] = useState({anchorEl:false, usuario:{imagemPath:""}, userMenu:"none"})    
     
-    const host = window.location.protocol+ "//" + window.location.hostname+":7080";
+    const host = "https://dibros.ddns.net:7080";
 
     useEffect(() => setValues({userMenu:"none", anchorEl:false, usuario:JSON.parse(localStorage.getItem("usuario"))?JSON.parse(localStorage.getItem("usuario")):{imagemPath:""}}), []);
 

@@ -5,7 +5,7 @@ import LabelSelect from "../../../../../estrutura/LabelSelect";
 function TipoAnuncio(props){
 
     const [values, setValues] = useState({tiposAnuncio:[]});
-    const host = window.location.protocol+ "//" + window.location.hostname+":7080";
+    const host = "https://dibros.ddns.net:7080";
 
     useEffect(() => 
         axios.get(host+'/meli/contas/'+props.conta.id+'/'+props.categoria).then(res=> setValues({tiposAnuncio:res.data}))

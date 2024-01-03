@@ -9,7 +9,7 @@ import LabelInput from "../../../estrutura/LabelInput";
 function Listagem(){
     const [values, setValues] = useState({anuncios:[]});   
     let { id, sku } = useParams();             
-    const host = window.location.protocol+ "//" + window.location.hostname+":7080";
+    const host = "https://dibros.ddns.net:7080";
 
     useEffect(() =>         
         axios.get(host+'/meli/anuncios/list/'+id+'?sku='+(sku === "undefined"?'':sku)).then(res => setValues({anuncios:res.data}))

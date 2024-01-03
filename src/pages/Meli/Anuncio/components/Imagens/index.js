@@ -5,7 +5,7 @@ import "./imagens.css"
 function Imagens(props){
 
     const [values, setValues] = useState({pictures:[]})
-    const host = window.location.protocol+ "//" + window.location.hostname+":7080";
+    const host = "https://dibros.ddns.net:7080";
 
     const onChange = async (event)=>{  
         event.preventDefault();   

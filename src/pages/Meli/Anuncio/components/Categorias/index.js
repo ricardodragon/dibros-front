@@ -6,7 +6,7 @@ import LabelSelect from "../../../../../estrutura/LabelSelect";
 function Categorias(props){
 
     const [values, setValues] = useState({categorias:[], categoria:{}});
-    const host = window.location.protocol+ "//" + window.location.hostname+":7080";
+    const host = "https://dibros.ddns.net:7080";
 
     useEffect(() => 
         props.category_id?

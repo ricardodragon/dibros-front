@@ -9,7 +9,7 @@ import { IconButton } from "@material-ui/core";
 function Contas(props){
     const [values, setValues] = useState({contas:[]});        
     const { code } = queryString.parse(props.location.search)
-    const host = window.location.protocol+ "//" + window.location.hostname+":7080";
+    const host = "https://dibros.ddns.net:7080";
 
     useEffect(() => {
         if(code)
@@ -23,7 +23,7 @@ function Contas(props){
     }, [code, values.contas, host]);
 
     const redirectMeli = () => {                
-        const uriRedirect = 'https://dibros.com.br/contas'
+        const uriRedirect = 'https://dibros.com.br/meli/contas'
         window.location.href = `https://auth.mercadolivre.com.br/authorization?response_type=code&client_id=5401911184235214&redirect_uri=${uriRedirect}`;
     }
 
