@@ -7,7 +7,7 @@ function Usuarios(){
 
     const [values, setValues] = useState({usuarios:[], usuario:{email:"", email:"", password:""}})    
     
-    const host = "https://dibros.ddns.net:7080";
+    const host = process.env.REACT_APP_URL;
 
     useEffect(() => 
         axios.get(host+"/auth/usuarios/all").then(usuarios => {setValues({usuarios:usuarios.data, usuario:{email:"", username:"", password:""}});}), 

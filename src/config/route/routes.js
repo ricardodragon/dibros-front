@@ -13,6 +13,7 @@ import Perfil from "../../pages/Perfil";
 import AnuncioDetalhes from "../../pages/AnuncioDetalhes";
 
 const Routes = ()=>(
+        
     <BrowserRouter>
         <Switch>
             {/* Estrutra Auth etc */}
@@ -25,7 +26,7 @@ const Routes = ()=>(
             {/* e-commerce dibros */}
             <PrivateRoutes exact path="/lojas" nome={"Lojas"} component={Lojas}/>
             <PrivateRoutes exact path="/produtos/:id" nome={"Produtos"} component={Produtos}/>
-            <PrivateRoutes exact path={["/"]} nome={"dibros-store"} component={Anuncios}/>
+            <PrivateRoutes exact path={"/"} nome={"dibros-store"} component={Anuncios}/>
             <PrivateRoutes exact path="/anuncio" nome={"Gerenciamento de anuncios"} component={Anuncio}/>                                 
             <PrivateRoutes exact path="/anuncio-detalhes" nome="Tela de compra do anuncio" component={AnuncioDetalhes}/>
 

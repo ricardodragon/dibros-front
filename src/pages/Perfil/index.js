@@ -5,7 +5,7 @@ import axios from 'axios';
 function Perfil(props) {
 
     const [values, setValues] = useState({usuario:{}})    
-    const host = "https://dibros.ddns.net:7080";
+    const host = process.env.REACT_APP_URL;
     useEffect(() => axios.get(host+"/auth/usuarios").then(response=>setValues({usuario:response.data})), [host])
 
     const setUsuario = (event) => setValues({...values,usuario:{...values.usuario,[event.target.name]:event.target.value}})    

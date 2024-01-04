@@ -6,7 +6,7 @@ import LabelInput from '../../../../../estrutura/LabelInput';
 function Contas(props){
 
     const [values, setValues] = useState({contas:[]})     
-    const host = "https://dibros.ddns.net:7080";
+    const host = process.env.REACT_APP_URL;
 
     const setConta = (email) => {  
         const conta = values.contas.filter((value) => value.email===email)[0]

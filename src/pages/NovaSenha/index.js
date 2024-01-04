@@ -8,7 +8,7 @@ function NovaSenha(props) {
     const { token } = useParams(props.location.search);
 
         
-    const host = "https://dibros.ddns.net:7080";
+    const host = process.env.REACT_APP_URL;
 
     const setUsuario = (event)=>
         setValues({...values,usuario:{...values.usuario,[event.target.name]:event.target.value}})    

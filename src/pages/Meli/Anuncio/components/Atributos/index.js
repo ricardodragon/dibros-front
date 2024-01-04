@@ -6,7 +6,7 @@ function
 Atributos(props){
 
     const [values, setValues] = useState({atributos:[]});
-    const host = "https://dibros.ddns.net:7080";
+    const host = process.env.REACT_APP_URL;
 
     //console.log((await axios.get(host+'/meli/atributos/'+props.categoria)).data.sort((a, b) => a.value_type.localeCompare(b.value_type)));
     useEffect(() => {

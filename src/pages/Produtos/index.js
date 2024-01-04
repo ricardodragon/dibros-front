@@ -11,7 +11,7 @@ function Produtos(props){
     const [values, setValues] = useState({lojas:[], produtos:[], produto:{imagem: "", preco:"", quantidade:"", titulo:"", lojaDTO:{nome:"",id:""}}})    
     const { id } = useParams();
 
-    const host = "https://dibros.ddns.net:7080";
+    const host = process.env.REACT_APP_URL;
 
     useEffect(() => 
         axios.get(host+(id>0?"/loja/produto/loja/"+id:"/loja/produto")).then(res => 

@@ -9,7 +9,7 @@ import { IconButton } from "@material-ui/core";
 function Contas(props){
     const [values, setValues] = useState({contas:[]});        
     const { code } = queryString.parse(props.location.search)
-    const host = "https://dibros.ddns.net:7080";
+    const host = process.env.REACT_APP_URL;
 
     useEffect(() => {
         if(code)
@@ -20,7 +20,7 @@ function Contas(props){
         else
             axios.get(host+'/meli/contas/all?id='+JSON.parse(localStorage.getItem("usuario")).id)
                 .then(res=> setValues({contas:res.data}))
-    }, [code, values.contas, host]);
+    }, [code, host]);
 
     const redirectMeli = () => {                
         const uriRedirect = 'https://dibros.com.br/meli/contas'

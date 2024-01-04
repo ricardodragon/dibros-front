@@ -6,7 +6,7 @@ import axios from "axios";
 function AnuncioCompra(props){
 
     const [values, setValues] = useState({anuncio:{}});
-    const host = "https://dibros.ddns.net:7080";
+    const host = process.env.REACT_APP_URL;
     const { id } = useParams();
 
     useEffect(() => 

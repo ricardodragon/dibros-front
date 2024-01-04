@@ -82,10 +82,23 @@ input[type=submit],input[type=file]{
 input{
 	font-family: 'Architects Daughter', cursive;
 	padding: 0.2% 0.8% 0.2% 0.8%;	
-	border-radius: 0.3em;	
-	border: 1px solid #ccc;
+	border: none;	
+	border-bottom: 1px solid #ccc;
 	box-sizing: border-box;		
-	color: white;		
+	color: #000;		
+}
+
+input::placeholder{
+    font-size: 11pt; 
+    transition: 0.4s;   
+}
+
+input:focus::placeholder{
+    font-size: 7pt;    
+}
+
+input:focus{
+	outline: none;
 }
 
 select{

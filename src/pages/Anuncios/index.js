@@ -8,10 +8,14 @@ import loader from "./../../assets/loadinfo.gif";
 function Anuncios(){
          
     const [values, setValues] = useState({anuncios:[]})    
-    const host = "https://dibros.ddns.net:7080";
+    const host = process.env.REACT_APP_URL;
     
     useEffect(() => 
-        axios.get(host+`/loja/anuncio?page=${0}&size=${10}`).then(res => setValues({anuncios:res.data}))
+        axios.get(host+`/loja/anuncio?page=${0}&size=${10}`).then(res => 
+            axios.get(process.env.REACT_APP_URL+"/auth/usuarios").then(r =>
+                setValues({anuncios:res.data, usuario:r.data})
+            )
+        )
     , [host]);
 
 
@@ -27,14 +31,14 @@ function Anuncios(){
 
     const postComentario = (event, anuncio) => {
         event.preventDefault();
-        axios.post(host+"/loja/comentario", {idAnuncio:anuncio.id, texto:anuncio.inputComentario}).then(r=>setValues({...values, anuncios:values.anuncios.map(x=> x.id===anuncio.id?{...x, inputComentario:"", comentariosDTO:x.comentariosDTO.concat({...r.data, usuarioDTO:JSON.parse(localStorage.getItem("usuario"))})}:x)}))
+        axios.post(host+"/loja/comentario", {idAnuncio:anuncio.id, texto:anuncio.inputComentario}).then(r=>setValues({...values, anuncios:values.anuncios.map(x=> x.id===anuncio.id?{...x, inputComentario:"", comentariosDTO:x.comentariosDTO.concat({...r.data, usuarioDTO:values.usuario})}:x)}))
     }
 
     const postLikeComentario = (event, anuncio, comentario) => {
         event.preventDefault();
         axios.post(host+"/loja/comentario/"+comentario.id).then(r=>setValues({...values, anuncios:values.anuncios.map(x=> x.id===anuncio.id?{...x, inputComentario:"", comentariosDTO:x.comentariosDTO.map(c=>{ 
-            if(c.id===comentario.id) return {...c, likeComentariosDTO:c.likeComentariosDTO.concat({idUsuario:JSON.parse(localStorage.getItem("usuario")).id, idComentario:c.id})}
-            else if(c.comentariosDTO.filter(cc=>cc.id===comentario.id).length) return {...c, comentariosDTO:c.comentariosDTO.map(cc=>cc.id===comentario.id? {...cc, likeComentariosDTO:cc.likeComentariosDTO.concat({idUsuario:JSON.parse(localStorage.getItem("usuario")).id, idComentario:c.id})}:cc)}                
+            if(c.id===comentario.id) return {...c, likeComentariosDTO:c.likeComentariosDTO.concat({idUsuario:values.usuario.id, idComentario:c.id})}
+            else if(c.comentariosDTO.filter(cc=>cc.id===comentario.id).length) return {...c, comentariosDTO:c.comentariosDTO.map(cc=>cc.id===comentario.id? {...cc, likeComentariosDTO:cc.likeComentariosDTO.concat({idUsuario:values.usuario.id, idComentario:c.id})}:cc)}                
             else return c})}:x)}));
     }
     
@@ -77,7 +81,7 @@ function Anuncios(){
                     </div>
                     
                     <div style={{borderTop:"1px solid rgba(0, 0 , 0, 0.1)", textAlign:"center", fontSize:"11pt", padding:"1%", width:"100%"}}>
-                        {anuncio.likeAnunciosDTO.filter(x=>x.idUsuario===JSON.parse(localStorage.getItem("usuario")).id).length?
+                        {anuncio.likeAnunciosDTO.filter(x=>x.idUsuario===values.usuario.id).length?
                         <div style={{display:"inline-block", width: "33%", textOverflow: "ellipsis", maxWidth: "16ch", overflow: "hidden", whiteSpace: "nowrap", cursor: "pointer"}} onClick={event=>deleteLikeAnuncio(event, anuncio)}><Link to={""} style={{textDecoration:'none'}}>❤️</Link></div>: 
                         <div style={{display:"inline-block", width: "33%", textOverflow: "ellipsis", maxWidth: "16ch", overflow: "hidden", whiteSpace: "nowrap", cursor: "pointer"}} onClick={event=>likeAnuncio(event, anuncio)}><Link to={""} style={{textDecoration:'none'}}>🤍</Link></div>}                     
                         <div style={{display:"inline-block", width: "33%", textOverflow: "ellipsis", maxWidth: "14ch", overflow: "hidden", whiteSpace: "nowrap", cursor: "pointer"}}><Link style={{textDecoration:'none'}} to={""} onClick={event=>{event.preventDefault();setValues({...values, anuncios:values.anuncios.map(x=>{return x.id===anuncio.id?{...x, expandComentario:!x.expandComentario}:x})})}}>💬</Link></div>
@@ -90,14 +94,14 @@ function Anuncios(){
                             <div style={{height:"100%", position:"absolute", float:"left"}}>
                                 <img alt="Imagem perfil user" src={x.usuarioDTO.imagemPath?host+x.usuarioDTO.imagemPath:"https://freesvg.org/img/abstract-user-flat-3.png"} style={{borderRadius: "50%", width:"2em", height:"2em"}}/>                                      
                             </div>
-                            {x.idUsuario===JSON.parse(localStorage.getItem("usuario")).id&&<div style={{fontWeight:"bolder", float:"right", cursor:"pointer", paddingRight:"3%", paddingLeft:"3%"}} onClick={event=>{event.preventDefault();document.getElementById(x.id+'-'+index).showModal();}}>⋮</div>}
+                            {x.idUsuario===values.usuario.id&&<div style={{fontWeight:"bolder", float:"right", cursor:"pointer", paddingRight:"3%", paddingLeft:"3%"}} onClick={event=>{event.preventDefault();document.getElementById(x.id+'-'+index).showModal();}}>⋮</div>}
                             
                             <dialog onClick={event=>{event.preventDefault();document.getElementById(x.id+'-'+index).close();}} id={x.id+'-'+index} style={{borderRadius:"0.5%", borderStyle:"none", width:"100%", top:'85%', textAlign:'center'}}>
                                 <label style={{width:'100%', cursor:'pointer', padding:"0.5%"}} onClick={event=>{event.stopPropagation();}}>✏️ EDITAR</label><br/>
                                 <label style={{width:'100%', cursor:'pointer', padding:"0.5%"}} onClick={event=>{deleteComentario(event, anuncio, x);document.getElementById(x.id+'-'+index).close();event.stopPropagation();}}>❌ EXCLUIR</label>
                             </dialog>
 
-                            {x.likeComentariosDTO.filter(lc=>lc.idUsuario===JSON.parse(localStorage.getItem("usuario")).id).length?
+                            {x.likeComentariosDTO.filter(lc=>lc.idUsuario===values.usuario.id).length?
                                 <p onClick={event=>deleteLikeComentario(event, anuncio, x)} style={{float:"right", paddingRight:"3%", cursor:"pointer"}} >❤️</p>:
                                 <p onClick={event=>postLikeComentario(event, anuncio, x)} style={{float:"right", paddingRight:"3%", cursor:"pointer"}}>🤍</p>}                                                
                             <div style={{margin:"0 2% 0 2.3em"}}><p style={{whiteSpace: "nowrap", fontSize:"8pt", fontWeight:"bolder", textOverflow: "ellipsis", overflow:"hidden", marginBottom:"0"}}>{x.usuarioDTO.nome||x.usuarioDTO.email}</p>{x.texto}</div>
@@ -120,7 +124,7 @@ function Anuncios(){
                                         <label style={{width:'100%', cursor:'pointer', padding:"0.5%"}} onClick={event=>{event.stopPropagation();}}>✏️ EDITAR</label><br/>
                                         <label style={{width:'100%', cursor:'pointer', padding:"0.5%"}} onClick={event=>{deleteComentario(event, anuncio, x);document.getElementById(cc.id+'-'+i).close();event.stopPropagation();}}>❌ EXCLUIR</label>
                                     </dialog>
-                                    {cc.likeComentariosDTO.filter(lc=>lc.idUsuario===JSON.parse(localStorage.getItem("usuario")).id).length?
+                                    {cc.likeComentariosDTO.filter(lc=>lc.idUsuario===values.usuario.id).length?
                                     <p onClick={event=>deleteLikeComentario(event, anuncio, cc)} style={{float:"right", paddingRight:"3%", cursor:"pointer"}} >❤️</p>:
                                     <p onClick={event=>postLikeComentario(event, anuncio, cc)} style={{float:"right", paddingRight:"3%", cursor:"pointer"}}>🤍</p>}                        
                                     <div style={{margin:"0 2% 0 2.3em"}}><p style={{whiteSpace: "nowrap", fontSize:"8pt", fontWeight:"bolder", textOverflow: "ellipsis", overflow:"hidden", marginBottom:"0"}}>{cc.usuarioDTO.nome||cc.usuarioDTO.email}</p>{cc.texto}</div>

@@ -5,7 +5,7 @@ import "./atributosVariacoes.css"
 
 function AtributosVariacoes(props){    
     const [values, setValues] = useState({atributos:[], novoAtributo:''})
-    const host = "https://dibros.ddns.net:7080";
+    const host = process.env.REACT_APP_URL;
 
     const addAtributo = (event)=>{
         event.preventDefault();                          

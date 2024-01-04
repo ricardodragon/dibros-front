@@ -17,7 +17,7 @@ function Anuncio(){
     const { idAnuncio, userId} = useParams(); 
         
     const [values, setValues] = useState({anuncio:{title:'', price:0, available_quantity:0, variations:[], attributes:[], category_id:''}, disabled: true, loader:false});                  
-    const host = "https://dibros.ddns.net:7080";
+    const host = process.env.REACT_APP_URL;
 
     const setAnuncio = useCallback(()=>{        
         if(idAnuncio==="0"){setValues({anuncio:{title:'', price:0, available_quantity:0, attributes:[], variations:[]}, loader:false, disabled: false}); return}

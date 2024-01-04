@@ -5,7 +5,7 @@ import "./imagens.css"
 function Imagens(props){
 
     const [values, setValues] = useState({pictures:[]})
-    const host = "https://dibros.ddns.net:7080";
+    const host = process.env.REACT_APP_URL;
 
     const onChange = async (event)=>{  
         event.preventDefault();   
