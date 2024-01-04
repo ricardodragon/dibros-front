@@ -21,7 +21,7 @@ function Contas(props){
             )
         else
             axios.get(host+'/meli/contas/all').then(r=>setValues({contas:r.data}))   
-    }, [code, host]);
+    }, [props.history, code, host]);
 
     const redirectMeli = () => {                
         const uriRedirect = 'https://dibros.com.br/meli/contas'
