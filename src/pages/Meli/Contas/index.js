@@ -5,6 +5,7 @@ import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import axios from "axios";
 import './contas.css'
 import { IconButton } from "@material-ui/core";
+import { FcCheckmark, FcHighPriority } from "react-icons/fc";
     
 function Contas(props){
     const [values, setValues] = useState({contas:[]});        
@@ -49,7 +50,6 @@ function Contas(props){
                                 &nbsp;&nbsp;  
                                 <button className="btn btn-danger btn-sm" onClick={event=>{event.preventDefault();axios.delete(host+'/meli/contas/'+value.idLocal);}}>Excluir</button>                       
                             </div>
-                            {/* <Link to="/" className="link-danger">Perguntas</Link> */}
                         </div>                        
                     )
                 })
