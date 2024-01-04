@@ -10,16 +10,16 @@ function Contas(props){
     const [values, setValues] = useState({contas:[]});        
     const { code } = queryString.parse(props.location.search)
     const host = process.env.REACT_APP_URL;
-
+    const erroContaMessage = "Erro ao salvar conta, pressione f5 para tentar novamente ou clique no botão adicionar conta novamente, se persistir o erro verifique sua conta MELI";
     useEffect(() => {
         if(code)
-            axios.post(host+'/meli/contas?code='+code+'&userId='+JSON.parse(localStorage.getItem("usuario")).id).then(res=> 
-                axios.get(host+'/meli/contas/all?id='+JSON.parse(localStorage.getItem("usuario")).id)
-                    .then(res=> setValues({contas:res.data}))
+            axios.post(host+'/meli/contas?code='+code).then(res=> 
+                axios.get(host+'/meli/contas/all')
+                    .then(res=> props.history.replace("/meli/contas"))
+                    .catch(error=> axios.get(host+'/meli/contas/all')).then(r=>setValues({contas:r.data, erro:erroContaMessage}))
             )
         else
-            axios.get(host+'/meli/contas/all?id='+JSON.parse(localStorage.getItem("usuario")).id)
-                .then(res=> setValues({contas:res.data}))
+            axios.get(host+'/meli/contas/all').then(r=>setValues({contas:r.data}))   
     }, [code, host]);
 
     const redirectMeli = () => {                
@@ -28,7 +28,9 @@ function Contas(props){
     }
 
     return (
-        <div className="row">            
+        <div className="row">  
+            <div className={"alert alert-success "+(values.ok?"":"visually-hidden")} role="alert"><FcCheckmark/>Link enviado com sucesso</div>
+            <div className={"alert alert-danger "+(values.erro?"":"visually-hidden")} role="alert"><FcHighPriority/>Erro: {values.erro}</div>          
             <IconButton color="primary" className="btn-add-contas" aria-label="Adicionar conta" onClick={redirectMeli}>
                 <AddShoppingCartIcon /> ADICIONAR CONTA
             </IconButton>
