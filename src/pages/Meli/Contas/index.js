@@ -4,7 +4,6 @@ import queryString from 'query-string';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import axios from "axios";
 import './contas.css'
-import { IconButton } from "@material-ui/core";
 import { FcCheckmark, FcHighPriority } from "react-icons/fc";
     
 function Contas(props){
@@ -29,21 +28,19 @@ function Contas(props){
     }
 
     return (
-        <div className="row">  
+        <div className="p-4">  
             <div className={"alert alert-success "+(values.ok?"":"visually-hidden")} role="alert"><FcCheckmark/>Link enviado com sucesso</div>
             <div className={"alert alert-danger "+(values.erro?"":"visually-hidden")} role="alert"><FcHighPriority/>Erro: {values.erro}</div>          
-            <IconButton color="primary" className="btn-add-contas" aria-label="Adicionar conta" onClick={redirectMeli}>
-                <AddShoppingCartIcon /> ADICIONAR CONTA
-            </IconButton>
+            <div color="primary" className="btn btn-primary btn-sm mt-3 w-100 mb-2" onClick={redirectMeli}><AddShoppingCartIcon /> ADICIONAR CONTA</div>
             {
                 values.contas.map((value, index) => {
                     return (                        
-                        <div key={index} className="card-contas col-md-3 col-sm-12">
-                            <span className="header-card h5">{value.nickname}</span>                                                        
+                        <div key={index} className="card-contas">
+                            <h5 className="header-card">{value.nickname}</h5>                                                        
                             <hr/>
                             <label>id: </label>{value.id}                              
                             <hr/>
-                            <span className="header-card"><label>email: </label><span style={{fontWeight:"bold"}}>{value.email}</span></span>
+                            <h5 className="header-card"><label>email: </label><span style={{fontWeight:"bold"}}>{value.email}</span></h5>
                             <hr/>
                             <div>
                                 <Link to={"/meli/anuncios/"+value.id+"/"+undefined} className="btn-link">Anuncios</Link>

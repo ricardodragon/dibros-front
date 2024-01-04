@@ -12,9 +12,9 @@ function AtributosVariacoes(props){
         props.onChange({id: undefined, name: values.novoAtributo, value_id: '', value_name: ''}, props.attribute_combinations.length)                              
     }
       
-    useEffect(() => props.categoria!==undefined?
-        axios.get(host+'/meli/atributos/'+props.categoria).then(res=> res.data.filter(value=>value.tags.allow_variations)):undefined
-    , [props.categoria, host]);
+    useEffect(() => {if(props.categoria)
+        axios.get(host+'/meli/atributos/'+props.categoria).then(res=> res.data.filter(value=>value.tags.allow_variations))
+    }, [props.categoria, host]);
 
     return(        
         <span >                   

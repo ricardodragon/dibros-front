@@ -1,26 +1,17 @@
 
 
 .card-contas{
-    margin: 0.9%;
-    box-shadow: 5px 5px 10px black;
-    border-radius: 2%;    
+    border-radius: 0.5%; 
+    margin-bottom: 1%;   
     padding: 2em;
+    background-color: white;
+    color: #000;
 }   
 
 .header-card{
-    display: block;       
     white-space: nowrap;    
     overflow-x: scroll;
 }
 
-.footer-card-contas{
-    display: inline-flex;
-    text-align: center;
-}
-
-.btn-add-contas{
-    width: 100%;
-    text-align: center; 
-}
 
 
