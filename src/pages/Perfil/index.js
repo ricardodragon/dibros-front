@@ -22,7 +22,7 @@ function Perfil(props) {
         )
     }
 
-    return <form onSubmit={enviar}>
+    return <form onSubmit={enviar} className="anuncios-conteudo">
         <fieldset id="usuario" className="p-4 mb-2" style={{borderRadius:"0.3em"}}><legend>Informações de usuário ID {values.usuario.id}</legend>
             {(values.usuario.imagem||values.usuario.imagemPath)&&
                 <img alt="Imagem de perfil" style={{width:"6em", height:"6em", borderRadius: "5px", display:"inline-block"}} src={values.usuario.imagemPath?host+values.usuario.imagemPath:URL.createObjectURL(values.usuario.imagem)}/>}

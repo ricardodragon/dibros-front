@@ -29,7 +29,7 @@ function Produtos(props){
     }
 
     return (
-        <div>
+        <div className="anuncios-conteudo">
             <form className="mt-4" onSubmit={submit}>                
                 <fieldset id="usuario" className="p-2" style={{overflow:"hidden", borderRadius:"0.9em"}}>                    
                     <legend>{values.produto.id?"Editar":"Criar"} Produto {values.produto.id}</legend>                                        

@@ -1,3 +1,11 @@
+.anuncios-conteudo{
+    overflow-y: scroll; 
+    position: fixed; 
+    height: 90%; 
+    width: 100%;
+    z-index: -1;
+}
+
 .card-anuncio{
     border: 1px solid rgba(0, 0 , 0, 0.1);
     border-radius: 1em;

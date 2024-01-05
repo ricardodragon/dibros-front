@@ -28,7 +28,7 @@ function Contas(props){
     }
 
     return (
-        <div className="p-4">  
+        <div className="anuncios-conteudo">  
             <div className={"alert alert-success "+(values.ok?"":"visually-hidden")} role="alert"><FcCheckmark/>Link enviado com sucesso</div>
             <div className={"alert alert-danger "+(values.erro?"":"visually-hidden")} role="alert"><FcHighPriority/>Erro: {values.erro}</div>          
             <div color="primary" className="btn btn-primary btn-sm mt-3 w-100 mb-2" onClick={redirectMeli}><AddShoppingCartIcon /> ADICIONAR CONTA</div>

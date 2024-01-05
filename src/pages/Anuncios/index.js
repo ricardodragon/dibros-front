@@ -17,6 +17,14 @@ function Anuncios(){
             )
         )
     , [host]);
+    
+    const handlerScroll = (event) => {            
+        if((event.target.scrollHeight - event.target.scrollTop)-10<=event.target.clientHeight){                           
+            axios.get(host+`/loja/anuncio?page=${values.anuncios.length/10}&size=${10}`).then(res =>{ 
+                setValues({...values, anuncios:values.anuncios.concat(res.data)})
+            })       
+        }
+    }
 
 
     const likeAnuncio = (event, anuncio) => {
@@ -60,7 +68,7 @@ function Anuncios(){
     }
 
     return (
-        <>
+        <div className="anuncios-conteudo" onScroll={handlerScroll} >
             {values.anuncios.map((anuncio, indexAnuncio) =>            
                 <section className="card-anuncio">                  
                     <header style={{padding: "2%"}}>
@@ -139,7 +147,7 @@ function Anuncios(){
                 </section>            
             )}
             <div style={{textAlign:"center"}}><img style={{height:"5em"}} src={loader} alt="loading..."/></div>
-        </>        
+        </div>        
     )
 }
 

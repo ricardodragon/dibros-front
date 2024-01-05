@@ -38,7 +38,7 @@ function Anuncio(props){
         )
     }
     return (
-        <div>
+        <div className='anuncios-conteudo'>
             <form className="mt-4" onSubmit={submit}><legend></legend>                        
                 <fieldset id="anuncio" className="p-1 mb-2" style={{borderRadius:"0.3em"}}><legend>{values.anuncio.id?"Editar":"Criar"} Anucio {values.anuncio.id}</legend>                                        
                     <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} className="p-1" htmlFor='loja'>Loja : </label>     

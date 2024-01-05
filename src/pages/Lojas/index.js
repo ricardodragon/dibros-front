@@ -31,7 +31,7 @@ function Lojas(props) {
         lojas:values.loja.id?values.lojas.map(x=>x.id===values.loja.id?response.data:x):[...values.lojas, response.data]
     })
 
-    return <div>
+    return <div className='anuncios-conteudo'>
         <form className="mt-4" onSubmit={enviar}> 
             {console.log(values.position)}
             <fieldset id="loja" className="p-1 mb-2" style={{borderRadius:"0.3em"}}><legend>{values.loja.id?"Editar":"Criar"} Loja {values.loja.id}</legend>                                    

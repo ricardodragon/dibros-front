@@ -80,7 +80,7 @@ function Anuncio(){
                 <span className="visually-hidden">Loading...</span>
             </div>                 
         </div>:   
-        <div className="p-4">
+        <div className="anuncios-conteudo">
             <div className={"alert alert-success "+(values.ok?"":"visually-hidden")} role="alert"><FcCheckmark/> Anuncio enviado com sucesso</div>
             <div className={"alert alert-danger "+(values.erro?"":"visually-hidden")} role="alert"><FcHighPriority/>Erro: {values.erro}</div>
             <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"20%", fontWeight:"bold"}}>Visitas : </label>
