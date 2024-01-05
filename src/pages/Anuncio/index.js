@@ -42,9 +42,9 @@ function Anuncio(props){
             <form className="mt-4" onSubmit={submit}><legend></legend>                        
                 <fieldset id="anuncio" className="p-1 mb-2" style={{borderRadius:"0.3em"}}><legend>{values.anuncio.id?"Editar":"Criar"} Anucio {values.anuncio.id}</legend>                                        
                     <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} className="p-1" htmlFor='loja'>Loja : </label>     
-                    <select id="loja" style={{display:"inline", width:"75%"}} onChange={event=> setValues({...values, anuncio:{...values.anuncio, idLoja:event.target.value>0?event.target.value:undefined, anuncioProdutosDTO:values.anuncio.anuncioProdutosDTO.filter(x=>x.idProduto.idLoja === event.target.value)}})}>                                                            
-                        <option selected value={0}>Selecione uma loja</option>
-                        {values.lojas.map(l => <option selected={l.id===values.anuncio.idLoja} key={l.id} value={l.id}>{l.nome}</option>)}
+                    <select defaultValue={0} value={values.anuncio.idLoja} id="loja" style={{display:"inline", width:"75%"}} onChange={event=> setValues({...values, anuncio:{...values.anuncio, idLoja:event.target.value>0?event.target.value:undefined, anuncioProdutosDTO:values.anuncio.anuncioProdutosDTO.filter(x=>x.idProduto.idLoja === event.target.value)}})}>                                                            
+                        <option value={0}>Selecione uma loja</option>
+                        {values.lojas.map(l => <option key={l.id} value={l.id}>{l.nome}</option>)}
                     </select>  
                     <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} className="p-1" htmlFor="legenda">Legenda : </label>            
                     <input id="legenda" style={{width:"75%"}} placeholder="legenda" onChange={event=>setValues({...values,anuncio:{...values.anuncio,legenda:event.target.value}})} value={values.anuncio.legenda} required={props.required} type="text"/>                                                                      

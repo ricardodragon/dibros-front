@@ -12,14 +12,14 @@ function Anuncios(){
     
     useEffect(() => 
         axios.get(host+`/loja/anuncio?page=${0}&size=${10}`).then(res => 
-            axios.get(process.env.REACT_APP_URL+"/auth/usuarios").then(r =>
-                setValues({anuncios:res.data, usuario:r.data})
-            )
+            axios.get(process.env.REACT_APP_URL+"/auth/usuarios").then(r =>{
+                setValues({anuncios:res.data, usuario:r.data, total:res.headers['total']})
+            })
         )
     , [host]);
     
-    const handlerScroll = (event) => {            
-        if((event.target.scrollHeight - event.target.scrollTop)-10<=event.target.clientHeight){                           
+    const handlerScroll = (event) => {       
+        if((event.target.scrollHeight - event.target.scrollTop)-10<=event.target.clientHeight&&values.anuncios.length<values.total){                           
             axios.get(host+`/loja/anuncio?page=${values.anuncios.length/10}&size=${10}`).then(res =>{ 
                 setValues({...values, anuncios:values.anuncios.concat(res.data)})
             })       
@@ -146,7 +146,7 @@ function Anuncios(){
                     </>}                
                 </section>            
             )}
-            <div style={{textAlign:"center"}}><img style={{height:"5em"}} src={loader} alt="loading..."/></div>
+            <div style={{textAlign:"center"}}>{values.total&&values.anuncios.length>=values.total?"fim dos anuncios":<img style={{height:"5em"}} src={loader} alt="loading..."/>}</div>
         </div>        
     )
 }
