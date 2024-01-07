@@ -1,4 +1,3 @@
-import { Button } from "@material-ui/core";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
@@ -28,11 +27,11 @@ function Listagem(){
                 values.anuncios.map((value, index) => {
                     return (                            
                         <div key={index} className="card m-4" style={{maxWidth: "540px;"}}>  
-                            <div style={{display: "flex",alignItems: "center"}} onClick={event=>{event.preventDefault();window.open(value.body.permalink);}}>
+                            <div style={{display: "flex",alignItems: "center"}}>
                                 <figcaption className="foto-lista-anuncio">
                                     <img src={value.body.thumbnail} alt=""  />                                    
                                 </figcaption>                                                                       
-                                <a href="/#" style={{display:"inline"}} className="h5 p-4">{value.body.title}</a>                                    
+                                <a href={'/meli/anuncio/'+value.body.id+'/'+(value.body.seller_id?value.body.seller_id:0)} target="_blank" style={{display:"inline"}} className="h5 p-4">{value.body.title}</a>                                    
                                 <span className="h5">{value.body.status!=="active"?<FcHighPriority/>:<FcCheckmark/>}</span>
                             </div>
                             <div className="card-body">                                    
@@ -47,10 +46,8 @@ function Listagem(){
                                         <label>Última alteração</label>&nbsp;<span style={{fontWeight:"bold"}}>{new Date(value.body.last_updated).toLocaleString()}</span>                                            
                                     </div>
                                 </div>                                                                        
-                                <div className="footer-card-link" style={{boxSizing:"content-box", padding:"1%"}}>
-                                    <Link to={"/meli/anuncio/"+value.body.id+"/"+(value.body.seller_id?value.body.seller_id:0)}>
-                                        <Button className="btn btn-primary btn-sm">Detalhes</Button>
-                                    </Link> 
+                                <div className="footer-card-link" style={{boxSizing:"content-box", padding:"1%"}}>                                    
+                                    <button onClick={event=>{event.preventDefault();window.open(value.body.permalink)}} className="btn btn-warning btn-sm">Abrir no Mercado Live</button>                                    
                                     {value.body.status==="active"?<button onClick={event=>{event.preventDefault();axios.put(host+'/meli/anuncios/'+value.body.seller_id+'/'+value.body.id, {status:"paused"}).then(r=>alert("Deu"))}} className="btn btn-warning btn-sm">Pausar</button>:<button className="btn btn-info btn-sm" onClick={event=>{event.preventDefault();axios.put(host+'/meli/anuncios/'+value.body.seller_id+'/'+value.body.id, {status:"active"}).then(r=>alert("Deu"))}}>Ativar</button>}                                                                             
                                     <button onClick={event=>{event.preventDefault();axios.put(host+'/meli/anuncios/'+value.body.seller_id+'/'+value.body.id, {status:"closed"}).then(r=>axios.put(host+'/meli/anuncios/'+value.body.seller_id+'/'+value.body.id, {deleted:"true"}).then(r=>alert("Deu")))}} className="btn btn-danger btn-sm">Excluir</button>   
                                 </div>                                    

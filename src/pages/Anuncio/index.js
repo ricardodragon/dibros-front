@@ -35,7 +35,8 @@ function Anuncio(props){
         setValues({...values, load:false, ok:`Anuncio '${response.data.id}' criado com sucesso.`, anuncio:{preco:"", legenda:"", imagem:"", lojaDTO:{nome:"",id:""}, anuncioProdutosDTO:[]}, anuncios:a.length?values.anuncios.map(anuncio=>{return anuncio.id===a[0].id?{...response.data, anuncioProdutosDTO:values.anuncio.anuncioProdutosDTO}:anuncio}):values.anuncios.concat({...response.data, anuncioProdutosDTO:values.anuncio.anuncioProdutosDTO.map(x=>{return {...x, idAnuncio:response.data.id}})})});
     }
 
-    const verificaAnuncio = () => values.anuncio.imagemPath||values.anuncio.imagem||values.anuncio.legenda||values.anuncio.idLoja;
+    const enviaAnuncio = () => !values.anuncio.imagem||!values.anuncio.legenda||!values.anuncio.idLoja;
+    const limpaAnuncio = () => values.anuncio.imagem||values.anuncio.legenda||values.anuncio.idLoja;
 
     const addProduto = event => {
         event.preventDefault();
@@ -61,11 +62,11 @@ function Anuncio(props){
                             {values.lojas.map(l => <option key={l.id} value={l.id}>{l.nome}</option>)}
                         </select>  
                         <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} className="p-1" htmlFor="legenda">Legenda : </label>            
-                        <input id="legenda" style={{width:"75%"}} placeholder="legenda" onChange={event=>setValues({...values,anuncio:{...values.anuncio,legenda:event.target.value}})} value={values.anuncio.legenda} required={props.required} type="text"/>                                                                      
+                        <input id="legenda" style={{width:"75%"}} placeholder="legenda" onChange={event=>setValues({...values,anuncio:{...values.anuncio,legenda:event.target.value}})} value={values.anuncio.legenda} required type="text"/>                                                                      
                     </fieldset>
                     <fieldset id="imagens" className="p-1 mb-2"  style={{borderRadius:"0.3em"}}><legend>Fotos</legend>  
                         <label htmlFor='imagem' className="p-1" style={{backgroundColor: "#3498db", borderRadius: "5px", color: "#fff", cursor: "pointer"}}>📁 Upload</label>
-                        <input id='imagem' label="Foto: " style={{display:"none"}} type="file" accept='image/*' onChange={event =>event.target.files[0]?setValues({...values, anuncio:{...values.anuncio, imagemPath:undefined,imagem:event.target.files[0]}}):""}/>                                    
+                        <input required id='imagem' label="Foto: " style={{display:"none"}} type="file" accept='image/*' onChange={event =>event.target.files[0]?setValues({...values, anuncio:{...values.anuncio, imagemPath:undefined,imagem:event.target.files[0]}}):""}/>                                    
                         <img alt="" style={{width:"3em", height:"3em"}} src={values.anuncio.imagem?URL.createObjectURL(values.anuncio.imagem):host+values.anuncio.imagemPath}/>
                     </fieldset>
                     {values.anuncio.idLoja&&
@@ -105,8 +106,8 @@ function Anuncio(props){
                     }
 
                     <div>
-                        <input disabled={!verificaAnuncio()} type="submit" value="enviar" className="btn btn-sm btn-success mt-2"/>    
-                        <input disabled={!verificaAnuncio()} onClick={event => {event.preventDefault();setValues({...values, anuncio:{legenda:"", lojaDTO:{id:"", nome:""}, anuncioProdutosDTO:[]}})}} type="submit" className="btn btn-sm btn-primary mt-2" value="Limpar"/>                        
+                        <input disabled={enviaAnuncio()} type="submit" value="enviar" className="btn btn-sm btn-success mt-2"/>    
+                        <input disabled={!limpaAnuncio()} onClick={event => {event.preventDefault();setValues({...values, anuncio:{legenda:"", lojaDTO:{id:"", nome:""}, idLoja:0, anuncioProdutosDTO:[]}})}} type="submit" className="btn btn-sm btn-primary mt-2" value="Limpar"/>                        
                     </div>
                 </form>
 

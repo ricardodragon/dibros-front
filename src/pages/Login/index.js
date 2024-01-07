@@ -17,7 +17,7 @@ function Login(props) {
         axios.post(host+'/auth/login', values.usuario).then(response => {
             localStorage.setItem("token", response.headers['authorization']);                
             props.history.replace("/");
-        }).catch(error=>setValues({...values, erro:error.response.data.message?error.response.data.message:error.response.data, ok:false, load:false}));        
+        }).catch(error=>setValues({...values, erro:JSON.stringify(error.response.data.message?error.response.data.message:error.response.data), ok:false, load:false}));        
     }
 
     const enviaLink = event=>{
