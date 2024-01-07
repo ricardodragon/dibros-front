@@ -27,7 +27,7 @@ function Anuncio(props){
     }
     
     const callBackErrorForm = error => {         
-        setValues({...values, load:false, ok:false, erro:error.response.data.message?error.response.data.message:error.response.data});
+        setValues({...values, load:false, ok:false, erro:JSON.stringify(error.response.data.message?error.response.data.message:error.response.data)});
     }
 
     const callBackForm = response => { 
