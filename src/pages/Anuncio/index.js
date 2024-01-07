@@ -23,16 +23,16 @@ function Anuncio(props){
             anuncio.anuncioProdutosDTO = anuncio.anuncioProdutosDTO.map(x=>x.imagem?{...x, imagemPath:imagens.data[i++]}:x);
             anuncio.id?axios.put(host+'/loja/anuncio', anuncio).then(callBackForm).catch(callBackErrorForm):
                 axios.post(host+'/loja/anuncio', anuncio).then(callBackForm).catch(callBackErrorForm)
-        }).catch(error=>setValues({...values, load:false, erro:error.response.data.message?error.response.data.message:error.response.data})); 
+        }).catch(error=>setValues({...values, load:false, ok:false, erro:error.response.data.message?error.response.data.message:error.response.data})); 
     }
     
     const callBackErrorForm = error => {         
-        setValues({...values, load:false, erro:error.response.data.message?error.response.data.message:error.response.data});
+        setValues({...values, load:false, ok:false, erro:error.response.data.message?error.response.data.message:error.response.data});
     }
 
     const callBackForm = response => { 
         const a = values.anuncios.filter(x=>x.id===response.data.id); 
-        setValues({...values, load:false, anuncio:{preco:"", legenda:"", imagem:"", lojaDTO:{nome:"",id:""}, anuncioProdutosDTO:[]}, anuncios:a.length?values.anuncios.map(anuncio=>{return anuncio.id===a[0].id?{...response.data, anuncioProdutosDTO:values.anuncio.anuncioProdutosDTO}:anuncio}):values.anuncios.concat({...response.data, anuncioProdutosDTO:values.anuncio.anuncioProdutosDTO.map(x=>{return {...x, idAnuncio:response.data.id}})})});
+        setValues({...values, load:false, ok:`Anuncio '${response.data.id}' criado com sucesso.`, anuncio:{preco:"", legenda:"", imagem:"", lojaDTO:{nome:"",id:""}, anuncioProdutosDTO:[]}, anuncios:a.length?values.anuncios.map(anuncio=>{return anuncio.id===a[0].id?{...response.data, anuncioProdutosDTO:values.anuncio.anuncioProdutosDTO}:anuncio}):values.anuncios.concat({...response.data, anuncioProdutosDTO:values.anuncio.anuncioProdutosDTO.map(x=>{return {...x, idAnuncio:response.data.id}})})});
     }
 
     const verificaAnuncio = () => values.anuncio.imagemPath||values.anuncio.imagem||values.anuncio.legenda||values.anuncio.idLoja;
