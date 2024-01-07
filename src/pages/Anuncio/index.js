@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { FcCheckmark, FcHighPriority } from "react-icons/fc";
 
 function Anuncio(props){
     
@@ -22,7 +23,7 @@ function Anuncio(props){
             anuncio.anuncioProdutosDTO = anuncio.anuncioProdutosDTO.map(x=>x.imagem?{...x, imagemPath:imagens.data[i++]}:x);
             anuncio.id?axios.put(host+'/loja/anuncio', anuncio).then(callBackForm):
                 axios.post(host+'/loja/anuncio', anuncio).then(callBackForm)
-        }); 
+        }).catch(error=>setValues({...values, erro:error.response.data.message?error.response.data.message:error.response.data})); 
     }
     
     const callBackForm = response => { 
@@ -46,7 +47,8 @@ function Anuncio(props){
                 </div>                 
             </div>}
             <div className='anuncios-conteudo'>
-                
+                <div className={"alert alert-success "+(values.ok?"":"visually-hidden")} role="alert"><FcCheckmark/>Link enviado com sucesso</div>
+                <div className={"alert alert-danger "+(values.erro?"":"visually-hidden")} role="alert"><FcHighPriority/>Erro: {values.erro}</div>
                 <form className="mt-4" onSubmit={submit}><legend></legend>                        
                     <fieldset id="anuncio" className="p-1 mb-2" style={{borderRadius:"0.3em"}}><legend>{values.anuncio.id?"Editar":"Criar"} Anucio {values.anuncio.id}</legend>                                        
                         <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} className="p-1" htmlFor='loja'>Loja : </label>     
