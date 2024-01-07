@@ -23,7 +23,7 @@ function Anuncio(props){
             anuncio.anuncioProdutosDTO = anuncio.anuncioProdutosDTO.map(x=>x.imagem?{...x, imagemPath:imagens.data[i++]}:x);
             anuncio.id?axios.put(host+'/loja/anuncio', anuncio).then(callBackForm):
                 axios.post(host+'/loja/anuncio', anuncio).then(callBackForm)
-        }).catch(error=>setValues({...values, erro:error.response.data.message?error.response.data.message:error.response.data})); 
+        }).catch(error=>setValues({...values, load:false, erro:error.response.data.message?error.response.data.message:error.response.data})); 
     }
     
     const callBackForm = response => { 
