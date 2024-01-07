@@ -12,22 +12,29 @@ function Login(props) {
         setValues({...values,usuario:{...values.usuario,[event.target.name]:event.target.value}})    
         
     const login = (event) => {
-        event.preventDefault();        
+        event.preventDefault();
+        setValues({...values, load:true})        
         axios.post(host+'/auth/login', values.usuario).then(response => {
             localStorage.setItem("token", response.headers['authorization']);                
             props.history.replace("/");
-        }).catch(error=>setValues({...values, erro:error.response.data.message?error.response.data.message:error.response.data, ok:false}));        
+        }).catch(error=>setValues({...values, erro:error.response.data.message?error.response.data.message:error.response.data, ok:false, load:false}));        
     }
 
     const enviaLink = event=>{
         event.preventDefault();
+        setValues({...values, load:true})
         axios.post(host+"/auth/usuarios/email-token?email="+values.email+"&esqueci=true", null).then(r=>
-            setValues({...values, ok:true, erro:false})
-        ).catch(error=> setValues({...values, erro:"Erro ao enviar link", ok:false}))
+            setValues({...values, ok:true, erro:false, load:false})
+        ).catch(error=> setValues({...values, erro:"Erro ao enviar link", ok:false, load:false}))
     };
     
     return (
         <div className="background">
+            {values.load&&<div style={{position:"absolute", width:"100%", height:"100%", backgroundColor:"rgba(173, 181, 189, 50%)", zIndex:"1000" }}>
+                <div className="spinner-border p-1" style={{width: "3rem",height: "3rem", margin:"30% 0 0 47%"}} role="status">                    
+                </div>                 
+            </div>}
+
             <div className="conteudo-login">
                 <div className={"alert alert-success "+(values.ok?"":"visually-hidden")} role="alert"><FcCheckmark/>Link enviado com sucesso</div>
                 <div className={"alert alert-danger "+(values.erro?"":"visually-hidden")} role="alert"><FcHighPriority/>Erro: {values.erro}</div>
@@ -51,8 +58,7 @@ function Login(props) {
                         <input className="btn btn-success btn-sm mt-3 w-100 mb-2" type='submit' value="Enviar link" />
                     </>}
                 </form>
-            </div>
-            
+            </div>    
         </div>
     )
 }
