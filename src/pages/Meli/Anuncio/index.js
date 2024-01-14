@@ -88,7 +88,7 @@ function Anuncio(){
             <form onSubmit={event => {event.preventDefault();onSubmit()}} className="mt-2"> 
                 {!values.disabled&&<button style={{width:"100%"}} className="btn btn-secondary" onClick={event=>{event.preventDefault();setAnuncio()}}>Redefinir</button>}            
                 {values.disabled&&values.editar&&<button style={{width:"100%"}} className="btn btn-primary" onClick={habilitarEdicao}> Editar </button>}  
-                {values.disabled&&values.editar&&<button style={{width:"100%"}} className="btn btn-info" onClick={habilitarReplica}>Replicar</button>}                    
+                {values.disabled&&<button style={{width:"100%"}} className="btn btn-info" onClick={habilitarReplica}>Replicar</button>}                    
                 {!values.disabled&&!values.editar&&<fieldset className="w-100">
                     <hr/>
                     <h5 className="h3">Contas</h5>                                                      
