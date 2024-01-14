@@ -31,7 +31,7 @@ function Listagem(){
                                 <figcaption className="foto-lista-anuncio">
                                     <img src={value.body.thumbnail} alt=""  />                                    
                                 </figcaption>                                                                       
-                                <a href={'/meli/anuncio/'+value.body.id+'/'+(value.body.seller_id?value.body.seller_id:0)} target="_blank" style={{display:"inline"}} className="h5 p-4">{value.body.title}</a>                                    
+                                <a href={'/meli/anuncio/'+value.body.id+'/'+(value.body.seller_id?value.body.seller_id:0)} target="_blank" rel="noreferrer" style={{display:"inline"}} className="h5 p-4">{value.body.title}</a>                                    
                                 <span className="h5">{value.body.status!=="active"?<FcHighPriority/>:<FcCheckmark/>}</span>
                             </div>
                             <div className="card-body">                                    

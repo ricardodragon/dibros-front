@@ -8,7 +8,6 @@ import Atributos from "./components/Atributos";
 import Imagens from "./components/Imagens";
 import AtributosVariacoes from "./components/AtributosVariacoes";
 import Variacoes from "./components/Variacoes";
-import Contas from "./components/Contas";
 import "./detalhes.css"
 import axios from "axios";
 
