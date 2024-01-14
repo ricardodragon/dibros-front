@@ -16,17 +16,17 @@ function Anuncio(){
 
     const { idAnuncio, userId} = useParams(); 
         
-    const [values, setValues] = useState({anuncio:{title:'', price:0, available_quantity:0, variations:[], attributes:[], category_id:''}, disabled: true, loader:false});                  
+    const [values, setValues] = useState({anuncio:{title:'', price:0, available_quantity:0, variations:[], attributes:[], category_id:''}, disabled: true, loader:false, conta:0});                  
     const host = process.env.REACT_APP_URL;
 
     const setAnuncio = useCallback(()=>{        
-        if(idAnuncio==="0"){setValues({anuncio:{title:'', price:0, available_quantity:0, attributes:[], variations:[]}, loader:false, disabled: false}); return}
+        if(idAnuncio==="0"){axios.get(host+"/meli/contas/all").then(r=> setValues({contas:r.data, anuncio:{title:'', price:0, available_quantity:0, attributes:[], variations:[]}, loader:false, disabled: false})); return}
         axios.get(host+'/meli/anuncios/'+idAnuncio+'?userId='+userId)
             .then(anuncio=> {
                 anuncio.data.variations = anuncio.data.variations?.map(v=>{return{...v, picture_ids:anuncio.data.pictures.filter(p=>v.picture_ids.includes(p.id))}});
                 anuncio.data.pictures = anuncio.data.pictures?.filter(p => anuncio.data.variations.filter(v => v.picture_ids.map(pi=>pi.id).includes(p.id)).length===0)                        
                 axios.get(host+'/meli/atributos/'+anuncio.data.category_id)
-                .then(res => {anuncio.data.attributes = res.data.map(x=> { if(anuncio.data.attributes.filter(y=>y.id===x.id).length){ const {value_id, value_name} = anuncio.data.attributes.filter(y=>y.id===x.id)[0]; return {...x, value_id, value_name}}else return x});setValues({anuncio:anuncio.data, disabled:true, loader:false, editar:userId!=="0"&&idAnuncio!=="0"})})                
+                .then(res => {anuncio.data.attributes = res.data.map(x=> { if(anuncio.data.attributes.filter(y=>y.id===x.id).length){ const {value_id, value_name} = anuncio.data.attributes.filter(y=>y.id===x.id)[0]; return {...x, value_id, value_name}}else return x});setValues({anuncio:anuncio.data, disabled:true, loader:false, editar:userId!=="0"&&idAnuncio!=="0", conta:0})})                
             })
     }, [idAnuncio, userId, host])
     
@@ -56,7 +56,7 @@ function Anuncio(){
     }
 
     const habilitarEdicao = event=>{event.preventDefault();setValues({...values, editar:true, disabled:!values.disabled})}
-    const habilitarReplica = event=>{event.preventDefault();setValues({...values, editar:false, disabled:!values.disabled})}    
+    const habilitarReplica = async event=>{event.preventDefault();setValues({...values, editar:false, disabled:!values.disabled, contas:(await (axios.get(host+"/meli/contas/all"))).data})}    
     const setAtributo = attributes => setValues({...values, anuncio: {...values.anuncio, attributes}});
     const sort = (v, name, fator=1) => setValues({...values, anuncio: {...values.anuncio, variations:[].concat(values.anuncio.variations).sort((a, b) => {
         const ta = v==="SKU"?a["attribute_combinations"].filter(x=>x.name===name)[0].value_name:a["attributes"].filter(a => a.id === "SELLER_SKU")[0];
@@ -87,10 +87,20 @@ function Anuncio(){
             <input disabled style={{width:"65%", marginRight:"5%"}} value={values.visits}/>
             <input style={{width:"10%"}} className="btn btn-sm btn-primary" onClick={event=>{event.preventDefault();setVisits()}} value={"🔄 Atualizar"}/>
             <form onSubmit={event => {event.preventDefault();onSubmit()}} className="mt-2"> 
-                {!values.disabled&&<button style={{width:"50%"}} className="btn btn-secondary" onClick={event=>{event.preventDefault();setAnuncio()}}>Redefinir</button>}            
-                {values.disabled&&<button style={{width:"50%"}} className="btn btn-primary" onClick={habilitarReplica}>Replicar</button>}                    
-                {values.editar&&<button style={{width:"50%"}} className="btn btn-info" onClick={habilitarEdicao}> Editar </button>}  
-                {!values.disabled&&!values.editar&&<Contas label={"Publicar em"} value={values.contas&&values.contas.length>0?values.contas[0].email:''} onChange={(contas) => { setValues({...values, contas})}} id="conta"/>}                                     
+                {!values.disabled&&<button style={{width:"100%"}} className="btn btn-secondary" onClick={event=>{event.preventDefault();setAnuncio()}}>Redefinir</button>}            
+                {values.disabled&&values.editar&&<button style={{width:"100%"}} className="btn btn-primary" onClick={habilitarEdicao}> Editar </button>}  
+                {values.disabled&&values.editar&&<button style={{width:"100%"}} className="btn btn-info" onClick={habilitarReplica}>Replicar</button>}                    
+                {!values.disabled&&!values.editar&&<fieldset className="w-100">
+                    <hr/>
+                    <h5 className="h3">Contas</h5>                                                      
+                    <div style={{padding:'1.5em'}}> 
+                        <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} className="p-1" htmlFor='contas'>Publicar em : </label>     
+                        <select defaultValue={0} id="conta" style={{display:"inline", width:"75%"}} onChange={(event) => setValues({...values, conta:event.target.value})}>                                                            
+                            <option value={0}>Selecione uma conta</option>
+                            {values.contas.map(c => <option key={c.id} value={c.id}>{c.email}</option>)}
+                        </select>
+                    </div>
+                </fieldset>}                                                     
                 <Categorias disabled={values.disabled} onChange={(category_id) =>setValues({...values, anuncio:{...values.anuncio, category_id}})} category_id={values.anuncio.category_id}/>                        
                 {values.anuncio.category_id&&values.contas&&values.contas.map((conta)=><TipoAnuncio key={conta.id} conta={conta} categoria={values.anuncio.category_id} onChange={listing_type_id=>setValues({...values, anuncio: {...values.anuncio, listing_type_id}})}/>)}                                                                    
                 <h5 className="h3">Detalhes</h5>

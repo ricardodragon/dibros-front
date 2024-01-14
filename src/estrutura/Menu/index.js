@@ -22,7 +22,7 @@ function menu(){
                         <Link to={'/anuncio'}><FcMultipleSmartphones size={0}/><span className="menu-legenda">Anunciar</span></Link>
                     </li>
                     <li>
-                        <Link to='/meli/contas'><FcCollaboration size={0}/><span className="menu-legenda">Contas</span></Link>
+                        <Link to='/meli/contas'><FcCollaboration size={0}/><span className="menu-legenda">Mercado Livre</span></Link>
                     </li>
                     {/* <li>                
                         <Link to='/usuarios'><FcPortraitMode size={0}/><span className="menu-legenda">Usuário</span></Link>
