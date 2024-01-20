@@ -20,13 +20,13 @@ const Routes = ()=>(
             <Route exact path="/login" component={Login}></Route>
             <Route exact path="/nova-senha/:token" component={NovaSenha}></Route>
             <Route exact path="/anuncio-detalhes/:id" component={AnuncioDetalhes}/>
+            <Route exact path="/" component={Anuncios}/>
             {/* <PrivateRoutes exact path="/usuarios" nome="Indentificação usuário" component={Usuarios}/> */}
             <PrivateRoutes exact path="/perfil" nome="Indentificação usuário" component={Perfil}/>
 
             {/* e-commerce dibros */}
             <PrivateRoutes exact path="/lojas" nome={"Lojas"} component={Lojas}/>
             <PrivateRoutes exact path="/produtos/:id" nome={"Produtos"} component={Produtos}/>
-            <PrivateRoutes exact path={"/"} nome={"dibros-store"} component={Anuncios}/>
             <PrivateRoutes exact path="/anuncio" nome={"Gerenciamento de anuncios"} component={Anuncio}/>                                 
             <PrivateRoutes exact path="/anuncio-detalhes" nome="Tela de compra do anuncio" component={AnuncioDetalhes}/>
 
