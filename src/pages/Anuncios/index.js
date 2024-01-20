@@ -19,6 +19,12 @@ function Anuncios(props){
         )
     , [host]);
     
+    useEffect(() => 
+        axios.get(host+`/loja/anuncio?page=${0}&size=${10}`).then(res =>     
+            setValues({anuncios:res.data, total:res.headers['total']})            
+        )
+    , [host]);
+    
     const handlerScroll = (event) => {       
         if((event.target.scrollHeight - event.target.scrollTop)-10<=event.target.clientHeight&&values.anuncios.length<values.total){                           
             axios.get(host+`/loja/anuncio?page=${values.anuncios.length/10}&size=${10}`).then(res =>{ 
