@@ -44,20 +44,20 @@ function Lojas(props) {
         <div className={"alert alert-success "+(values.ok?"":"visually-hidden")} role="alert"><FcCheckmark/>Operação realizada com sucesso</div>
         <div className={"alert alert-danger "+(values.erro?"":"visually-hidden")} role="alert"><FcHighPriority/>Erro: {values.erro}</div>
         <form className="mt-4" onSubmit={enviar}> 
-            <fieldset id="loja" className="p-1 mb-2" style={{borderRadius:"0.3em"}}><legend>{values.loja.id?"Editar":"Criar"} Loja {values.loja.id}</legend>                                    
+            <fieldset><legend>{values.loja.id?"Editar":"Criar"} Loja {values.loja.id}</legend>                                    
                 <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} className="p-1" htmlFor="nome">Nome : </label>            
-                <input style={{width:"75%"}} id="nome" placeholder="nome da loja" value={values.loja.nome} required={true} type="text" onChange={event=>setValues({...values, loja:{...values.loja, nome:event.target.value}})}/>                                                                      
+                <input style={{width:"75%"}} className='mb-4' id="nome" placeholder="nome da loja" value={values.loja.nome} required={true} type="text" onChange={event=>setValues({...values, loja:{...values.loja, nome:event.target.value}})}/>                                                                      
             </fieldset>
-            <fieldset id="loja" className="p-1 mb-2" style={{borderRadius:"0.3em"}}>
+            <fieldset><legend>Foto da loja</legend>                                    
                 <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} className="p-1" htmlFor='imagem'>Imagem : </label>            
-                <label htmlFor='imagem' className="p-1" style={{textAlign:"center", width:"75%", backgroundColor: "#3498db", borderRadius: "5px", color: "#fff", cursor: "pointer"}}>📁 Upload</label>
+                <label htmlFor='imagem' className="p-1 mb-4" style={{textAlign:"center", width:"75%", backgroundColor: "#3498db", borderRadius: "5px", color: "#fff", cursor: "pointer"}}>📁 Upload</label>
                 <input id='imagem' label="Foto: " style={{display:"none"}} type="file" accept='image/*' onChange={event => {event.preventDefault();setValues({...values, loja:{...values.loja, imagemPath:undefined, imagem:event.target.files[0]}});}}/>
                 {values.loja.imagemPath&&<img alt="" style={{width:"3em", height:"3em", borderRadius: "5px"}} src={host+values.loja.imagemPath}/>}
                 {values.loja.imagem&&<img alt="" style={{width:"3em", height:"3em", borderRadius: "5px"}} src={URL.createObjectURL(values.loja.imagem)}/>}                            
             </fieldset>
-            <fieldset id="loja" className="p-1 mb-2" style={{borderRadius:"0.3em"}}>
-                <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} className="p-1" htmlFor="localizacao">Localização : {values.loja.latitude&&values.loja.longitude?'✅':'❌'}</label>            
-                <button style={{width:"75%"}} onClick={event => {event.preventDefault();getLocation();}} className="btn btn-sm btn-secondary" id="localizacao">📌 Localização</button>                 
+            <fieldset><legend>Localização da loja</legend>   
+                <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} className="p-1 mb-4" htmlFor="localizacao">Local : {values.loja.latitude&&values.loja.longitude?'✅':'❌'}</label>            
+                <input style={{width:"75%"}} type="button" onClick={event => {event.preventDefault();getLocation();}} className="btn btn-sm btn-secondary" id="localizacao" value={"📌 Localização"}/>                 
             </fieldset>
             <input disabled={!verificaLoja()} type="submit" value="enviar" className="btn btn-sm btn-success mt-2"/>    
             <input disabled={!verificaLoja()} onClick={event => {event.preventDefault();setValues({...values, loja:{nome:"", imagemPath:"", imagem:""}})}} type="submit" className="btn btn-sm btn-primary mt-2" value="Limpar"/>                        

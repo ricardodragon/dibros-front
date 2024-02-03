@@ -32,28 +32,30 @@ function Produtos(props){
     return (
         <div className="anuncios-conteudo">
             <div className={"alert alert-success "+(values.ok?"":"visually-hidden")} role="alert"><FcCheckmark/>Operação realizada com sucesso</div>
-            <div className={"alert alert-danger "+(values.erro?"":"visually-hidden")} role="alert"><FcHighPriority/>Erro: {values.erro}</div>
+            <div className={"alert alert-danger "+(values.erro?"":"visually-hidden")} role="alert"><FcHighPriority/>Erro: {values.erro}</div>            
             <form className="mt-4" onSubmit={submit}>                
-                <fieldset id="usuario" className="p-1 mb-2" style={{borderRadius:"0.3em"}}><legend>{values.produto.id?"Editar":"Criar"} Produto {values.produto.id}</legend>                                      
-                    <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} className="p-1" htmlFor="titulo">Título : </label>            
-                    <input required style={{width:"75%"}} id="titulo" placeholder="Título do produto" value={values.produto.titulo} type="text" onChange={event=>setValues({...values,produto:{...values.produto,titulo:event.target.value}})}/>                                                                                                        
-                    <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} className="p-1" htmlFor="quantidade">Quantidade: </label>            
-                    <input required style={{width:"75%"}} id="quantidade" placeholder="quantidade" value={values.produto.quantidade} type="number" onChange={event=>setValues({...values,produto:{...values.produto,quantidade:event.target.value}})}/>                                                                                                        
-                    <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} className="p-1" htmlFor="preco">Valor: </label>            
-                    <input required style={{width:"75%"}} id="preco" placeholder="valor" value={values.produto.preco} type="number" step="0.2" onChange={event=>setValues({...values,produto:{...values.produto,preco:event.target.value}})}/>                                                                                                                            
-                    <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} className="p-1" htmlFor='loja'>Loja :</label>
-                    <select required defaultValue="" value={values.produto.idLoja} id="loja" style={{display:"inline", width:"75%"}} onChange={event=>setValues({...values, produto:{...values.produto, idLoja:event.target.value}})}>                                                            
+                <fieldset id="usuario"><legend>{values.produto.id?"Editar":"Criar"} Produto {values.produto.id}</legend>                                      
+                    <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} className="p-1" htmlFor='loja'>Loja :</label>  
+                    <select required defaultValue="" value={values.produto.idLoja} id="loja" style={{width:"75%"}} className='mb-4' onChange={event=>setValues({...values, produto:{...values.produto, idLoja:event.target.value}})}>                                                            
                         <option value="">Selecione uma loja</option>
                         {values.lojas.map(l => <option key={l.id} value={l.id}>{l.nome}</option>)}
-                    </select>                                                                   
+                    </select> 
+                    <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} className="p-1" htmlFor="titulo">Título : </label>            
+                    <input required style={{width:"75%", marginBottom:"4%"}} className='mb-4' id="titulo" placeholder="Título do produto" value={values.produto.titulo} type="text" onChange={event=>setValues({...values,produto:{...values.produto,titulo:event.target.value}})}/>                                                                                                        
+                    <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} className="p-1" htmlFor="quantidade">Quantidade: </label>            
+                    <input required style={{width:"75%", marginBottom:"4%"}} className='mb-4' id="quantidade" placeholder="quantidade" value={values.produto.quantidade} type="number" onChange={event=>setValues({...values,produto:{...values.produto,quantidade:event.target.value}})}/>                                                                                                        
+                    <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} className="p-1" htmlFor="preco">Valor: </label>            
+                    <input required style={{width:"75%", marginBottom:"4%"}} className='mb-4' id="preco" placeholder="valor" value={values.produto.preco} type="number" step="0.2" onChange={event=>setValues({...values,produto:{...values.produto,preco:event.target.value}})}/>                                                                                                                                                                                                                                    
+                </fieldset>    
+                <fieldset id="usuario"><legend>Imagem</legend>                                      
                     <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} className="p-1" htmlFor='imagem'>Imagem : </label>            
-                    <label htmlFor='imagem' className="p-1" style={{textAlign:"center", width:"75%", backgroundColor: "#3498db", borderRadius: "5px", color: "#fff", cursor: "pointer"}}>📁 Upload</label>
-                    <input id='imagem' label="Foto: " style={{display:"none"}} type="file" accept='image/*' onChange={event => {event.preventDefault();setValues({...values, produto:{...values.produto, imagemPath:undefined, imagem:event.target.files[0]}});}}/>
+                    <label htmlFor='imagem' className="p-1 mb-4" style={{textAlign:"center", width:"75%", backgroundColor: "#3498db", borderRadius: "5px", color: "#fff", cursor: "pointer"}}>📁 Upload</label>
+                    <input id='imagem' label="Foto: " style={{display:"none"}} className='mb-4' type="file" accept='image/*' onChange={event => {event.preventDefault();setValues({...values, produto:{...values.produto, imagemPath:undefined, imagem:event.target.files[0]}});}}/>
                     {values.produto.imagemPath&&<img alt="" style={{display:"block", width:"8em", height:"8em"}} src={host+values.produto.imagemPath}/>}
                     {values.produto.imagem&&<img alt="" style={{display:"block", width:"8em", height:"8em"}} src={URL.createObjectURL(values.produto.imagem)}/>}            
-                    <input disabled={!values.produto.quantidade||!values.produto.titulo||!values.produto.idLoja} type="submit" value="enviar" className="btn btn-sm btn-success mt-2"/>    
-                    <input disabled={!(values.produto.quantidade||values.produto.titulo||values.produto.idLoja||values.produto.imagem)} onClick={event => {event.preventDefault();setValues({...values, produto:{preco:"", quantidade:"", titulo:"", lojaDTO:{id:"", nome:""}}})}} type="submit" className="btn btn-sm btn-primary mt-2" value="Limpar"/>                        
                 </fieldset>
+                <input disabled={!values.produto.quantidade||!values.produto.titulo||!values.produto.idLoja} type="submit" value="enviar" className="btn btn-sm btn-success mt-2"/>    
+                <input disabled={!(values.produto.quantidade||values.produto.titulo||values.produto.idLoja||values.produto.imagem)} onClick={event => {event.preventDefault();setValues({...values, produto:{preco:"", quantidade:"", titulo:"", lojaDTO:{id:"", nome:""}}})}} type="submit" className="btn btn-sm btn-primary mt-2" value="Limpar"/>                                        
             </form>
             <div className="table-responsive mt-3">
                 <label htmlFor='lojas'>Loja</label>

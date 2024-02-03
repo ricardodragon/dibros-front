@@ -113,3 +113,17 @@ select{
 	padding-top: 0 !important;
 	padding-bottom: 0 !important;
 }
+
+fieldset legend{
+    float: none;
+    width: auto;
+}
+
+fieldset {
+    min-width: auto !important;
+    padding: 1% !important;
+    margin: auto !important;
+	border: solid white !important;
+    border-radius: 1% !important;
+}
+
