@@ -40,7 +40,7 @@ function Login(props) {
                 <div className={"alert alert-danger "+(values.erro?"":"visually-hidden")} role="alert"><FcHighPriority/>Erro: {values.erro}</div>
                 <h1 className='mb-2'>Login</h1>                
                 <form onSubmit={login}>
-                    <input required onChange={setUsuario} id="email" name="email" className='w-100 mb-2' placeholder='e-mail'/>
+                    <input required onChange={setUsuario} id="email" name="email" className='w-100 mb-2' placeholder='e-mail' type='email'/>
                     <input required onChange={setUsuario} id="password" name="password" type="password" className='w-100 mb-2' placeholder='senha'/>
                     <input className='btn btn-dark btn-sm mt-3 w-100 mb-2' type="submit" value={"Entrar"}/>
                 </form>

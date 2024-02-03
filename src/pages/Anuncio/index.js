@@ -8,7 +8,7 @@ function Anuncio(props){
     const host = process.env.REACT_APP_URL;
 
     useEffect(() => 
-        axios.get(host+("/loja/anuncio/usuario")).then(res => 
+        axios.get(host+("/loja/anuncios/usuario")).then(res => 
             axios.get(host+"/loja/lojas").then(response =>                
                 setValues({lojas:response.data,anuncios:res.data, anuncio:{preco:"", legenda:"", lojaDTO:{nome:"",id:""}, anuncioProdutosDTO:[]}})))                  
     , [host]);
@@ -41,7 +41,7 @@ function Anuncio(props){
     const addProduto = event => {
         event.preventDefault();
         setValues({...values, load:true})
-        axios.get(host+"/loja/produto/"+values.produtoID+"/"+values.anuncio.idLoja).then(r=>
+        axios.get(host+"/loja/produto/"+values.produtoID).then(r=>
             r.data?setValues({...values, anuncio:{...values.anuncio, anuncioProdutosDTO:[...values.anuncio.anuncioProdutosDTO, {imagemPath:r.data.imagemPath, preco:r.data.preco, idAnuncio:values.anuncio.id, idProduto:r.data.id, produtoDTO:r.data}]}}):""
         )
     }
@@ -57,8 +57,8 @@ function Anuncio(props){
                 <form className="mt-4" onSubmit={submit}><legend></legend>                        
                     <fieldset id="anuncio" className="p-1 mb-2" style={{borderRadius:"0.3em"}}><legend>{values.anuncio.id?"Editar":"Criar"} Anucio {values.anuncio.id}</legend>                                        
                         <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} className="p-1" htmlFor='loja'>Loja : </label>     
-                        <select defaultValue={0} value={values.anuncio.idLoja} id="loja" style={{display:"inline", width:"75%"}} onChange={event=> setValues({...values, anuncio:{...values.anuncio, idLoja:event.target.value>0?event.target.value:undefined, anuncioProdutosDTO:values.anuncio.anuncioProdutosDTO.filter(x=>x.idProduto.idLoja === event.target.value)}})}>                                                            
-                            <option value={0}>Selecione uma loja</option>
+                        <select defaultValue="" value={values.anuncio.idLoja} id="loja" style={{display:"inline", width:"75%"}} onChange={event=> setValues({...values, anuncio:{...values.anuncio, idLoja:event.target.value>0?event.target.value:undefined, anuncioProdutosDTO:values.anuncio.anuncioProdutosDTO.filter(x=>x.idProduto.idLoja === event.target.value)}})}>                                                            
+                            <option value="">Selecione uma loja</option>
                             {values.lojas.map(l => <option key={l.id} value={l.id}>{l.nome}</option>)}
                         </select>  
                         <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} className="p-1" htmlFor="legenda">Legenda : </label>            

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-
+import { FcCheckmark, FcHighPriority } from 'react-icons/fc';
 
 function Lojas(props) {
     
@@ -13,7 +13,10 @@ function Lojas(props) {
         axios.get(host+"/loja/lojas").then(res => setValues({lojas:res.data, loja:{nome:"", imagemPath:"", imagem:""}}))
     , [host]);
 
-    const getLocation = () => navigator.geolocation?navigator.geolocation.getCurrentPosition(position=>setValues({...values, position})):"Geolocation is not supported by this browser.";
+    const getLocation = () => navigator.geolocation?
+        navigator.geolocation.getCurrentPosition(position=>
+            setValues({...values, loja:{...values.loja, latitude:position.coords.latitude, longitude:position.coords.longitude}})):
+        "Geolocation is not supported by this browser.";
 
     const enviar = event => { 
         event.preventDefault();           
@@ -21,33 +24,42 @@ function Lojas(props) {
         formData.append('files', values.loja.imagem);
         axios.post(host+'/imagem/imagem', formData).then(imagens =>
             values.loja.id?
-                axios.put(host+'/loja/lojas', {...values.loja, imagemPath:imagens.data[0]?imagens.data[0]:values.loja.imagemPath}).then(callBackForm):
-                axios.post(host+'/loja/lojas', {...values.loja, imagemPath:imagens.data[0]?imagens.data[0]:values.loja.imagemPath}).then(callBackForm))            
+                axios.put(host+'/loja/lojas/'+values.loja.id, {...values.loja, imagemPath:imagens.data[0]?imagens.data[0]:values.loja.imagemPath})
+                    .then(callBackForm).catch(error=>setValues({...values, erro:error.response.data.message, ok:false})):
+                axios.post(host+'/loja/lojas', {...values.loja, imagemPath:imagens.data[0]?imagens.data[0]:values.loja.imagemPath})
+                    .then(callBackForm).catch(error=>setValues({...values, erro:error.response.data.message, ok:false}))
+        ).catch(error=>console.log(error))            
     }
     
     const callBackForm = response => setValues({
         ...values, 
         loja:{nome:"", imagemPath:"", imagem:""}, 
-        lojas:values.loja.id?values.lojas.map(x=>x.id===values.loja.id?response.data:x):[...values.lojas, response.data]
+        lojas:values.loja.id?values.lojas.map(x=>x.id===values.loja.id?response.data:x):[...values.lojas, response.data],
+        ok:true,
+        erro:false
     })
 
     return <div className='anuncios-conteudo'>
+        {/* <button style={{float:"right"}} className='btn btn-primary'>Buscar loja 🔎</button> */}
+        <div className={"alert alert-success "+(values.ok?"":"visually-hidden")} role="alert"><FcCheckmark/>Operação realizada com sucesso</div>
+        <div className={"alert alert-danger "+(values.erro?"":"visually-hidden")} role="alert"><FcHighPriority/>Erro: {values.erro}</div>
         <form className="mt-4" onSubmit={enviar}> 
-            {console.log(values.position)}
             <fieldset id="loja" className="p-1 mb-2" style={{borderRadius:"0.3em"}}><legend>{values.loja.id?"Editar":"Criar"} Loja {values.loja.id}</legend>                                    
-                <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} className="p-1" htmlFor="legenda">Nome : </label>            
+                <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} className="p-1" htmlFor="nome">Nome : </label>            
                 <input style={{width:"75%"}} id="nome" placeholder="nome da loja" value={values.loja.nome} required={true} type="text" onChange={event=>setValues({...values, loja:{...values.loja, nome:event.target.value}})}/>                                                                      
             </fieldset>
-            <fieldset id="loja" className="p-1 mb-2" style={{borderRadius:"0.3em"}}><legend>Imagem</legend>
-                <label htmlFor='imagem' className="p-1" style={{marginRight: "10%", backgroundColor: "#3498db", borderRadius: "5px", color: "#fff", cursor: "pointer"}}>📁 Upload</label>
+            <fieldset id="loja" className="p-1 mb-2" style={{borderRadius:"0.3em"}}>
+                <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} className="p-1" htmlFor='imagem'>Imagem : </label>            
+                <label htmlFor='imagem' className="p-1" style={{textAlign:"center", width:"75%", backgroundColor: "#3498db", borderRadius: "5px", color: "#fff", cursor: "pointer"}}>📁 Upload</label>
                 <input id='imagem' label="Foto: " style={{display:"none"}} type="file" accept='image/*' onChange={event => {event.preventDefault();setValues({...values, loja:{...values.loja, imagemPath:undefined, imagem:event.target.files[0]}});}}/>
                 {values.loja.imagemPath&&<img alt="" style={{width:"3em", height:"3em", borderRadius: "5px"}} src={host+values.loja.imagemPath}/>}
                 {values.loja.imagem&&<img alt="" style={{width:"3em", height:"3em", borderRadius: "5px"}} src={URL.createObjectURL(values.loja.imagem)}/>}                            
             </fieldset>
-            <fieldset id="loja" className="p-1 mb-2" style={{borderRadius:"0.3em"}}><legend>Localização</legend>
-                <button onClick={event => {event.preventDefault();getLocation();}} className="btn btn-sm btn-secondary">📌 Localização</button> {values.position?'✅':'❌'}
+            <fieldset id="loja" className="p-1 mb-2" style={{borderRadius:"0.3em"}}>
+                <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} className="p-1" htmlFor="localizacao">Localização : {values.loja.latitude&&values.loja.longitude?'✅':'❌'}</label>            
+                <button style={{width:"75%"}} onClick={event => {event.preventDefault();getLocation();}} className="btn btn-sm btn-secondary" id="localizacao">📌 Localização</button>                 
             </fieldset>
-            <input disabled={!verificaLoja()} type="submit" value="enviar" className="btn btn-sm btn-success mt-2" />    
+            <input disabled={!verificaLoja()} type="submit" value="enviar" className="btn btn-sm btn-success mt-2"/>    
             <input disabled={!verificaLoja()} onClick={event => {event.preventDefault();setValues({...values, loja:{nome:"", imagemPath:"", imagem:""}})}} type="submit" className="btn btn-sm btn-primary mt-2" value="Limpar"/>                        
         </form>
         <div className="table-responsive mt-4">
@@ -69,7 +81,11 @@ function Lojas(props) {
                             <td><img alt="Foto da loja" style={{width:"2em", height:"2em"}} src={host+l.imagemPath}/></td>                            
                             <td style={{fontWeight: "bold"}}>{l.nome}</td>                                                                                         
                             <td style={{fontWeight: "bold"}}><a onClick={event=>event.stopPropagation()} href={"/produtos/"+l.id}>Produtos</a></td>                                                                                         
-                            <td onClick={event=>{event.stopPropagation();event.preventDefault();axios.delete(host+"/loja/lojas/"+l.id).then(r=>axios.get(host+"/loja/lojas").then(res => {setValues({...values, lojas:res.data, loja:{nome:"", imagemPath: "", imagem:""}})}))}}>❌</td>
+                            <td onClick={event=>{
+                                event.stopPropagation();event.preventDefault();axios.delete(host+"/loja/lojas/"+l.id)
+                                .then(res => setValues({...values, lojas:values.lojas.filter(loja=>loja.id!==l.id), ok:true, erro:false, loja:{nome:"", imagemPath: "", imagem:""}}))
+                                .catch(error=>setValues({...values, erro:error.response.data.message, ok:false}))
+                            }}>❌</td>
                         </tr>
                         <tr></tr>
                     </>                    
