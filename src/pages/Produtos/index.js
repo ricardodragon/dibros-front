@@ -14,7 +14,7 @@ function Produtos(props){
     const host = process.env.REACT_APP_URL;
 
     useEffect(() => 
-        axios.get(host+`/loja/produto?page=${0}&size=${10}&idLoja=${id}`).then(res => 
+        axios.get(host+`/loja/produtos?page=${0}&size=${100}&idLoja=${id}`).then(res => 
             axios.get(host+"/loja/lojas").then(response =>
                 setValues({lojas:response.data,produtos:res.data, idLoja:id, produto:{imagem: "", preco:"", quantidade:"", titulo:"", lojaDTO:{nome:"",id:""}}})))            
     , [id, host]);
@@ -24,8 +24,9 @@ function Produtos(props){
         var formData = new FormData();
         formData.append('files', values.produto.imagem);        
         axios.post(host+'/imagem/imagem', formData).then(imagens =>
-            axios.post(host+"/loja/produto", {...values.produto, imagemPath:imagens.data[0]?imagens.data[0]:values.produto.imagemPath}).then(response => 
-                setValues({...values, produto:{imagem: "", preco:"", quantidade:"", titulo:"", lojaDTO:{id:"", nome:""}}, produtos:values.produto.id?values.produtos.map(x=>x.id===values.produto.id?response.data:x):values.produtos.concat(response.data)})))                
+            axios.post(host+"/loja/produtos", {...values.produto, imagemPath:imagens.data[0]?imagens.data[0]:values.produto.imagemPath})
+                .then(response => setValues({...values, ok:true, erro:false, produto:{imagem: "", preco:"", quantidade:"", titulo:"", lojaDTO:{id:"", nome:""}}, produtos:values.produto.id?values.produtos.map(x=>x.id===values.produto.id?response.data:x):values.produtos.concat(response.data)})))                
+                .catch(error=> setValues({...values, erro:error.response.data.message, ok:false}))
     }
 
     return (
@@ -33,9 +34,6 @@ function Produtos(props){
             <div className={"alert alert-success "+(values.ok?"":"visually-hidden")} role="alert"><FcCheckmark/>Operação realizada com sucesso</div>
             <div className={"alert alert-danger "+(values.erro?"":"visually-hidden")} role="alert"><FcHighPriority/>Erro: {values.erro}</div>
             <form className="mt-4" onSubmit={submit}>                
-                
-    
-
                 <fieldset id="usuario" className="p-1 mb-2" style={{borderRadius:"0.3em"}}><legend>{values.produto.id?"Editar":"Criar"} Produto {values.produto.id}</legend>                                      
                     <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} className="p-1" htmlFor="titulo">Título : </label>            
                     <input required style={{width:"75%"}} id="titulo" placeholder="Título do produto" value={values.produto.titulo} type="text" onChange={event=>setValues({...values,produto:{...values.produto,titulo:event.target.value}})}/>                                                                                                        
@@ -59,7 +57,7 @@ function Produtos(props){
             </form>
             <div className="table-responsive mt-3">
                 <label htmlFor='lojas'>Loja</label>
-                <select defaultValue={values.idLoja} id="lojas" value={values.idLoja} style={{borderRadius:"0.9em"}} className='col form-control form-control-sm mt-3' onChange={async event=>{event.preventDefault();setValues({...values, idLoja:event.target.value, produtos:(await axios.get(host+"/loja/produto?idLoja="+event.target.value)).data})}}>                                                            
+                <select defaultValue={values.idLoja} id="lojas" value={values.idLoja} style={{borderRadius:"0.9em"}} className='col form-control form-control-sm mt-3' onChange={async event=>{event.preventDefault();setValues({...values, idLoja:event.target.value, produtos:(await axios.get(host+"/loja/produtos?idLoja="+event.target.value)).data})}}>                                                            
                     <option value="">Todos</option>
                     {values.lojas.map((value, index) => <option key={index} value={value.id}>{value.nome}</option>)}
                 </select> 
@@ -80,7 +78,7 @@ function Produtos(props){
                     <tbody> 
                         {/* <tr><td>{values.produtos.map(p=>p.quantidade).reduce((sumQtd, a) => sumQtd + a, 0)}</td></tr> */}
                         {values.produtos.map(p=>
-                            <tr key={p.id} style={{cursor:"pointer", whiteSpace: "nowrap"}} onClick={event=>{event.preventDefault();window.scrollTo(0, 0);setValues({...values, produto:{...p, loja:p.lojaDTO}});document.getElementsByClassName("conteudo")[0].scrollTo(0, 0)}}>
+                            <tr key={p.id} style={{cursor:"pointer", whiteSpace: "nowrap"}} onClick={event=>{event.preventDefault();setValues({...values, produto:{...p, loja:p.lojaDTO}});document.getElementsByClassName("conteudo")[0].scrollTo(0, 0)}}>
                                 <td>{p.id}</td>
                                 <td><img alt="" style={{width:"2em", height:"2em"}} src={host+p.imagemPath}/></td>                            
                                 <td style={{fontWeight: "bold"}}>{p.titulo}</td>                                                             
@@ -89,7 +87,14 @@ function Produtos(props){
                                 <td><Link onClick={event=>event.stopPropagation()} target="_blank" to={"/anuncios/"+0+"/"+p.id} className="btn-link">Anuncios</Link></td>
                                 <td></td>
                                 <td></td>                                
-                                <td onClick={event=>{event.stopPropagation();event.preventDefault();axios.delete(host+"/produto/"+p.id).then(r=>axios.get(host+"/produto").then(res => {setValues({...values, produtos:res.data, produto:{preco:"", quantidade:"", titulo:""}})}))}}>❌</td>
+                                <td onClick={event=>{
+                                    event.stopPropagation();event.preventDefault();
+                                    axios.delete(host+"/loja/produtos/"+p.id)
+                                        .then(res => setValues({...values, ok:true, erro:false, produtos:values.produtos.filter(pro=>p.id!==pro.id)}))
+                                        .catch(error=>setValues({...values, erro:error.response.data.message, ok:false}))
+                                    document.getElementsByClassName("conteudo")[0].scrollTo(0, 0);
+                                    window.scrollTo(0,0);
+                                }}>❌</td>
                             </tr>
                         )}               
                     </tbody>    
