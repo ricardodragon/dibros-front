@@ -8,7 +8,7 @@ function menu(){
         <div style={{float:"left", position:"fixed", top:"3.72em"}} className="menu">        
             <input type="checkbox" className="check-menu" id="check-menu"/>    
             <div className="botao-menu">
-                <label htmlFor="check-menu" style={{cursor: "pointer", fontWeight:"bolder", fontSize:"20pt"}}>☰</label>
+                <label htmlFor="check-menu" style={{cursor: "pointer", fontWeight:"bolder", fontSize:"30pt"}}>☰</label>
             </div>
             <nav className="menu-conteudo">
                 <ul>
