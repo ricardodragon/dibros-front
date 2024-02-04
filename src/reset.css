@@ -127,3 +127,12 @@ fieldset {
     border-radius: 1% !important;
 }
 
+table{
+	border-collapse: "collapse";
+	width: "100%";
+}
+
+tr:hover {
+	background-color: white;
+	color: #000;
+}

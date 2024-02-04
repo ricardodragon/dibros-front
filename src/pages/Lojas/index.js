@@ -62,22 +62,17 @@ function Lojas(props) {
             <input disabled={!verificaLoja()} type="submit" value="enviar" className="btn btn-sm btn-success mt-2"/>    
             <input disabled={!verificaLoja()} onClick={event => {event.preventDefault();setValues({...values, loja:{nome:"", imagemPath:"", imagem:""}})}} type="submit" className="btn btn-sm btn-primary mt-2" value="Limpar"/>                        
         </form>
-        <div className="table-responsive mt-4">
-            <table className="table">     
-                <thead className="thead-light">
-                    <tr className="table-light">  
-                        <th scope="col">ID</th>                           
+        <div style={{overflowX:"auto", color:"white"}}>
+            <table style={{borderCollapse: "collapse", width: "100%"}}>
+                    <tr>  
                         <th scope="col"></th>                        
                         <th scope="col">Nome</th>                                                
                         <th scope="col"></th>                                                
                         <th scope="col"></th>
                     </tr>
-                </thead> 
-                <tbody>                                                 
                     {values.lojas.map(l=>
                     <>                    
                         <tr key={"lojas"+l.id} style={{cursor:"pointer", whiteSpace: "nowrap"}} onClick={event=>{event.preventDefault();setValues({...values, loja:l});document.getElementsByClassName("conteudo")[0].scrollTo(0, 0)}}>
-                            <td>{l.id}</td>                            
                             <td><img alt="Foto da loja" style={{width:"2em", height:"2em"}} src={host+l.imagemPath}/></td>                            
                             <td style={{fontWeight: "bold"}}>{l.nome}</td>                                                                                         
                             <td style={{fontWeight: "bold"}}><a onClick={event=>event.stopPropagation()} href={"/produtos/"+l.id}>Produtos</a></td>                                                                                         
@@ -90,7 +85,6 @@ function Lojas(props) {
                         <tr></tr>
                     </>                    
                     )}  
-                </tbody>    
             </table>       
         </div>    
     </div>
