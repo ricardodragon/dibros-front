@@ -3,10 +3,13 @@ import './login.css'
 import axios from 'axios';
 import { Link } from '@material-ui/core';
 import { FcCheckmark, FcHighPriority } from 'react-icons/fc';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 
 function Login(props) {
     const [values, setValues] = useState( {usuario:{email:"", password:""}} )
+    const history = useHistory();
+
     const host = process.env.REACT_APP_URL; 
     const setUsuario = (event)=>
         setValues({...values,usuario:{...values.usuario,[event.target.name]:event.target.value}})    
@@ -15,8 +18,8 @@ function Login(props) {
         event.preventDefault();
         setValues({...values, load:true})        
         axios.post(host+'/auth/login', values.usuario).then(response => {
-            localStorage.setItem("token", response.headers['authorization']);                
-            props.history.replace("/");
+            localStorage.setItem("token", response.headers['authorization']);  
+            history.push("/");
         }).catch(error=>setValues({...values, erro:JSON.stringify(error.response.data.message?error.response.data.message:error.response.data), ok:false, load:false}));        
     }
 

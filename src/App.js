@@ -7,7 +7,7 @@ const App = (props) => {
     const [values, setValues] = useState({load:false}) 
     
     
-    axios.interceptors.request.use(function (config) {  
+    axios.interceptors.request.use(function (config) {         
         if(config.url.indexOf("auth/usuarios")===-1)
             setValues({...values, load:true}) 
         if(config.url.indexOf("auth/login")===-1)
@@ -15,8 +15,9 @@ const App = (props) => {
         return config;
     });
 
-    axios.interceptors.response.use(function (config) {  
-        setValues({...values, load:false})                           
+    axios.interceptors.response.use(function (config) {   
+        if(config.config.url.indexOf("auth/usuarios")===-1)
+            setValues({...values, load:false})                           
         return config;
     });
     
