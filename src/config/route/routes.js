@@ -19,7 +19,7 @@ const Routes = (props)=>(
             {/* Estrutra Auth etc */}
             <Route exact path="/login" component={Login}></Route>
             <Route exact path="/nova-senha/:token" component={NovaSenha}></Route>
-            <Route exact path="/anuncio-detalhes/:id" component={AnuncioDetalhes}/>
+            <Route exact path="/anuncio-detalhes/:id" render={(p) => <AnuncioDetalhes load={props.load} {...p}/>}/>
             <Route exact path="/" component={Anuncios}/>
             {/* <PrivateRoutes exact path="/usuarios" nome="Indentificação usuário" component={Usuarios}/> */}
             <PrivateRoutes exact path="/perfil" load={props.load} nome="Indentificação usuário" component={Perfil}/>

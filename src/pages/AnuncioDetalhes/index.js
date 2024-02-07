@@ -14,7 +14,7 @@ function AnuncioCompra(props){
     , [host, id]);
 
     return (
-        <Template props={props}>
+        <Template load={props.load}>
         <div style={{textAlign:"center"}}>
             
             <img src={host+values.anuncio.imagemPath} alt="" style={{width:"100%", height:"29em"}}/>            

@@ -76,7 +76,7 @@ function Anuncios(props){
     }
 
     return (
-        <Template props={props}>
+        <Template>            
             <div className="anuncios-conteudo" onScroll={handlerScroll} >
                 {values.anuncios.map((anuncio, indexAnuncio) =>            
                     <section className="card-anuncio">                  
