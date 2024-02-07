@@ -46,11 +46,7 @@ function Anuncio(props){
         )
     }
     return (
-        <div>
-            {values.load&&<div style={{position:"absolute", width:"100%", height:"100%", backgroundColor:"rgba(173, 181, 189, 50%)", zIndex:"1000" }}>
-                <div className="spinner-border p-1" style={{width: "3rem",height: "3rem", margin:"30% 0 0 47%"}} role="status">                    
-                </div>                 
-            </div>}
+        <div>            
             <div className='anuncios-conteudo'>
                 <div className={"alert alert-success "+(values.ok?"":"visually-hidden")} role="alert"><FcCheckmark/>Link enviado com sucesso</div>
                 <div className={"alert alert-danger "+(values.erro?"":"visually-hidden")} role="alert"><FcHighPriority/>Erro: {values.erro}</div>

@@ -1,22 +1,18 @@
-import { Redirect, Route } from "react-router-dom"
+import { Route } from "react-router-dom"
 import Template from "../../estrutura/Template"
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import axios from "axios";
 import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
 
-function PrivateRoutes({component: Component, ...rest }){
-    const [values, setValues] = useState({load:true})    
+function PrivateRoutes({component: Component, ...rest}){
     const { location } = useLocation();
+
     useEffect(() =>{ 
-        axios.get(process.env.REACT_APP_URL+"/auth/usuarios").then(response =>             
-            setValues({usuario:response.data, load:false})
-        ).catch((error) => {localStorage.removeItem("token");setValues({load:false})});
+        axios.get(process.env.REACT_APP_URL+"/auth/usuarios")
+            .catch((error) => {localStorage.removeItem("token"); location.replace('/login');});
     }, [location]);
 
-    return values.load?<h1>Carregando...</h1>
-        :<Route { ...rest } render = {
-            props =>{return values.usuario?<Template><Component {...props} /></Template>:<Redirect to={{pathname : "/login", state: {from: props.location}}}/>}
-        }/>
+    return<Route { ...rest } render = {props =><Template load={rest.load}><Component {...props} /></Template>}/>
 }
 
 export default PrivateRoutes

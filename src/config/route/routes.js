@@ -12,7 +12,7 @@ import Lojas from "../../pages/Lojas";
 import Perfil from "../../pages/Perfil";
 import AnuncioDetalhes from "../../pages/AnuncioDetalhes";
 
-const Routes = ()=>(
+const Routes = (props)=>(
         
     <BrowserRouter>
         <Switch>
@@ -22,18 +22,18 @@ const Routes = ()=>(
             <Route exact path="/anuncio-detalhes/:id" component={AnuncioDetalhes}/>
             <Route exact path="/" component={Anuncios}/>
             {/* <PrivateRoutes exact path="/usuarios" nome="Indentificação usuário" component={Usuarios}/> */}
-            <PrivateRoutes exact path="/perfil" nome="Indentificação usuário" component={Perfil}/>
+            <PrivateRoutes exact path="/perfil" load={props.load} nome="Indentificação usuário" component={Perfil}/>
 
             {/* e-commerce dibros */}
-            <PrivateRoutes exact path="/lojas" nome={"Lojas"} component={Lojas}/>
-            <PrivateRoutes exact path="/produtos/:id" nome={"Produtos"} component={Produtos}/>
-            <PrivateRoutes exact path="/anuncio" nome={"Gerenciamento de anuncios"} component={Anuncio}/>                                 
-            <PrivateRoutes exact path="/anuncio-detalhes" nome="Tela de compra do anuncio" component={AnuncioDetalhes}/>
+            <PrivateRoutes exact path="/lojas" load={props.load} nome={"Lojas"} component={Lojas}/>
+            <PrivateRoutes exact path="/produtos/:id" load={props.load} nome={"Produtos"} component={Produtos}/>
+            <PrivateRoutes exact path="/anuncio" load={props.load} nome={"Gerenciamento de anuncios"} component={Anuncio}/>                                 
+            <PrivateRoutes exact path="/anuncio-detalhes" load={props.load} nome="Tela de compra do anuncio" component={AnuncioDetalhes}/>
 
             {/* sub rota do e-commerce meli */}            
-            <PrivateRoutes exact path="/meli/contas" nome={"Gerencie suas contas MercadoLivre"} component={Contas}/>                       
-            <PrivateRoutes exact path="/meli/anuncios/:id/:sku" nome={"Anúncios"} component={MeliAnuncios}/>                                    
-            <PrivateRoutes exact path="/meli/anuncio/:idAnuncio/:userId" nome={"Anúncios - detalhes"} component={MeliAnuncio}/>                        
+            <PrivateRoutes exact path="/meli/contas" load={props.load} nome={"Gerencie suas contas MercadoLivre"} component={Contas}/>                       
+            <PrivateRoutes exact path="/meli/anuncios/:id/:sku" load={props.load} nome={"Anúncios"} component={MeliAnuncios}/>                                    
+            <PrivateRoutes exact path="/meli/anuncio/:idAnuncio/:userId" load={props.load} nome={"Anúncios - detalhes"} component={MeliAnuncio}/>                        
             <Redirect to="/"/>
         </Switch>
     </BrowserRouter>
