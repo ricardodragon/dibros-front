@@ -63,7 +63,7 @@ function Lojas(props) {
             <input disabled={!verificaLoja()} onClick={event => {event.preventDefault();setValues({...values, loja:{nome:"", imagemPath:"", imagem:""}})}} type="submit" className="btn btn-sm btn-primary mt-2" value="Limpar"/>                        
         </form>
         <div style={{overflowX:"auto", color:"white"}}>
-            <table style={{borderCollapse: "collapse", width: "100%"}}>
+            <table  style={{borderCollapse: "collapse", width: "100%"}}>
                     <tr>  
                         <th scope="col"></th>                        
                         <th scope="col">Nome</th>                                                
