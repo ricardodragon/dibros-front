@@ -16,20 +16,19 @@ function Anuncio(){
     const { idAnuncio, userId} = useParams(); 
         
     const [values, setValues] = useState({anuncio:{title:'', price:0, available_quantity:0, variations:[], attributes:[], category_id:''}, disabled: true, loader:false, conta:0});                  
-    const host = process.env.REACT_APP_URL;
 
     const setAnuncio = useCallback(()=>{        
-        if(idAnuncio==="0"){axios.get(host+"/meli/contas/all").then(r=> setValues({contas:r.data, anuncio:{title:'', price:0, available_quantity:0, attributes:[], variations:[]}, loader:false, disabled: false})); return}
-        axios.get(host+'/meli/anuncios/'+idAnuncio+'?userId='+userId)
+        if(idAnuncio==="0"){axios.get("/meli/contas/all").then(r=> setValues({contas:r.data, anuncio:{title:'', price:0, available_quantity:0, attributes:[], variations:[]}, loader:false, disabled: false})); return}
+        axios.get('/meli/anuncios/'+idAnuncio+'?userId='+userId)
             .then(anuncio=> {
                 anuncio.data.variations = anuncio.data.variations?.map(v=>{return{...v, picture_ids:anuncio.data.pictures.filter(p=>v.picture_ids.includes(p.id))}});
                 anuncio.data.pictures = anuncio.data.pictures?.filter(p => anuncio.data.variations.filter(v => v.picture_ids.map(pi=>pi.id).includes(p.id)).length===0)                        
-                axios.get(host+'/meli/atributos/'+anuncio.data.category_id)
+                axios.get('/meli/atributos/'+anuncio.data.category_id)
                 .then(res => {anuncio.data.attributes = res.data.map(x=> { if(anuncio.data.attributes.filter(y=>y.id===x.id).length){ const {value_id, value_name} = anuncio.data.attributes.filter(y=>y.id===x.id)[0]; return {...x, value_id, value_name}}else return x});setValues({anuncio:anuncio.data, disabled:true, loader:false, editar:userId!=="0"&&idAnuncio!=="0", conta:0})})                
             })
-    }, [idAnuncio, userId, host])
+    }, [idAnuncio, userId])
     
-    const setVisits = () => axios.get(host+'/meli/anuncios/visits/'+userId+'/'+idAnuncio).then(r => setValues({...values, visits: r.data[idAnuncio]}));
+    const setVisits = () => axios.get('/meli/anuncios/visits/'+userId+'/'+idAnuncio).then(r => setValues({...values, visits: r.data[idAnuncio]}));
     useEffect(()=> { setAnuncio() },[setAnuncio])
 
     const onSubmit = () => {
@@ -42,7 +41,7 @@ function Anuncio(){
         if(values.editar) edit(anuncio);                    
         else{    
             delete anuncio["id"]   
-            axios.post(host+'/meli/anuncios/'+values.contas[0].id, {...anuncio, variations:anuncio.variations.map(v=> {v.picture_ids=v.picture_ids.map(p=>p.id); delete v.id; return v})})
+            axios.post('/meli/anuncios/'+values.contas[0].id, {...anuncio, variations:anuncio.variations.map(v=> {v.picture_ids=v.picture_ids.map(p=>p.id); delete v.id; return v})})
                 .then(response=>{setValues({...values, ok:true});setAnuncio(response.data.id)})
                 .catch(erro => {setValues({...values, loader:false, erro:JSON.stringify(erro.response.data)})});               
         }
@@ -50,12 +49,12 @@ function Anuncio(){
 
     const edit = (anuncio) => {                              
         if(anuncio.variations.length>0) anuncio.variations = anuncio.variations.map(v=> {v.picture_ids=v.picture_ids.map(p=>p.id); return v})            
-        axios.put(host+'/meli/anuncios/'+userId+'/'+idAnuncio, anuncio).then(response => {setValues({...values, ok:true});setAnuncio(response.data.id)})//
+        axios.put('/meli/anuncios/'+userId+'/'+idAnuncio, anuncio).then(response => {setValues({...values, ok:true});setAnuncio(response.data.id)})//
             .catch(error => {setValues({...values, loader:false, erro:JSON.stringify(error.response.data)})});       
     }
 
     const habilitarEdicao = event=>{event.preventDefault();setValues({...values, editar:true, disabled:!values.disabled})}
-    const habilitarReplica = async event=>{event.preventDefault();setValues({...values, editar:false, disabled:!values.disabled, contas:(await (axios.get(host+"/meli/contas/all"))).data})}    
+    const habilitarReplica = async event=>{event.preventDefault();setValues({...values, editar:false, disabled:!values.disabled, contas:(await (axios.get("/meli/contas/all"))).data})}    
     const setAtributo = attributes => setValues({...values, anuncio: {...values.anuncio, attributes}});
     const sort = (v, name, fator=1) => setValues({...values, anuncio: {...values.anuncio, variations:[].concat(values.anuncio.variations).sort((a, b) => {
         const ta = v==="SKU"?a["attribute_combinations"].filter(x=>x.name===name)[0].value_name:a["attributes"].filter(a => a.id === "SELLER_SKU")[0];

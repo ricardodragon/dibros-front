@@ -11,14 +11,14 @@ function Listagem(){
     const host = process.env.REACT_APP_URL;
 
     useEffect(() =>         
-        axios.get(host+'/meli/anuncios/list/'+id+'?sku='+(sku === "undefined"?'':sku)).then(res => setValues({anuncios:res.data}))
+        axios.get('/meli/anuncios/list/'+id+'?sku='+(sku === "undefined"?'':sku)).then(res => setValues({anuncios:res.data}))
     , [id, sku, host]);   
 
     return (
         <div className="anuncios-conteudo">
             <div>      
                 <LabelInput disabled={false} label="Anuncios diversos" id="diversos" type="text" onChange={diversos => setValues({...values, diversos})}/>                    
-                <button className="btn btn-sm btn-primary" onClick={async event=>{event.preventDefault(); setValues({...values,anuncios:(await axios.get(host+'/meli/anuncios?q='+values.diversos)).data.map(x=>{ return {body:x}})})}}>Buscar</button>
+                <button className="btn btn-sm btn-primary" onClick={async event=>{event.preventDefault(); setValues({...values,anuncios:(await axios.get('/meli/anuncios?q='+values.diversos)).data.map(x=>{ return {body:x}})})}}>Buscar</button>
                 <Link to={"/meli/anuncio/"+0+"/"+0} className="btn btn-sm btn-primary">
                         Publicar
                 </Link>                    
@@ -48,8 +48,8 @@ function Listagem(){
                                 </div>                                                                        
                                 <div className="footer-card-link" style={{boxSizing:"content-box", padding:"1%"}}>                                    
                                     <button onClick={event=>{event.preventDefault();window.open(value.body.permalink)}} className="btn btn-warning btn-sm">Abrir no Mercado Live</button>                                    
-                                    {value.body.status==="active"?<button onClick={event=>{event.preventDefault();axios.put(host+'/meli/anuncios/'+value.body.seller_id+'/'+value.body.id, {status:"paused"}).then(r=>alert("Deu"))}} className="btn btn-warning btn-sm">Pausar</button>:<button className="btn btn-info btn-sm" onClick={event=>{event.preventDefault();axios.put(host+'/meli/anuncios/'+value.body.seller_id+'/'+value.body.id, {status:"active"}).then(r=>alert("Deu"))}}>Ativar</button>}                                                                             
-                                    <button onClick={event=>{event.preventDefault();axios.put(host+'/meli/anuncios/'+value.body.seller_id+'/'+value.body.id, {status:"closed"}).then(r=>axios.put(host+'/meli/anuncios/'+value.body.seller_id+'/'+value.body.id, {deleted:"true"}).then(r=>alert("Deu")))}} className="btn btn-danger btn-sm">Excluir</button>   
+                                    {value.body.status==="active"?<button onClick={event=>{event.preventDefault();axios.put('/meli/anuncios/'+value.body.seller_id+'/'+value.body.id, {status:"paused"}).then(r=>alert("Deu"))}} className="btn btn-warning btn-sm">Pausar</button>:<button className="btn btn-info btn-sm" onClick={event=>{event.preventDefault();axios.put('/meli/anuncios/'+value.body.seller_id+'/'+value.body.id, {status:"active"}).then(r=>alert("Deu"))}}>Ativar</button>}                                                                             
+                                    <button onClick={event=>{event.preventDefault();axios.put('/meli/anuncios/'+value.body.seller_id+'/'+value.body.id, {status:"closed"}).then(r=>axios.put('/meli/anuncios/'+value.body.seller_id+'/'+value.body.id, {deleted:"true"}).then(r=>alert("Deu")))}} className="btn btn-danger btn-sm">Excluir</button>   
                                 </div>                                    
                             </div>                            
                         </div>

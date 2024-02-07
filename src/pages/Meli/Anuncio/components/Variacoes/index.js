@@ -18,15 +18,17 @@ function Variacoes(props){
     return (
         <div style={{overflowX:"auto", color:"white"}}>
             <table style={{borderCollapse: "collapse", width: "100%"}}>
-                <tr>
-                    <th scope="col">Imagens</th>                 
-                    <th scope="col">SKU</th>
-                    {props.variations[0]&&props.variations[0].attribute_combinations.map((a, i) => 
-                        <th scope="col" key={a.id + "" + i}>{a.name}</th>
-                    )}
-                    <th scope="col">Quantidade</th>   
-                    <th scope="col"></th>            
-                </tr>
+                <thead>
+                    <tr>
+                        <th scope="col">Imagens</th>                 
+                        <th scope="col">SKU</th>
+                        {props.variations[0]&&props.variations[0].attribute_combinations.map((a, i) => 
+                            <th scope="col" key={a.id + "" + i}>{a.name}</th>
+                        )}
+                        <th scope="col">Quantidade</th>   
+                        <th scope="col"></th>            
+                    </tr>
+                </thead>
                 {props.variations.map((variacao, index) => <>
                     <tr key={(index+1)*100}>
                         <td style={{cursor: "pointer"}} onClick={event => { event.preventDefault(); props.onChange(props.variations.map((x,i)=> {return index===i?{...x,colapse:!x.colapse}:x}))}}>{variacao.colapse?"👇" : "👉"}</td>

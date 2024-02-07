@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './login.css'
-import axios from 'axios';
+import axios from '../../config/api/api';
 import {useParams} from "react-router-dom";
 
 function NovaSenha(props) {
@@ -19,12 +19,12 @@ function NovaSenha(props) {
         localStorage.setItem("token", "Bearer "+token);        
         var formData = new FormData();   
         formData.append('files', values.usuario.imagem);          
-        axios.post(host+'/imagem/imagem', formData).then(imagens => 
-            axios.post(host+'/auth/usuarios', {...values.usuario, imagemPath:imagens.data[0]}).then(response =>{
+        axios.post('/imagem/imagem', formData).then(imagens => 
+            axios.post('/auth/usuarios', {...values.usuario, imagemPath:imagens.data[0]}).then(response =>{
                 localStorage.removeItem("token"); 
-                axios.post(host+'/auth/login', {password:values.usuario.password, email:response.data.email}).then(res => {
+                axios.post('/auth/login', {password:values.usuario.password, email:response.data.email}).then(res => {
                     localStorage.setItem("token", res.headers['authorization']);                
-                    axios.get(host+"/auth/usuarios").then(res =>{
+                    axios.get("/auth/usuarios").then(res =>{
                         localStorage.setItem("usuario", JSON.stringify(res.data));
                         props.history.replace("/");
                     })

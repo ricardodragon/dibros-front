@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import "./anuncios.css"
-import axios from 'axios';
+import axios from '../../config/api/api';
 import { Link } from "react-router-dom";
 import loader from "./../../assets/loadinfo.gif";
 import Template from '../../estrutura/Template';
@@ -9,26 +9,26 @@ import Template from '../../estrutura/Template';
 function Anuncios(props){
          
     const [values, setValues] = useState({anuncios:[]})    
-    const host = process.env.REACT_APP_URL;
-    
+    const host =process.env.REACT_APP_URL;
+
     useEffect(() => 
-        axios.get(host+`/loja/anuncios?page=${0}&size=${10}`).then(res =>     
+        axios.get(`/loja/anuncios?page=${0}&size=${10}`).then(res =>     
             axios.get(process.env.REACT_APP_URL+"/auth/usuarios").then(r=>
                 setValues({anuncios:res.data, usuario:r.data, total:res.headers['total']})            
             )
         )
-    , [host]);
+    , []);
     
     useEffect(() => 
-        axios.get(host+`/loja/anuncios?page=${0}&size=${10}`).then(res =>     
+        axios.get(`/loja/anuncios?page=${0}&size=${10}`).then(res =>     
             setValues({anuncios:res.data, total:res.headers['total']})            
         )
-    , [host]);
+    , []);
     
     
     const handlerScroll = (event) => {       
         if((event.target.scrollHeight - event.target.scrollTop)-10<=event.target.clientHeight&&values.anuncios.length<values.total){                           
-            axios.get(host+`/loja/anuncios?page=${values.anuncios.length/10}&size=${10}`).then(res =>{ 
+            axios.get(`/loja/anuncios?page=${values.anuncios.length/10}&size=${10}`).then(res =>{ 
                 setValues({...values, anuncios:values.anuncios.concat(res.data)})
             })       
         }
@@ -37,22 +37,22 @@ function Anuncios(props){
 
     const likeAnuncio = (event, anuncio) => {
         event.preventDefault();
-        axios.post(host+"/loja/like/"+anuncio.id).then(r=>setValues({...values, anuncios:values.anuncios.map(x=>{return x.id===anuncio.id?{...x, likeAnunciosDTO:x.likeAnunciosDTO.concat({idUsuario:r.data.idUsuario})}:x})}))
+        axios.post("/loja/like/"+anuncio.id).then(r=>setValues({...values, anuncios:values.anuncios.map(x=>{return x.id===anuncio.id?{...x, likeAnunciosDTO:x.likeAnunciosDTO.concat({idUsuario:r.data.idUsuario})}:x})}))
     }
 
     const deleteLikeAnuncio = (event, anuncio) => {
         event.preventDefault();
-        axios.delete(host+"/loja/like/"+anuncio.id).then(r=>setValues({...values, anuncios:values.anuncios.map(x=>{return x.id===anuncio.id?{...x, likeAnunciosDTO:x.likeAnunciosDTO.filter(l=>l.idUsuario!==r.data)}:x})}))
+        axios.delete("/loja/like/"+anuncio.id).then(r=>setValues({...values, anuncios:values.anuncios.map(x=>{return x.id===anuncio.id?{...x, likeAnunciosDTO:x.likeAnunciosDTO.filter(l=>l.idUsuario!==r.data)}:x})}))
     }
 
     const postComentario = (event, anuncio) => {
         event.preventDefault();
-        axios.post(host+"/loja/comentario", {idAnuncio:anuncio.id, texto:anuncio.inputComentario}).then(r=>setValues({...values, anuncios:values.anuncios.map(x=> x.id===anuncio.id?{...x, inputComentario:"", comentariosDTO:x.comentariosDTO.concat({...r.data, usuarioDTO:values.usuario})}:x)}))
+        axios.post("/loja/comentario", {idAnuncio:anuncio.id, texto:anuncio.inputComentario}).then(r=>setValues({...values, anuncios:values.anuncios.map(x=> x.id===anuncio.id?{...x, inputComentario:"", comentariosDTO:x.comentariosDTO.concat({...r.data, usuarioDTO:values.usuario})}:x)}))
     }
 
     const postLikeComentario = (event, anuncio, comentario) => {
         event.preventDefault();
-        axios.post(host+"/loja/comentario/"+comentario.id).then(r=>setValues({...values, anuncios:values.anuncios.map(x=> x.id===anuncio.id?{...x, inputComentario:"", comentariosDTO:x.comentariosDTO.map(c=>{ 
+        axios.post("/loja/comentario/"+comentario.id).then(r=>setValues({...values, anuncios:values.anuncios.map(x=> x.id===anuncio.id?{...x, inputComentario:"", comentariosDTO:x.comentariosDTO.map(c=>{ 
             if(c.id===comentario.id) return {...c, likeComentariosDTO:c.likeComentariosDTO.concat({idUsuario:values.usuario.id, idComentario:c.id})}
             else if(c.comentariosDTO.filter(cc=>cc.id===comentario.id).length) return {...c, comentariosDTO:c.comentariosDTO.map(cc=>cc.id===comentario.id? {...cc, likeComentariosDTO:cc.likeComentariosDTO.concat({idUsuario:values.usuario.id, idComentario:c.id})}:cc)}                
             else return c})}:x)}));
@@ -60,12 +60,12 @@ function Anuncios(props){
     
     const deleteLikeComentario = (event, anuncio, comentario) => {
         event.preventDefault();
-        axios.delete(host+"/loja/comentario/like/"+comentario.id).then(r=>setValues({...values, anuncios:values.anuncios.map(x=> x.id===anuncio.id?{...x, inputComentario:"", comentariosDTO:x.comentariosDTO.map(c=>c.id===comentario.id?{...c, likeComentariosDTO:c.likeComentariosDTO.filter(lc=>lc.idUsuario!==r.data)}:c)}:x)}));
+        axios.delete("/loja/comentario/like/"+comentario.id).then(r=>setValues({...values, anuncios:values.anuncios.map(x=> x.id===anuncio.id?{...x, inputComentario:"", comentariosDTO:x.comentariosDTO.map(c=>c.id===comentario.id?{...c, likeComentariosDTO:c.likeComentariosDTO.filter(lc=>lc.idUsuario!==r.data)}:c)}:x)}));
     }
 
     const deleteComentario = (event, anuncio, comentario) => {
         event.preventDefault();
-        axios.delete(host+"/loja/comentario/"+comentario.id).then(r=>setValues({...values, anuncios:values.anuncios.map(x=> x.id===anuncio.id?{...x, comentariosDTO:x.comentariosDTO.filter(c=>c.id!==comentario.id)}:x)}));
+        axios.delete("/loja/comentario/"+comentario.id).then(r=>setValues({...values, anuncios:values.anuncios.map(x=> x.id===anuncio.id?{...x, comentariosDTO:x.comentariosDTO.filter(c=>c.id!==comentario.id)}:x)}));
     }
     
     const expandComentario = (event, indexAnuncio, indexComentario) => {

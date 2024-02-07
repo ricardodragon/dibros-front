@@ -2,15 +2,14 @@ import React, { useEffect, useState } from 'react';
 import './header.css';
 import logo from './logo.png';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import axios from '../../config/api/api';
 
 function Header(){
     const [values, setValues] = useState({usuario:{imagemPath:""}, userMenu:"none"})    
-    
-    const host = process.env.REACT_APP_URL;
+    const host =process.env.REACT_APP_URL;
 
     useEffect(() => 
-        axios.get(process.env.REACT_APP_URL+"/auth/usuarios")
+        axios.get("/auth/usuarios")
             .then(response =>setValues({userMenu:"none", usuario:response.data})         
     ), [])
 

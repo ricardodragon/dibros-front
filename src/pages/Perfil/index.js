@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import './perfil.css'
-import axios from 'axios';
+import axios from '../../config/api/api';
 
 function Perfil(props) {
 
     const [values, setValues] = useState({usuario:{}})    
     const host = process.env.REACT_APP_URL;
-    useEffect(() => axios.get(host+"/auth/usuarios").then(response=>setValues({usuario:response.data})), [host])
+    useEffect(() => axios.get("/auth/usuarios").then(response=>setValues({usuario:response.data})), [])
 
     const setUsuario = (event) => setValues({...values,usuario:{...values.usuario,[event.target.name]:event.target.value}})    
     const setImagemUsuario = (event) => setValues({...values, usuario:{...values.usuario, imagem:event.target.files[0], imagemPath:undefined}})
@@ -15,8 +15,8 @@ function Perfil(props) {
         event.preventDefault();        
         var formData = new FormData(); 
         formData.append('files', values.usuario.imagem);   
-        axios.post(host+'/imagem/imagem', formData).then(imagens => 
-            axios.post(host+"/auth/usuarios", {...values.usuario, imagemPath:imagens.data[0]}).then(response=>
+        axios.post('/imagem/imagem', formData).then(imagens => 
+            axios.post("/auth/usuarios", {...values.usuario, imagemPath:imagens.data[0]}).then(response=>
                 localStorage.setItem("usuario", JSON.stringify(response.data))
             )
         )

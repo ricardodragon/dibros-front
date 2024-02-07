@@ -10,7 +10,7 @@ function AnuncioCompra(props){
     const { id } = useParams();
 
     useEffect(() => 
-        axios.get(host+"/loja/anuncios/"+id).then(res => setValues({anuncio:res.data}))
+        axios.get("/loja/anuncios/"+id).then(res => setValues({anuncio:res.data}))
     , [host, id]);
 
     return (

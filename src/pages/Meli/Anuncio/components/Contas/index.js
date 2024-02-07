@@ -19,9 +19,9 @@ function Contas(props){
     }
 
     useEffect(()=>
-        axios.get(host+'/meli/contas/all?id='+JSON.parse(localStorage.getItem("usuario")).id)
+        axios.get('/meli/contas/all?id='+JSON.parse(localStorage.getItem("usuario")).id)
             .then(res=> setValues({contas: res.data.concat({id:"0", email:"Todas as contas"})}))
-    , [host]);
+    , []);
 
     return (
         <>  

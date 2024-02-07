@@ -1,28 +1,28 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axios from "../../config/api/api";
 import { FcCheckmark, FcHighPriority } from "react-icons/fc";
 
 function Anuncio(props){
     
-    const [values, setValues] = useState({lojas:[], anuncios:[], anuncio:{preco:"", legenda:"", lojaDTO:{nome:"",id:""}, anuncioProdutosDTO:[]}})    
-    const host = process.env.REACT_APP_URL;
-
+    const [values, setValues] = useState({lojas:[], anuncios:[], anuncio:{preco:"", legenda:"", lojaDTO:{nome:"",id:""}, anuncioProdutosDTO:[]}})        
+    const host =process.env.REACT_APP_URL;
+    
     useEffect(() => 
-        axios.get(host+("/loja/anuncios/usuario")).then(res => 
-            axios.get(host+"/loja/lojas").then(response =>                
+        axios.get(("/loja/anuncios/usuario")).then(res => 
+            axios.get("/loja/lojas").then(response =>                
                 setValues({lojas:response.data,anuncios:res.data, erro: response.data.length<=0?"É preciso criar uma loja em \"Menu > Lojas\"":false, anuncio:{preco:"", legenda:"", lojaDTO:{nome:"",id:""}, anuncioProdutosDTO:[]}})))                  
-    , [host]);
+    , []);
 
     const submit = event => {
         event.preventDefault();
         setValues({...values, load:true});
         var formData = new FormData(); var i = 0; var anuncio = values.anuncio;            
         [values.anuncio].concat(values.anuncio.anuncioProdutosDTO).filter(x=>x.imagem).map(x=>x.imagem).forEach(x=>formData.append("files", x));                       
-        axios.post(host+'/imagem/imagem', formData).then(imagens =>{                        
+        axios.post('/imagem/imagem', formData).then(imagens =>{                        
             if(anuncio.imagem) anuncio.imagemPath = imagens.data[i++];
             anuncio.anuncioProdutosDTO = anuncio.anuncioProdutosDTO.map(x=>x.imagem?{...x, imagemPath:imagens.data[i++]}:x);
-            anuncio.id?axios.put(host+'/loja/anuncios/'+anuncio.id, anuncio).then(callBackForm).catch(callBackErrorForm):
-                axios.post(host+'/loja/anuncios', anuncio).then(callBackForm).catch(callBackErrorForm)
+            anuncio.id?axios.put('/loja/anuncios/'+anuncio.id, anuncio).then(callBackForm).catch(callBackErrorForm):
+                axios.post('/loja/anuncios', anuncio).then(callBackForm).catch(callBackErrorForm)
         }).catch(error=>setValues({...values, load:false, ok:false, erro:error.response.data.message?error.response.data.message:error.response.data})); 
     }
     
@@ -41,7 +41,7 @@ function Anuncio(props){
     const addProduto = event => {
         event.preventDefault();
         setValues({...values, load:true})
-        axios.get(host+"/loja/produtos/"+values.produtoID).then(r=>
+        axios.get("/loja/produtos/"+values.produtoID).then(r=>
             r.data?setValues({...values, anuncio:{...values.anuncio, anuncioProdutosDTO:[...values.anuncio.anuncioProdutosDTO, {imagemPath:r.data.imagemPath, preco:r.data.preco, idAnuncio:values.anuncio.id, idProduto:r.data.id, produtoDTO:r.data}]}}):""
         )
     }
@@ -76,12 +76,14 @@ function Anuncio(props){
                             <button disabled={!values.produtoID||values.anuncio.anuncioProdutosDTO.filter(x => x.idProduto===values.produtoID).length} style={{cursor:"pointer", border:"none", backgroundColor:"white", width:"15%"}} className="m-1" onClick={addProduto}>➕</button>
                             <div style={{overflowX:"auto", color:"white"}}>
                                 <table style={{borderCollapse: "collapse", width: "100%"}}>
-                                    <tr>
-                                        <th scope="col"></th>
-                                        <th scope="col">Título</th>
-                                        <th scope="col">Preco</th>
-                                        <th scope="col"></th>
-                                    </tr>
+                                    <thead>
+                                        <tr>
+                                            <th scope="col"></th>
+                                            <th scope="col">Título</th>
+                                            <th scope="col">Preco</th>
+                                            <th scope="col"></th>
+                                        </tr>
+                                    </thead>
                                     {values.anuncio.anuncioProdutosDTO&&values.anuncio.anuncioProdutosDTO.map((p, i)=> 
                                         <tr key={p.idProduto} style={{whiteSpace: "nowrap"}}>
                                             <td>                                                                                                
@@ -102,21 +104,25 @@ function Anuncio(props){
 
                 <div style={{overflowX:"auto", color:"white"}}>
                     <table style={{borderCollapse: "collapse", width: "100%"}}>
-                        <tr>
-                            <th scope="col"></th>
-                            <th scope="col">Legenda</th>
-                            <th scope="col">Produtos Anuncio</th>
-                            <th scope="col"></th>
-                        </tr>
-                        {/* <tr><td>{values.anuncios.map(p=>p.quantidade).reduce((sumQtd, a) => sumQtd + a, 0)}</td></tr> */}
-                        {values.anuncios.map(a=>
-                            <tr key={a.id} style={{cursor:"pointer", whiteSpace: "nowrap"}} onClick={event=>{event.preventDefault();window.scrollTo(0, 0);setValues({...values, anuncio:{...a, loja:a.lojaDTO}});document.getElementsByClassName("conteudo")[0].scrollTo(0, 0)}}>
-                                <td><img style={{width:"2em", height:"2em"}} alt={"Foto do anuncio "+a.legenda} src={host+a.imagemPath}/></td>                            
-                                <td>{a.legenda}</td>                                                             
-                                <td>{a.anuncioProdutosDTO.length}</td>                                                                                             
-                                <td onClick={event=>{event.stopPropagation();event.preventDefault();axios.delete(host+"/loja/anuncios/"+a.id).then(response=>setValues({...values, anuncio:a.id===values.anuncio.id?{preco:"", legenda:"", imagem:"", lojaDTO:{nome:"",id:""}, anuncioProdutosDTO:[]}:values.anuncio, anuncios:values.anuncios.filter(x=>x.id!==a.id)}))}}>❌</td>
+                        <thead>
+                            <tr>
+                                <th scope="col"></th>
+                                <th scope="col">Legenda</th>
+                                <th scope="col">Produtos Anuncio</th>
+                                <th scope="col"></th>
                             </tr>
-                        )}               
+                        </thead>
+                        {/* <tr><td>{values.anuncios.map(p=>p.quantidade).reduce((sumQtd, a) => sumQtd + a, 0)}</td></tr> */}
+                        <tbody>
+                            {values.anuncios.map(a=>
+                                <tr key={a.id} style={{cursor:"pointer", whiteSpace: "nowrap"}} onClick={event=>{event.preventDefault();window.scrollTo(0, 0);setValues({...values, anuncio:{...a, loja:a.lojaDTO}});document.getElementsByClassName("conteudo")[0].scrollTo(0, 0)}}>
+                                    <td><img style={{width:"2em", height:"2em"}} alt={"Foto do anuncio "+a.legenda} src={host+a.imagemPath}/></td>                            
+                                    <td>{a.legenda}</td>                                                             
+                                    <td>{a.anuncioProdutosDTO.length}</td>                                                                                             
+                                    <td onClick={event=>{event.stopPropagation();event.preventDefault();axios.delete("/loja/anuncios/"+a.id).then(response=>setValues({...values, anuncio:a.id===values.anuncio.id?{preco:"", legenda:"", imagem:"", lojaDTO:{nome:"",id:""}, anuncioProdutosDTO:[]}:values.anuncio, anuncios:values.anuncios.filter(x=>x.id!==a.id)}))}}>❌</td>
+                                </tr>
+                            )}               
+                        </tbody>
                     </table>       
                 </div>    
             </div>

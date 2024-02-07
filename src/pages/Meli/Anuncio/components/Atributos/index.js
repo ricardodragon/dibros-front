@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import axios from '../../../../../config/api/api';
 
 function 
 
@@ -8,10 +8,10 @@ Atributos(props){
     const [values, setValues] = useState({atributos:[]});
     const host = process.env.REACT_APP_URL;
 
-    //console.log((await axios.get(host+'/meli/atributos/'+props.categoria)).data.sort((a, b) => a.value_type.localeCompare(b.value_type)));
+    //console.log((await axios.get('/meli/atributos/'+props.categoria)).data.sort((a, b) => a.value_type.localeCompare(b.value_type)));
     useEffect(() => {
         if(props.categoria)
-            axios.get(host+'/meli/atributos/'+props.categoria).then(res => { res.data.filter(x=>!props.value||props.value.filter(a=>a.id===x.id).length===0);})
+            axios.get('/meli/atributos/'+props.categoria).then(res => { res.data.filter(x=>!props.value||props.value.filter(a=>a.id===x.id).length===0);})
     },[props.categoria, props.value, host]);                                    
 
     const addAtributo = event => {

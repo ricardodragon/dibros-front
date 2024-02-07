@@ -13,13 +13,13 @@ function Contas(props){
     const erroContaMessage = "Erro ao salvar conta, pressione f5 para tentar novamente ou clique no botão adicionar conta novamente, se persistir o erro verifique sua conta MELI";
     useEffect(() => {
         if(code)
-            axios.post(host+'/meli/contas?code='+code).then(res=> 
-                axios.get(host+'/meli/contas/all')
+            axios.post('/meli/contas?code='+code).then(res=> 
+                axios.get('/meli/contas/all')
                     .then(res=> props.history.replace("/meli/contas"))
-                    .catch(error=> axios.get(host+'/meli/contas/all')).then(r=>setValues({contas:r.data, erro:erroContaMessage}))
+                    .catch(error=> axios.get('/meli/contas/all')).then(r=>setValues({contas:r.data, erro:erroContaMessage}))
             )
         else
-            axios.get(host+'/meli/contas/all').then(r=>setValues({contas:r.data}))   
+            axios.get('/meli/contas/all').then(r=>setValues({contas:r.data}))   
     }, [props.history, code, host]);
 
     const redirectMeli = () => {                
@@ -45,7 +45,7 @@ function Contas(props){
                             <div>
                                 <Link to={"/meli/anuncios/"+value.id+"/"+undefined} className="btn-link">Anuncios</Link>
                                 &nbsp;&nbsp;  
-                                <button className="btn btn-danger btn-sm" onClick={event=>{event.preventDefault();axios.delete(host+'/meli/contas/'+value.idLocal);}}>Excluir</button>                       
+                                <button className="btn btn-danger btn-sm" onClick={event=>{event.preventDefault();axios.delete('/meli/contas/'+value.idLocal);}}>Excluir</button>                       
                             </div>
                         </div>                        
                     )

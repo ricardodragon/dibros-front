@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../../config/api/api';
 import React, { useEffect, useState } from 'react';
 import { FcCheckmark, FcHighPriority } from 'react-icons/fc';
 
@@ -10,8 +10,8 @@ function Lojas(props) {
     const verificaLoja = () => values.loja.nome||values.loja.imagem||values.loja.imagemPath;
 
     useEffect(() => 
-        axios.get(host+"/loja/lojas").then(res => setValues({lojas:res.data, loja:{nome:"", imagemPath:"", imagem:""}}))
-    , [host]);
+        axios.get("/loja/lojas").then(res => setValues({lojas:res.data, loja:{nome:"", imagemPath:"", imagem:""}}))
+    , []);
 
     const getLocation = () => navigator.geolocation?
         navigator.geolocation.getCurrentPosition(position=>
@@ -22,11 +22,11 @@ function Lojas(props) {
         event.preventDefault();           
         var formData = new FormData();
         formData.append('files', values.loja.imagem);
-        axios.post(host+'/imagem/imagem', formData).then(imagens =>
+        axios.post('/imagem/imagem', formData).then(imagens =>
             values.loja.id?
-                axios.put(host+'/loja/lojas/'+values.loja.id, {...values.loja, imagemPath:imagens.data[0]?imagens.data[0]:values.loja.imagemPath})
+                axios.put('/loja/lojas/'+values.loja.id, {...values.loja, imagemPath:imagens.data[0]?imagens.data[0]:values.loja.imagemPath})
                     .then(callBackForm).catch(error=>setValues({...values, erro:error.response.data.message, ok:false})):
-                axios.post(host+'/loja/lojas', {...values.loja, imagemPath:imagens.data[0]?imagens.data[0]:values.loja.imagemPath})
+                axios.post('/loja/lojas', {...values.loja, imagemPath:imagens.data[0]?imagens.data[0]:values.loja.imagemPath})
                     .then(callBackForm).catch(error=>setValues({...values, erro:error.response.data.message, ok:false}))
         ).catch(error=>console.log(error))            
     }
@@ -64,27 +64,28 @@ function Lojas(props) {
         </form>
         <div style={{overflowX:"auto", color:"white"}}>
             <table  style={{borderCollapse: "collapse", width: "100%"}}>
+                <thead>
                     <tr>  
                         <th scope="col"></th>                        
                         <th scope="col">Nome</th>                                                
                         <th scope="col"></th>                                                
                         <th scope="col"></th>
                     </tr>
+                </thead>
+                <tbody>
                     {values.lojas.map(l=>
-                    <>                    
                         <tr key={"lojas"+l.id} style={{cursor:"pointer", whiteSpace: "nowrap"}} onClick={event=>{event.preventDefault();setValues({...values, loja:l});document.getElementsByClassName("conteudo")[0].scrollTo(0, 0)}}>
                             <td><img alt="Foto da loja" style={{width:"2em", height:"2em"}} src={host+l.imagemPath}/></td>                            
                             <td style={{fontWeight: "bold"}}>{l.nome}</td>                                                                                         
                             <td style={{fontWeight: "bold"}}><a onClick={event=>event.stopPropagation()} href={"/produtos/"+l.id}>Produtos</a></td>                                                                                         
                             <td onClick={event=>{
-                                event.stopPropagation();event.preventDefault();axios.delete(host+"/loja/lojas/"+l.id)
+                                event.stopPropagation();event.preventDefault();axios.delete("/loja/lojas/"+l.id)
                                 .then(res => setValues({...values, lojas:values.lojas.filter(loja=>loja.id!==l.id), ok:true, erro:false, loja:{nome:"", imagemPath: "", imagem:""}}))
                                 .catch(error=>setValues({...values, erro:error.response.data.message, ok:false}))
                             }}>❌</td>
                         </tr>
-                        <tr></tr>
-                    </>                    
-                    )}  
+                    )} 
+                </tbody> 
             </table>       
         </div>    
     </div>

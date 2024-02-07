@@ -8,7 +8,7 @@ function TipoAnuncio(props){
     const host = process.env.REACT_APP_URL;
 
     useEffect(() => 
-        axios.get(host+'/meli/contas/'+props.conta.id+'/'+props.categoria).then(res=> setValues({tiposAnuncio:res.data}))
+        axios.get('/meli/contas/'+props.conta.id+'/'+props.categoria).then(res=> setValues({tiposAnuncio:res.data}))
     , [props.categoria, props.conta, host]);
 
     return(  

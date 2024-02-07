@@ -13,7 +13,7 @@ function AtributosVariacoes(props){
     }
       
     useEffect(() => {if(props.categoria)
-        axios.get(host+'/meli/atributos/'+props.categoria).then(res=> res.data.filter(value=>value.tags.allow_variations))
+        axios.get('/meli/atributos/'+props.categoria).then(res=> res.data.filter(value=>value.tags.allow_variations))
     }, [props.categoria, host]);
 
     return(        

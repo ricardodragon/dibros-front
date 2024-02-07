@@ -3,7 +3,7 @@ import Menu from "../Menu"
 import "./template.css"
 
 function Template(props){
-      
+    
     return (
         <div>            
             <Header/>            

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './login.css'
-import axios from 'axios';
+import axios from '../../config/api/api';
 import { Link } from '@material-ui/core';
 import { FcCheckmark, FcHighPriority } from 'react-icons/fc';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
@@ -10,14 +10,13 @@ function Login(props) {
     const [values, setValues] = useState( {usuario:{email:"", password:""}} )
     const history = useHistory();
 
-    const host = process.env.REACT_APP_URL; 
     const setUsuario = (event)=>
         setValues({...values,usuario:{...values.usuario,[event.target.name]:event.target.value}})    
         
     const login = (event) => {
         event.preventDefault();
         setValues({...values, load:true})        
-        axios.post(host+'/auth/login', values.usuario).then(response => {
+        axios.post('/auth/login', values.usuario).then(response => {
             localStorage.setItem("token", response.headers['authorization']);  
             history.push("/");
         }).catch(error=>setValues({...values, erro:JSON.stringify(error.response.data.message?error.response.data.message:error.response.data), ok:false, load:false}));        
@@ -26,7 +25,7 @@ function Login(props) {
     const enviaLink = event=>{
         event.preventDefault();
         setValues({...values, load:true})
-        axios.post(host+"/auth/usuarios/email-token?email="+values.email+"&esqueci=true", null).then(r=>
+        axios.post("/auth/usuarios/email-token?email="+values.email+"&esqueci=true", null).then(r=>
             setValues({...values, ok:true, erro:false, load:false})
         ).catch(error=> setValues({...values, erro:"Erro ao enviar link", ok:false, load:false}))
     };

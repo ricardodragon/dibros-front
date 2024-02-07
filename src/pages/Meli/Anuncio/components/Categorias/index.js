@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../../../../../config/api/api';
 import { useEffect, useState } from 'react';
 import { BsPencil } from "react-icons/bs";
 import LabelSelect from "../../../../../estrutura/LabelSelect";
@@ -10,11 +10,11 @@ function Categorias(props){
 
     useEffect(() => 
         props.category_id?
-            axios.get(host+'/meli/categorias/'+props.category_id).then(res => 
-                axios.get(host+'/meli/dominios/MLB/categorias')
+            axios.get('/meli/categorias/'+props.category_id).then(res => 
+                axios.get('/meli/dominios/MLB/categorias')
                     .then(resp => setValues({categorias:[{id:"MLB", lista:resp.data}], categoria:res.data}))
             )
-        :axios.get(host+'/meli/dominios/MLB/categorias')
+        :axios.get('/meli/dominios/MLB/categorias')
             .then(resp => setValues({categorias:[{id:"MLB", lista:resp.data}], categoria:{}}))
     , [props.category_id, host]);
     
@@ -23,7 +23,7 @@ function Categorias(props){
             setValues({...values, categorias:values.categorias.slice(0, index+1)});            
         else {
             var categoria = values.categorias[index].lista[i].id            
-            axios.get(host+'/meli/categorias/'+categoria).then(response => {            
+            axios.get('/meli/categorias/'+categoria).then(response => {            
                 if(response.data.children_categories.length===0) {                          
                     setValues({...values, categorias:values.categorias.slice(0, 1), categoria})
                     props.onChange(categoria)                     

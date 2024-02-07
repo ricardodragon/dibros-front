@@ -12,7 +12,7 @@ function Imagens(props){
         const pictures = values.pictures;   
         var formData = new FormData();
         formData.append('files', event.target.files[0]);
-        pictures.push((await axios.post(host+'/meli/anuncios/imagens/229790949', formData)).data);                                                                       
+        pictures.push((await axios.post('/meli/anuncios/imagens/229790949', formData)).data);                                                                       
         props.onChange(pictures);
     }
 
@@ -29,7 +29,7 @@ function Imagens(props){
             <div style={{display: "flex"}}>
                 {values.pictures.map((imagem, index) =>{
                     return<div key={index} className="row" style={{boxSizing:"content-box"}}>                        
-                        <img style={{height:'4em', width:'4em'}} src={imagem.url?imagem.url:imagem.variations[0].url} alt="" />
+                        <img style={{height:'4em', width:'4em'}} src={host+imagem.url?imagem.url:imagem.variations[0].url} alt="" />
                         <button disabled={props.disabled} className="w-100 btn btn-sm btn-danger" onClick={event=>{event.preventDefault();excluir(imagem.id);}}>X</button>
                     </div>                     
                 })}

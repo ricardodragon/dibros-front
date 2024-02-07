@@ -1,5 +1,5 @@
 
-import axios from 'axios';
+import axios from '../../config/api/api';
 import { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
 import { FcCheckmark, FcHighPriority } from 'react-icons/fc';
@@ -14,8 +14,8 @@ function Produtos(props){
     const host = process.env.REACT_APP_URL;
 
     useEffect(() => 
-        axios.get(host+`/loja/produtos?page=${0}&size=${100}&idLoja=${id}`).then(res => 
-            axios.get(host+"/loja/lojas").then(response =>
+        axios.get(`/loja/produtos?page=${0}&size=${100}&idLoja=${id}`).then(res => 
+            axios.get("/loja/lojas").then(response =>
                 setValues({lojas:response.data,produtos:res.data, idLoja:id, produto:{imagem: "", preco:"", quantidade:"", titulo:"", lojaDTO:{nome:"",id:""}}})))            
     , [id, host]);
 
@@ -23,8 +23,8 @@ function Produtos(props){
         event.preventDefault();
         var formData = new FormData();
         formData.append('files', values.produto.imagem);        
-        axios.post(host+'/imagem/imagem', formData).then(imagens =>
-            axios.post(host+"/loja/produtos", {...values.produto, imagemPath:imagens.data[0]?imagens.data[0]:values.produto.imagemPath})
+        axios.post('/imagem/imagem', formData).then(imagens =>
+            axios.post("/loja/produtos", {...values.produto, imagemPath:imagens.data[0]?imagens.data[0]:values.produto.imagemPath})
                 .then(response => setValues({...values, ok:true, erro:false, produto:{imagem: "", preco:"", quantidade:"", titulo:"", lojaDTO:{id:"", nome:""}}, produtos:values.produto.id?values.produtos.map(x=>x.id===values.produto.id?response.data:x):values.produtos.concat(response.data)})))                
                 .catch(error=> setValues({...values, erro:error.response.data.message, ok:false}))
     }
@@ -58,44 +58,48 @@ function Produtos(props){
                 <input disabled={!(values.produto.quantidade||values.produto.titulo||values.produto.idLoja||values.produto.imagem)} onClick={event => {event.preventDefault();setValues({...values, produto:{preco:"", quantidade:"", titulo:"", lojaDTO:{id:"", nome:""}}})}} type="submit" className="btn btn-sm btn-primary mt-2" value="Limpar"/>                                        
             </form>
             <fieldset style={{overflowX:"auto", color:"white"}}><legend>Meus produtos</legend> 
-                <select defaultValue={values.idLoja} id="lojas" value={values.idLoja} style={{borderRadius:"0.9em"}} className='col form-control form-control-sm mt-3 mb-3' onChange={async event=>{event.preventDefault();setValues({...values, idLoja:event.target.value, produtos:(await axios.get(host+"/loja/produtos?idLoja="+event.target.value)).data})}}>                                                            
+                <select defaultValue={values.idLoja} id="lojas" value={values.idLoja} style={{borderRadius:"0.9em"}} className='col form-control form-control-sm mt-3 mb-3' onChange={async event=>{event.preventDefault();setValues({...values, idLoja:event.target.value, produtos:(await axios.get("/loja/produtos?idLoja="+event.target.value)).data})}}>                                                            
                     <option value="">Selecione a loja</option>
                     {values.lojas.map((value, index) => <option key={index} value={value.id}>{value.nome}</option>)}
                 </select> 
                 
                 <table style={{borderCollapse: "collapse", width: "100%"}}>    
-                    <tr>
-                        <th scope="col">ID/SKU</th>
-                        <th></th>
-                        <th scope="col">Título</th>
-                        <th scope="col">Preço</th>
-                        <th scope="col">Qtd</th>
-                        <th scope="col">Meli</th>  
-                        <th scope="col">Amazon</th>  
-                        <th scope="col">Shopee</th>  
-                        <th></th>
-                    </tr>
-                    {/* <tr><td>{values.produtos.map(p=>p.quantidade).reduce((sumQtd, a) => sumQtd + a, 0)}</td></tr> */}
-                    {values.produtos.map(p=>
-                        <tr key={p.id} style={{cursor:"pointer", whiteSpace: "nowrap"}} onClick={event=>{event.preventDefault();setValues({...values, produto:{...p, loja:p.lojaDTO}});document.getElementsByClassName("conteudo")[0].scrollTo(0, 0)}}>
-                            <td>{p.id}</td>
-                            <td><img alt="" style={{width:"2em", height:"2em"}} src={host+p.imagemPath}/></td>                            
-                            <td style={{fontWeight: "bold"}}>{p.titulo}</td>                                                             
-                            <td>{"R$ "+p.preco}</td>
-                            <td>{p.quantidade}</td>
-                            <td><Link onClick={event=>event.stopPropagation()} target="_blank" to={"/anuncios/"+0+"/"+p.id} className="btn-link">Anuncios</Link></td>
-                            <td></td>
-                            <td></td>                                
-                            <td onClick={event=>{
-                                event.stopPropagation();event.preventDefault();
-                                axios.delete(host+"/loja/produtos/"+p.id)
-                                    .then(res => setValues({...values, ok:true, erro:false, produtos:values.produtos.filter(pro=>p.id!==pro.id)}))
-                                    .catch(error=>setValues({...values, erro:error.response.data.message, ok:false}))
-                                document.getElementsByClassName("conteudo")[0].scrollTo(0, 0);
-                                window.scrollTo(0,0);
-                            }}>❌</td>
+                    <thead>
+                        <tr>
+                            <th scope="col">ID/SKU</th>
+                            <th></th>
+                            <th scope="col">Título</th>
+                            <th scope="col">Preço</th>
+                            <th scope="col">Qtd</th>
+                            <th scope="col">Meli</th>  
+                            <th scope="col">Amazon</th>  
+                            <th scope="col">Shopee</th>  
+                            <th></th>
                         </tr>
-                    )}               
+                    </thead>
+                    {/* <tr><td>{values.produtos.map(p=>p.quantidade).reduce((sumQtd, a) => sumQtd + a, 0)}</td></tr> */}
+                    <tbody>
+                        {values.produtos.map(p=>
+                            <tr key={p.id} style={{cursor:"pointer", whiteSpace: "nowrap"}} onClick={event=>{event.preventDefault();setValues({...values, produto:{...p, loja:p.lojaDTO}});document.getElementsByClassName("conteudo")[0].scrollTo(0, 0)}}>
+                                <td>{p.id}</td>
+                                <td><img alt="" style={{width:"2em", height:"2em"}} src={host+p.imagemPath}/></td>                            
+                                <td style={{fontWeight: "bold"}}>{p.titulo}</td>                                                             
+                                <td>{"R$ "+p.preco}</td>
+                                <td>{p.quantidade}</td>
+                                <td><Link onClick={event=>event.stopPropagation()} target="_blank" to={"/anuncios/"+0+"/"+p.id} className="btn-link">Anuncios</Link></td>
+                                <td></td>
+                                <td></td>                                
+                                <td onClick={event=>{
+                                    event.stopPropagation();event.preventDefault();
+                                    axios.delete("/loja/produtos/"+p.id)
+                                        .then(res => setValues({...values, ok:true, erro:false, produtos:values.produtos.filter(pro=>p.id!==pro.id)}))
+                                        .catch(error=>setValues({...values, erro:error.response.data.message, ok:false}))
+                                    document.getElementsByClassName("conteudo")[0].scrollTo(0, 0);
+                                    window.scrollTo(0,0);
+                                }}>❌</td>
+                            </tr>
+                        )}               
+                    </tbody>
                 </table> 
             </fieldset>    
         </div>
