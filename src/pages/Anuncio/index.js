@@ -14,8 +14,7 @@ function Anuncio(props){
     , []);
 
     const submit = event => {
-        event.preventDefault();
-        setValues({...values, load:true});
+        event.preventDefault();        
         var formData = new FormData(); var i = 0; var anuncio = values.anuncio;            
         [values.anuncio].concat(values.anuncio.anuncioProdutosDTO).filter(x=>x.imagem).map(x=>x.imagem).forEach(x=>formData.append("files", x));                       
         axios.post('/imagem/imagem', formData).then(imagens =>{                        
@@ -23,16 +22,16 @@ function Anuncio(props){
             anuncio.anuncioProdutosDTO = anuncio.anuncioProdutosDTO.map(x=>x.imagem?{...x, imagemPath:imagens.data[i++]}:x);
             anuncio.id?axios.put('/loja/anuncios/'+anuncio.id, anuncio).then(callBackForm).catch(callBackErrorForm):
                 axios.post('/loja/anuncios', anuncio).then(callBackForm).catch(callBackErrorForm)
-        }).catch(error=>setValues({...values, load:false, ok:false, erro:error.response.data.message?error.response.data.message:error.response.data})); 
+        }).catch(error=>setValues({...values, ok:false, erro:error.response.data.message?error.response.data.message:error.response.data})); 
     }
     
     const callBackErrorForm = error => {         
-        setValues({...values, load:false, ok:false, erro:JSON.stringify(error.response.data.message?error.response.data.message:error.response.data)});
+        setValues({...values, ok:false, erro:JSON.stringify(error.response.data.message?error.response.data.message:error.response.data)});
     }
 
     const callBackForm = response => { 
         const a = values.anuncios.filter(x=>x.id===response.data.id); 
-        setValues({...values, load:false, ok:`Anuncio '${response.data.id}' criado com sucesso.`, anuncio:{preco:"", legenda:"", imagem:"", lojaDTO:{nome:"",id:""}, anuncioProdutosDTO:[]}, anuncios:a.length?values.anuncios.map(anuncio=>{return anuncio.id===a[0].id?{...response.data}:anuncio}):values.anuncios.concat({...response.data, anuncioProdutosDTO:values.anuncio.anuncioProdutosDTO.map(x=>{return {...x, idAnuncio:response.data.id}})})});
+        setValues({...values, ok:`Anuncio '${response.data.id}' criado com sucesso.`, anuncio:{preco:"", legenda:"", imagem:"", lojaDTO:{nome:"",id:""}, anuncioProdutosDTO:[]}, anuncios:a.length?values.anuncios.map(anuncio=>{return anuncio.id===a[0].id?{...response.data}:anuncio}):values.anuncios.concat({...response.data, anuncioProdutosDTO:values.anuncio.anuncioProdutosDTO.map(x=>{return {...x, idAnuncio:response.data.id}})})});
     }
 
     // const enviaAnuncio = () => !values.anuncio.imagem||!values.anuncio.legenda||!values.anuncio.idLoja;
@@ -40,7 +39,6 @@ function Anuncio(props){
 
     const addProduto = event => {
         event.preventDefault();
-        setValues({...values, load:true})
         axios.get("/loja/produtos/"+values.produtoID).then(r=>
             r.data?setValues({...values, anuncio:{...values.anuncio, anuncioProdutosDTO:[...values.anuncio.anuncioProdutosDTO, {imagemPath:r.data.imagemPath, preco:r.data.preco, idAnuncio:values.anuncio.id, idProduto:r.data.id, produtoDTO:r.data}]}}):""
         )
