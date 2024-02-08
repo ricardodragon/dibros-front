@@ -5,7 +5,7 @@ import axios from "../api/api";
 import { useEffect, useState } from "react";
 
 function PrivateRoutes({component: Component, ...rest}){
-    const [values, setValues] = useState({})
+    const [values, setValues] = useState({isAuthenticated:true})
     
     useEffect(()=>
         axios.get("/auth/usuarios").then(response=>setValues({isAuthenticated:true})).catch(error=>setValues({isAuthenticated:false}))
