@@ -106,6 +106,7 @@ function Anuncio(props){
                             <tr>
                                 <th scope="col"></th>
                                 <th scope="col">Legenda</th>
+                                <th scope="col">Preço</th>                                
                                 <th scope="col">Produtos Anuncio</th>
                                 <th scope="col"></th>
                             </tr>
@@ -115,7 +116,8 @@ function Anuncio(props){
                             {values.anuncios.map(a=>
                                 <tr key={a.id} style={{cursor:"pointer", whiteSpace: "nowrap"}} onClick={event=>{event.preventDefault();window.scrollTo(0, 0);setValues({...values, anuncio:{...a, loja:a.lojaDTO}});document.getElementsByClassName("conteudo")[0].scrollTo(0, 0)}}>
                                     <td><img style={{width:"2em", height:"2em"}} alt={"Foto do anuncio "+a.legenda} src={host+a.imagemPath}/></td>                            
-                                    <td>{a.legenda}</td>                                                             
+                                    <td>{a.legenda}</td>  
+                                    <td>{a.preco}</td>                                                             
                                     <td>{a.anuncioProdutosDTO.length}</td>                                                                                             
                                     <td onClick={event=>{event.stopPropagation();event.preventDefault();axios.delete("/loja/anuncios/"+a.id).then(response=>setValues({...values, anuncio:a.id===values.anuncio.id?{preco:"", legenda:"", imagem:"", lojaDTO:{nome:"",id:""}, anuncioProdutosDTO:[]}:values.anuncio, anuncios:values.anuncios.filter(x=>x.id!==a.id)}))}}>❌</td>
                                 </tr>
