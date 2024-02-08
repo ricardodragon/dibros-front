@@ -13,7 +13,7 @@ import Perfil from "../../pages/Perfil";
 import AnuncioDetalhes from "../../pages/AnuncioDetalhes";
 
 const Routes = (props)=>(
-        
+    
     <BrowserRouter>
         <Switch>
             {/* Estrutra Auth etc */}
