@@ -1,41 +1,56 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "../../config/api/api";
 import { FcCheckmark, FcHighPriority } from "react-icons/fc";
 
 function Anuncio(props){
     
-    const [values, setValues] = useState({lojas:[], anuncios:[], anuncio:{preco:"", legenda:"", lojaDTO:{nome:"",id:""}, anuncioProdutosDTO:[]}})        
-    const host =process.env.REACT_APP_URL;
-    
-    useEffect(() => 
+    const [values, setValues] = useState({lojas:[], anuncios:[], produtoID:"", anuncio:{preco:"", legenda:""}})        
+    const host = process.env.REACT_APP_URL;
+    const ref = useRef();
+
+    useEffect(() => {
+        setValues({lojas:[], anuncios:[], load:true, anuncio:{preco:"", legenda:""}});
         axios.get(("/loja/anuncios/usuario")).then(res => 
             axios.get("/loja/lojas").then(response =>                
-                setValues({lojas:response.data,anuncios:res.data, erro: response.data.length<=0?"É preciso criar uma loja em \"Menu > Lojas\"":false, anuncio:{preco:"", legenda:"", lojaDTO:{nome:"",id:""}, anuncioProdutosDTO:[]}})))                  
-    , []);
+                setValues({lojas:response.data, produtoID:"", anuncios:res.data, erro: response.data.length<=0?"É preciso criar uma loja em \"Menu > Lojas\"":false, load:false, anuncio:{preco:"", legenda:""}})))                  
+    }, []);
 
     const submit = event => {
+        setValues({...values, load:true});
         event.preventDefault();        
-        var formData = new FormData(); var i = 0; var anuncio = values.anuncio;            
-        [values.anuncio].concat(values.anuncio.anuncioProdutosDTO).filter(x=>x.imagem).map(x=>x.imagem).forEach(x=>formData.append("files", x));                       
-        axios.post('/imagem/imagem', formData).then(imagens =>{                        
-            if(anuncio.imagem) anuncio.imagemPath = imagens.data[i++];
-            anuncio.anuncioProdutosDTO = anuncio.anuncioProdutosDTO.map(x=>x.imagem?{...x, imagemPath:imagens.data[i++]}:x);
-            anuncio.id?axios.put('/loja/anuncios/'+anuncio.id, anuncio).then(callBackForm).catch(callBackErrorForm):
-                axios.post('/loja/anuncios', anuncio).then(callBackForm).catch(callBackErrorForm)
-        }).catch(error=>setValues({...values, ok:false, erro:error.response.data.message?error.response.data.message:error.response.data})); 
-    }
-    
-    const callBackErrorForm = error => {         
-        setValues({...values, ok:false, erro:JSON.stringify(error.response.data.message?error.response.data.message:error.response.data)});
-    }
+        var formData = new FormData();
+        formData.append("files", values.anuncio.imagem)
+        //[values.anuncio].concat(values.anuncio.anuncioProdutosDTO).filter(x=>x.imagem).map(x=>x.imagem).forEach(x=>formData.append("files", x));                       
+        axios.post('/imagem/imagem', formData).then(imagens =>                        
+            // anuncio.imagemPath = imagens.data[0];
+            // anuncio.anuncioProdutosDTO = anuncio.anuncioProdutosDTO.map(x=>x.imagem?{...x, imagemPath:imagens.data[i++]}:x);
+            (!values.anuncio.id?
+                axios.post('/loja/anuncios', {...values.anuncio, imagemPath:imagens.data[0]?imagens.data[0]:values.anuncio.imagemPath}):
+                axios.put('/loja/anuncios/'+values.anuncio.id, {...values.anuncio, imagemPath:imagens.data[0]?imagens.data[0]:values.anuncio.imagemPath}))
+                    .then(callBackForm).catch(callBackForm))
+            .catch(callBackForm); 
+    }    
+
+    const getLocation = () => navigator.geolocation?
+    navigator.geolocation.getCurrentPosition(position=>
+        setValues({...values, anuncio:{...values.anuncio, latitude:position.coords.latitude, longitude:position.coords.longitude}})):
+    "Geolocation is not supported by this browser.";
 
     const callBackForm = response => { 
-        const a = values.anuncios.filter(x=>x.id===response.data.id); 
-        setValues({...values, ok:`Anuncio '${response.data.id}' criado com sucesso.`, anuncio:{preco:"", legenda:"", imagem:"", lojaDTO:{nome:"",id:""}, anuncioProdutosDTO:[]}, anuncios:a.length?values.anuncios.map(anuncio=>{return anuncio.id===a[0].id?{...response.data}:anuncio}):values.anuncios.concat({...response.data, anuncioProdutosDTO:values.anuncio.anuncioProdutosDTO.map(x=>{return {...x, idAnuncio:response.data.id}})})});
-    }
-
-    // const enviaAnuncio = () => !values.anuncio.imagem||!values.anuncio.legenda||!values.anuncio.idLoja;
-    const limpaAnuncio = () => values.anuncio.imagem||values.anuncio.legenda||values.anuncio.idLoja;
+        if(response.data&&response.data.id){
+            ref.current.value="";
+            setValues({
+                ...values, 
+                ok:`Anuncio '${response.data.legenda}' criado com sucesso.`, 
+                erro:false, 
+                load:false,
+                anuncio:{preco:"", legenda:"", idLoja:""},
+                anuncios:values.anuncio.id?values.anuncios.map(x=>x.id===values.anuncio.id?response.data:x):values.anuncios.concat(response.data)
+            });
+        }else
+            setValues({...values, erro:response&&response.response&&response.response.data&&response.response.data.message?response.response.data.message:"Erro desconhecido", ok:false, load:false})
+        document.getElementsByClassName("anuncios-conteudo")[0].scrollTo(0, 0);
+    }   
 
     const addProduto = event => {
         event.preventDefault();
@@ -45,33 +60,39 @@ function Anuncio(props){
     }
     return (
         <div>            
+            {values.load&&<div style={{position:"absolute", width:"100%", height:"100%", backgroundColor:"rgba(173, 181, 189, 50%)", zIndex:"1000" }}>
+                <div className="spinner-border p-1" style={{width: "3rem",height: "3rem", margin:"18% 0 0 47%"}} role="status"></div>                 
+            </div>}
             <div className='anuncios-conteudo'>
-                <div className={"alert alert-success "+(values.ok?"":"visually-hidden")} role="alert"><FcCheckmark/>Link enviado com sucesso</div>
+                <div className={"alert alert-success "+(values.ok?"":"visually-hidden")} role="alert"><FcCheckmark/>Anuncio criado com sucesso</div>
                 <div className={"alert alert-danger "+(values.erro?"":"visually-hidden")} role="alert"><FcHighPriority/>Erro: {values.erro}</div>
                 <form className="mt-4" onSubmit={submit}>                     
-                    <fieldset id="anuncio"><legend>{values.anuncio.id?"Editar":"Criar"} Anucio {values.anuncio.id}</legend>                                        
+                    <fieldset id="anuncio"><legend>{values.anuncio.id?"Editar":"Criar"} Anucio {values.anuncio.legenda}</legend>                                        
                         <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} className="p-1 mb-4" htmlFor='loja'>Loja : </label>     
-                        <select defaultValue="" value={values.anuncio.idLoja} id="loja" style={{display:"inline", width:"75%"}} onChange={event=> setValues({...values, anuncio:{...values.anuncio, idLoja:event.target.value>0?event.target.value:undefined, anuncioProdutosDTO:values.anuncio.anuncioProdutosDTO.filter(x=>x.idProduto.idLoja === event.target.value)}})}>                                                            
+                        <select value={values.anuncio.idLoja} id="loja" style={{display:"inline", width:"75%"}} onChange={event=> setValues({...values, produtoID:"", anuncio:{...values.anuncio, anuncioProdutosDTO:[], idLoja:event.target.value}})}>                                                            
                             <option value="">Selecione uma loja</option>
                             {values.lojas.map(l => <option key={l.id} value={l.id}>{l.nome}</option>)}
                         </select>  
                         <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} className="p-1 mb-4" htmlFor="legenda">Legenda : </label>            
-                        <input id="legenda" style={{width:"75%"}} placeholder="legenda" onChange={event=>setValues({...values,anuncio:{...values.anuncio,legenda:event.target.value}})} value={values.anuncio.legenda} required type="text"/>                                                                      
-                        <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} className="p-1 mb-4" htmlFor="preco">Preço : </label>            
-                        <input id="preco" style={{width:"75%"}} placeholder="preco" onChange={event=>setValues({...values,anuncio:{...values.anuncio,preco:event.target.value}})} value={values.anuncio.preco} required type="number"/>                                                                      
+                        <input required id="legenda" style={{width:"75%"}} placeholder="legenda" onChange={event=>setValues({...values,anuncio:{...values.anuncio,legenda:event.target.value}})} value={values.anuncio.legenda} type="text"/>                                                                      
+                        <label required style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} className="p-1 mb-4" htmlFor="preco">Preço : </label>            
+                        <input required id="preco" style={{width:"75%"}} placeholder="preco" onChange={event=>setValues({...values,anuncio:{...values.anuncio,preco:event.target.value}})} value={values.anuncio.preco} type="number"/>                                                                      
                     </fieldset>
+                    {!values.anuncio.idLoja&&<fieldset>
+                        <legend>Localização da loja</legend>   
+                        <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} className="p-1 mb-4" htmlFor="localizacao">Local : {values.anuncio.latitude&&values.anuncio.longitude?'✅':'❌'}</label>            
+                        <input style={{width:"75%"}} type="button" onClick={event => {event.preventDefault();getLocation();}} className="btn btn-sm btn-secondary" id="localizacao" value={"📌 Localização"}/>                 
+                    </fieldset>}
                     <fieldset id="imagens"><legend>Fotos</legend>  
-                        <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} className="p-1" htmlFor='imagem'>Imagem : </label>            
-                        <label htmlFor='imagem' className="p-1 mb-4" style={{textAlign:"center", width:"75%", backgroundColor: "#3498db", borderRadius: "5px", color: "#fff", cursor: "pointer"}}>📁 Upload</label>
-                        <input id='imagem' label="Foto: " style={{display:"none"}} type="file" accept='image/*' onChange={event =>event.target.files[0]?setValues({...values, anuncio:{...values.anuncio, imagemPath:undefined,imagem:event.target.files[0]}}):""}/>                                                            
-                        {values.anuncio.imagemPath&&<img alt="" style={{display:"block", width:"8em", height:"8em"}} src={host+values.anuncio.imagemPath}/>}
-                        {values.anuncio.imagem&&<img alt="" style={{display:"block", width:"8em", height:"8em"}} src={URL.createObjectURL(values.anuncio.imagem)}/>}                                    
+                    <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} className="p-1" htmlFor='imagem'>Imagem : </label>            
+                        <input ref={ref} required={!values.anuncio.imagemPath||values.anuncio.imagemPath===""} id='imagem' className='mb-4' type="file" style={{textAlign:"center", width:"75%", backgroundColor: "#3498db", borderRadius: "5px", color: "#fff"}} accept='image/*' onChange={event => {event.preventDefault();console.log(event.target.files);setValues({...values, anuncio:{...values.anuncio, imagemPath:undefined, imagem:event.target.files[0]}});}}/>
+                        {(values.anuncio.imagemPath||values.anuncio.imagem)&&<img alt="" style={{display:"block", width:"8em", height:"8em"}} src={values.anuncio.imagemPath?host+values.anuncio.imagemPath:URL.createObjectURL(values.anuncio.imagem)}/>}                                                                        
                     </fieldset>
                     {values.anuncio.idLoja&&
                         <fieldset id="produtos" className="mb-4"><legend>Produtos do Anúncio</legend>  
                             <label  style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} className="p-1 mb-4" htmlFor="produto">Id : </label>
                             <input style={{width:"50%"}} placeholder="Id do produto" size="15" step="any" id="produto" type="number" value={values.produtoID} onChange={event=> setValues({...values, produtoID:event.target.value})}/>                        
-                            <button disabled={!values.produtoID||values.anuncio.anuncioProdutosDTO.filter(x => x.idProduto===values.produtoID).length} style={{cursor:"pointer", border:"none", backgroundColor:"white", width:"15%"}} className="m-1" onClick={addProduto}>➕</button>
+                            <button disabled={!values.produtoID||(values.anuncio.anuncioProdutosDTO.length&&values.anuncio.anuncioProdutosDTO.filter(x => x.idProduto===values.produtoID).length)} style={{cursor:"pointer", border:"none", backgroundColor:"white", width:"15%"}} className="m-1" onClick={addProduto}>➕</button>
                             <div style={{overflowX:"auto", color:"white"}}>
                                 <table style={{borderCollapse: "collapse", width: "100%"}}>
                                     <thead>
@@ -82,22 +103,24 @@ function Anuncio(props){
                                             <th scope="col"></th>
                                         </tr>
                                     </thead>
-                                    {values.anuncio.anuncioProdutosDTO&&values.anuncio.anuncioProdutosDTO.map((p, i)=> 
-                                        <tr key={p.idProduto} style={{whiteSpace: "nowrap"}}>
-                                            <td>                                                                                                
-                                                <img alt="" style={{width:"2em", height:"2em", display:"inline"}} src={host+p.produtoDTO.imagemPath}/>
-                                            </td>
-                                            <td style={{ whiteSpace: "nowrap"}}>{p.produtoDTO.titulo}</td>                            
-                                            <td style={{fontWeight: "bold"}}>{p.produtoDTO.preco}</td>                                                                                             
-                                            <td style={{cursor:"pointer"}} onClick={event=>{event.preventDefault();setValues({...values, anuncio:{...values.anuncio, anuncioProdutosDTO:values.anuncio.anuncioProdutosDTO.filter(x => x.idProduto!==p.idProduto)}})}}>❌</td>
-                                        </tr>
-                                    )}               
+                                    <tbody>
+                                        {values.anuncio.anuncioProdutosDTO&&values.anuncio.anuncioProdutosDTO.map((p, i)=> 
+                                            <tr key={p.idProduto} style={{whiteSpace: "nowrap"}}>
+                                                <td>                                                                                                
+                                                    <img alt="" style={{width:"2em", height:"2em", display:"inline"}} src={host+p.produtoDTO.imagemPath}/>
+                                                </td>
+                                                <td style={{ whiteSpace: "nowrap"}}>{p.produtoDTO.titulo}</td>                            
+                                                <td style={{fontWeight: "bold"}}>{p.produtoDTO.preco}</td>                                                                                             
+                                                <td style={{cursor:"pointer"}} onClick={event=>{event.preventDefault();setValues({...values, anuncio:{...values.anuncio, anuncioProdutosDTO:values.anuncio.anuncioProdutosDTO.filter(x => x.idProduto!==p.idProduto)}})}}>❌</td>
+                                            </tr>
+                                        )}               
+                                    </tbody>
                                 </table> 
                             </div>
                         </fieldset>
                     }
                     <input type="submit" value="enviar" className="btn btn-sm btn-success mt-2 mb-4"/>    
-                    <input disabled={!limpaAnuncio()} onClick={event => {event.preventDefault();setValues({...values, anuncio:{legenda:"", lojaDTO:{id:"", nome:""}, idLoja:0, anuncioProdutosDTO:[]}})}} type="submit" className="btn btn-sm btn-primary mt-2 mb-4" value="Limpar"/>                        
+                    <input onClick={event => {event.preventDefault();ref.current.value="";setValues({...values, anuncio:{legenda:"", preco:"", idLoja:""}})}} type="submit" className="btn btn-sm btn-primary mt-2 mb-4" value="Limpar"/>                        
                 </form>
 
                 <div style={{overflowX:"auto", color:"white"}}>
@@ -114,7 +137,7 @@ function Anuncio(props){
                         {/* <tr><td>{values.anuncios.map(p=>p.quantidade).reduce((sumQtd, a) => sumQtd + a, 0)}</td></tr> */}
                         <tbody>
                             {values.anuncios.map(a=>
-                                <tr key={a.id} style={{cursor:"pointer", whiteSpace: "nowrap"}} onClick={event=>{event.preventDefault();window.scrollTo(0, 0);setValues({...values, anuncio:{...a, loja:a.lojaDTO}});document.getElementsByClassName("conteudo")[0].scrollTo(0, 0)}}>
+                                <tr key={a.id} style={{cursor:"pointer", whiteSpace: "nowrap"}} onClick={event=>{event.preventDefault();setValues({...values,  produtoID:"", anuncio:{...a, loja:a.lojaDTO}});document.getElementsByClassName("anuncios-conteudo")[0].scrollTo(0, 0)}}>
                                     <td><img style={{width:"2em", height:"2em"}} alt={"Foto do anuncio "+a.legenda} src={host+a.imagemPath}/></td>                            
                                     <td>{a.legenda}</td>  
                                     <td>{a.preco}</td>                                                             

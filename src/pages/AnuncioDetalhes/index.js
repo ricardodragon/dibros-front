@@ -13,7 +13,7 @@ function AnuncioDetalhes(props){
 
     return (
         <Template load={props.load}>
-            <div  className="anuncios-conteudo">
+            <div className="anuncios-conteudo">
                 <div style={{fontSize:"10pt", width:"100%", paddingLeft:"2%", cursor:"pointer"}}>
                     <img  alt={"Foto da loja : " +values.anuncio.lojaDTO.nome} src={host+values.anuncio.lojaDTO.imagemPath} style={{borderRadius: "50%", width:"2.5em", height:"2.5em"}}/>                                      
                     <p style={{fontSize:"8pt", fontWeight:"bolder", overflow:"hidden", marginBottom:"0", display:"inline"}}>{values.anuncio.lojaDTO.nome}</p>
@@ -24,6 +24,14 @@ function AnuncioDetalhes(props){
                     {values.anuncio.anuncioProdutosDTO&&values.anuncio.anuncioProdutosDTO.map(x=><img key={"produtoDTO_"+x.idProduto} src={host+x.produtoDTO.imagemPath} style={{width:"5em", height:"5em"}} alt="Anúncio"/>)}                    
                 </div>                
                 Preço : {values.anuncio.preco}
+                <section>
+                    Frete : 
+                        Tipo de entrega : 
+                            retirar,
+                            receber
+                    Pagamento
+                        Pagar na entrega
+                </section>
             </div>
         </Template>
     );

@@ -12,19 +12,13 @@ function Anuncios(props){
     const host =process.env.REACT_APP_URL;
 
     useEffect(() => 
-        axios.get(`/loja/anuncios?page=${0}&size=${10}`).then(res =>     
+        axios.get(`/loja/anuncios?page=${0}&size=${10}`).then(res =>{     
+            setValues({anuncios:res.data, total:res.headers['total']})
             axios.get(process.env.REACT_APP_URL+"/auth/usuarios").then(r=>
                 setValues({anuncios:res.data, usuario:r.data, total:res.headers['total']})            
             )
-        )
-    , []);
-    
-    useEffect(() => 
-        axios.get(`/loja/anuncios?page=${0}&size=${10}`).then(res =>     
-            setValues({anuncios:res.data, total:res.headers['total']})            
-        )
-    , []);
-    
+        })
+    , []);    
     
     const handlerScroll = (event) => {       
         if((event.target.scrollHeight - event.target.scrollTop)-10<=event.target.clientHeight&&values.anuncios.length<values.total){                           
@@ -33,7 +27,6 @@ function Anuncios(props){
             })       
         }
     }
-
 
     const likeAnuncio = (event, anuncio) => {
         event.preventDefault();
@@ -76,13 +69,13 @@ function Anuncios(props){
     }
 
     return (
-        <Template>            
+        <Template>     
             <div className="anuncios-conteudo" onScroll={handlerScroll} >
-                {values.anuncios.map((anuncio, indexAnuncio) =>            
-                    <section className="card-anuncio">                  
+                {values.anuncios.filter(x=>x.legenda!=="vai me perder").map((anuncio, indexAnuncio) =>            
+                    <section className="card-anuncio" key={"anuncio-"+indexAnuncio}>                  
                         <header style={{padding: "2%"}}>
-                            <img alt={"Fot anuncio : " +anuncio.legenda} src={host+anuncio.lojaDTO.imagemPath} style={{borderRadius: "50%", width:"3em", height:"3em"}}/>
-                            <h3 style={{display: "inline", fontSize:"11pt", paddingLeft:'2%'}}>{anuncio.lojaDTO.nome}</h3>                             
+                            <img alt={"Fot anuncio : " +anuncio.legenda} src={host+(anuncio.lojaDTO?anuncio.lojaDTO.imagemPath:anuncio.usuarioDTO.imagemPath)} style={{borderRadius: "50%", width:"3em", height:"3em"}}/>
+                            <h3 style={{display: "inline", fontSize:"11pt", paddingLeft:'2%'}}>{anuncio.lojaDTO?anuncio.lojaDTO.nome:anuncio.usuarioDTO.nome}</h3>                             
                             <div style={{fontWeight:"bolder", float:"right", cursor:"pointer"}}>⋮</div>
                         </header>
                         <h2 style={{paddingLeft: "2.5%", fontSize:"12pt"}}>{anuncio.legenda}</h2>                                                                    
@@ -91,7 +84,9 @@ function Anuncios(props){
                             <img src={host+anuncio.imagemPath} alt="Anúncio" id={{}} className='img-anuncio' />                                                         
                             {anuncio.anuncioProdutosDTO.filter(x=>x.imagemPath).map(x=><img src={host+x.imagemPath} className='img-anuncio' alt="Anúncio"/>)}
                         </p>
-                        
+                        <div style={{fontWeight:"bolder", textAlign:"center", fontSize:"10pt", width:"100%", padding:"1%"}}>
+                            R$ {anuncio.preco},00
+                        </div>
                         <div style={{fontSize:"10pt", width:"100%", padding:"1%"}}>
                             <div style={{display:"inline-block", textOverflow: "ellipsis", maxWidth: "16ch", overflow: "hidden", whiteSpace: "nowrap", cursor: "pointer"}}>{anuncio.likeAnunciosDTO.length} likes</div>
                             <div style={{float:"right", textOverflow: "ellipsis", maxWidth: "16ch", overflow: "hidden", whiteSpace: "nowrap", cursor: "pointer"}} onClick={event=>{event.preventDefault();setValues({...values, anuncios:values.anuncios.map(x=>{return x.id===anuncio.id?{...x, expandComentario:!x.expandComentario}:x})})}}>{anuncio.comentariosDTO.length} comentarios</div>
@@ -110,7 +105,7 @@ function Anuncios(props){
                             <div style={{fontSize:"10pt", width:"100%", paddingLeft:"2%", paddingBottom:"4%"}} key={index}> 
                                 <div style={{height:"100%", position:"absolute", float:"left"}}>
                                     <img alt="Imagem perfil user" src={x.usuarioDTO.imagemPath?host+x.usuarioDTO.imagemPath:"https://freesvg.org/img/abstract-user-flat-3.png"} style={{borderRadius: "50%", width:"2em", height:"2em"}}/>                                      
-                                </div>
+                                </div> 
                                 {values.usuario&&x.idUsuario===values.usuario.id&&<div style={{fontWeight:"bolder", float:"right", cursor:"pointer", paddingRight:"3%", paddingLeft:"3%"}} onClick={event=>{event.preventDefault();document.getElementById(x.id+'-'+index).showModal();}}>⋮</div>}
                                 
                                 <dialog onClick={event=>{event.preventDefault();document.getElementById(x.id+'-'+index).close();}} id={x.id+'-'+index} style={{borderRadius:"0.5%", borderStyle:"none", width:"100%", top:'85%', textAlign:'center'}}>
