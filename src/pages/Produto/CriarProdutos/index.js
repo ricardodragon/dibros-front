@@ -1,12 +1,11 @@
-
-import axios from '../../config/api/api';
+import axios from '../../../config/api/api';
 import { useEffect, useRef, useState } from 'react';
 import { Link } from "react-router-dom";
 import { FcCheckmark, FcHighPriority } from 'react-icons/fc';
-import './style.css';
+import './produtos.css';
 import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
 
-function Produtos(){
+function CriarProdutos(){
     
     const [values, setValues] = useState({lojas:[], produtos:[], idLoja:"", produto:{imagemPath:"", titulo:"", quantidade:"", preco:""}})    
     const { id } = useParams();
@@ -15,7 +14,7 @@ function Produtos(){
 
     useEffect(() => {
         setValues({lojas:[], produtos:[], idLoja:"", produto:{imagemPath:"", titulo:"", quantidade:"", preco:""}, load:true}); 
-        axios.get(`/loja/produtos?page=${0}&size=${100}&idLoja=${id}`).then(res => 
+        axios.get(`/loja/produtos?page=${0}&size=${100}&idLoja=${0}`).then(res => 
             axios.get("/loja/lojas").then(response =>
                 setValues({lojas:response.data,produtos:res.data, erro: response.data.length<=0?"É preciso criar uma loja em \"Menu > Lojas\"":false, idLoja:id, produto:{imagemPath:"", titulo:"", quantidade:"", preco:""}, load:false})))            
     }, [id]);
@@ -119,4 +118,4 @@ function Produtos(){
     );
 }
 
-export default Produtos
+export default CriarProdutos

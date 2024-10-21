@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import axios from "../../config/api/api";
+import axios from "../../../config/api/api";
 import { FcCheckmark, FcHighPriority } from "react-icons/fc";
 
-function Anuncio(props){
+function CriarAnuncios(props){
     
     const [values, setValues] = useState({lojas:[], anuncios:[], produtoID:"", anuncio:{preco:"", legenda:""}})        
     const host = process.env.REACT_APP_URL;
@@ -153,4 +153,4 @@ function Anuncio(props){
     );
 }
 
-export default Anuncio
+export default CriarAnuncios

@@ -1,0 +1,15 @@
+nav#menu-feed ul{
+    list-style: none;    
+    background-color: #dddddd; 
+    text-align: center;
+}
+
+nav#menu-feed li{
+    display: inline-block;    
+    cursor: pointer;
+    color: black;
+}
+#menu-feed{
+    font-size:"11pt"; 
+    padding:"1%";
+}

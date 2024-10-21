@@ -1,8 +1,8 @@
-import axios from '../../config/api/api';
+import axios from '../../../config/api/api';
 import React, { useEffect, useRef, useState } from 'react';
 import { FcCheckmark, FcHighPriority } from 'react-icons/fc';
 
-function Lojas() {
+function CriarLojas() {
     
     const [values, setValues] = useState( {lojas:[], loja:{nome:"", imagemPath:"", imagem:""}} )
     const host = process.env.REACT_APP_URL;
@@ -65,34 +65,7 @@ function Lojas() {
                 <input type="submit" value="enviar" className="btn btn-sm btn-success mt-2"/>    
                 <input onClick={event => {event.preventDefault();setValues({...values, loja:{nome:"", imagemPath:"", imagem:""}})}} type="submit" className="btn btn-sm btn-primary mt-2" value="Limpar"/>                        
             </form>
-            <div style={{overflowX:"auto", color:"white"}}>
-                <table  style={{borderCollapse: "collapse", width: "100%"}}>
-                    <thead>
-                        <tr>  
-                            <th scope="col"></th>                        
-                            <th scope="col">Nome</th>                                                
-                            <th scope="col"></th>                                                
-                            <th scope="col"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {values.lojas.map(l=>
-                            <tr key={"lojas"+l.id} style={{cursor:"pointer", whiteSpace: "nowrap"}} onClick={event=>{event.preventDefault();setValues({...values, loja:l});document.getElementsByClassName("conteudo")[0].scrollTo(0, 0)}}>
-                                <td><img alt="Foto da loja" style={{width:"2em", height:"2em"}} src={host+l.imagemPath}/></td>                            
-                                <td style={{fontWeight: "bold"}}>{l.nome}</td>                                                                                         
-                                <td style={{fontWeight: "bold"}}><a onClick={event=>event.stopPropagation()} href={"/produtos/"+l.id}>Produtos</a></td>                                                                                         
-                                <td onClick={event=>{
-                                    event.stopPropagation();event.preventDefault();
-                                    axios.delete("/loja/lojas/"+l.id)
-                                        .then(res => setValues({...values, lojas:values.lojas.filter(loja=>loja.id!==l.id), loja:{nome:"", imagemPath: "", imagem:""}}))
-                                }}>❌</td>
-                            </tr>
-                        )} 
-                    </tbody> 
-                </table>       
-            </div>    
-        </div>
+        </div>        
     </>
 }
-
-export default Lojas;
+export default CriarLojas
