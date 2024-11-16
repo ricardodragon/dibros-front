@@ -5,13 +5,14 @@ import Contas from "../../pages/Meli/Contas"
 import MeliAnuncios from "../../pages/Meli/Anuncios";
 import MeliAnuncio from "../../pages/Meli/Anuncio";
 import NovaSenha from "../../pages/NovaSenha";
-import Perfil from "../../pages/Perfil";
+import EditarPerfil from "../../pages/Perfil/EditarPerfil";
 import Feed from "../../pages/Feed";
 import AnuncioDetalhes from "../../pages/Anuncio/AnuncioDetalhes";
 import CriarProdutos from "../../pages/Produto/CriarProdutos";
 import Anuncio from "../../pages/Anuncio/CriarAnuncios";
 import CriarLojas from "../../pages/Loja/CriarLojas";
 import LojaDetalhes from "../../pages/Loja/LojaDetalhes";
+import DetalharPerfil from "../../pages/Perfil/DetalharPerfil";
 
 const Routes = (props)=>(
     
@@ -22,9 +23,9 @@ const Routes = (props)=>(
             <Route exact path="/nova-senha/:token" component={NovaSenha}></Route>
             <Route exact path="/anuncio-detalhes/:id" render={(p) => <AnuncioDetalhes load={props.load} {...p}/>}/>
             <Route exact path="/" component={Feed}/>            
-            <Route exact path="/loja" component={LojaDetalhes}/>            
-            {/* <PrivateRoutes exact path="/usuarios" nome="Indentificação usuário" component={Usuarios}/> */}
-            <PrivateRoutes exact path="/perfil" load={props.load} nome="Indentificação usuário" component={Perfil}/>
+            <Route exact path="/loja/:id" component={LojaDetalhes}/>            
+            <PrivateRoutes exact path="/perfil/:id" load={props.load} nome="Indentificação usuário" component={DetalharPerfil}/>
+            <PrivateRoutes exact path="/perfil/editar/:id" load={props.load} nome="Indentificação usuário" component={EditarPerfil}/>
 
             {/* e-commerce dibros */}
             <PrivateRoutes exact path="/lojas" load={props.load} nome={"Lojas"} component={CriarLojas}/>

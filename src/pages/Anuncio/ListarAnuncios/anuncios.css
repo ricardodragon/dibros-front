@@ -1,16 +1,14 @@
 .anuncios-conteudo{
-    overflow-y: scroll; 
-    position: fixed; 
-    height: 90%; 
-    width: 100%;
-    padding: 2%;    
-    z-index: -1;
+    display:inline-block;    
+    height: 58vh;
+    overflow-y: scroll;       
 }
 
 .card-anuncio{
     border: 1px solid rgba(0, 0 , 0, 0.1);
     border-radius: 1em;
     margin-bottom: 4%;
+    width: 100%;
     color: black;
     background-color: white;
 }
@@ -27,10 +25,10 @@
     height:100%;
 }
 
-
+/* 
 @media(min-width: 600px) { 
     .card-anuncio{
         width: 34%;
         margin-left: 32.7%;
     }
-}
+} */

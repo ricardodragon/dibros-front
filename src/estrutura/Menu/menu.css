@@ -3,15 +3,15 @@
     width: 0;    
     height: 100%;    
     transition: all 0.9s ease-in-out; 
-    z-index: 0;
     overflow-y: scroll;
     overflow-x: hidden;
     padding: 2em 0 2000px 0;       
+    z-index: 0;
 }
  
 .botao-menu{    
-    position: fixed;        
-    z-index: 1000;
+    position: fixed;  
+    z-index: 10000;          
 }
 
 .check-menu:checked ~ .menu-conteudo{

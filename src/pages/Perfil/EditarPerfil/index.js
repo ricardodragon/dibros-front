@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import './perfil.css'
-import axios from '../../config/api/api';
+import axios from '../../../config/api/api';
 
-function Perfil(props) {
+function EditarPerfil(props) {
 
     const [values, setValues] = useState({usuario:{}})    
     const host = process.env.REACT_APP_URL;
@@ -40,4 +40,4 @@ function Perfil(props) {
     </form>;
 }
 
-export default Perfil;
+export default EditarPerfil;

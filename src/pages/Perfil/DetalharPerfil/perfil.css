@@ -1,0 +1,25 @@
+
+.foto-perfil h3{
+    float:left;    
+}
+.foto-perfil img{
+    border-radius: 50%; 
+    width:3em;
+    height:3em;
+}
+.foto-perfil h2{
+    margin:0 2% 0 3em;
+    overflow: hidden;
+    margin-bottom:0;
+}
+.tabs{
+    -ms-overflow-style: none;  
+    scrollbar-width: none;  
+    overflow-x:scroll;
+    scroll-behavior: smooth;
+}
+
+.check-tab{
+    display: none;
+    position: static;
+}

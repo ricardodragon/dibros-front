@@ -9,25 +9,15 @@ function ListarLojas(props){
     const [values, setValues] = useState({lojas:[]})    
     const host = process.env.REACT_APP_URL;
 
-    useEffect(() => 
-        axios.get(`/loja/lojas/public?page=${0}&size=${10}`).then(res =>{     
-            setValues({lojas:res.data, total:res.headers['total']})
-            axios.get(process.env.REACT_APP_URL+"/auth/usuarios").then(r=>
-                setValues({lojas:res.data, usuario:r.data, total:res.headers['total']})            
-            )
-        })
-    , []);    
-    
-    const handlerScroll = (event) => {       
-        if((event.target.scrollHeight - event.target.scrollTop)-10<=event.target.clientHeight&&values.lojas.length<values.total){                           
-            axios.get(`/loja/lojas/public?page=${values.lojas.length/10}&size=${10}`).then(res =>{ 
-                setValues({...values, lojas:values.lojas.concat(res.data)})
-            })       
-        }
-    }
 
+    useEffect(() => 
+        axios.get(process.env.REACT_APP_URL+"/auth/usuarios").then(r=>
+            setValues({lojas:props.lojas, usuario:r.data})            
+        )
+    , [props.lojas]);    
+    
     return (        
-        <div className="lojas-conteudo" onScroll={handlerScroll} >
+        <div className="lojas-conteudo" id="lojas-conteudo" onScroll={props.scroll}>
             {values.lojas.map((loja, indexLoja) =>            
                 <section className="card-loja" key={"loja-"+indexLoja}> 
                     <header style={{padding: "2%"}}>
