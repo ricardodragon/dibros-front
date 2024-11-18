@@ -1,7 +1,7 @@
 .anuncios-conteudo{
-    display:inline-block;    
-    height: 58vh;
-    overflow-y: scroll;       
+    width: 100vw;        
+    overflow-y: scroll;  
+    height: 100%;      
 }
 
 .card-anuncio{

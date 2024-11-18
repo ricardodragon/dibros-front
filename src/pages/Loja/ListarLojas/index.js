@@ -17,7 +17,7 @@ function ListarLojas(props){
     , [props.lojas]);    
     
     return (        
-        <div className="lojas-conteudo" id="lojas-conteudo" onScroll={props.scroll}>
+        <div className="lojas-conteudo" id="lojas" onScroll={props.scroll}>
             {values.lojas.map((loja, indexLoja) =>            
                 <section className="card-loja" key={"loja-"+indexLoja}> 
                     <header style={{padding: "2%"}}>

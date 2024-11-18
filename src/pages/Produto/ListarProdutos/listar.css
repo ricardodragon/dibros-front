@@ -1,7 +1,7 @@
 .produtos-conteudo{
-    height: 58vh;
+    width: 100vw;
     overflow-y: scroll;
-    display: inline-block;
+    height: 100%;  
 }
 
 .card-produto{

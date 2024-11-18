@@ -68,14 +68,14 @@ function DetalharPerfil(props) {
         </nav>            
 
         <div className='tabs'>
-            <div style={{width:'300vw', textAlign:'center'}}>
-                <div id='anuncios' style={{display:'inline-block', width:'100vw'}}>
+            <div style={{width:'300vw', height:'68vh'}}>
+                <div id='anuncios' style={{display:'inline-block', width:'100vw', verticalAlign:'top', height:'100%'}}>
                     <ListarAnuncios anuncios={values.anuncios.lista} scroll={handlerScroll}/>
                 </div>
-                <div id='lojas' style={{display:'inline-block', width:'100vw'}}>
+                <div id='lojas' style={{display:'inline-block', width:'100vw', verticalAlign:'top', height:'100%'}}>
                     <ListarLojas lojas={values.lojas.lista} scroll={handlerScroll}/>
                 </div>
-                <div id='produtos' style={{display:'inline-block', width:'100vw'}}>
+                <div id='produtos' style={{display:'inline-block', width:'100vw', verticalAlign:'top', height:'100%'}}>
                     <ListarProdutos produtos={values.produtos.lista} scroll={handlerScroll}/>
                 </div>
             </div>        
