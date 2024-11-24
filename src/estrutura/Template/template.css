@@ -1,8 +1,9 @@
 
 
 .conteudo{      
-    width: 100%;  
-    padding-top: 3.8em;   
-    border-radius: 1%;           
+    width: 100vw;  
+    padding-top: 11vh;   
+    border-radius: 1%;
+    height: 100vh !important;     
 }
 

@@ -33,7 +33,7 @@ footer, header, hgroup, menu, nav, section {
 }
 body {
 	line-height: 2;
-	overflow: hidden !important;
+	/* overflow: hidden !important; */
 	color: white !important;	
 	background-color: rgb(0, 0, 0) !important;	
 }
@@ -70,7 +70,7 @@ table {
 }
 
 a{
-	text-decoration: none;
+	text-decoration: none !important;
 	color: black;
 }
 input[type=submit]{

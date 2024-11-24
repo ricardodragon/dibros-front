@@ -5,11 +5,9 @@ import './menu.css';
 
 function menu(){
     return (
-        <div style={{float:"left", position:"fixed", top:"3.72em"}} className="menu">        
+        <div className="menu">        
+            <label className="botao-menu" htmlFor="check-menu">☰</label>
             <input type="checkbox" className="check-menu" id="check-menu"/>    
-            <div className="botao-menu">
-                <label htmlFor="check-menu" style={{cursor: "pointer", fontWeight:"bolder", fontSize:"30pt"}}>☰</label>
-            </div>
             <nav className="menu-conteudo">
                 <ul>
                     <li>

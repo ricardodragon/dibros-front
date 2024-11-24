@@ -5,16 +5,33 @@ import axios from '../../../config/api/api';
 import { Link } from "react-router-dom";
 import loader from "./../../../assets/loadinfo.gif";
 
+
 function ListarAnuncios(props){
          
-    const [values, setValues] = useState({anuncios:[]})    
-    const host =process.env.REACT_APP_URL;
+    const [values, setValues] = useState({})    
+    const host = process.env.REACT_APP_URL;
 
     useEffect(() => 
-        axios.get(process.env.REACT_APP_URL+"/auth/usuarios").then(r=>
-            setValues({anuncios:props.anuncios, usuario:r.data})            
+        axios.get(`/loja/anuncios/public?page=${0}&size=${10}`).then(anuncios =>     
+            axios.get(process.env.REACT_APP_URL+"/auth/usuarios").then(r=>             
+                setValues({anuncios:anuncios.data, total:anuncios.headers['total'], usuario:r.data})            
+            )
         )
-    , [props.anuncios]);        
+    , [])
+
+    useEffect(() => {                        
+        window.addEventListener("scroll", handlerScroll);
+        return () => window.removeEventListener("scroll", handlerScroll);
+    });       
+
+    const handlerScroll = (event) => {  
+        if((event.target.scrollingElement.scrollHeight - event.target.scrollingElement.scrollTop)<=event.target.scrollingElement.clientHeight&&values.anuncios&&values.total&&values.anuncios.length<values.total){                                                                   
+            axios.get(`/loja/anuncios/public?page=${values.anuncios.length/10}&size=${10}`).then(anuncios =>
+                setValues({...values, anuncios:values.anuncios.concat(anuncios.data), total:anuncios.headers.total})                
+            )
+        }
+    }
+    
 
     const likeAnuncio = (event, anuncio) => {
         event.preventDefault();
@@ -57,8 +74,8 @@ function ListarAnuncios(props){
     }
 
     return (        
-        <div className="anuncios-conteudo" id="anuncios" onScroll={props.scroll}>
-            {values.anuncios.filter(x=>x.legenda!=="vai me perder").map((anuncio, indexAnuncio) =>            
+        <div className="anuncios-conteudo">
+            {values.anuncios&&values.anuncios.filter(x=>x.legenda!=="vai me perder").map((anuncio, indexAnuncio) =>            
                 <div className="card-anuncio" key={"anuncio-"+indexAnuncio}>                  
                     <header style={{padding: "2%"}}>
                         <Link style={{textDecoration:'none'}} to={anuncio.lojaDTO?"":"/perfil/"+anuncio.usuarioDTO}><img alt={"Foto anuncio : " +anuncio.legenda} src={host+(anuncio.lojaDTO?anuncio.lojaDTO.imagemPath:anuncio.usuarioDTO.imagemPath)} style={{borderRadius: "50%", width:"3em", height:"3em"}}/></Link>

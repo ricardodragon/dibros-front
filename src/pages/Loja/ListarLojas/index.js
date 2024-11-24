@@ -11,13 +11,28 @@ function ListarLojas(props){
 
 
     useEffect(() => 
-        axios.get(process.env.REACT_APP_URL+"/auth/usuarios").then(r=>
-            setValues({lojas:props.lojas, usuario:r.data})            
+        axios.get(`/loja/lojas/public?page=${0}&size=${10}`).then(lojas =>             
+            axios.get(process.env.REACT_APP_URL+"/auth/usuarios").then(r=>
+                setValues({lojas:lojas.data, usuario:r.data, total: lojas.headers['total']})    
+            )
         )
-    , [props.lojas]);    
-    
+    , []); 
+
+    useEffect(() => {                
+        window.addEventListener("scroll", handlerScroll);
+        return () => window.removeEventListener("scroll", handlerScroll);
+    });       
+
+    const handlerScroll = (event) => {  
+        if((event.target.scrollingElement.scrollHeight - event.target.scrollingElement.scrollTop)<=event.target.scrollingElement.clientHeight&&values.lojas&&values.total&&values.lojas.length<values.total){                                                                   
+            axios.get(`/loja/lojas/public?page=${values.lojas.length/10}&size=${10}`).then(lojas =>
+                setValues({...values, lojas:values.lojas.concat(lojas.data), total:lojas.headers.total})                
+            )
+        }
+    }
+
     return (        
-        <div className="lojas-conteudo" id="lojas" onScroll={props.scroll}>
+        <div className="lojas-conteudo">
             {values.lojas.map((loja, indexLoja) =>            
                 <section className="card-loja" key={"loja-"+indexLoja}> 
                     <header style={{padding: "2%"}}>

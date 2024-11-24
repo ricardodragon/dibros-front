@@ -1,36 +1,38 @@
-.header-app {         
-    top : 0;     
-    position: fixed;   
+.header-app {   
+    position: fixed;
+    top: 0;
     width: 100%;    
-    background-color: rgba(0, 0, 0, 0.9);
-    background-size: auto 2px;
-    height: 3.72em;
-    padding: 0.3em;
+    background-color: rgba(0, 0, 0, 0.9);  
     z-index: 100;
+    height: 9vh;
+    padding: 0.5vh;
 }
 
-.logo{    
-    display: inline-block; 
-    padding: 0;      
+.header-app span {
+    float: right;
 }
 
-.login{  
-    float: right;                     
-    width: 3em;
+.logo{        
     height: 3em;
-    border-radius: 50%;
-    cursor: pointer;
+    width: 3em;
 }
 
+.login{    
+    height: 3em;
+    width: 3em;    
+    float: right;
+    border-radius: 50%;
+}
 
 .user-menu{
-    margin: 2% -3%;
     color: black;
     font-weight: bolder;
-}
-
-.user-menu-item{
-
-    color: black;
-    font-weight: bolder;
+    border-radius: 1%; 
+    text-align: center; 
+    padding: 2%; 
+    display: none;
+    background-color: white; 
+    right: 0; 
+    top: 2.5em; 
+    position: absolute;
 }

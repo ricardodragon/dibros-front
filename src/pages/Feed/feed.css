@@ -1,15 +1,37 @@
-nav#menu-feed ul{
-    list-style: none;    
-    background-color: #dddddd; 
-    text-align: center;
+.menu-feed ul{
+    list-style: none; 
+    text-align: center;  
+    margin: 0;          
 }
 
-nav#menu-feed li{
+.menu-feed li{
     display: inline-block;    
     cursor: pointer;
     color: black;
+    width: 33.33%;
+    font-weight: bolder;
 }
-#menu-feed{
-    font-size:"11pt"; 
-    padding:"1%";
+.menu-feed{
+    width: 100%;
+    background-color: #dddddd;
+    position: fixed;
+    font-size:11pt; 
+    z-index: 1; 
+}
+
+.tabs-feed{
+    height: 100%;    
+    overflow-x: scroll;
+    white-space: nowrap;
+    scroll-behavior: smooth;
+    -ms-overflow-style: none;  
+    scrollbar-width: none; 
+}
+
+.tabs-feed section{
+    display: inline-block; 
+    width: 100vw; 
+    height: 100%; 
+    padding-top: 1.5rem;
+    vertical-align:top; 
 }

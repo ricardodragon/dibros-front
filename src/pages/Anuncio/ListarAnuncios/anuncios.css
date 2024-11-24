@@ -1,7 +1,6 @@
 .anuncios-conteudo{
-    width: 100vw;        
-    overflow-y: scroll;  
-    height: 100%;      
+    height: 100%; 
+    overflow-y: scroll;
 }
 
 .card-anuncio{
@@ -25,10 +24,8 @@
     height:100%;
 }
 
-/* 
-@media(min-width: 600px) { 
-    .card-anuncio{
-        width: 34%;
-        margin-left: 32.7%;
+@media only screen and (min-width: 600px) {
+    .anuncios-conteudo{
+        padding: 0 30%;
     }
-} */
+}
