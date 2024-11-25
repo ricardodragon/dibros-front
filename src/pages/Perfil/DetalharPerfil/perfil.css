@@ -16,12 +16,12 @@
 .menu-feed{
     width: 100%;
     background-color: #dddddd;
-    position: fixed;
+    /* position: fixed; */
     font-size:11pt; 
     z-index: 1; 
 }
 .tabs{
-    height: 80%;    
+    height: 70%;    
     overflow-x: scroll;
     white-space: nowrap;
     scroll-behavior: smooth;

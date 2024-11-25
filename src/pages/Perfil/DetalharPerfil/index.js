@@ -42,7 +42,7 @@ function DetalharPerfil(props) {
     // }
 
     return <div style={{height:'100%', width:'100%'}}>        
-        <header style={{height:'20%'}}>
+        <header style={{height:'30%'}}>
             <div>
                 <div className='foto-perfil' style={{paddingLeft:'5%'}}>
                     <h3><img alt={"Foto do perfil : "} src={values.usuario.imagemPath?host+values.usuario.imagemPath:"https://freesvg.org/img/abstract-user-flat-3.png"}/></h3>
