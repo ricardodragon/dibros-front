@@ -15,13 +15,14 @@
 
 .menu-feed{
     width: 100%;
-    height: 3.5%;
+    height: 4%;
     background-color: #dddddd;
     font-size:11pt; 
+    position: relative;
     z-index: 1; 
 }
 .tabs{
-    height: 70%;    
+    height: 66%;    
     overflow-x: scroll;
     white-space: nowrap;
     scroll-behavior: smooth;
@@ -33,7 +34,7 @@
     display: inline-block; 
     width: 100vw; 
     height: 100%; 
-    padding-top: 1.5rem;
+    /* padding-top: 1.5rem; */
     vertical-align:top;    
 }
 
