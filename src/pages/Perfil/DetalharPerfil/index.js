@@ -41,16 +41,22 @@ function DetalharPerfil(props) {
     //             });
     // }
 
-    return <div style={{height:'100%', width:'100%'}}>        
-        <header style={{height:'30%'}}>
-            <div>
-                <div className='foto-perfil' style={{paddingLeft:'5%'}}>
-                    <h3><img alt={"Foto do perfil : "} src={values.usuario.imagemPath?host+values.usuario.imagemPath:"https://freesvg.org/img/abstract-user-flat-3.png"}/></h3>
-                    <h2>{values.usuario.nome}</h2>
+    return <>        
+        <header className='detalhar-perfil-header'>
+            <h1>
+                <figure>
+                    <img alt={"Foto do perfil : "} src={values.usuario.imagemPath?host+values.usuario.imagemPath:"https://freesvg.org/img/abstract-user-flat-3.png"}/>
+                    <figcaption>{values.usuario.nome}</figcaption>
+                </figure>
+            </h1>
+            <div className='seguidores'>
+                <h2 style={{paddingRight:'10%'}}>{values.usuario.seguidores}<p>seguidores</p></h2>
+                <h2>{values.usuario.seguindo}<p>seguindo</p></h2>
+                <div>
+                    <button>seguir</button>
+                    <button>mensagem</button>
                 </div>
-                <div className=''><h3>{values.usuario.seguidores}</h3><p>seguidores</p></div>
-                <div className=''><h3>{values.usuario.seguindo}</h3><p>seguindo</p></div>
-            </div>            
+            </div>
         </header>
 
         <nav className="menu-feed">
@@ -61,18 +67,18 @@ function DetalharPerfil(props) {
             </ul>
         </nav>         
 
-        <div className='tabs'>
-            <section id="anuncios" className="tab">
+        <main className='tabs'>
+            <div id="anuncios" className="tab">
                 <ListarAnuncios/>
-            </section>
-            <section id="lojas" className="tab">
+            </div>
+            <div id="lojas" className="tab">
                 <ListarLojas/>
-            </section>
-            <section id="produtos" className="tab">
+            </div>
+            <div id="produtos" className="tab">
                 <ListarProdutos/>
-            </section> 
-        </div>
-    </div>
+            </div> 
+        </main>
+    </>
 }
 
 export default DetalharPerfil;

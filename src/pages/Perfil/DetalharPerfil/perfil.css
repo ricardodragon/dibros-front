@@ -1,18 +1,24 @@
-
-.foto-perfil h3{
-    float:left;    
+.detalhar-perfil-header{
+    height:30%;
+    width: 100%;
 }
-.foto-perfil img{
+.detalhar-perfil-header img{
     border-radius: 50%; 
-    width:3em;
-    height:3em;
+    width: 10vh;
+    height: 10vh;
 }
-.foto-perfil h2{
-    margin:0 2% 0 3em;
-    overflow: hidden;
-    margin-bottom:0;
+.detalhar-perfil-header h1, .detalhar-perfil-header h2{
+    font-size: 12pt;
 }
-
+.detalhar-perfil-header h1, .seguidores{
+    width: 50%;
+}
+.detalhar-perfil-header h1, .seguidores, .detalhar-perfil-header h2{
+    display: inline-block;
+}
+.seguidores{
+    vertical-align: top;
+}
 .menu-feed{
     width: 100%;
     height: 4%;
