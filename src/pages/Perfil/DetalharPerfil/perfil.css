@@ -20,12 +20,13 @@
     vertical-align: top;
 }
 .menu-feed{
-    width: 100%;
     height: 4%;
+    width: 100%;
     background-color: #dddddd;
     font-size:11pt; 
     position: relative;
 }
+
 .tabs{
     height: 66%;    
     overflow-x: scroll;

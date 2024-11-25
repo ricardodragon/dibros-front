@@ -52,9 +52,9 @@ function DetalharPerfil(props) {
             <div className='seguidores'>
                 <h2 style={{paddingRight:'10%'}}>{values.usuario.seguidores}<p>seguidores</p></h2>
                 <h2>{values.usuario.seguindo}<p>seguindo</p></h2>
-                <div>
-                    <button>seguir</button>
-                    <button>mensagem</button>
+                <div style={{width:'100%'}}>
+                    <button style={{width:'35%', borderRadius:'3%', backgroundColor:'#0275d8', color:'white'}}>seguir</button>
+                    <button style={{width:'55%', borderRadius:'3%', backgroundColor:'#0275d8', color:'white'}}>mensagem</button>
                 </div>
             </div>
         </header>
