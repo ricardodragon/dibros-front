@@ -44,13 +44,13 @@ function Feed(props){
                 </ul>
             </nav>
             <div className="tabs-feed">
-                <section id="anuncios">
+                <section id="anuncios" className="tab">
                     <ListarAnuncios/>
                 </section>
-                <section id="lojas">
+                <section id="lojas" className="tab">
                     <ListarLojas/>
                 </section>
-                <section id="produtos">
+                <section id="produtos" className="tab">
                     <ListarProdutos/>
                 </section>                
             </div>

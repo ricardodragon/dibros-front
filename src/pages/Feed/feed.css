@@ -13,25 +13,25 @@
 }
 .menu-feed{
     width: 100%;
+    height: 4%;
     background-color: #dddddd;
-    position: fixed;
     font-size:11pt; 
-    z-index: 1; 
+    position: relative;
 }
 
 .tabs-feed{
-    height: 100%;    
+    height: 96%;    
     overflow-x: scroll;
     white-space: nowrap;
     scroll-behavior: smooth;
     -ms-overflow-style: none;  
-    scrollbar-width: none; 
+    scrollbar-width: none;  
 }
 
-.tabs-feed section{
+.tab{
     display: inline-block; 
     width: 100vw; 
     height: 100%; 
-    padding-top: 1.5rem;
     vertical-align:top; 
 }
+

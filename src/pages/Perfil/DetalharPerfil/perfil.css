@@ -19,7 +19,6 @@
     background-color: #dddddd;
     font-size:11pt; 
     position: relative;
-    z-index: 1; 
 }
 .tabs{
     height: 66%;    
@@ -30,11 +29,10 @@
     scrollbar-width: none;  
 }
 
-.tabs section{
+.tab{
     display: inline-block; 
     width: 100vw; 
     height: 100%; 
-    /* padding-top: 1.5rem; */
     vertical-align:top;    
 }
 
