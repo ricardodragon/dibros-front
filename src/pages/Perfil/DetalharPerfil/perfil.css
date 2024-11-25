@@ -15,8 +15,8 @@
 
 .menu-feed{
     width: 100%;
+    height: 3.5%;
     background-color: #dddddd;
-    /* position: fixed; */
     font-size:11pt; 
     z-index: 1; 
 }
