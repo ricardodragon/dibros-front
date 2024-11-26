@@ -1,6 +1,7 @@
 #detalhar-perfil-header{
     height:30%;
     width: 100%;
+    overflow: hidden;
 }
 #detalhar-perfil-header img{
     border-radius: 50%; 
@@ -28,12 +29,12 @@
 }
 
 #tabs{
-    height: 66%;       
+    height: 66%; 
     overflow-x: scroll;
     white-space: nowrap;
     scroll-behavior: smooth;
     -ms-overflow-style: none;  
-    scrollbar-width: none;  
+    scrollbar-width: none; 
 }
 
 .tab{

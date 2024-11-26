@@ -34,32 +34,36 @@ function DetalharPerfil(props) {
     //             });
     // }
 
-    const onScroll = (event) =>{
-        console.log(values.scroll<event.target.scrollTop)
-        if(values.scroll<event.target.scrollTop){
-            document.getElementById('detalhar-perfil-header').style.height=document.getElementById('detalhar-perfil-header').offsetHeight-1+'px';
-            document.getElementById('tabs').style.height=document.getElementById('tabs').offsetHeight+1+'px';
+    const onScroll = (event) =>{       
+        const conteudoHeight = document.getElementById('cont').clientHeight;
+        const tabsHeight = document.getElementById('tabs').clientHeight;
+        const headerHeight = document.getElementById('detalhar-perfil-header').clientHeight;
+        console.log((tabsHeight/conteudoHeight)*100)
+        console.log((headerHeight/conteudoHeight)*100)
+        if(values.scroll<event.target.scrollTop&&Math.round((tabsHeight/conteudoHeight)*100+1)<96){
+            document.getElementById('detalhar-perfil-header').style.height=Math.round((headerHeight/conteudoHeight)*100-2)+'%'; 
+            document.getElementById('tabs').style.height=Math.round((tabsHeight/conteudoHeight)*100+2)+'%';                        
         }        
-        else if(values.scroll>event.target.scrollTop){
-            document.getElementById('detalhar-perfil-header').style.height=document.getElementById('detalhar-perfil-header').offsetHeight+1+'px';
-            document.getElementById('tabs').style.height=document.getElementById('tabs').offsetHeight-1+'px';
+        else if(values.scroll>event.target.scrollTop&&Math.round((tabsHeight/conteudoHeight)*100+2)>=66){
+            document.getElementById('detalhar-perfil-header').style.height=Math.round((headerHeight/conteudoHeight)*100+2)+'%'; 
+            document.getElementById('tabs').style.height=Math.round((tabsHeight/conteudoHeight)*100-2)+'%';                         
         }
-        setValues({...values, scroll:event.target.scrollTop})
+        setValues({...values, scroll:event.target.scrollTop});            
 
     }
 
-    return <>        
+    return <div id="cont" style={{height:'100%'}}>        
         {values.usuario&&<header id='detalhar-perfil-header'>
             <h1>
                 <figure>
                     <img alt={"Foto do perfil : "} src={values.usuario.imagemPath?host+values.usuario.imagemPath:"https://freesvg.org/img/abstract-user-flat-3.png"}/>
-                    <figcaption style={{width:'70%'}}>{values.usuario.nome}</figcaption>
+                    <figcaption style={{width:'70%', display:'inline'}}>{values.usuario.nome}</figcaption>
                 </figure>
             </h1>
             <div className='seguidores'>
                 <h2 style={{paddingRight:'10%'}}>{values.usuario.seguidores}<p>seguidores</p></h2>
                 <h2>{values.usuario.seguindo}<p>seguindo</p></h2>
-                <div style={{width:'100%'}}>
+                <div style={{width:'100%'}} id='botoes'>
                     <button style={{width:'35%', borderRadius:'3%', backgroundColor:'#0275d8', color:'white'}}>seguir</button>
                     <button style={{width:'55%', borderRadius:'3%', backgroundColor:'#0275d8', color:'white'}}>mensagem</button>
                 </div>
@@ -85,7 +89,7 @@ function DetalharPerfil(props) {
                 <ListarProdutos/>
             </div> 
         </main>
-    </>
+    </div>
 }
 
 export default DetalharPerfil;
