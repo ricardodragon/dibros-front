@@ -4,8 +4,7 @@
     width: 100vw;  
     padding-top: 11vh;   
     border-radius: 1%;
-    height: 100vh !important;   
+    height: 100%;   
     overflow: hidden;
-    max-height: 100vh;
 }
 

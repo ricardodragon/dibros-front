@@ -44,8 +44,3 @@
     height: 100%; 
     vertical-align:top;    
 }
-
-html{
-    max-height: 100vh;
-    overflow: hidden;
-}

@@ -136,3 +136,6 @@ tr:hover {
 	background-color: white;
 	color: #000;
 }
+body, html{
+    height: 100% !important;
+}
