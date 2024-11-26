@@ -74,7 +74,7 @@ function ListarAnuncios(props){
     }
 
     return (        
-        <div className="anuncios-conteudo">
+        <div className="anuncios-conteudo" onScroll={props.onScroll}>
             {values.anuncios&&values.anuncios.filter(x=>x.legenda!=="vai me perder").map((anuncio, indexAnuncio) =>            
                 <div className="card-anuncio" key={"anuncio-"+indexAnuncio}>                  
                     <header style={{padding: "2%"}}>

@@ -1,19 +1,19 @@
-.detalhar-perfil-header{
+#detalhar-perfil-header{
     height:30%;
     width: 100%;
 }
-.detalhar-perfil-header img{
+#detalhar-perfil-header img{
     border-radius: 50%; 
     width: 10vh;
     height: 10vh;
 }
-.detalhar-perfil-header h1, .detalhar-perfil-header h2{
+#detalhar-perfil-header h1, #detalhar-perfil-header h2{
     font-size: 12pt;
 }
-.detalhar-perfil-header h1, .seguidores{
+#detalhar-perfil-header h1, .seguidores{
     width: 50%;
 }
-.detalhar-perfil-header h1, .seguidores, .detalhar-perfil-header h2{
+#detalhar-perfil-header h1, .seguidores, #detalhar-perfil-header h2{
     display: inline-block;
 }
 .seguidores{
@@ -27,8 +27,8 @@
     position: relative;
 }
 
-.tabs{
-    height: 66%;    
+#tabs{
+    height: 66%;       
     overflow-x: scroll;
     white-space: nowrap;
     scroll-behavior: smooth;
@@ -37,6 +37,7 @@
 }
 
 .tab{
+    background-color: black; 
     display: inline-block; 
     width: 100vw; 
     height: 100%; 
