@@ -38,8 +38,6 @@ function DetalharPerfil(props) {
         const conteudoHeight = document.getElementById('cont').clientHeight;
         const tabsHeight = document.getElementById('tabs').clientHeight;
         const headerHeight = document.getElementById('detalhar-perfil-header').clientHeight;
-        console.log((tabsHeight/conteudoHeight)*100)
-        console.log((headerHeight/conteudoHeight)*100)
         if(values.scroll<event.target.scrollTop&&Math.round((tabsHeight/conteudoHeight)*100+1)<96){
             document.getElementById('detalhar-perfil-header').style.height=Math.round((headerHeight/conteudoHeight)*100-2)+'%'; 
             document.getElementById('tabs').style.height=Math.round((tabsHeight/conteudoHeight)*100+2)+'%';                        
@@ -57,7 +55,7 @@ function DetalharPerfil(props) {
             <h1>
                 <figure>
                     <img alt={"Foto do perfil : "} src={values.usuario.imagemPath?host+values.usuario.imagemPath:"https://freesvg.org/img/abstract-user-flat-3.png"}/>
-                    <figcaption style={{width:'70%', display:'inline'}}>{values.usuario.nome}</figcaption>
+                    <figcaption style={{width:'70%'}}>{values.usuario.nome}</figcaption>
                 </figure>
             </h1>
             <div className='seguidores'>

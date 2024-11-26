@@ -45,3 +45,6 @@
     vertical-align:top;    
 }
 
+html{
+    max-height: 100vh;
+}
