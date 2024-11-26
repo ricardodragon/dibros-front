@@ -6,5 +6,6 @@
     border-radius: 1%;
     height: 100vh !important;   
     overflow: hidden;
+    max-height: 100vh;
 }
 
