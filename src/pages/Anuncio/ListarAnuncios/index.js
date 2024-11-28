@@ -12,26 +12,18 @@ function ListarAnuncios(props){
     const host = process.env.REACT_APP_URL;
 
     useEffect(() => 
-        axios.get(`/loja/anuncios/public?page=${0}&size=${10}`).then(anuncios =>     
-            axios.get(process.env.REACT_APP_URL+"/auth/usuarios").then(r=>             
-                setValues({anuncios:anuncios.data, total:anuncios.headers['total'], usuario:r.data})            
-            )
+        axios.get(`${props.id?'/loja/anuncios/usuario/'+props.id:'/loja/anuncios/public'}?page=${0}&size=${10}`).then(anuncios =>     
+            setValues({anuncios:anuncios.data, total:anuncios.headers['total'], usuario:JSON.parse(localStorage.getItem('usuario'))})            
         )
-    , [])
+    , [props.id])    
 
-    useEffect(() => {                        
-        window.addEventListener("scroll", handlerScroll);
-        return () => window.removeEventListener("scroll", handlerScroll);
-    });       
-
-    const handlerScroll = (event) => {  
-        if((event.target.scrollingElement.scrollHeight - event.target.scrollingElement.scrollTop)<=event.target.scrollingElement.clientHeight&&values.anuncios&&values.total&&values.anuncios.length<values.total){                                                                   
-            axios.get(`/loja/anuncios/public?page=${values.anuncios.length/10}&size=${10}`).then(anuncios =>
-                setValues({...values, anuncios:values.anuncios.concat(anuncios.data), total:anuncios.headers.total})                
-            )
-        }
+    const handlerScroll = (event) => {
+        if((event.target.scrollHeight - event.target.scrollTop)-10<=event.target.clientHeight&&values.anuncios&&values.total&&values.anuncios.length<values.total)  
+            axios.get(`${props.id?'/loja/anuncios/usuario/'+props.id:'/loja/anuncios/public'}?page=${values.anuncios.length/10}&size=${10}`).then(anuncios =>{ 
+                setValues({...values, anuncios:values.anuncios.concat(anuncios.data), total:anuncios.headers.total})
+            });
+        if(props.onScroll)props.onScroll(event);
     }
-    
 
     const likeAnuncio = (event, anuncio) => {
         event.preventDefault();
@@ -74,7 +66,7 @@ function ListarAnuncios(props){
     }
 
     return (        
-        <div className="anuncios-conteudo" onScroll={props.onScroll}>
+        <div className="anuncios-conteudo" onScroll={handlerScroll}>
             {values.anuncios&&values.anuncios.filter(x=>x.legenda!=="vai me perder").map((anuncio, indexAnuncio) =>            
                 <div className="card-anuncio" key={"anuncio-"+indexAnuncio}>                  
                     <header style={{padding: "2%"}}>

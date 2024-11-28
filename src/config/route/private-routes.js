@@ -8,7 +8,7 @@ function PrivateRoutes({component: Component, ...rest}){
     const [values, setValues] = useState({isAuthenticated:true})
     
     useEffect(()=>
-        axios.get("/auth/usuarios").then(response=>setValues({isAuthenticated:true})).catch(error=>setValues({isAuthenticated:false}))
+        axios.get("/auth/usuarios").then(response=>{localStorage.setItem('usuario', JSON.stringify(response.data));setValues({isAuthenticated:true})}).catch(error=>setValues({isAuthenticated:false}))
     ,[])
 
     return values.isAuthenticated?

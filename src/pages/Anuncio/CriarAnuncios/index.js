@@ -10,8 +10,8 @@ function CriarAnuncios(props){
 
     useEffect(() => {
         setValues({lojas:[], anuncios:[], load:true, anuncio:{preco:"", legenda:""}});
-        axios.get(("/loja/anuncios/usuario")).then(res => 
-            axios.get("/loja/lojas").then(response =>                
+        axios.get(("/loja/anuncios/usuario/"+JSON.parse(localStorage.getItem('usuario')).id)).then(res => 
+            axios.get("/loja/lojas/"+JSON.parse(localStorage.getItem('usuario')).id).then(response =>                
                 setValues({lojas:response.data, produtoID:"", anuncios:res.data, erro: response.data.length<=0?"É preciso criar uma loja em \"Menu > Lojas\"":false, load:false, anuncio:{preco:"", legenda:""}})))                  
     }, []);
 
@@ -137,7 +137,7 @@ function CriarAnuncios(props){
                         {/* <tr><td>{values.anuncios.map(p=>p.quantidade).reduce((sumQtd, a) => sumQtd + a, 0)}</td></tr> */}
                         <tbody>
                             {values.anuncios.map(a=>
-                                <tr key={a.id} style={{cursor:"pointer", whiteSpace: "nowrap"}} onClick={event=>{event.preventDefault();setValues({...values,  produtoID:"", anuncio:{...a, loja:a.lojaDTO}});document.getElementsByClassName("anuncios-conteudo")[0].scrollTo(0, 0)}}>
+                                <tr style={{cursor:"pointer", whiteSpace: "nowrap"}} onClick={event=>{event.preventDefault();setValues({...values,  produtoID:"", anuncio:{...a, loja:a.lojaDTO}});document.getElementsByClassName("anuncios-conteudo")[0].scrollTo(0, 0)}}>
                                     <td><img style={{width:"2em", height:"2em"}} alt={"Foto do anuncio "+a.legenda} src={host+a.imagemPath}/></td>                            
                                     <td>{a.legenda}</td>  
                                     <td>{a.preco}</td>                                                             

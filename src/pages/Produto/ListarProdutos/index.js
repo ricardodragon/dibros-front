@@ -7,14 +7,23 @@ function ListarProdutos(props){
     const [values, setValues] = useState({})    
     const host =process.env.REACT_APP_URL;
 
-    useEffect(() => 
-        axios.get(process.env.REACT_APP_URL+"/auth/usuarios").then(r=>
-            setValues({produtos:props.produtos, usuario:r.data})            
-        )
-    , [props.produtos]);        
+    useEffect(() =>         
+        axios.get(`/loja/produtos${props.id?`?idUsuario=${props.id}&&`:'/public?'}page=${0}&size=${10}&idLoja=${0}`).then(produtos =>
+            setValues({produtos:produtos.data, total:produtos.headers['total'], usuario:JSON.parse(localStorage.getItem('usuario'))})            
+        )        
+    , [props.id]);        
+    
+    const handlerScroll = (event) => {   
+        if((event.target.scrollHeight - event.target.scrollTop)<=event.target.clientHeight&&values.produtos&&values.total&&values.produtos.length<values.total){     
+            axios.get(`/loja/produtos${props.id?`?idUsuario=${props.id}&&`:'/public?'}page=${values.produtos.length/10}&size=${10}&idLoja=${0}`).then(produtos =>{ 
+                setValues({...values, produtos:values.produtos.concat(produtos.data), total:produtos.headers.total})
+            });
+        }
+        if(props.onScroll)props.onScroll(event);
+    }
     
     return (        
-        <div className="produtos-conteudo">
+        <div className="produtos-conteudo" onScroll={handlerScroll}>
             {values.produtos&&values.produtos.map((produto, indexProduto) =>            
                 <section className="card-produto" key={"produtos-"+indexProduto}>                  
                     <header style={{padding: "2%"}}>
@@ -32,7 +41,7 @@ function ListarProdutos(props){
                     </div>   
                 </section>
             )}
-            <div style={{textAlign:"center"}}>{values.total&&values.produtos.length>=values.total?"fim dos produtos":<img style={{height:"5em"}} src={loader} alt="loading..."/>}</div>
+            <div style={{textAlign:"center"}}>{values.total&&values.produtos&&values.produtos.length>=values.total?"fim dos produtos":<img style={{height:"5em"}} src={loader} alt="loading..."/>}</div>
         </div>                
     )
 }
