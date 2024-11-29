@@ -70,8 +70,8 @@ table {
 }
 
 a{
-	text-decoration: none !important;
-	color: black;
+	text-decoration: inherit !important;
+	color: inherit;
 }
 input[type=submit]{
 	font-size: 15pt;

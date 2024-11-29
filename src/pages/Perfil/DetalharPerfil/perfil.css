@@ -1,5 +1,5 @@
 #detalhar-perfil-header{
-    height:30%;
+    height:25%;
     width: 100%;
     overflow: hidden;
 }
@@ -21,15 +21,24 @@
     vertical-align: top;
 }
 .menu-feed{
-    height: 4%;
-    width: 100%;
-    background-color: #dddddd;
-    font-size:11pt; 
+    height: 2.1em;
+    background-color: rgb(0, 0, 0);
+    box-sizing: border-box;
+    border: black;
+    border-radius: 1%;
     position: relative;
+    /* border: 1px solid rgb(247, 247, 247); */
+    box-shadow: 1px 1px 1px rgba(255, 255, 255, 0.459);
 }
-
+.menu-feed li{
+    color: white;
+}
+.menu-feed li:hover{
+    background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(122,115,115,1) 100%);
+}
 #tabs{
-    height: 66%; 
+    padding-top: 1%;
+    height: 67%; 
     overflow-x: scroll;
     white-space: nowrap;
     scroll-behavior: smooth;

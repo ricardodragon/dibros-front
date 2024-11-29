@@ -70,25 +70,26 @@ function ListarAnuncios(props){
             {values.anuncios&&values.anuncios.filter(x=>x.legenda!=="vai me perder").map((anuncio, indexAnuncio) =>            
                 <div className="card-anuncio" key={"anuncio-"+indexAnuncio}>                  
                     <header style={{padding: "2%"}}>
-                        <Link style={{textDecoration:'none'}} to={anuncio.lojaDTO?"":"/perfil/"+anuncio.usuarioDTO}><img alt={"Foto anuncio : " +anuncio.legenda} src={host+(anuncio.lojaDTO?anuncio.lojaDTO.imagemPath:anuncio.usuarioDTO.imagemPath)} style={{borderRadius: "50%", width:"3em", height:"3em"}}/></Link>
-                        <h3 style={{display: "inline", fontSize:"11pt", paddingLeft:'2%'}}>{anuncio.lojaDTO?anuncio.lojaDTO.nome:anuncio.usuarioDTO.nome}</h3>                             
+                        <Link style={{display:'inline'}} to={anuncio.lojaDTO?"":"/perfil/"+anuncio.usuarioDTO}><img alt={"Foto anuncio : " +anuncio.legenda} src={host+(anuncio.lojaDTO?anuncio.lojaDTO.imagemPath:anuncio.usuarioDTO.imagemPath)} style={{borderRadius: "50%", width:"3em", height:"3em"}}/></Link>
                         <div style={{fontWeight:"bolder", float:"right", cursor:"pointer"}}>⋮</div>
+                        <h3 style={{display: "inline", fontSize:"11pt", verticalAlign:'top', whiteSpace:'break-spaces'}}>{anuncio.lojaDTO?anuncio.lojaDTO.nome:anuncio.usuarioDTO.nome}</h3>                             
                     </header>
-                    <h2 style={{paddingLeft: "2.5%", fontSize:"12pt"}}>{anuncio.legenda}</h2>                                                                    
+                    <h2 style={{paddingLeft: "2.5%", fontSize:"12pt", whiteSpace:'break-spaces'}}>{anuncio.legenda}</h2>                                                                    
                     
                     <p className="teste">
-                        <img src={host+anuncio.imagemPath} alt="Anúncio" id={{}} className='img-anuncio' />                                                         
+                        <img src={host+anuncio.imagemPath} alt="Anúncio" className='img-anuncio' />                                                         
+                        {console.log(anuncio.anuncioProdutosDTO)}
                         {anuncio.anuncioProdutosDTO.filter(x=>x.imagemPath).map(x=><img src={host+x.imagemPath} className='img-anuncio' alt="Anúncio"/>)}
                     </p>
-                    <div style={{fontWeight:"bolder", textAlign:"center", fontSize:"10pt", width:"100%", padding:"1%"}}>
+                    <div style={{fontWeight:"bolder", textAlign:"center", fontSize:"10pt", padding:"1%"}}>
                         R$ {anuncio.preco},00
                     </div>
-                    <div style={{fontSize:"10pt", width:"100%", padding:"1%"}}>
-                        <div style={{display:"inline-block", textOverflow: "ellipsis", maxWidth: "16ch", overflow: "hidden", whiteSpace: "nowrap", cursor: "pointer"}}>{anuncio.likeAnunciosDTO.length} likes</div>
+                    <div style={{fontSize:"10pt", padding:"1%"}}>
+                        <div style={{display:"inline-block", textOverflow: "ellipsis", maxWidth: "16ch", overflow: "hidden", whiteSpace: "nowrap", cursor: "pointer"}}>{anuncio.likeAnunciosDTO.length} curtidas</div>
                         <div style={{float:"right", textOverflow: "ellipsis", maxWidth: "16ch", overflow: "hidden", whiteSpace: "nowrap", cursor: "pointer"}} onClick={event=>{event.preventDefault();setValues({...values, anuncios:values.anuncios.map(x=>{return x.id===anuncio.id?{...x, expandComentario:!x.expandComentario}:x})})}}>{anuncio.comentariosDTO.length} comentarios</div>
                     </div>
                     
-                    <div style={{borderTop:"1px solid rgba(0, 0 , 0, 0.1)", textAlign:"center", fontSize:"11pt", padding:"1%", width:"100%"}}>
+                    <div style={{borderTop:"1px solid rgba(0, 0 , 0, 0.1)", textAlign:"center", fontSize:"11pt", padding:"1%"}}>
                         {values.usuario&&anuncio.likeAnunciosDTO.filter(x=>x.idUsuario===values.usuario.id).length?
                         <div style={{display:"inline-block", width: "33%", textOverflow: "ellipsis", maxWidth: "16ch", overflow: "hidden", whiteSpace: "nowrap", cursor: "pointer"}} onClick={event=>deleteLikeAnuncio(event, anuncio)}><Link to={""} style={{textDecoration:'none'}}>❤️</Link></div>: 
                         <div style={{display:"inline-block", width: "33%", textOverflow: "ellipsis", maxWidth: "16ch", overflow: "hidden", whiteSpace: "nowrap", cursor: "pointer"}} onClick={event=>likeAnuncio(event, anuncio)}><Link to={""} style={{textDecoration:'none'}}>🤍</Link></div>}                     
@@ -98,11 +99,10 @@ function ListarAnuncios(props){
                     
                     
                     {anuncio.expandComentario&&anuncio.comentariosDTO.filter(x=>!x.idComentario).map((x, index)=> 
-                        <div style={{fontSize:"10pt", width:"100%", paddingLeft:"2%", paddingBottom:"4%"}} key={index}> 
-                            <div style={{height:"100%", float:"left"}}>
-                                <Link style={{textDecoration:'none'}} to={"/perfil/"+x.usuarioDTO.id}><img alt="Imagem perfil user" src={x.usuarioDTO.imagemPath?host+x.usuarioDTO.imagemPath:"https://freesvg.org/img/abstract-user-flat-3.png"} style={{borderRadius: "50%", width:"2em", height:"2em"}}/></Link>                                      
-                            </div> 
-                            {values.usuario&&x.idUsuario===values.usuario.id&&<div style={{fontWeight:"bolder", float:"right", cursor:"pointer", paddingRight:"3%", paddingLeft:"3%"}} onClick={event=>{event.preventDefault();document.getElementById(x.id+'-'+index).showModal();}}>⋮</div>}
+                        <div style={{fontSize:"10pt", width:'100%', paddingBottom:"4%"}} key={index}> 
+                            <Link style={{display:'inline', verticalAlign:'top'}} to={"/perfil/"+x.usuarioDTO.id}><img alt="Imagem perfil user" src={x.usuarioDTO.imagemPath?host+x.usuarioDTO.imagemPath:"https://freesvg.org/img/abstract-user-flat-3.png"} style={{borderRadius: "50%", width:"2.7em", height:"2.7em"}}/></Link>                                      
+                            
+                            {values.usuario&&x.idUsuario===values.usuario.id&&<div style={{fontWeight:"bolder", float:"right", cursor:"pointer", paddingLeft:"3%"}} onClick={event=>{event.preventDefault();document.getElementById(x.id+'-'+index).showModal();}}>⋮</div>}
                             
                             <dialog onClick={event=>{event.preventDefault();document.getElementById(x.id+'-'+index).close();}} id={x.id+'-'+index} style={{borderRadius:"0.5%", borderStyle:"none", width:"100%", top:'85%', textAlign:'center'}}>
                                 <label style={{width:'100%', cursor:'pointer', padding:"0.5%"}} onClick={event=>{event.stopPropagation();}}>✏️ EDITAR</label><br/>
@@ -112,9 +112,12 @@ function ListarAnuncios(props){
                             {values.usuario&&x.likeComentariosDTO.filter(lc=>lc.idUsuario===values.usuario.id).length?
                                 <p onClick={event=>deleteLikeComentario(event, anuncio, x)} style={{float:"right", paddingRight:"3%", cursor:"pointer"}} >❤️</p>:
                                 <p onClick={event=>postLikeComentario(event, anuncio, x)} style={{float:"right", paddingRight:"3%", cursor:"pointer"}}>🤍</p>}                                                
-                            <div style={{margin:"0 2% 0 2.3em"}}><Link style={{textDecoration:'none'}} to={"/perfil/"+x.usuarioDTO.id}><p style={{whiteSpace: "nowrap", fontSize:"8pt", fontWeight:"bolder", textOverflow: "ellipsis", overflow:"hidden", marginBottom:"0"}}>{x.usuarioDTO.nome||x.usuarioDTO.email}</p></Link>{x.texto}</div>
-                            <p style={{margin:"0 4% 0 2.3em", display:"inline-block"}}>{x.likeComentariosDTO.length} curtidas</p><label style={{cursor:"pointer", textDecoration:"underline"}} onClick={event=>expandComentario(event, indexAnuncio, index)}>Responder</label>  
+                            <div style={{display:'inline-block', width:'80%'}}><Link to={"/perfil/"+x.usuarioDTO.id}><p style={{whiteSpace: "nowrap", fontSize:"8pt", fontWeight:"bolder", textOverflow: "ellipsis", overflow:"hidden", marginBottom:"0"}}>{x.usuarioDTO.nome||x.usuarioDTO.email}</p></Link><p style={{whiteSpace:'break-spaces', lineHeight:'normal'}}>{x.texto}</p></div>
                             
+                            <div>
+                                <p style={{margin:"0 4% 0 2.3em", display:"inline-block"}}>{x.likeComentariosDTO.length} curtidas</p><label style={{cursor:"pointer", textDecoration:"underline"}} onClick={event=>expandComentario(event, indexAnuncio, index)}>Responder</label>  
+                            </div>
+
                             {x.expandComentario&&<>
                                 <input id={x.id+"comentario"} value={x.inputComentario} style={{width:"88%", border:"none", margin:"0 0 2% 2%"}} placeholder="comentario" onChange={event=>setValues({...values, anuncios:values.anuncios.map(a=> a.id===anuncio.id?{...a, comentariosDTO:a.comentariosDTO.map(c=>c.id===x.id?{...c, inputComentario:event.target.value}:c)}:a)})} type="text"/>
                                 <button style={{width:"8%", background:"none", border:"none", padding:"0"}} onClick={event=>postComentario(event, anuncio)} disabled={true}>➡️</button>

@@ -23,11 +23,11 @@ function DetalharPerfil(props) {
         const tabsHeight = document.getElementById('tabs').clientHeight;
         if(values.scroll<event.target.scrollTop&&Math.round((tabsHeight/conteudoHeight)*100+1)<80){
             document.getElementById('detalhar-perfil-header').style.height='0%'; 
-            document.getElementById('tabs').style.height='96%';                        
+            document.getElementById('tabs').style.height='92%';                        
         }        
         else if(values.scroll>event.target.scrollTop&&Math.round((tabsHeight/conteudoHeight)*100+1)>80){
-            document.getElementById('detalhar-perfil-header').style.height='30%'; 
-            document.getElementById('tabs').style.height='66%';                         
+            document.getElementById('detalhar-perfil-header').style.height='25%'; 
+            document.getElementById('tabs').style.height='67%';                         
         }
         setValues({...values, scroll:event.target.scrollTop});            
     }
