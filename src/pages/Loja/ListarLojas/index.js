@@ -29,9 +29,9 @@ function ListarLojas(props){
         <div className="lojas-conteudo" onScroll={handlerScroll}>
             {values.lojas.map((loja, indexLoja) =>            
                 <section className="card-loja" key={"loja-"+indexLoja}> 
-                    <header style={{padding: "2%"}}>
+                    <header style={{padding: "2%", overflow:'hidden'}}>
                         <img alt={"Foto loja : " +loja.nome} src={host+loja.imagemPath} style={{borderRadius: "50%", width:"3em", height:"3em"}}/>
-                        <h3 style={{fontWeight:"bolder", display: "inline", fontSize:"11pt", paddingLeft:'2%'}}>{loja.nome}</h3>                             
+                        <h3 style={{textOverflow: "ellipsis", maxWidth: "16ch", overflow: "hidden", verticalAlign:'top', fontWeight:"bolder", display: "inline", fontSize:"11pt", paddingLeft:'2%'}}>{loja.nome}</h3>                             
                         <div style={{fontWeight:"bolder", float:"right", cursor:"pointer"}}>⋮</div>
                     </header>
                 </section>            

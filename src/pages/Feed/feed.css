@@ -3,22 +3,50 @@
     text-align: center;  
     margin: 0;          
 }
-
-.menu-feed li{
+.menu-feed{    
+    height: 2em;
+    box-sizing: border-box;
+    border: black;
+    position: relative;
+    white-space: nowrap;
+    background-image: linear-gradient(90deg, rgba(89,86,86,1) 0%, rgba(41,39,39,1) 100%);
+    box-shadow: 1px 1px 3px 0 rgba(89, 86, 86, 0.877);
+}
+.menu-feed{    
+    height: 2em;
+    box-sizing: border-box;
+    border: black;
+    position: relative;
+    white-space: nowrap;
+    background-image: linear-gradient(90deg, rgba(89,86,86,1) 0%, rgba(41,39,39,1) 100%);
+    box-shadow: 1px 1px 3px 0 rgba(89, 86, 86, 0.877);
+}
+.perfil-menu, .perfil-menu-opaciti{
+    color: white;
+    border: none;
+    transition: opacity 0.8s linear;
     display: inline-block;    
     cursor: pointer;
-    color: black;
-    width: 33.33%;
     font-weight: bolder;
+    background-color: transparent;
 }
-.menu-feed{
-    width: 100%;
-    height: 4%;
-    background-color: #dddddd;
-    font-size:11pt; 
+.perfil-menu{
+    opacity: 0; 
+    z-index: 2; 
     position: relative;
+    width: 100%;
 }
-
+.perfil-menu-opaciti{
+    z-index: 1;
+    position: absolute;
+    width: 33.33%;
+}
+.perfil-menu:hover{ 
+    opacity: 1;
+}
+.perfil-menu:active{
+    border: 1px solid rgb(247, 247, 247);
+}
 .tabs-feed{
     height: 96%;    
     overflow-x: scroll;

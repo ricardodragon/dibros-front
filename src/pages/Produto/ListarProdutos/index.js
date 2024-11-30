@@ -36,7 +36,7 @@ function ListarProdutos(props){
                     <p className="teste">
                         <img src={host+produto.imagemPath} alt="Produto" id={{}} className='img-produto' />                                                         
                     </p>
-                    <div style={{fontWeight:"bolder", textAlign:"center", fontSize:"10pt", width:"100%", padding:"1%"}}>
+                    <div style={{boxSizing:'border-box', fontWeight:"bolder", textAlign:"center", fontSize:"10pt", width:"100%", padding:"1%"}}>
                         R$ {produto.preco},00
                     </div>   
                 </section>

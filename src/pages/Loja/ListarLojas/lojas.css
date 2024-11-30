@@ -1,10 +1,12 @@
 .lojas-conteudo{
     height: 100%; 
     overflow-y: scroll;
+    box-sizing: border-box;
 }
 
 .card-loja{
     border: 1px solid rgba(0, 0 , 0, 0.1);
+    box-sizing: border-box;
     border-radius: 1em;
     margin-bottom: 4%;
     width: 100%;

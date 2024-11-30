@@ -23,11 +23,11 @@ function DetalharPerfil(props) {
         const tabsHeight = document.getElementById('tabs').clientHeight;
         if(values.scroll<event.target.scrollTop&&Math.round((tabsHeight/conteudoHeight)*100+1)<80){
             document.getElementById('detalhar-perfil-header').style.height='0%'; 
-            document.getElementById('tabs').style.height='92%';                        
+            document.getElementById('tabs').style.height='96%';                        
         }        
         else if(values.scroll>event.target.scrollTop&&Math.round((tabsHeight/conteudoHeight)*100+1)>80){
             document.getElementById('detalhar-perfil-header').style.height='25%'; 
-            document.getElementById('tabs').style.height='67%';                         
+            document.getElementById('tabs').style.height='71%';                         
         }
         setValues({...values, scroll:event.target.scrollTop});            
     }
@@ -41,21 +41,21 @@ function DetalharPerfil(props) {
                 </figure>
             </h1>
             <div className='seguidores'>
-                <h2 style={{paddingRight:'10%'}}>{values.usuario.seguidores}<p>seguidores</p></h2>
+                <h2 style={{paddingRight:'5%'}}>{values.usuario.seguidores}<p>seguidores</p></h2>
                 <h2>{values.usuario.seguindoQuantidade}<p>seguindo</p></h2>
-                {JSON.parse(localStorage.getItem('usuario'))?.id!==values.usuario.id&&<div style={{width:'100%'}} id='botoes'>                                            
-                    {(values.usuario.seguindo&&<button disabled={true} style={{width:'35%', borderRadius:'3%', backgroundColor:'#0275d8', color:'white'}}>seguindo</button>)||
-                    (<button style={{width:'35%', borderRadius:'3%', backgroundColor:'#0275d8', color:'white'}} onClick={event=>axios.post('/loja/seguidores/'+id)}>seguir</button>)}                    
-                    <button style={{width:'55%', borderRadius:'3%', backgroundColor:'#0275d8', color:'white'}}>mensagem</button>
+                {JSON.parse(localStorage.getItem('usuario'))?.id!==values.usuario.id&&<div id='botoes'>                                            
+                    {(values.usuario.seguindo&&<button disabled={true} style={{color:'white', cursor:'default'}}>seguindo</button>)||
+                    (<button onClick={event=>axios.post('/loja/seguidores/'+id)}>seguir</button>)}                    
+                    <button >mensagem</button>
                 </div>}
             </div>
         </header>}
 
         <nav className="menu-feed">
             <ul>
-                <li><HashLink to="#anuncios">📢 anuncios</HashLink></li>
-                <li><HashLink to="#lojas">🏬 lojas</HashLink></li>
-                <li><HashLink to="#produtos">📦 produtos</HashLink></li>
+                <HashLink to="#anuncios"><div style={{width:'33.33%', display:'inline-block'}}><li className='perfil-menu-opaciti'>📢 anuncios</li><li className='perfil-menu'>📢 anuncios</li></div></HashLink>
+                <HashLink to="#lojas"><div style={{width:'33.33%', display:'inline-block'}}><li className='perfil-menu-opaciti'>🏬 lojas</li><li className='perfil-menu'>🏬 lojas</li></div></HashLink>
+                <HashLink to="#produtos"><div style={{width:'33.33%', display:'inline-block'}}><li className='perfil-menu-opaciti'>📦 produtos</li><li className='perfil-menu'>📦 produtos</li></div></HashLink>                
             </ul>
         </nav>         
 
