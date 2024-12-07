@@ -48,7 +48,8 @@
     border: 1px solid rgb(247, 247, 247);
 }
 .tabs-feed{
-    height: 96%;    
+    height: 92%;
+    margin-top: 1%;    
     overflow-x: scroll;
     white-space: nowrap;
     scroll-behavior: smooth;

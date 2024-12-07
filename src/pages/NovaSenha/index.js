@@ -41,6 +41,7 @@ function NovaSenha(props) {
                             <label htmlFor='imagem' className="p-1" style={{backgroundColor: "#3498db", borderRadius: "5px", color: "#fff", cursor: "pointer"}}>📷 Foto</label>
                             <input id='imagem' name="imagem" style={{display:"none"}} type="file" accept='image/*' onChange={event=>setValues({...values, usuario:{...values.usuario, imagem:event.target.files[0]}})}/>                        
                             <input className="m-2" required onChange={setUsuario} placeholder="Nome" id="nome" name="nome" type="text"/>                        
+                            <input className="m-2" required onChange={setUsuario} placeholder="Email" id="email" name="email" type="text"/>                        
                         </>}
                         <input className="m-2" required onChange={setUsuario} placeholder="Password" id="password" name="password" type="password" />
                         <input className="m-2" required onChange={setUsuario} placeholder="Confirme Password" id="confirm" name="confirm" type="password"/>
