@@ -78,7 +78,6 @@ function ListarAnuncios(props){
                     
                     <p className="teste">
                         <img src={host+anuncio.imagemPath} alt="Anúncio" className='img-anuncio' />                                                         
-                        {console.log(anuncio.anuncioProdutosDTO)}
                         {anuncio.anuncioProdutosDTO.filter(x=>x.imagemPath).map(x=><img src={host+x.imagemPath} className='img-anuncio' alt="Anúncio"/>)}
                     </p>
                     <div style={{fontWeight:"bolder", textAlign:"center", fontSize:"10pt", padding:"1%"}}>

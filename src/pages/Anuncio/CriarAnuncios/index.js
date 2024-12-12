@@ -85,7 +85,7 @@ function CriarAnuncios(props){
                     </fieldset>}
                     <fieldset id="imagens"><legend>Fotos</legend>  
                     <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} className="p-1" htmlFor='imagem'>Imagem : </label>            
-                        <input ref={ref} required={!values.anuncio.imagemPath||values.anuncio.imagemPath===""} id='imagem' className='mb-4' type="file" style={{textAlign:"center", width:"75%", backgroundColor: "#3498db", borderRadius: "5px", color: "#fff"}} accept='image/*' onChange={event => {event.preventDefault();console.log(event.target.files);setValues({...values, anuncio:{...values.anuncio, imagemPath:undefined, imagem:event.target.files[0]}});}}/>
+                        <input ref={ref} required={!values.anuncio.imagemPath||values.anuncio.imagemPath===""} id='imagem' className='mb-4' type="file" style={{textAlign:"center", width:"75%", backgroundColor: "#3498db", borderRadius: "5px", color: "#fff"}} accept='image/*' onChange={event => {event.preventDefault();setValues({...values, anuncio:{...values.anuncio, imagemPath:undefined, imagem:event.target.files[0]}});}}/>
                         {(values.anuncio.imagemPath||values.anuncio.imagem)&&<img alt="" style={{display:"block", width:"8em", height:"8em"}} src={values.anuncio.imagemPath?host+values.anuncio.imagemPath:URL.createObjectURL(values.anuncio.imagem)}/>}                                                                        
                     </fieldset>
                     {values.anuncio.idLoja&&
@@ -137,7 +137,7 @@ function CriarAnuncios(props){
                         {/* <tr><td>{values.anuncios.map(p=>p.quantidade).reduce((sumQtd, a) => sumQtd + a, 0)}</td></tr> */}
                         <tbody>
                             {values.anuncios.map(a=>
-                                <tr style={{cursor:"pointer", whiteSpace: "nowrap"}} onClick={event=>{event.preventDefault();setValues({...values,  produtoID:"", anuncio:{...a, loja:a.lojaDTO}});document.getElementsByClassName("anuncios-conteudo")[0].scrollTo(0, 0)}}>
+                                <tr key={a.id} style={{cursor:"pointer", whiteSpace: "nowrap"}} onClick={event=>{event.preventDefault();setValues({...values,  produtoID:"", anuncio:{...a, loja:a.lojaDTO}});document.getElementsByClassName("anuncios-conteudo")[0].scrollTo(0, 0)}}>
                                     <td><img style={{width:"2em", height:"2em"}} alt={"Foto do anuncio "+a.legenda} src={host+a.imagemPath}/></td>                            
                                     <td>{a.legenda}</td>  
                                     <td>{a.preco}</td>                                                             
