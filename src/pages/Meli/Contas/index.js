@@ -1,10 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import queryString from 'query-string';
-import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import axios from "axios";
 import './contas.css'
-import { FcCheckmark, FcHighPriority } from "react-icons/fc";
     
 function Contas(props){
     const [values, setValues] = useState({contas:[]});        
@@ -29,9 +27,9 @@ function Contas(props){
 
     return (
         <div className="anuncios-conteudo">  
-            <div className={"alert alert-success "+(values.ok?"":"visually-hidden")} role="alert"><FcCheckmark/>Link enviado com sucesso</div>
-            <div className={"alert alert-danger "+(values.erro?"":"visually-hidden")} role="alert"><FcHighPriority/>Erro: {values.erro}</div>          
-            <div color="primary" className="btn btn-primary btn-sm mt-3 w-100 mb-2" onClick={redirectMeli}><AddShoppingCartIcon /> ADICIONAR CONTA</div>
+            <div className={"alert alert-success "+(values.ok?"":"visually-hidden")} role="alert">✅ Link enviado com sucesso</div>
+            <div className={"alert alert-danger "+(values.erro?"":"visually-hidden")} role="alert">❌ Erro: {values.erro}</div>          
+            <div color="primary" className="btn btn-primary btn-sm mt-3 w-100 mb-2" onClick={redirectMeli}>🔗 ADICIONAR CONTA</div>
             {
                 values.contas.map((value, index) => {
                     return (                        

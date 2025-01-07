@@ -16,9 +16,9 @@ function NovaSenha(props) {
         if(values.usuario.password !== values.usuario.confirm) return alert("Erro na confirmação da senha!!")
         localStorage.setItem("token", "Bearer "+token);        
         var formData = new FormData();   
-        formData.append('files', values.usuario.imagem);          
-        axios.post('/imagem/imagem', formData).then(imagens => 
-            axios.post('/auth/usuarios', {...values.usuario, imagemPath:imagens.data[0]}).then(response =>{
+        formData.append('files', values.usuario.imagem);                  
+        // axios.post('/imagem/imagem', formData).then(imagens => 
+            axios.post('/auth/usuarios', {...values.usuario, imagemPath:"imagens.data[0]"}).then(response =>{
                 localStorage.removeItem("token"); 
                 axios.post('/auth/login', {password:values.usuario.password, email:response.data.email}).then(res => {
                     localStorage.setItem("token", res.headers['authorization']);                
@@ -27,25 +27,25 @@ function NovaSenha(props) {
                         props.history.replace("/");
                     })
                 })
-            })
-        ); 
+            });
+        // ); 
     }
 
     return (
         <div className="background">    
             <div className="conteudo-login">
+                {(values.ok||values.erro)&&<div style={{width: "100%", textAlign:"center"}}>{values.ok?"✅ Link enviado com sucesso":"❌ Erro: "+values.erro}</div>}                
                 <form onSubmit={novoUsuario}>
-                    <fieldset id="loja" className="p-1 mb-2" style={{borderRadius:"0.3em"}}><legend>Cadastro de {values.esqueci?'nova senha':'ususario'}</legend>                                    
+                    <fieldset><legend>Cadastro de {values.esqueci?'nova senha':'ususario'}</legend>                                    
                         {!values.esqueci&&<>
-                            {values.usuario.imagem&&<img alt="imagem de perfil" style={{width:"3em", height:"3em", borderRadius: "5px", display:"inline-block"}} src={URL.createObjectURL(values.usuario.imagem)}/>}<br/>
-                            <label htmlFor='imagem' className="p-1" style={{backgroundColor: "#3498db", borderRadius: "5px", color: "#fff", cursor: "pointer"}}>📷 Foto</label>
+                            {values.usuario.imagem&&<img alt="imagem de perfil" style={{width:"3em", height:"3em", borderRadius: "5px"}} src={URL.createObjectURL(values.usuario.imagem)}/>}<br/>
+                            <label htmlFor='imagem' style={{backgroundColor: "#3498db", borderRadius: "5px", color: "#fff", cursor: "pointer", width:"80%", display:"block", position:"relative", left:"10%"}}>📷 Foto</label>
                             <input id='imagem' name="imagem" style={{display:"none"}} type="file" accept='image/*' onChange={event=>setValues({...values, usuario:{...values.usuario, imagem:event.target.files[0]}})}/>                        
-                            <input className="m-2" required onChange={setUsuario} placeholder="Nome" id="nome" name="nome" type="text"/>                        
-                            <input className="m-2" required onChange={setUsuario} placeholder="Email" id="email" name="email" type="text"/>                        
+                            <input style={{width: "80%", textAlign:"center"}} required onChange={setUsuario} placeholder="Nome" id="nome" name="nome" type="text"/>                        
                         </>}
-                        <input className="m-2" required onChange={setUsuario} placeholder="Password" id="password" name="password" type="password" />
-                        <input className="m-2" required onChange={setUsuario} placeholder="Confirme Password" id="confirm" name="confirm" type="password"/>
-                        <input className='btn btn-success btn-sm mt-3' value="Entrar" type="submit"/><br/>                                        
+                        <input style={{width: "80%", textAlign:"center"}} required onChange={setUsuario} placeholder="Password" id="password" name="password" type="password" />
+                        <input style={{width: "80%", textAlign:"center"}} required onChange={setUsuario} placeholder="Confirme Password" id="confirm" name="confirm" type="password"/>
+                        <input style={{width: "80%", textAlign:"center"}} value="Entrar" type="submit"/><br/>                                        
                     </fieldset>
                 </form>
             </div>

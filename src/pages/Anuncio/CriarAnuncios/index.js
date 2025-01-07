@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import axios from "../../../config/api/api";
-import { FcCheckmark, FcHighPriority } from "react-icons/fc";
 
 function CriarAnuncios(props){
     
@@ -64,8 +63,8 @@ function CriarAnuncios(props){
                 <div className="spinner-border p-1" style={{width: "3rem",height: "3rem", margin:"18% 0 0 47%"}} role="status"></div>                 
             </div>}
             <div className='anuncios-conteudo'>
-                <div className={"alert alert-success "+(values.ok?"":"visually-hidden")} role="alert"><FcCheckmark/>Anuncio criado com sucesso</div>
-                <div className={"alert alert-danger "+(values.erro?"":"visually-hidden")} role="alert"><FcHighPriority/>Erro: {values.erro}</div>
+                <div className={"alert alert-success "+(values.ok?"":"visually-hidden")} role="alert">✅ Anuncio criado com sucesso</div>
+                <div className={"alert alert-danger "+(values.erro?"":"visually-hidden")} role="alert">❌ Erro: {values.erro}</div>
                 <form className="mt-4" onSubmit={submit}>                     
                     <fieldset id="anuncio"><legend>{values.anuncio.id?"Editar":"Criar"} Anucio {values.anuncio.legenda}</legend>                                        
                         <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} className="p-1 mb-4" htmlFor='loja'>Loja : </label>     

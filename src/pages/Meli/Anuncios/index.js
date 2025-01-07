@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { FcHighPriority, FcCheckmark } from "react-icons/fc";
 import './style.css';
 import LabelInput from "../../../estrutura/LabelInput";
 
@@ -32,7 +31,7 @@ function Listagem(){
                                     <img src={value.body.thumbnail} alt=""  />                                    
                                 </figcaption>                                                                       
                                 <a href={'/meli/anuncio/'+value.body.id+'/'+(value.body.seller_id?value.body.seller_id:0)} target="_blank" rel="noreferrer" style={{display:"inline"}} className="h5 p-4">{value.body.title}</a>                                    
-                                <span className="h5">{value.body.status!=="active"?<FcHighPriority/>:<FcCheckmark/>}</span>
+                                <span className="h5">{value.body.status!=="active"?"❌":"✅"}</span>
                             </div>
                             <div className="card-body">                                    
                                 <div className="row">

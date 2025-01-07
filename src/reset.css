@@ -73,10 +73,7 @@ a{
 	text-decoration: inherit !important;
 	color: inherit;
 }
-input[type=submit]{
-	font-size: 15pt;
-}
-input[type=submit],input[type=file]{
+input[type=submit],input[type=file],input[type=button]{
 	cursor: pointer;
 }
 input{

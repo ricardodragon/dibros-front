@@ -1,6 +1,5 @@
 import axios from '../../../../../config/api/api';
 import { useEffect, useState } from 'react';
-import { BsPencil } from "react-icons/bs";
 import LabelSelect from "../../../../../estrutura/LabelSelect";
 
 function Categorias(props){
@@ -43,7 +42,7 @@ function Categorias(props){
                 <label style={{whiteSpace:'nowrap', display:'block'}}>Categoria : </label>
                 {values.categoria.name?<div className="d-flex">
                         <p style={{marginBottom: '0', fontWeight: 'bolder', paddingLeft:'0.3em', paddingRight:'0.3em'}}>{values.categoria.name}</p>                        
-                        <button onClick={event=>{event.preventDefault();props.onChange(undefined)}} disabled={props.disabled} style={{paddingTop: '0', height:'20px'}} className="btn btn-success"><BsPencil style={{paddingBottom: '0.3em'}} size={0}/></button>                        
+                        <button onClick={event=>{event.preventDefault();props.onChange(undefined)}} disabled={props.disabled} style={{paddingTop: '0', height:'20px'}} className="btn btn-success"> 🖊️ </button>                        
                     </div>:                    
                     <div className="d-flex">
                     {

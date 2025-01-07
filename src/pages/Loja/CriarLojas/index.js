@@ -1,6 +1,5 @@
 import axios from '../../../config/api/api';
 import React, { useEffect, useRef, useState } from 'react';
-import { FcCheckmark, FcHighPriority } from 'react-icons/fc';
 
 function CriarLojas() {
     
@@ -46,8 +45,8 @@ function CriarLojas() {
         </div>}
         <div className='anuncios-conteudo'>        
             {/* <button style={{float:"right"}} className='btn btn-primary'>Buscar loja 🔎</button> */}
-            <div className={"alert alert-success "+(values.ok?"":"visually-hidden")} role="alert"><FcCheckmark/>Operação realizada com sucesso</div>
-            <div className={"alert alert-danger "+(values.erro?"":"visually-hidden")} role="alert"><FcHighPriority/>Erro: {values.erro}</div>
+            <div className={"alert alert-success "+(values.ok?"":"visually-hidden")} role="alert">✅ Operação realizada com sucesso</div>
+            <div className={"alert alert-danger "+(values.erro?"":"visually-hidden")} role="alert">❌ Erro: {values.erro}</div>
             <form className="mt-4" onSubmit={enviar}> 
                 <fieldset><legend>{values.loja.id?"Editar":"Criar"} Loja {values.loja.id}</legend>                                    
                     <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} className="p-1" htmlFor="nome">Nome : </label>            

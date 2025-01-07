@@ -1,7 +1,6 @@
 import axios from '../../../config/api/api';
 import { useEffect, useRef, useState } from 'react';
 import { Link } from "react-router-dom";
-import { FcCheckmark, FcHighPriority } from 'react-icons/fc';
 import './produtos.css';
 import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
 
@@ -47,8 +46,8 @@ function CriarProdutos(){
                 <div className="spinner-border p-1" style={{width: "3rem",height: "3rem", margin:"18% 0 0 47%"}} role="status"></div>                 
             </div>}
             <div className="anuncios-conteudo">
-                <div className={"alert alert-success "+(values.ok?"":"visually-hidden")} role="alert"><FcCheckmark/>Operação realizada com sucesso</div>
-                <div className={"alert alert-danger "+(values.erro?"":"visually-hidden")} role="alert"><FcHighPriority/>Erro: {values.erro}</div>            
+                <div className={"alert alert-success "+(values.ok?"":"visually-hidden")} role="alert">✅ Operação realizada com sucesso</div>
+                <div className={"alert alert-danger "+(values.erro?"":"visually-hidden")} role="alert">❌ Erro: {values.erro}</div>            
                 <form className="mt-4  mb-4" onSubmit={submit}>                
                     <fieldset id="usuario"><legend>{values.produto.id?"Editar":"Criar"} Produto {values.produto.id}</legend>                                      
                         <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} className="p-1" htmlFor='loja'>Loja :</label>  

@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from "react"
 import { useParams } from "react-router-dom";
-import { FcCheckmark, FcHighPriority } from "react-icons/fc";
 import LabelInput from "../../../estrutura/LabelInput";
 import TipoAnuncio from "./components/TipoAnuncio";
 import Categorias from "./components/Categorias";
@@ -79,8 +78,8 @@ function Anuncio(){
             </div>                 
         </div>:   
         <div className="anuncios-conteudo">
-            <div className={"alert alert-success "+(values.ok?"":"visually-hidden")} role="alert"><FcCheckmark/> Anuncio enviado com sucesso</div>
-            <div className={"alert alert-danger "+(values.erro?"":"visually-hidden")} role="alert"><FcHighPriority/>Erro: {values.erro}</div>
+            <div className={"alert alert-success "+(values.ok?"":"visually-hidden")} role="alert">✅ Anuncio enviado com sucesso</div>
+            <div className={"alert alert-danger "+(values.erro?"":"visually-hidden")} role="alert">❌ Erro: {values.erro}</div>
             <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"20%", fontWeight:"bold"}}>Visitas : </label>
             <input disabled style={{width:"65%", marginRight:"5%"}} value={values.visits}/>
             <input style={{width:"10%"}} className="btn btn-sm btn-primary" onClick={event=>{event.preventDefault();setVisits()}} value={"🔄 Atualizar"}/>
