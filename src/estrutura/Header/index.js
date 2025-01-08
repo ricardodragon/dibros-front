@@ -3,8 +3,6 @@ import './header.css';
 import logo from './logo.png';
 import { Link } from 'react-router-dom';
 import axios from '../../config/api/api';
-import Stomp from 'stompjs'
-import SockJS from 'sockjs-client';
 
 function Header(){
     const [values, setValues] = useState({userMenu:"none", checked:false})    
@@ -13,25 +11,13 @@ function Header(){
     
     useEffect(() => {  
         const client = {};      
-        // const client = Stomp.over(new SockJS(process.env.REACT_APP_URL+"/loja/ws", null, {
-        //     headers: {
-        //       "Authorization":  localStorage.getItem("token")
-        //     }
-        //   }));
-
-        // client.connect(
-        //     {"Authorizathion": localStorage.getItem("token")}, 
-        //     ()=>client.subscribe('/topico/notificacoes', (payload)=>console.log("PAILOAD LEGAL: "+payload), {"Authorizathion": localStorage.getItem("token")})
-        // )
-        
         if(localStorage.getItem("usuario"))
-            axios.get("/loja/notificacoes/quantidade").then(notificacao =>
-                setValues({userMenu:"none", checked:false, notificacaoQtd:notificacao.data, client, usuario:JSON.parse(localStorage.getItem("usuario"))})         
-            )
+            // axios.get("/loja/notificacoes/quantidade").then(notificacao =>
+                setValues({userMenu:"none", checked:false, notificacaoQtd:0, usuario:JSON.parse(localStorage.getItem("usuario"))})         
+            // )
         else 
+            
             setValues({userMenu:"none", checked:false}) 
-                
-        // return () => client.disconnect();
     }, [])
 
     const getNotificacoes = () => {
