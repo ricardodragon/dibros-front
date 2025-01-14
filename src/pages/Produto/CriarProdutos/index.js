@@ -12,10 +12,9 @@ function CriarProdutos(){
     const host = process.env.REACT_APP_URL;
 
     useEffect(() => {
-        setValues({lojas:[], produtos:[], idLoja:"", produto:{imagemPath:"", titulo:"", quantidade:"", preco:""}, load:true}); 
-        axios.get(`/loja/produtos?page=${0}&size=${100}&idLoja=${0}`).then(res => 
-            axios.get("/loja/lojas/"+JSON.parse(localStorage.getItem('usuario')).id).then(response =>
-                setValues({lojas:response.data,produtos:res.data, erro: response.data.length<=0?"É preciso criar uma loja em \"Menu > Lojas\"":false, idLoja:id, produto:{imagemPath:"", titulo:"", quantidade:"", preco:""}, load:false})))            
+        axios.get(`/loja/produtos?idUsuario=${JSON.parse(localStorage.getItem('usuario')).id}&idLoja=${0}&page=${0}&size=${100}`).then(res => 
+            axios.get(`/loja/lojas?idUsuario=${JSON.parse(localStorage.getItem('usuario')).id}&page=${0}&size=${100}`).then(response =>
+                setValues({lojas:response.data, produtos:res.data, erro: response.data.length<=0?"É preciso criar uma loja em \"Menu > Lojas\"":false, idLoja:id, produto:{imagemPath:"", titulo:"", quantidade:"", preco:""}, load:false})))            
     }, [id]);
 
     const submit = event => {
@@ -42,12 +41,10 @@ function CriarProdutos(){
 
     return (
         <>
-            {values.load&&<div style={{position:"absolute", width:"100%", height:"100%", backgroundColor:"rgba(173, 181, 189, 50%)", zIndex:"1000" }}>
-                <div className="spinner-border p-1" style={{width: "3rem",height: "3rem", margin:"18% 0 0 47%"}} role="status"></div>                 
+            {values.load&&<div style={{position:"absolute", width:"100%", height:"100%", backgroundColor:"rgba(173, 181, 189, 50%)", zIndex:"1000" }}>                               
             </div>}
             <div className="anuncios-conteudo">
-                <div className={"alert alert-success "+(values.ok?"":"visually-hidden")} role="alert">✅ Operação realizada com sucesso</div>
-                <div className={"alert alert-danger "+(values.erro?"":"visually-hidden")} role="alert">❌ Erro: {values.erro}</div>            
+                {(values.ok||values.erro)&&<div style={{width: "100%", textAlign:"center"}}>{values.ok?"✅ Link enviado com sucesso":"❌ Erro: "+values.erro}</div>}                
                 <form className="mt-4  mb-4" onSubmit={submit}>                
                     <fieldset id="usuario"><legend>{values.produto.id?"Editar":"Criar"} Produto {values.produto.id}</legend>                                      
                         <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} className="p-1" htmlFor='loja'>Loja :</label>  
@@ -70,6 +67,7 @@ function CriarProdutos(){
                     <input type="submit" value="enviar" className="btn btn-sm btn-success mt-2"/>    
                     <input onClick={event => {event.preventDefault();ref.current.value="";setValues({...values, produto:{preco:"", quantidade:"", titulo:"", idLoja:""}})}} type="submit" className="btn btn-sm btn-primary mt-2" value="Limpar"/>                                        
                 </form>
+                
                 <fieldset style={{overflowX:"auto", color:"white"}}><legend>Meus produtos</legend> 
                     <select id="lojas" value={values.idLoja} className='col form-control form-control-sm mt-3 mb-3' onChange={async event=>{event.preventDefault();setValues({...values, idLoja:event.target.value, produtos:(await axios.get("/loja/produtos?idLoja="+event.target.value)).data})}}>                                                            
                         <option value="">Selecione a loja</option>

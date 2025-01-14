@@ -41,8 +41,8 @@ function DetalharPerfil(props) {
                 </figure>
             </h1>
             <div className='seguidores'>
-                <h2 style={{paddingRight:'5%'}}>{values.usuario.seguidores}<p>seguidores</p></h2>
-                <h2>{values.usuario.seguindoQuantidade}<p>seguindo</p></h2>
+                <h2 style={{paddingRight:'5%'}}>{values.usuario.seguidoresQTD}<p>seguidores</p></h2>
+                <h2>{values.usuario.seguindoQTD}<p>seguindo</p></h2>
                 {JSON.parse(localStorage.getItem('usuario'))?.id!==values.usuario.id&&<div id='botoes'>                                            
                     {(values.usuario.seguindo&&<button disabled={true} style={{color:'white', cursor:'default'}}>seguindo</button>)||
                     (<button onClick={event=>axios.post('/loja/seguidores/'+id)}>seguir</button>)}                    
@@ -61,13 +61,13 @@ function DetalharPerfil(props) {
 
         <main id='tabs'>
             <div id="anuncios" className="tab">
-                <ListarAnuncios id={id} onScroll={onScroll}/>
+                <ListarAnuncios onScroll={onScroll}/>
             </div>
             <div id="lojas" className="tab">
-                <ListarLojas id={id} onScroll={onScroll}/>
+                <ListarLojas onScroll={onScroll}/>
             </div>
             <div id="produtos" className="tab">
-                <ListarProdutos id={id} onScroll={onScroll}/>
+                <ListarProdutos onScroll={onScroll}/>
             </div> 
         </main>
     </div>

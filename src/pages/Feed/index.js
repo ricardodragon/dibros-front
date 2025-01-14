@@ -18,13 +18,13 @@ function Feed(props){
             </nav>
             <div className="tabs-feed">
                 <section id="anuncios" className="tab">
-                    {/* <ListarAnuncios/> */}
+                    <ListarAnuncios/>
                 </section>
                 <section id="lojas" className="tab">
-                    {/* <ListarLojas/> */}
+                    <ListarLojas/>
                 </section>
                 <section id="produtos" className="tab">
-                    {/* <ListarProdutos/> */}
+                    <ListarProdutos/>
                 </section>                
             </div>
         </Template>

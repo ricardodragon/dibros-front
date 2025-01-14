@@ -9,7 +9,7 @@ function CriarAnuncios(props){
 
     useEffect(() => {
         setValues({lojas:[], anuncios:[], load:true, anuncio:{preco:"", legenda:""}});
-        axios.get(("/loja/anuncios/usuario/"+JSON.parse(localStorage.getItem('usuario')).id)).then(res => 
+        axios.get("/loja/anuncios/"+JSON.parse(localStorage.getItem("usuario")).id).then(res => 
             axios.get("/loja/lojas/"+JSON.parse(localStorage.getItem('usuario')).id).then(response =>                
                 setValues({lojas:response.data, produtoID:"", anuncios:res.data, erro: response.data.length<=0?"É preciso criar uma loja em \"Menu > Lojas\"":false, load:false, anuncio:{preco:"", legenda:""}})))                  
     }, []);
@@ -19,10 +19,7 @@ function CriarAnuncios(props){
         event.preventDefault();        
         var formData = new FormData();
         formData.append("files", values.anuncio.imagem)
-        //[values.anuncio].concat(values.anuncio.anuncioProdutosDTO).filter(x=>x.imagem).map(x=>x.imagem).forEach(x=>formData.append("files", x));                       
         axios.post('/imagem/imagem', formData).then(imagens =>                        
-            // anuncio.imagemPath = imagens.data[0];
-            // anuncio.anuncioProdutosDTO = anuncio.anuncioProdutosDTO.map(x=>x.imagem?{...x, imagemPath:imagens.data[i++]}:x);
             (!values.anuncio.id?
                 axios.post('/loja/anuncios', {...values.anuncio, imagemPath:imagens.data[0]?imagens.data[0]:values.anuncio.imagemPath}):
                 axios.put('/loja/anuncios/'+values.anuncio.id, {...values.anuncio, imagemPath:imagens.data[0]?imagens.data[0]:values.anuncio.imagemPath}))

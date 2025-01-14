@@ -2,21 +2,24 @@ import { useEffect, useState } from "react";
 import axios from "../../../config/api/api";
 import loader from "./../../../assets/loadinfo.gif";
 import "./listar.css"
+import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 
 function ListarProdutos(props){
     const [values, setValues] = useState({})    
     const host =process.env.REACT_APP_URL;
+    const { id } = useParams();
 
-    useEffect(() =>         
-        axios.get(`/loja/produtos${props.id?`?idUsuario=${props.id}&&`:'/public?'}page=${0}&size=${10}&idLoja=${0}`).then(produtos =>
-            setValues({produtos:produtos.data, total:produtos.headers['total'], usuario:JSON.parse(localStorage.getItem('usuario'))})            
+    useEffect(() => { 
+        axios.get('/loja/produtos'+(id?`?idUsuario=${id}&&`:localStorage.getItem("token")?'?':'/public?')+`page=${0}&size=${10}`).then(produtos =>
+            setValues({produtos:produtos.data, page:0, usuario:JSON.parse(localStorage.getItem('usuario'))})            
         )        
-    , [props.id]);        
+    }, [id]);        
     
-    const handlerScroll = (event) => {   
-        if((event.target.scrollHeight - event.target.scrollTop)<=event.target.clientHeight&&values.produtos&&values.total&&values.produtos.length<values.total){     
-            axios.get(`/loja/produtos${props.id?`?idUsuario=${props.id}&&`:'/public?'}page=${values.produtos.length/10}&size=${10}&idLoja=${0}`).then(produtos =>{ 
-                setValues({...values, produtos:values.produtos.concat(produtos.data), total:produtos.headers.total})
+    const handlerScroll = (event) => {  
+        const page = values.page+1; 
+        if((event.target.scrollHeight - event.target.scrollTop)-10<=event.target.clientHeight&&values.produtos){  
+            axios.get('/loja/produtos'+(id?`?idUsuario=${id}&&`:localStorage.getItem("token")?'?':'/public?')+`page=${page}&size=${10}`).then(produtos =>{ 
+                setValues({...values, page, produtos:values.produtos.concat(produtos.data)})
             });
         }
         if(props.onScroll)props.onScroll(event);

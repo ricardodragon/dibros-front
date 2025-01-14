@@ -9,7 +9,7 @@ function AnuncioDetalhes(props){
     const host = process.env.REACT_APP_URL;
     const { id } = useParams();
 
-    useEffect(() => axios.get("/loja/anuncios/"+id).then(res => setValues({anuncio:res.data})), [id]);
+    useEffect(() => axios.get("/loja/anuncios/public/"+id).then(res => setValues({anuncio:res.data})), [id]);
 
     const getLocation = () => 
         navigator.geolocation?navigator.geolocation.getCurrentPosition(position=>{

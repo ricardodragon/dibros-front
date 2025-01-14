@@ -1,25 +1,27 @@
-import { useEffect, useState } from 'react';
+    import { useEffect, useState } from 'react';
 
 import "./lojas.css"
 import axios from '../../../config/api/api';
 import loader from "./../../../assets/loadinfo.gif";
+import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
 
 function ListarLojas(props){
          
     const [values, setValues] = useState({lojas:[]})    
     const host = process.env.REACT_APP_URL;
-
+    const { id } = useParams();
 
     useEffect(() => 
-        axios.get(`${props.id?'/loja/lojas/'+props.id:'/loja/lojas/public'}?page=${0}&size=${10}`).then(lojas =>             
-            setValues({lojas:lojas.data, usuario:JSON.parse(localStorage.getItem('usuario')), total: lojas.headers['total']})                
+        axios.get('/loja/lojas'+(id?`?idUsuario=${id}&`:localStorage.getItem("token")?'?':'/public?')+`page=${0}&size=${10}`).then(lojas =>             
+            setValues({lojas:lojas.data, page:0, usuario:JSON.parse(localStorage.getItem('usuario'))})                
         )
-    , [props.id]);      
+    , [id]);      
 
     const handlerScroll = (event) => {  
+        const page = values.page+1; 
         if((event.target.scrollHeight - event.target.scrollTop)<=event.target.clientHeight&&values.lojas&&values.total&&values.lojas.length<values.total){                                                                   
-            axios.get(`${props.id?'/loja/lojas/'+props.id:'/loja/lojas/public'}?page=${values.lojas.length/10}&size=${10}`).then(lojas =>
-                setValues({...values, lojas:values.lojas.concat(lojas.data), total:lojas.headers.total})                
+            axios.get('/loja/lojas'+(id?`?idUsuario=${id}&`:localStorage.getItem("token")?'?':'/public?')+`page=${page}&size=${10}`).then(lojas =>
+                setValues({...values, page, lojas:values.lojas.concat(lojas.data), total:lojas.headers.total})                
             )
         }
         if(props.onScroll)props.onScroll(event);
