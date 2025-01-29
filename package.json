@@ -12,9 +12,6 @@
     "react-router-dom": "^5.2.0",
     "react-router-hash-link": "^2.4.3",
     "react-scripts": "4.0.3",
-    "react-stomp": "^5.1.0",
-    "sockjs": "^0.3.24",
-    "sockjs-client": "^1.6.1",
     "web-vitals": "^1.1.0"
   },
   "scripts": {
