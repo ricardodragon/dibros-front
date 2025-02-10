@@ -14,11 +14,12 @@ function ListarAnuncios(props){
     const host = process.env.REACT_APP_URL;
     const { id } = useParams();
 
-    useEffect(() => {
-        axios.get('/loja/anuncios'+(localStorage.getItem("token")?(id?'?idUsuario='+id+'&':'?'):'/public?')+'page=0&size=10').then(anuncios =>     
+    //No mundo perfeito não existem blocos de chaves !{...}!
+    useEffect(() => 
+        axios.get('/loja/anuncios'+(localStorage.getItem("token")?(id?'?idUsuario='+id+'&':'?'):'/public?')+'page=0').then(anuncios =>     
             setValues({anuncios:anuncios.data, page:0, usuario:JSON.parse(localStorage.getItem('usuario')), load:false})            
         )
-    }, [id])    
+    , [id])    
 
     const handlerScroll = (event) => {
         if(!values.load&&(event.target.scrollHeight - event.target.scrollTop)-10<=event.target.clientHeight&&values.anuncios!==undefined){  
