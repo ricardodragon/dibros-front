@@ -1,4 +1,5 @@
 import axios from '../../../config/api/api';
+import loader from "./../../../assets/loadinfo.gif";
 import { useEffect, useRef, useState } from 'react';
 import { Link } from "react-router-dom";
 import './produtos.css';
@@ -47,7 +48,9 @@ function CriarProdutos(){
 
     return (
         <>
-            {values.load&&<div style={{position:"absolute", width:"100%", height:"100%", backgroundColor:"rgba(173, 181, 189, 50%)", zIndex:"1000" }}></div>}
+            {values.load&&<div style={{position:"absolute", width:"100%", height:"100%", backgroundColor:"rgba(173, 181, 189, 50%)", zIndex:"1" }}>
+                <img style={{height:"5em", position:'relative', top:'38%', left:'42%'}} src={loader} alt="loading..."/>
+            </div>}
             <div style={{overflowX:"hidden", overflowΥ:'scroll', height:'89vh'}}>
                 {(values.ok||values.erro)&&<div style={{width: "100%", textAlign:"center"}}>{values.ok?"✅ Operação realizada com sucesso":"❌ Erro: "+values.erro}</div>}                
                 {values.produto&&<form onSubmit={event=>{event.preventDefault();setValues({...values, load:true});values.produto.id?put():post()}}>                

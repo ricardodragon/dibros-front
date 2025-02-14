@@ -10,8 +10,8 @@ function Colaboradores(props) {
 
     useEffect(() =>{
         setValues({loader:true})
-        axios.get(`/loja/lojas/usuario/${props.idLoja}?page=${0}&size=${10}`).then(res => setValues({colaboradores:res.data, loader:false}))
-    }, [props.idLoja]);
+        return props.usuarioLoja?axios.get(`/loja/lojas/usuarios/${props.usuarioLoja.idLoja}?page=${0}&size=${10}`).then(res => setValues({colaboradores:res.data, loader:false})):''
+    }, [props.usuarioLoja]);
 
     return( 
         <dialog onClick={event=>document.getElementById("modal").close()} id="modal" style={{borderRadius:"0.5%", borderStyle:"none", width:"70%", height:'70%', textAlign:'center'}}>
@@ -19,11 +19,11 @@ function Colaboradores(props) {
                 
                 {values.loader&&<img style={{height:"5em", top:"50%"}} src={loader} alt="loading..."/>}
                 
-                <button style={{width:'100%', cursor:'pointer'}} onClick={event=>setValues({...values, colabEmail:values.colabEmail===undefined?"":undefined})}>+ Adicionar colaborador</button>
+                {props.usuarioLoja&&props.usuarioLoja.admin&&<button style={{width:'100%', cursor:'pointer'}} onClick={event=>setValues({...values, colabEmail:values.colabEmail===undefined?"":undefined})}>+ Adicionar colaborador</button>}
                 
                 {values.colabEmail!==undefined&&<fieldset style={{margin:'0', border:'solid 1px', marginBottom:'3%'}}>
                     <div style={{textAlign:'left'}}>
-                        <form onSubmit={async event=>{event.preventDefault();setValues({...values, colaborador:(await axios.get('/loja/lojas/usuario?email='+values.colabEmail+'&idLoja='+props.idLoja)).data})}}>
+                        <form onSubmit={async event=>{event.preventDefault();setValues({...values, colaborador:(await axios.get('/loja/lojas/usuarios/email?email='+values.colabEmail+'&idLoja='+props.usuarioLoja.idLoja)).data})}}>
                             <input type="email" required placeholder="email do novo colaborador" value={values.colabEmail} onChange={event=>setValues({...values, colabEmail:event.target.value})} style={{width:'90%'}}/><input value='🔍' type="submit" style={{width:'5%', cursor:'pointer'}}/>
                         </form>
                     </div>
@@ -35,14 +35,14 @@ function Colaboradores(props) {
                                 {values.colaborador.usuarioDTO.nome&&<p style={{whiteSpace: "nowrap", fontSize:"8pt", fontWeight:"bolder", textOverflow: "ellipsis", overflow:"hidden", marginBottom:"0"}}>{values.colaborador.usuarioDTO.nome}</p>}
                                 {values.colaborador.usuarioDTO.email&&<p style={{whiteSpace: "nowrap", fontSize:"8pt", fontWeight:"bolder", textOverflow: "ellipsis", overflow:"hidden", marginBottom:"0"}}>{values.colaborador.usuarioDTO.email}</p>}
                             </div>    
-                            <button style={{width:'40%'}} disabled={values.colaborador.conviteAceito!==null}>{values.colaborador.conviteAceito===null?'convidar':values.colaborador.conviteAceito?'colaborador':'aguardando'}</button>                                
+                            <button style={{width:'40%', cursor:'pointer'}} disabled={values.colaborador.conviteAceito!==null}>{values.colaborador.conviteAceito===null?'convidar':values.colaborador.conviteAceito?'colaborador':'aguardando'}</button>                                
                             <hr></hr>
                         </div>
                     </div>}
                 </fieldset>}
 
                 {values.colaboradores&&values.colaboradores.map(userLoja=>
-                    <div style={{textAlign:'left'}}>
+                    <div style={{textAlign:'left'}} key={userLoja.idUsuario+''+userLoja.idLoja}>
                         <Link style={{display:'inline', verticalAlign:'top'}} to={"/perfil/"+userLoja.usuarioDTO.id}><img alt="Imagem perfil user" src={userLoja.usuarioDTO.imagemPath?host+userLoja.usuarioDTO.imagemPath:"https://freesvg.org/img/abstract-user-flat-3.png"} style={{borderRadius: "50%", width:"2.7em", height:"2.7em"}}/></Link>                                      
                         <div style={{display:'inline-block', width:'80%'}}>
                             <Link to={"/perfil/"+userLoja.usuarioDTO.id}>
@@ -51,12 +51,12 @@ function Colaboradores(props) {
                             </Link>
                             <p style={{whiteSpace:'break-spaces', lineHeight:'normal'}}></p>
                             <button style={{display:'inline-block', width:'47%'}} disabled>{userLoja.conviteAceito?'colaborador':'aguardando'}</button>
-                            <button style={{display:'inline-block', color:'white', backgroundColor:'rgba(255, 0, 0, 0.70)', width:'47%'}}>{userLoja.conviteAceito?'excluir':'cancelar'}</button>
-                            {/* <span style={{fontSize:'8pt', float:'right'}}>12/06/2025 22:42</span> */}
+                            {props.usuarioLoja.admin&&props.usuarioLoja.idUsuario!==userLoja.idUsuario&&<button onClick={event=> axios.delete(`/lojas/usuarios/${userLoja.idUsuario}/${userLoja.idLoja}`)} style={{display:'inline-block', color:'white', backgroundColor:'rgba(255, 0, 0, 0.70)', width:'47%', cursor:'pointer'}}>{userLoja.conviteAceito?'excluir':'cancelar'}</button>}
                         </div>            
                         <hr></hr>
                     </div>
                 )}
+                
             </div>
         </dialog>)
 

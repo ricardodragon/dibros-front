@@ -1,6 +1,7 @@
 import axios from '../../../config/api/api';
 import React, { useEffect, useRef, useState } from 'react';
 import Colaboradores from './Colaboradores';
+import loader from "./../../../assets/loadinfo.gif";
 
 function CriarLojas() {
     
@@ -10,7 +11,7 @@ function CriarLojas() {
 
     useEffect(() =>{
         setValues({lojas:[], loja:{nome:"", imagemPath:"", imagem:""}, load:true})
-        axios.get(`/loja/lojas?page=${0}&size=${10}&idUsuario=`+JSON.parse(localStorage.getItem("usuario")).id).then(res => setValues({lojas:res.data, load:false, loja:{nome:"", imagemPath:"", imagem:""}}))
+        axios.get(`/loja/lojas/usuarios?page=${0}&size=${10}&idUsuario=`+JSON.parse(localStorage.getItem("usuario")).id).then(res => setValues({usuarioLojas:res.data, load:false, loja:{nome:"", imagemPath:"", imagem:""}}))
     }, []);
 
     const getLocation = () => navigator.geolocation?
@@ -48,13 +49,14 @@ function CriarLojas() {
         .catch(error => setValues({...values, erro:error.response.data.message}))
 
     return <>
-        {values.load&&<div style={{position:"absolute", width:"100%", height:"100%", backgroundColor:"rgba(173, 181, 189, 50%)", zIndex:"1000" }}>
-            <div className="spinner-border p-1" style={{width: "3rem",height: "3rem", margin:"18% 0 0 47%"}} role="status"></div>                 
+        {values.load&&<div style={{position:"absolute", width:"100%", height:"100%", backgroundColor:"rgba(173, 181, 189, 50%)", zIndex:"1" }}>
+            <img style={{height:"5em", position:'relative', top:'38%', left:'42%'}} src={loader} alt="loading..."/>
         </div>}
         <div style={{overflowX:"hidden", overflowΥ:'scroll', height:'89vh'}}>        
             {(values.ok||values.erro)&&<div style={{width: "100%", textAlign:"center"}}>{values.ok?"✅ Operação realizada com sucesso":"❌ Erro: "+values.erro}</div>}                
             <form onSubmit={event=>{event.preventDefault();setValues({...values, load:true});values.loja.id?put():post()}}> 
-                <fieldset><legend>{values.loja.id?"Editar":"Criar"} Loja {values.loja.id}</legend>                                    
+                <fieldset>
+                    <legend>{values.loja.id?"Editar":"Criar"} Loja {values.loja.id}</legend>                                    
                     <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} htmlFor="nome">Nome : </label>            
                     <input required style={{width:"75%"}} id="nome" placeholder="nome da loja" value={values.loja.nome} type="text" onChange={event=>setValues({...values, loja:{...values.loja, nome:event.target.value}})}/>                                                                      
                 </fieldset>
@@ -71,29 +73,31 @@ function CriarLojas() {
                 <input onClick={event => {event.preventDefault();setValues({...values, loja:{nome:"", imagemPath:"", imagem:""}})}} type="submit" value="Limpar"/>                        
             </form>
 
-            {values.lojas&&
+            {values.usuarioLojas&&
                 <table style={{width: "100%", textAlign:'center'}}>
                     <thead>
                         <tr> 
                             <th></th>
-                            <th>Nome</th>
-                            <th>Colaboradores</th>
+                            <th>nome</th>
+                            <th>adm</th>
+                            <th>colaboradores</th>
                             <th>EXCLUIR</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {values.lojas.map(loja=>
-                            <tr key={loja.id}>
-                                <td ><img alt={"Foto loja : " +loja.nome} src={host+loja.imagemPath} style={{borderRadius: "50%", width:"2em", height:"2em"}}/></td>
-                                <td>{loja.nome}</td>
-                                <td style={{cursor:'pointer'}} onClick={event=>{setValues({...values, colaboradoresModal:loja.id});document.getElementById("modal").showModal();}}>{loja.colaboradores}</td>
-                                <td style={{cursor:"pointer"}} onClick={event=>{event.stopPropagation();event.preventDefault();excluirLoja(loja.id)}}>❌</td>
+                        {values.usuarioLojas.map(usuarioLoja=>
+                            <tr key={usuarioLoja.lojaDTO.id}>
+                                <td ><img alt={"Foto loja : " +usuarioLoja.lojaDTO.nome} src={host+usuarioLoja.lojaDTO.imagemPath} style={{borderRadius: "50%", width:"2em", height:"2em"}}/></td>
+                                <td>{usuarioLoja.lojaDTO.nome}</td>
+                                <td>{usuarioLoja.admin?'SIM':'NÃO'}</td>
+                                <td style={{cursor:'pointer', textDecoration:"underline"}} onClick={event=>{event.preventDefault();setValues({...values, usuarioLoja:usuarioLoja});document.getElementById("modal").showModal();}}><a href='/'>COLABORADORES</a></td>
+                                <td style={{cursor:"pointer"}} onClick={event=>{event.preventDefault();excluirLoja(usuarioLoja.lojaDTO.id)}}>{usuarioLoja.admin?'❌':'apenas adm'}</td>
                             </tr>                                                        
                         )}
                     </tbody>
                 </table>
             }
-            <Colaboradores idLoja={values.colaboradoresModal}/>
+            <Colaboradores usuarioLoja={values.usuarioLoja}/>
         </div>        
     </>
 }

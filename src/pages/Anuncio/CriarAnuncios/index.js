@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import axios from "../../../config/api/api";
+import loader from "./../../../assets/loadinfo.gif";
 
 function CriarAnuncios(props){
     
@@ -56,8 +57,8 @@ function CriarAnuncios(props){
     }
     return (
         <div>            
-            {values.load&&<div style={{position:"absolute", width:"100%", height:"100%", backgroundColor:"rgba(173, 181, 189, 50%)", zIndex:"1000" }}>
-                <div className="spinner-border p-1" style={{width: "3rem",height: "3rem", margin:"18% 0 0 47%"}} role="status"></div>                 
+            {values.load&&<div style={{position:"absolute", width:"100%", height:"100%", backgroundColor:"rgba(173, 181, 189, 50%)", zIndex:"1" }}>
+                <img style={{height:"5em", position:'relative', top:'38%', left:'42%'}} src={loader} alt="loading..."/>
             </div>}
             <div className='anuncios-conteudo'>
                 <div className={"alert alert-success "+(values.ok?"":"visually-hidden")} role="alert">✅ Anuncio criado com sucesso</div>
