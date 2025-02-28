@@ -62,13 +62,13 @@ function DetalharPerfil(props) {
 
         <main id='tabs'>
             <div id="anuncios" className="tab">
-                <ListarAnuncios onScroll={onScroll}/>
+                <ListarAnuncios onScroll={onScroll} url={`/loja/anuncios?idUsuario=${id}&`}/>
             </div>
             <div id="lojas" className="tab">
                 <ListarLojas onScroll={onScroll}/>
             </div>
             <div id="produtos" className="tab">
-                <ListarProdutos onScroll={onScroll}/>
+                <ListarProdutos onScroll={onScroll} url={`/loja/produtos?idUsuario=${id}&`}/>
             </div> 
         </main>
     </div>

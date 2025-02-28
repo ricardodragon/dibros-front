@@ -18,13 +18,13 @@ function Feed(props){
             </nav>
             <div className="tabs-feed">
                 <section id="anuncios" className="tab">
-                    <ListarAnuncios/>
+                    <ListarAnuncios url={'/loja/anuncios'+(localStorage.getItem("token")?'?':'/public?')}/>
                 </section>
                 <section id="lojas" className="tab">
                     <ListarLojas/>
                 </section>
                 <section id="produtos" className="tab">
-                    <ListarProdutos/>
+                    <ListarProdutos url={'/loja/produtos'+(localStorage.getItem("token")?'?':'/public?')}/>
                 </section>                
             </div>
         </Template>

@@ -22,14 +22,14 @@ function Routes(props){
                 {/* Estrutra Auth etc */}
                 <Route exact path="/login" component={Login}></Route>
                 <Route exact path="/nova-senha/:token" component={NovaSenha}></Route>
-                <Route exact path="/" component={Feed}/>            
-                <Route exact path="/loja/:id" component={LojaDetalhes}/>            
+                <Route exact path="/" component={Feed}/>                                        
                 <Route exact path="/anuncio-detalhes/:id" render={(p) => <AnuncioDetalhes load={props.load} {...p}/>}/>
 
                 {/* e-commerce dibros */}
                 <PrivateRoutes exact path="/perfil/:id" load={props.load} nome="Indentificação usuário" component={DetalharPerfil}/>
                 <PrivateRoutes exact path="/perfil/editar/:id" load={props.load} nome="Indentificação usuário" component={EditarPerfil}/>
                 <PrivateRoutes exact path="/lojas" load={props.load} nome={"Lojas"} component={CriarLojas}/>
+                <PrivateRoutes exact path="/loja/:id" component={LojaDetalhes}/>
                 <PrivateRoutes exact path="/produtos/:id" load={props.load} nome={"Produtos"} component={CriarProdutos}/>
                 <PrivateRoutes exact path="/anuncio" load={props.load} nome={"Gerenciamento de anuncios"} component={Anuncio}/>                                 
 

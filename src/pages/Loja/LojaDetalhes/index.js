@@ -1,21 +1,63 @@
-import Template from "../../../estrutura/Template";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+import axios from '../../../config/api/api'
+import './loja-detalhes.css'
+import { HashLink } from "react-router-hash-link";
+import ListarAnuncios from "../../Anuncio/ListarAnuncios";
+import ListarProdutos from "../../Produto/ListarProdutos";
+import Colaboradores from "./Colaboradores";
 
 function LojaDetalhes(props){
+ 
+    const [values, setValues] = useState({})    
+    const { id } = useParams();
+    const host = process.env.REACT_APP_URL;
+        
+    useEffect(() =>{
+        axios.get("/loja/lojas/perfil/"+id).then(loja => setValues({loja:loja.data, scroll:0}))
+    }, [id]);   
 
     return(
-        <Template>
-            <header style={{paddingLeft: "9%"}}>
-                <img alt={"Foto da loja : "} src="https://logodetimes.com/times/corinthians/logo-do-corinthians-512.png" style={{borderRadius: "50%", width:"3em", height:"3em"}}/>
-                <h3 style={{display: "inline", fontSize:"11pt", paddingLeft:'2%'}}>Corinthans store</h3>                             
+        <div id="" style={{height:'100%'}}>   
+            {values.loja&&<header id='loja-perfil-header'>
+                <h1>
+                    <figure>
+                        <img alt={"Foto da loja : "} src={values.loja.imagemPath?host+values.loja.imagemPath:"https://freesvg.org/img/abstract-user-flat-3.png"}/>
+                        <figcaption style={{width:'70%'}}>{values.loja.nome}</figcaption>
+                    </figure>
+                </h1>
+                <div className='loja-seguidores'>
+                    <h2 >{values.loja.seguidores}<p>seguidores</p></h2>
+                    <h2>35<p>vendas</p></h2>
+                    <div id='botoes'>                                            
+                        {(!values.loja.seguindo&&
+                            <button onClick={event=>axios.post('/loja/seguidores/'+id).then(r=>setValues({...values, loja:{...values.loja, seguindo:false}}))}>seguir</button>)||
+                            <button disabled={true} style={{color:'white', cursor:'default'}}>seguindo</button>}                    
+                    </div>
+                </div>
             </header>
-            <nav id="menu-feed">
+            }
+
+            <nav className="menu-feed">
                 <ul>
-                    <li className="col-4" >📢 anuncios</li>
-                    <li className="col-4" >📦 produtos</li>
-                    <li className="col-4" >👥 colaboradores</li>
+                    <HashLink to="#anuncios"><div style={{width:'33.33%', display:'inline-block'}}><li className='perfil-menu-opaciti'>📢 anuncios</li><li className='perfil-menu'>📢 anuncios</li></div></HashLink>
+                    <HashLink to="#produtos"><div style={{width:'33.33%', display:'inline-block'}}><li className='perfil-menu-opaciti'>📦 produtos</li><li className='perfil-menu'>📦 produtos</li></div></HashLink>                
+                    <HashLink to="#colaboradores"><div style={{width:'33.33%', display:'inline-block'}}><li className='perfil-menu-opaciti'>👥 colaboradores</li><li className='perfil-menu'>👥 colaboradores</li></div></HashLink>
                 </ul>
-            </nav>
-        </Template>
+            </nav> 
+
+            <main id='tabs'>
+                <div id="anuncios" className="tab">
+                    <ListarAnuncios url={`/loja/anuncios/loja/${id}?`}/>
+                </div>                
+                <div id="produtos" className="tab">
+                    <ListarProdutos url={`/loja/produtos?idLoja=${id}&`}/>
+                </div>
+                <div id="colaboradores" className="tab">
+                    <Colaboradores id={id}/>
+                </div> 
+            </main>    
+        </div>
     )
 }
 

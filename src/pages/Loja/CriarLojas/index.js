@@ -2,6 +2,7 @@ import axios from '../../../config/api/api';
 import React, { useEffect, useRef, useState } from 'react';
 import Colaboradores from './Colaboradores';
 import loader from "./../../../assets/loadinfo.gif";
+import './criarLojas.css';
 
 function CriarLojas() {
     
@@ -74,23 +75,23 @@ function CriarLojas() {
             </form>
 
             {values.usuarioLojas&&
-                <table style={{width: "100%", textAlign:'center'}}>
+                <table id="criar-lojas" style={{textAlign:'center', width:'100%'}}>
                     <thead>
                         <tr> 
                             <th></th>
                             <th>nome</th>
                             <th>adm</th>
                             <th>colaboradores</th>
-                            <th>EXCLUIR</th>
+                            <th>excluir</th>
                         </tr>
                     </thead>
                     <tbody>
                         {values.usuarioLojas.map(usuarioLoja=>
                             <tr key={usuarioLoja.lojaDTO.id}>
-                                <td ><img alt={"Foto loja : " +usuarioLoja.lojaDTO.nome} src={host+usuarioLoja.lojaDTO.imagemPath} style={{borderRadius: "50%", width:"2em", height:"2em"}}/></td>
+                                <td>{(usuarioLoja.lojaDTO.imagemPath&&<img alt={"Foto loja : " +usuarioLoja.lojaDTO.nome} src={host+usuarioLoja.lojaDTO.imagemPath} style={{borderRadius: "50%", width:"1.8em", height:"1.8em"}}/>)||'🏬'}</td>
                                 <td>{usuarioLoja.lojaDTO.nome}</td>
-                                <td>{usuarioLoja.admin?'SIM':'NÃO'}</td>
-                                <td style={{cursor:'pointer', textDecoration:"underline"}} onClick={event=>{event.preventDefault();setValues({...values, usuarioLoja:usuarioLoja});document.getElementById("modal").showModal();}}><a href='/'>COLABORADORES</a></td>
+                                <td>{usuarioLoja.admin?'✅':'❌'}</td>
+                                <td style={{cursor:'pointer'}} onClick={event=>{event.preventDefault();setValues({...values, usuarioLoja:usuarioLoja});document.getElementById("modal").showModal();}}>👥</td>
                                 <td style={{cursor:"pointer"}} onClick={event=>{event.preventDefault();excluirLoja(usuarioLoja.lojaDTO.id)}}>{usuarioLoja.admin?'❌':'apenas adm'}</td>
                             </tr>                                                        
                         )}

@@ -6,6 +6,7 @@ import axios from '../../config/api/api';
 import Seguidor from './Seguidor';
 import loader from "./../../assets/loadinfo.gif";
 import Seguido from './Seguido';
+import Colaborador from './Colaborador';
 
 function Header(){
     const [values, setValues] = useState({})
@@ -23,9 +24,7 @@ function Header(){
 
     useEffect(() => {
         const socket = new WebSocket(`${host}/loja/notificacoes/ws?Authorization=${localStorage.getItem("token")}`);          
-        socket.addEventListener("message", (event) => 
-            event.data!==''?setNotificacoesQTD(notificacoesQTD+1):undefined
-        );              
+        socket.addEventListener("message", (event) => setNotificacoesQTD(notificacoesQTD+1));              
         return () => socket.readyState===WebSocket.OPEN?socket.close():undefined
     }, [notificacoesQTD, host])    
 
@@ -47,6 +46,10 @@ function Header(){
         setValues({...values, notificacoes:values.notificacoes.map((x,i)=>index===i?{...x, tipo:'SEGUIDO_ACEITO'}:x)})
     }
 
+    const removeNotificacao=index=>{
+        setValues({...values, notificacoes:values.notificacoes.filter((x,i)=>index!==i)})
+    }
+
     return (
         <header className="header-app" onClick={event=>{event.stopPropagation();document.getElementById("user-menu").style.display="none"}}>
             <Link to="/"><img className="logo" alt="" src={logo}/></Link> 
@@ -65,9 +68,10 @@ function Header(){
                 
                 <div id="notificacao-menu">
                     {values.notificacoes&&values.notificacoes.map((n, index)=>{
-                        if(n.tipo==='SEGUIDO') return <Seguidor key={index} index={index} setNotificacao={setNotificacao} id={n.id}/>;
-                        if(n.tipo==='SEGUIDO_ACEITO') return <Seguido key={index} id={n.id}/>;
+                        if(n.tipo==='SEGUIDO') return <Seguidor key={index} index={index} setNotificacao={setNotificacao} removeNotificacao={removeNotificacao} id={n.id}/>;
+                        if(n.tipo==='SEGUIDO_ACEITO') return <Seguido key={index} id={n.id} />;
                         if(n.tipo==='SEGUIDOR_ACEITO') return <Seguido key={index} id={n.id}/>;
+                        if(n.tipo==='LOJA') return <Colaborador key={index} id={n.id}/>;
                         else return '';
                     })}
                     {

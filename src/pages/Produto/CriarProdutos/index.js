@@ -14,8 +14,8 @@ function CriarProdutos(){
     const host = process.env.REACT_APP_URL;
     
     useEffect(() => 
-        axios.get(`/loja/produtos?idUsuario=${id}&idLoja=${idLoja}&page=${0}&size=${100}`).then(produtos => 
-            axios.get(`/loja/lojas?idUsuario=${id}&page=${0}&size=${100}`).then(lojas =>
+        axios.get(`/loja/produtos?idUsuario=${id}&idLoja=${idLoja}&page=${0}&size=${99}`).then(produtos => 
+            axios.get(`/loja/lojas?idUsuario=${id}&page=${0}&size=${99}`).then(lojas =>
                 setValues({lojas:lojas.data, produtos:produtos.data, erro: lojas.data.length<=0?"É preciso criar uma loja em \"Menu > Lojas\"":false, idLoja:id, produto:{titulo:'', quantidade:'', preco:''}, load:false})))            
     , [idLoja, id]);    
 

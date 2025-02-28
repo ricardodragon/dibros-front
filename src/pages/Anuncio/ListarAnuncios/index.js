@@ -4,7 +4,6 @@ import "./anuncios.css"
 import axios from '../../../config/api/api';
 import { Link } from "react-router-dom";
 import loader from "./../../../assets/loadinfo.gif";
-import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
 import AnuncioComentarios from '../AnuncioComentarios';
 
 
@@ -12,20 +11,23 @@ function ListarAnuncios(props){
          
     const [values, setValues] = useState({})    
     const host = process.env.REACT_APP_URL;
-    const { id } = useParams();
 
-    //No mundo perfeito não existem blocos de chaves !{...}!
+    //No mundo perfeito não existem blocos de chaves !{...}! lambidinha
     useEffect(() => 
-        axios.get('/loja/anuncios'+(localStorage.getItem("token")?(id?'?idUsuario='+id+'&':'?'):'/public?')+'page=0').then(anuncios =>     
-            setValues({anuncios:anuncios.data, page:0, usuario:JSON.parse(localStorage.getItem('usuario')), load:false})            
-        )
-    , [id])    
+        axios.get(props.url+'page=0').then(anuncios => setValues({
+            anuncios:anuncios.data, 
+            page:0, 
+            usuario:JSON.parse(localStorage.getItem('usuario')), 
+            load:false
+        })            
+)
+    , [props.url])    
 
     const handlerScroll = (event) => {
         if(!values.load&&(event.target.scrollHeight - event.target.scrollTop)-10<=event.target.clientHeight&&values.anuncios!==undefined){  
             setValues({...values, load:true});  
             const page = values.page+1; 
-            axios.get('/loja/anuncios'+(localStorage.getItem("token")?`?idUsuario=${id?id:0}&`:'/public?')+`page=${page}&size=10`).then(anuncios =>
+            axios.get(props.url+`page=${page}&size=10`).then(anuncios =>
                 setValues({...values, page, loader:anuncios.data.length, anuncios:values.anuncios.concat(anuncios.data), load:false})
             );
         }
@@ -47,9 +49,9 @@ function ListarAnuncios(props){
             {values.anuncios&&values.anuncios.filter(x=>x.legenda!=="vai me perder").map((anuncio, index) =>            
                 <div className="card-anuncio" key={"anuncio-"+index}>                  
                     <header style={{padding: "2%"}}>
-                        <Link style={{display:'inline'}} to={anuncio.lojaDTO?"":"/perfil/"+anuncio.usuarioDTO}><img alt={"Foto anuncio : " +anuncio.legenda} src={host+(anuncio.lojaDTO.imagemPath?anuncio.lojaDTO.imagemPath:anuncio.usuarioDTO.imagemPath)} style={{borderRadius: "50%", width:"3em", height:"3em"}}/></Link>
+                        <Link style={{display:'inline'}} to={anuncio.lojaDTO?"/loja/"+anuncio.lojaDTO.id:"/perfil/"+anuncio.usuarioDTO}><img alt={"Foto anuncio : " +anuncio.legenda} src={host+(anuncio.lojaDTO.imagemPath?anuncio.lojaDTO.imagemPath:anuncio.usuarioDTO.imagemPath)} style={{borderRadius: "50%", width:"3em", height:"3em"}}/></Link>
                         <div style={{fontWeight:"bolder", float:"right", cursor:"pointer"}}>⋮</div>
-                        <h3 style={{display: "inline", fontSize:"11pt", verticalAlign:'top', whiteSpace:'break-spaces'}}>{anuncio.lojaDTO.nome?anuncio.lojaDTO.nome:anuncio.usuarioDTO.nome}</h3>                             
+                        <Link style={{display:'inline'}} to={anuncio.lojaDTO?"/loja/"+anuncio.lojaDTO.id:"/perfil/"+anuncio.usuarioDTO}><h3 style={{display: "inline", fontSize:"11pt", verticalAlign:'top', whiteSpace:'break-spaces', fontWeight:'bolder'}}>{anuncio.lojaDTO.nome?anuncio.lojaDTO.nome:anuncio.usuarioDTO.nome}</h3></Link>                             
                     </header>
                     <h2 style={{paddingLeft: "2.5%", fontSize:"12pt", whiteSpace:'break-spaces'}}>{anuncio.legenda}</h2>                                                                    
 
@@ -60,7 +62,7 @@ function ListarAnuncios(props){
                     <div style={{fontWeight:"bolder", textAlign:"center", fontSize:"10pt", padding:"1%"}}>
                         R$ {anuncio.preco},00
                     </div>
-                    <div style={{fontSize:"10pt", padding:"1%"}} onClick={event=>setValues({...values, anuncios:values.anuncios.map((x, indexA)=>indexA===index?{...x, expand:!x.expand}:x)})}>
+                    <div style={{fontSize:"10pt", padding:"1%", fontWeight:'bolder'}} onClick={event=>setValues({...values, anuncios:values.anuncios.map((x, indexA)=>indexA===index?{...x, expand:!x.expand}:x)})}>
                         <div style={{display:"inline-block", textOverflow: "ellipsis", maxWidth: "16ch", overflow: "hidden", whiteSpace: "nowrap", cursor: "pointer"}}>{anuncio.likeQTD} curtidas</div>
                         <div style={{float:"right", textOverflow: "ellipsis", maxWidth: "16ch", overflow: "hidden", whiteSpace: "nowrap", cursor: "pointer"}}>{anuncio.comentarioQTD} comentarios</div>
                     </div>
