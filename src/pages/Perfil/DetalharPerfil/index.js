@@ -45,7 +45,7 @@ function DetalharPerfil(props) {
                 <h2>{values.usuario.seguindoQTD}<p>seguindo</p></h2>
                 {JSON.parse(localStorage.getItem('usuario'))?.id!==values.usuario.id&&<div id='botoes' style={{cursor:'pointer'}}>                                            
                     {(values.usuario.seguindo===null&&<button onClick={event=>axios.post('/loja/seguidores/'+id).then(r=>setValues({...values, usuario:{...values.usuario, seguindo:false}}))}>seguir</button>)||
-                    (values.usuario.seguindo&&<button disabled={true} style={{color:'white', cursor:'default'}}>seguindo</button>)||
+                    (values.usuario.seguindo&&<button disabled={true} style={{color:'white', cursor:'default'}}>parar de seguir</button>)||
                     (!values.usuario.seguindo&&<button style={{color:'white'}} disabled>aguardando</button>)}                    
                     <button >mensagem</button>
                 </div>}

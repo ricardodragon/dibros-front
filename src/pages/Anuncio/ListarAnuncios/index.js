@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 import loader from "./../../../assets/loadinfo.gif";
 import AnuncioComentarios from '../AnuncioComentarios';
 
-
 function ListarAnuncios(props){
          
     const [values, setValues] = useState({})    
@@ -14,13 +13,13 @@ function ListarAnuncios(props){
 
     //No mundo perfeito não existem blocos de chaves !{...}! lambidinha
     useEffect(() => 
-        axios.get(props.url+'page=0').then(anuncios => setValues({
+        axios.get(props.url+'page=1').then(anuncios => setValues({
             anuncios:anuncios.data, 
             page:0, 
             usuario:JSON.parse(localStorage.getItem('usuario')), 
             load:false
         })            
-)
+    ).catch(error=> console.log(error))
     , [props.url])    
 
     const handlerScroll = (event) => {
