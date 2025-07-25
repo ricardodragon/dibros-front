@@ -1,6 +1,6 @@
-import Header from "../Header"
-import Menu from "../Menu"
-import "./template.css"
+import Header from "../Header";
+import Menu from "../Menu";
+import "./template.css";
 
 function Template(props){
     

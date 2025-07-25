@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import './../header.css';
-import axios from '../../../config/api/api';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import axios from '../../../config/api/api';
+import './../header.css';
 
 function Colaborador(props){
     const [values, setValues] = useState({});

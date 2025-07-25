@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import './login.css'
-import axios from '../../config/api/api';
+import { useState } from 'react';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import axios from '../../config/api/api';
+import './login.css';
 
 
 function Login(props) {

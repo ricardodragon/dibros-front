@@ -1,5 +1,5 @@
 import Routes from './config/route/routes';
-import "./reset.css" 
+import "./reset.css";
 
 const App = () => { return <Routes/> }
 

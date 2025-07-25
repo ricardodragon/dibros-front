@@ -1,7 +1,7 @@
+import { useEffect, useRef, useState } from 'react';
 import axios from '../../../config/api/api';
-import React, { useEffect, useRef, useState } from 'react';
-import Colaboradores from './Colaboradores';
 import loader from "./../../../assets/loadinfo.gif";
+import Colaboradores from './Colaboradores';
 import './criarLojas.css';
 
 function CriarLojas() {

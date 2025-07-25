@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "../../../config/api/api";
 import loader from "./../../../assets/loadinfo.gif";
-import "./listar.css"
+import "./listar.css";
 
 function ListarProdutos(props){
     const [values, setValues] = useState({})    

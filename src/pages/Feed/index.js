@@ -1,9 +1,10 @@
-import Template from "../../estrutura/Template"
-import "./feed.css"
-import ListarAnuncios from "../Anuncio/ListarAnuncios";
+import { HashLink } from "react-router-hash-link";
+import Template from "../../estrutura/Template";
+import AnunciosFeed from "../Anuncio/ListarAnuncios/AnunciosFeed";
+import AnunciosTabela from "../Anuncio/ListarAnuncios/AnunciosTabela";
 import ListarLojas from "../Loja/ListarLojas";
 import ListarProdutos from "../Produto/ListarProdutos";
-import { HashLink } from "react-router-hash-link";
+import "./feed.css";
 
 function Feed(props){
 
@@ -18,7 +19,7 @@ function Feed(props){
             </nav>
             <div className="tabs-feed">
                 <section id="anuncios" className="tab">
-                    <ListarAnuncios url={'/loja/anuncios'+(localStorage.getItem("token")?'?':'/public?')}/>
+                    <AnunciosTabela url={'/loja/anuncios'+(localStorage.getItem("token")?'?':'/public?')}/>
                 </section>
                 <section id="lojas" className="tab">
                     <ListarLojas/>

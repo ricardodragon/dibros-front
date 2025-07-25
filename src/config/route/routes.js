@@ -1,18 +1,18 @@
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
-import PrivateRoutes from "./private-routes";
-import Login from "../../pages/Login"
-import Contas from "../../pages/Meli/Contas"
-import MeliAnuncios from "../../pages/Meli/Anuncios";
-import MeliAnuncio from "../../pages/Meli/Anuncio";
-import NovaSenha from "../../pages/NovaSenha";
-import EditarPerfil from "../../pages/Perfil/EditarPerfil";
-import Feed from "../../pages/Feed";
 import AnuncioDetalhes from "../../pages/Anuncio/AnuncioDetalhes";
-import CriarProdutos from "../../pages/Produto/CriarProdutos";
 import Anuncio from "../../pages/Anuncio/CriarAnuncios";
+import Feed from "../../pages/Feed";
+import Login from "../../pages/Login";
 import CriarLojas from "../../pages/Loja/CriarLojas";
 import LojaDetalhes from "../../pages/Loja/LojaDetalhes";
+import MeliAnuncio from "../../pages/Meli/Anuncio";
+import MeliAnuncios from "../../pages/Meli/Anuncios";
+import Contas from "../../pages/Meli/Contas";
+import NovaSenha from "../../pages/NovaSenha";
 import DetalharPerfil from "../../pages/Perfil/DetalharPerfil";
+import EditarPerfil from "../../pages/Perfil/EditarPerfil";
+import CriarProdutos from "../../pages/Produto/CriarProdutos";
+import PrivateRoutes from "./private-routes";
 
 function Routes(props){    
 

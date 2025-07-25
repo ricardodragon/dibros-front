@@ -1,9 +1,8 @@
-    import { useEffect, useState } from 'react';
-
-import "./lojas.css"
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
 import axios from '../../../config/api/api';
 import loader from "./../../../assets/loadinfo.gif";
-import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
+import "./lojas.css";
 
 function ListarLojas(props){
          

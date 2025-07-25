@@ -1,12 +1,12 @@
-import { useEffect, useState } from 'react';
-
-import "./anuncios.css"
-import axios from '../../../config/api/api';
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import loader from "./../../../assets/loadinfo.gif";
-import AnuncioComentarios from '../AnuncioComentarios';
+import AnuncioComentarios from "../../AnuncioComentarios";
+import loader from "./../../../../assets/loadinfo.gif";
+import axios from "../../../../config/api/api";
+import './anunciosFeed.css';
 
-function ListarAnuncios(props){
+
+function AnunciosFeed(props){
          
     const [values, setValues] = useState({})    
     const host = process.env.REACT_APP_URL;
@@ -18,8 +18,7 @@ function ListarAnuncios(props){
             page:0, 
             usuario:JSON.parse(localStorage.getItem('usuario')), 
             load:false
-        })            
-    ).catch(error=> console.log(error))
+        })).catch(error=> console.log(error))
     , [props.url])    
 
     const handlerScroll = (event) => {
@@ -80,4 +79,4 @@ function ListarAnuncios(props){
     )
 }
 
-export default ListarAnuncios
+export default AnunciosFeed

@@ -1,6 +1,5 @@
 
-function 
-LabelInput(props){
+function LabelInput(props){
 
     // useEffect(() => {
     //     const timeOutId = setTimeout(() => setDisplayMessage(query), 500);

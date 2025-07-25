@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import './perfil.css'
+import { useEffect, useState } from 'react';
 import axios from '../../../config/api/api';
+import './perfil.css';
 
 function EditarPerfil(props) {
 

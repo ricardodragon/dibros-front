@@ -1,9 +1,9 @@
-import axios from '../../../config/api/api';
-import loader from "./../../../assets/loadinfo.gif";
 import { useEffect, useRef, useState } from 'react';
 import { Link } from "react-router-dom";
-import './produtos.css';
 import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
+import axios from '../../../config/api/api';
+import loader from "./../../../assets/loadinfo.gif";
+import './produtos.css';
 
 function CriarProdutos(){
     

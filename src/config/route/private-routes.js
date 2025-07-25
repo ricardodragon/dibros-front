@@ -1,5 +1,5 @@
-import { Route } from "react-router-dom"
-import Template from "../../estrutura/Template"
+import { Route } from "react-router-dom";
+import Template from "../../estrutura/Template";
 import Login from "../../pages/Login";
 
 function PrivateRoutes({component: Component, ...rest}){    

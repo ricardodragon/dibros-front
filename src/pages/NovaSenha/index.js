@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import './login.css'
+import { useState } from 'react';
+import { useParams } from "react-router-dom";
 import axios from '../../config/api/api';
-import {useParams} from "react-router-dom";
+import './login.css';
 
 function NovaSenha(props) {
     const [values, setValues] = useState( {usuario:{}, esqueci:new URLSearchParams((props.location.search)).get('esqueci')==="true"} )

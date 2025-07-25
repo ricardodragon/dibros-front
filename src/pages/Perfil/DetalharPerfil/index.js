@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import './perfil.css'
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
-import axios from '../../../config/api/api'
-import ListarAnuncios from '../../Anuncio/ListarAnuncios';
+import { HashLink } from 'react-router-hash-link';
+import axios from '../../../config/api/api';
+import AnunciosTabela from '../../Anuncio/ListarAnuncios/AnunciosTabela';
 import ListarLojas from '../../Loja/ListarLojas';
 import ListarProdutos from '../../Produto/ListarProdutos';
 import './perfil.css';
-import { HashLink } from 'react-router-hash-link';
 
 function DetalharPerfil(props) {
 
@@ -62,7 +61,7 @@ function DetalharPerfil(props) {
 
         <main id='tabs'>
             <div id="anuncios" className="tab">
-                <ListarAnuncios onScroll={onScroll} url={`/loja/anuncios?idUsuario=${id}&`}/>
+                <AnunciosTabela onScroll={onScroll} url={`/loja/anuncios?idUsuario=${id}&`}/>
             </div>
             <div id="lojas" className="tab">
                 <ListarLojas onScroll={onScroll}/>

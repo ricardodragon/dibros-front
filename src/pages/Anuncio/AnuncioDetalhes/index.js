@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import Template from "../../../estrutura/Template";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 import axios from "../../../config/api/api";
+import Template from "../../../estrutura/Template";
 
 function AnuncioDetalhes(props){
 

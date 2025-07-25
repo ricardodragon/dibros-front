@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
-import axios from '../../../config/api/api'
-import './loja-detalhes.css'
 import { HashLink } from "react-router-hash-link";
-import ListarAnuncios from "../../Anuncio/ListarAnuncios";
+import axios from '../../../config/api/api';
+import AnunciosFeed from "../../Anuncio/ListarAnuncios/AnunciosFeed";
 import ListarProdutos from "../../Produto/ListarProdutos";
 import Colaboradores from "./Colaboradores";
+import './loja-detalhes.css';
 
 function LojaDetalhes(props){
  
@@ -48,7 +48,7 @@ function LojaDetalhes(props){
 
             <main id='tabs'>
                 <div id="anuncios" className="tab">
-                    <ListarAnuncios url={`/loja/anuncios/loja/${id}?`}/>
+                    <AnunciosFeed url={`/loja/anuncios/loja/${id}?`}/>
                 </div>                
                 <div id="produtos" className="tab">
                     <ListarProdutos url={`/loja/produtos?idLoja=${id}&`}/>

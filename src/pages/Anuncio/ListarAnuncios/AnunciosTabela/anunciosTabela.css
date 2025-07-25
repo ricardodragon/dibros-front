@@ -1,0 +1,9 @@
+.anuncio-tabela{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.img-anuncio-tabela{
+    width: 6em;
+    height: 6em;
+}

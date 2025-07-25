@@ -71,11 +71,3 @@
     -ms-overflow-style: none;  
     scrollbar-width: none; 
 }
-
-.tab{
-    background-color: black; 
-    display: inline-block; 
-    width: 100vw; 
-    height: 100%; 
-    vertical-align:top;    
-}

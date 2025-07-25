@@ -1,7 +1,7 @@
-import loader from "./../../../../assets/loadinfo.gif";
 import { useEffect, useState } from "react";
-import axios from '../../../../config/api/api';
 import { Link } from "react-router-dom";
+import axios from '../../../../config/api/api';
+import loader from "./../../../../assets/loadinfo.gif";
 
 function Colaboradores(props) {
     
