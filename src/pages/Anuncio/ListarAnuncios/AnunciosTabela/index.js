@@ -16,26 +16,26 @@ function AnunciosTabela(props){
         })).catch(error=> console.log(error))
     , [props.url])    
 
-    const handlerScroll = (event) => {
-        if(!values.load&&(event.target.scrollHeight - event.target.scrollTop)-10<=event.target.clientHeight&&values.anuncios!==undefined){  
-            setValues({...values, load:true});  
-            const page = values.page+1; 
-            axios.get(props.url+`page=${page}&size=10`).then(anuncios =>
-                setValues({...values, page, loader:anuncios.data.length, anuncios:values.anuncios.concat(anuncios.data), load:false})
-            );
-        }
-        // if(props.onScroll)props.onScroll(event);
-    }
+    // const handlerScroll = (event) => {
+    //     if(!values.load&&(event.target.scrollHeight - event.target.scrollTop)-10<=event.target.clientHeight&&values.anuncios!==undefined){  
+    //         setValues({...values, load:true});  
+    //         const page = values.page+1; 
+    //         axios.get(props.url+`page=${page}&size=10`).then(anuncios =>
+    //             setValues({...values, page, loader:anuncios.data.length, anuncios:values.anuncios.concat(anuncios.data), load:false})
+    //         );
+    //     }
+    //     // if(props.onScroll)props.onScroll(event);
+    // }
 
-    const likeAnuncio = (event, anuncio) => {
-        event.preventDefault();
-        axios.post("/loja/anuncios/like/"+anuncio.id).then(r=>setValues({...values, anuncios:values.anuncios.map(x=>{return x.id===anuncio.id?{...x, isLike:true, likeQTD:x.likeQTD+1}:x})}))
-    }
+    // const likeAnuncio = (event, anuncio) => {
+    //     event.preventDefault();
+    //     axios.post("/loja/anuncios/like/"+anuncio.id).then(r=>setValues({...values, anuncios:values.anuncios.map(x=>{return x.id===anuncio.id?{...x, isLike:true, likeQTD:x.likeQTD+1}:x})}))
+    // }
 
-    const deleteLikeAnuncio = (event, anuncio) => {
-        event.preventDefault();
-        axios.delete("/loja/anuncios/like/"+anuncio.id).then(r=>setValues({...values, anuncios:values.anuncios.map(x=>{return x.id===anuncio.id?{...x, isLike:false, likeQTD:x.likeQTD-1}:x})}))
-    }
+    // const deleteLikeAnuncio = (event, anuncio) => {
+    //     event.preventDefault();
+    //     axios.delete("/loja/anuncios/like/"+anuncio.id).then(r=>setValues({...values, anuncios:values.anuncios.map(x=>{return x.id===anuncio.id?{...x, isLike:false, likeQTD:x.likeQTD-1}:x})}))
+    // }
 
     return ( 
         <div className="anuncio-tabela">

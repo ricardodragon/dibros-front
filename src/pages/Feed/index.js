@@ -1,6 +1,5 @@
 import { HashLink } from "react-router-hash-link";
 import Template from "../../estrutura/Template";
-import AnunciosFeed from "../Anuncio/ListarAnuncios/AnunciosFeed";
 import AnunciosTabela from "../Anuncio/ListarAnuncios/AnunciosTabela";
 import ListarLojas from "../Loja/ListarLojas";
 import ListarProdutos from "../Produto/ListarProdutos";
