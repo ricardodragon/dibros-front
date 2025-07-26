@@ -8,7 +8,7 @@ import "./feed.css";
 import { useState } from "react";
 
 function Feed(props){
-    const [values, setValues] = useState({checkLayout:false})
+    const [values, setValues] = useState({checkLayout:true})
     return (
         <Template>
             <nav className="menu-feed">
