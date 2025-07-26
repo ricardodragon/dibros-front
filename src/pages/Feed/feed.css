@@ -57,4 +57,13 @@
     scrollbar-width: none;  
 }
 
+.check-feed-label{
+    position: absolute;
+    top: 9em;
+    cursor: pointer;
+    padding-left: 2%;
+}
 
+#check-feed{
+    display: none;
+}

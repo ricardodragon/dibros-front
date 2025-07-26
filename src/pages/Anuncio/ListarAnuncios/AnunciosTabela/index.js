@@ -40,7 +40,7 @@ function AnunciosTabela(props){
     return ( 
         <div className="anuncio-tabela">
             {values.anuncios&&values.anuncios.filter(x=>x.legenda!=="vai me perder").map((anuncio, index) =>
-                <img src={host+anuncio.imagemPath} alt="Anúncio" className='img-anuncio-tabela' />                 
+                <div style={{backgroundImage:"url("+host+anuncio.imagemPath+")", backgroundRepeat:"no-repeat", backgroundSize:"cover"}} alt="Anúncio" className='img-anuncio-tabela' ></div>                 
             )}
         </div>
     )

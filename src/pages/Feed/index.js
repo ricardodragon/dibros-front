@@ -1,12 +1,14 @@
 import { HashLink } from "react-router-hash-link";
 import Template from "../../estrutura/Template";
 import AnunciosTabela from "../Anuncio/ListarAnuncios/AnunciosTabela";
+import AnunciosFeed from "../Anuncio/ListarAnuncios/AnunciosFeed";
 import ListarLojas from "../Loja/ListarLojas";
 import ListarProdutos from "../Produto/ListarProdutos";
 import "./feed.css";
+import { useState } from "react";
 
 function Feed(props){
-
+    const [values, setValues] = useState({checkLayout:false})
     return (
         <Template>
             <nav className="menu-feed">
@@ -17,8 +19,14 @@ function Feed(props){
                 </ul>
             </nav>
             <div className="tabs-feed">
+                <input type="checkbox" id="check-feed" onChange={event=>setValues({...values, checkLayout:!values.checkLayout})}/>
+                <label className="check-feed-label" htmlFor="check-feed">
+                    {values.checkLayout&&<span><i className="fa-solid fa-list"></i></span>}
+                    {!values.checkLayout&&<span><i className="fa-solid fa-table-cells"></i></span>}
+                </label>
                 <section id="anuncios" className="tab">
-                    <AnunciosTabela url={'/loja/anuncios'+(localStorage.getItem("token")?'?':'/public?')}/>
+                    {values.checkLayout&&<AnunciosFeed url={'/loja/anuncios'+(localStorage.getItem("token")?'?':'/public?')}/>}
+                    {!values.checkLayout&&<AnunciosTabela url={'/loja/anuncios'+(localStorage.getItem("token")?'?':'/public?')}/>}
                 </section>
                 <section id="lojas" className="tab">
                     <ListarLojas/>
