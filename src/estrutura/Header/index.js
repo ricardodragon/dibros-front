@@ -23,9 +23,12 @@ function Header(){
     , [])
 
     useEffect(() => {
-        const socket = new WebSocket(`${host}/loja/notificacoes/ws?Authorization=${localStorage.getItem("token")}`);          
-        socket.addEventListener("message", (event) => setNotificacoesQTD(notificacoesQTD+1));              
-        return () => socket.readyState===WebSocket.OPEN?socket.close():undefined
+        console.log(localStorage.getItem("token"))
+        if(localStorage.getItem("token")!==null){
+            const socket = new WebSocket(`${host}/loja/notificacoes/ws?Authorization=${localStorage.getItem("token")}`);          
+            socket.addEventListener("message", (event) => setNotificacoesQTD(notificacoesQTD+1));              
+            return () => socket.readyState===WebSocket.OPEN?socket.close():undefined
+        }
     }, [notificacoesQTD, host])    
 
     const getNotificacoes = (event) => {
@@ -42,13 +45,12 @@ function Header(){
             setValues({...values, loader:false, notificacoes:undefined});        
     }
 
-    const setNotificacao=index=>{
+    const setNotificacao=index=>
         setValues({...values, notificacoes:values.notificacoes.map((x,i)=>index===i?{...x, tipo:'SEGUIDO_ACEITO'}:x)})
-    }
+    
 
-    const removeNotificacao=index=>{
-        setValues({...values, notificacoes:values.notificacoes.filter((x,i)=>index!==i)})
-    }
+    const removeNotificacao=index=>setValues({...values, notificacoes:values.notificacoes.filter((x,i)=>index!==i)})
+    
 
     return (
         <header className="header-app" onClick={event=>{event.stopPropagation();document.getElementById("user-menu").style.display="none"}}>
