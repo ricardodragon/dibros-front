@@ -17,11 +17,11 @@ function AnunciosTabela(props){
     , [props.url])    
 
     return ( 
-        <>
+        <div style={{with:"100%", height:"100%", overflowY: "scroll"}}>
             {values.anuncios&&values.anuncios.filter(x=>x.legenda!=="vai me perder").map((anuncio, index) =>
                 <div style={{backgroundImage:"url("+host+anuncio.imagemPath+")", backgroundRepeat:"no-repeat", backgroundSize:"cover"}} alt="Anúncio" className='img-anuncio-tabela'></div>                 
             )}            
-        </>
+        </div>
     )
 }
 
