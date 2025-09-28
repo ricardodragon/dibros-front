@@ -6,6 +6,7 @@ import AnunciosTabela from '../../Anuncio/ListarAnuncios/AnunciosTabela';
 import ListarLojas from '../../Loja/ListarLojas';
 import ListarProdutos from '../../Produto/ListarProdutos';
 import './perfil.css';
+import AnunciosFeed from '../../Anuncio/ListarAnuncios/AnunciosFeed';
 
 function DetalharPerfil(props) {
 
@@ -60,8 +61,14 @@ function DetalharPerfil(props) {
         </nav>         
 
         <main id='tabs'>
+            <input type="checkbox" id="check-feed" onChange={event=>setValues({...values, checkLayout:!values.checkLayout})}/>
+            <label className="check-feed-label" htmlFor="check-feed">
+                {values.checkLayout&&<span><i className="fa-solid fa-list" style={{fontSize: "32px"}}></i></span>}
+                {!values.checkLayout&&<span><i className="fa-solid fa-table-cells" style={{fontSize: "32px"}}></i></span>}
+            </label>
             <div id="anuncios" className="tab">
-                <AnunciosTabela onScroll={onScroll} url={`/loja/anuncios?idUsuario=${id}&`}/>
+                {values.checkLayout&&<AnunciosFeed onScroll={onScroll} url={`/loja/anuncios?idUsuario=${id}&`}/>}
+                {!values.checkLayout&&<AnunciosTabela onScroll={onScroll} url={`/loja/anuncios?idUsuario=${id}&`}/>}
             </div>
             <div id="lojas" className="tab">
                 <ListarLojas onScroll={onScroll}/>

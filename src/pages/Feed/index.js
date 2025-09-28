@@ -21,8 +21,8 @@ function Feed(props){
             <div className="tabs-feed">
                 <input type="checkbox" id="check-feed" onChange={event=>setValues({...values, checkLayout:!values.checkLayout})}/>
                 <label className="check-feed-label" htmlFor="check-feed">
-                    {values.checkLayout&&<span><i className="fa-solid fa-list"></i></span>}
-                    {!values.checkLayout&&<span><i className="fa-solid fa-table-cells"></i></span>}
+                    {values.checkLayout&&<span><i className="fa-solid fa-list" style={{fontSize: "32px"}}></i></span>}
+                    {!values.checkLayout&&<span><i className="fa-solid fa-table-cells" style={{fontSize: "32px"}}></i></span>}
                 </label>
                 <section id="anuncios" className="tab">
                     {values.checkLayout&&<AnunciosFeed url={'/loja/anuncios'+(localStorage.getItem("token")?'?':'/public?')}/>}
