@@ -8,7 +8,7 @@ function AnunciosTabela(props){
 
     //No mundo perfeito não existem blocos de chaves !{...}! lambidinha
     useEffect(() => 
-        axios.get(props.url+'page=1').then(anuncios => setValues({
+        axios.get(props.url+'page=0&size=99').then(anuncios => setValues({
             anuncios:anuncios.data, 
             page:0, 
             usuario:JSON.parse(localStorage.getItem('usuario')), 
