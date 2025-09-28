@@ -6,6 +6,7 @@ import ListarLojas from "../Loja/ListarLojas";
 import ListarProdutos from "../Produto/ListarProdutos";
 import "./feed.css";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 function Feed(props){
     const [values, setValues] = useState({checkLayout:true})
@@ -27,13 +28,15 @@ function Feed(props){
                 <section id="anuncios" className="tab">
                     {values.checkLayout&&<AnunciosFeed url={'/loja/anuncios'+(localStorage.getItem("token")?'?':'/public?')}/>}
                     {!values.checkLayout&&<AnunciosTabela url={'/loja/anuncios'+(localStorage.getItem("token")?'?':'/public?')}/>}
-                    <button id="criar-anuncios">+</button>
+                    <button className="criar-anuncios"><Link to={'/anuncio'}>+</Link></button>                    
                 </section>
                 <section id="lojas" className="tab">
                     <ListarLojas/>
+                    <button className="criar-anuncios"><Link to={'/lojas'}>+</Link></button>
                 </section>
                 <section id="produtos" className="tab">
                     <ListarProdutos url={'/loja/produtos'+(localStorage.getItem("token")?'?':'/public?')}/>
+                    <button className="criar-anuncios"><Link to={'/produtos/'+0}>+</Link></button>
                 </section>                
             </div>
         </Template>

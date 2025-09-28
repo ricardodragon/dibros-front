@@ -10,8 +10,8 @@ function CriarAnuncios(props){
 
     useEffect(() => {
         setValues({lojas:[], anuncios:[], load:true, anuncio:{preco:"", legenda:""}});
-        axios.get("/loja/anuncios/"+JSON.parse(localStorage.getItem("usuario")).id).then(res => 
-            axios.get("/loja/lojas/"+JSON.parse(localStorage.getItem('usuario')).id).then(response =>                
+        axios.get("/loja/anuncios?page=0&size=99&idUsuario="+JSON.parse(localStorage.getItem("usuario")).id).then(res => 
+            axios.get("/loja/lojas?page=0&size=99&idUsuario="+JSON.parse(localStorage.getItem('usuario')).id).then(response =>                
                 setValues({lojas:response.data, produtoID:"", anuncios:res.data, erro: response.data.length<=0?"É preciso criar uma loja em \"Menu > Lojas\"":false, load:false, anuncio:{preco:"", legenda:""}})))                  
     }, []);
 
@@ -138,7 +138,7 @@ function CriarAnuncios(props){
                                     <td><img style={{width:"2em", height:"2em"}} alt={"Foto do anuncio "+a.legenda} src={host+a.imagemPath}/></td>                            
                                     <td>{a.legenda}</td>  
                                     <td>{a.preco}</td>                                                             
-                                    <td>{a.anuncioProdutosDTO.length}</td>                                                                                             
+                                    {/* <td>{a.anuncioProdutosDTO.length}</td>                                                                                              */}
                                     <td onClick={event=>{event.stopPropagation();event.preventDefault();axios.delete("/loja/anuncios/"+a.id).then(response=>setValues({...values, anuncio:a.id===values.anuncio.id?{preco:"", legenda:"", imagem:"", lojaDTO:{nome:"",id:""}, anuncioProdutosDTO:[]}:values.anuncio, anuncios:values.anuncios.filter(x=>x.id!==a.id)}))}}>❌</td>
                                 </tr>
                             )}               

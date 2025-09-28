@@ -23,7 +23,6 @@ function Header(){
     , [])
 
     useEffect(() => {
-        console.log(localStorage.getItem("token"))
         if(localStorage.getItem("token")!==null){
             const socket = new WebSocket(`${host}/loja/notificacoes/ws?Authorization=${localStorage.getItem("token")}`);          
             socket.addEventListener("message", (event) => setNotificacoesQTD(notificacoesQTD+1));              

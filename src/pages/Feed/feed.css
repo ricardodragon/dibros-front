@@ -68,9 +68,9 @@
     display: none;
 }
 
-#criar-anuncios{
-    position: absolute;
-    top: 88%;
+.criar-anuncios{
+    position: relative;
+    top: -10%;
     left: 88%;
     background-color: black;
     color: white;
