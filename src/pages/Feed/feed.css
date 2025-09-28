@@ -70,8 +70,9 @@
 
 .criar-anuncios{
     position: relative;
+    float: right;
     top: -10%;
-    left: 88%;
+    left: -5%;
     background-color: black;
     color: white;
     border-radius: 30%;
