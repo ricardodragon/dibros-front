@@ -68,7 +68,7 @@ function DetalharPerfil(props) {
             </label>
             <div id="anuncios" className="tab">
                 {values.checkLayout&&<AnunciosFeed onScroll={onScroll} url={`/loja/anuncios?idUsuario=${id}&`}/>}
-                {!values.checkLayout&&<AnunciosTabela onScroll={onScroll} url={`/loja/anuncios?idUsuario=${id}&`}/>}
+                {!values.checkLayout&&<AnunciosTabela onScroll={onScroll} url={`/loja/anuncios?idUsuario=${id}&`}/>}                
             </div>
             <div id="lojas" className="tab">
                 <ListarLojas onScroll={onScroll}/>

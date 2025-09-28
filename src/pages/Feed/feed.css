@@ -67,3 +67,14 @@
 #check-feed{
     display: none;
 }
+
+#criar-anuncios{
+    position: absolute;
+    top: 88%;
+    left: 88%;
+    background-color: black;
+    color: white;
+    border-radius: 30%;
+    font-size: 25pt;
+    cursor: pointer;
+}
