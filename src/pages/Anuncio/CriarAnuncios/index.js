@@ -20,10 +20,10 @@ function CriarAnuncios(props){
         event.preventDefault();        
         var formData = new FormData();
         formData.append("files", values.anuncio.imagem)
-        axios.post('/imagem/imagem', formData).then(imagens =>                        
+        axios.post('/imagem/imagem', formData).then(imagens => 
             (!values.anuncio.id?
-                axios.post('/loja/anuncios', {...values.anuncio, imagemPath:imagens.data[0]?imagens.data[0]:values.anuncio.imagemPath}):
-                axios.put('/loja/anuncios/'+values.anuncio.id, {...values.anuncio, imagemPath:imagens.data[0]?imagens.data[0]:values.anuncio.imagemPath}))
+                axios.post('/loja/anuncios', {...values.anuncio, idLoja:56, imagemPath:imagens.data?imagens.data:values.anuncio.imagemPath}):
+                axios.put('/loja/anuncios/'+values.anuncio.id, {...values.anuncio, imagemPath:imagens.data?imagens.data:values.anuncio.imagemPath}))
                     .then(callBackForm).catch(callBackForm))
             .catch(callBackForm); 
     }    
@@ -45,8 +45,8 @@ function CriarAnuncios(props){
                 anuncios:values.anuncio.id?values.anuncios.map(x=>x.id===values.anuncio.id?response.data:x):values.anuncios.concat(response.data)
             });
         }else
-            setValues({...values, erro:response&&response.response&&response.response.data&&response.response.data.message?response.response.data.message:"Erro desconhecido", ok:false, load:false})
-        document.getElementsByClassName("anuncios-conteudo")[0].scrollTo(0, 0);
+            setValues({...values, erro:response&&response.response&&response.response.data&&response.response.data.message?response.response.data.message:"Erro desconhecido", ok:false, load:false})        
+        document.getElementById("criar-anuncio").scrollTo(0, 0);
     }   
 
     const addProduto = event => {
@@ -60,19 +60,18 @@ function CriarAnuncios(props){
             {values.load&&<div style={{position:"absolute", width:"100%", height:"100%", backgroundColor:"rgba(173, 181, 189, 50%)", zIndex:"1" }}>
                 <img style={{height:"5em", position:'relative', top:'38%', left:'42%'}} src={loader} alt="loading..."/>
             </div>}
-            <div className='anuncios-conteudo'>
-                <div className={"alert alert-success "+(values.ok?"":"visually-hidden")} role="alert">✅ Anuncio criado com sucesso</div>
-                <div className={"alert alert-danger "+(values.erro?"":"visually-hidden")} role="alert">❌ Erro: {values.erro}</div>
-                <form className="mt-4" onSubmit={submit}>                     
+            <div id="criar-anuncio" style={{overflowX:"hidden", overflowΥ:'scroll', height:'89vh'}}>
+                {(values.ok||values.erro)&&<div style={{width: "100%", textAlign:"center"}}>{values.ok?"✅ Operação realizada com sucesso":"❌ Erro: "+values.erro}</div>}                
+                <form onSubmit={submit}>                     
                     <fieldset id="anuncio"><legend>{values.anuncio.id?"Editar":"Criar"} Anucio {values.anuncio.legenda}</legend>                                        
-                        <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} className="p-1 mb-4" htmlFor='loja'>Loja : </label>     
+                        <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} htmlFor='loja'>Loja : </label>     
                         <select value={values.anuncio.idLoja} id="loja" style={{display:"inline", width:"75%"}} onChange={event=> setValues({...values, produtoID:"", anuncio:{...values.anuncio, anuncioProdutosDTO:[], idLoja:event.target.value}})}>                                                            
                             <option value="">Selecione uma loja</option>
                             {values.lojas.map(l => <option key={l.id} value={l.id}>{l.nome}</option>)}
                         </select>  
-                        <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} className="p-1 mb-4" htmlFor="legenda">Legenda : </label>            
+                        <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} htmlFor="legenda">Legenda : </label>            
                         <input required id="legenda" style={{width:"75%"}} placeholder="legenda" onChange={event=>setValues({...values,anuncio:{...values.anuncio,legenda:event.target.value}})} value={values.anuncio.legenda} type="text"/>                                                                      
-                        <label required style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} className="p-1 mb-4" htmlFor="preco">Preço : </label>            
+                        <label required style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} htmlFor="preco">Preço : </label>            
                         <input required id="preco" style={{width:"75%"}} placeholder="preco" onChange={event=>setValues({...values,anuncio:{...values.anuncio,preco:event.target.value}})} value={values.anuncio.preco} type="number"/>                                                                      
                     </fieldset>
                     {!values.anuncio.idLoja&&<fieldset>
@@ -134,7 +133,7 @@ function CriarAnuncios(props){
                         {/* <tr><td>{values.anuncios.map(p=>p.quantidade).reduce((sumQtd, a) => sumQtd + a, 0)}</td></tr> */}
                         <tbody>
                             {values.anuncios.map(a=>
-                                <tr key={a.id} style={{cursor:"pointer", whiteSpace: "nowrap"}} onClick={event=>{event.preventDefault();setValues({...values,  produtoID:"", anuncio:{...a, loja:a.lojaDTO}});document.getElementsByClassName("anuncios-conteudo")[0].scrollTo(0, 0)}}>
+                                <tr key={a.id} style={{cursor:"pointer", whiteSpace: "nowrap"}} onClick={event=>{event.preventDefault();setValues({...values,  produtoID:"", anuncio:{...a, loja:a.lojaDTO}});document.getElementById("criar-anuncio").scrollTo(0, 0)}}>
                                     <td><img style={{width:"2em", height:"2em"}} alt={"Foto do anuncio "+a.legenda} src={host+a.imagemPath}/></td>                            
                                     <td>{a.legenda}</td>  
                                     <td>{a.preco}</td>                                                             
