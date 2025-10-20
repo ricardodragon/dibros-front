@@ -131,3 +131,7 @@ tr:hover {
 body, html{
     height: 100% !important;
 }
+
+label{
+    display: inline-block;
+}

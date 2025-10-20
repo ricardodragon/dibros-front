@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import axios from "../../../config/api/api";
 import loader from "./../../../assets/loadinfo.gif";
+import './anuncios.css';
 
 function CriarAnuncios(props){
     
@@ -12,7 +13,7 @@ function CriarAnuncios(props){
         setValues({lojas:[], anuncios:[], load:true, anuncio:{preco:"", legenda:""}});
         axios.get("/loja/anuncios?page=0&size=99&idUsuario="+JSON.parse(localStorage.getItem("usuario")).id).then(res => 
             axios.get("/loja/lojas?page=0&size=99&idUsuario="+JSON.parse(localStorage.getItem('usuario')).id).then(response =>                
-                setValues({lojas:response.data, produtoID:"", anuncios:res.data, erro: response.data.length<=0?"É preciso criar uma loja em \"Menu > Lojas\"":false, load:false, anuncio:{preco:"", idLoja:0, legenda:""}})))                  
+                setValues({lojas:response.data, produtoID:"", anuncios:res.data, erro: response.data.length<=0?"É preciso criar uma loja em \"Menu > Lojas\"":false, load:false, anuncio:{preco:"", idLoja:0, legenda:"", anuncioProdutosDTO:[]}})))                  
     }, []);
 
     const submit = event => {
@@ -42,7 +43,7 @@ function CriarAnuncios(props){
                 ok:`Anuncio '${response.data}' criado com sucesso.`, 
                 erro:false, 
                 load:false,
-                anuncio:{preco:"", legenda:"", idLoja:""},
+                anuncio:{preco:"", legenda:"", idLoja:0},
                 anuncios:values.anuncio.id?values.anuncios.map(x=>x.id===values.anuncio.id?response.data:x):values.anuncios.concat(response.data)
             });
         }else
@@ -66,8 +67,8 @@ function CriarAnuncios(props){
                 <form onSubmit={submit}>                     
                     <fieldset id="anuncio"><legend>{values.anuncio.id?"Editar":"Criar"} Anucio {values.anuncio.legenda}</legend>                                        
                         <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} htmlFor='loja'>Loja : </label>     
-                        <select value={values.anuncio.idLoja} id="loja" style={{display:"inline", width:"75%"}} onChange={event=> setValues({...values, produtoID:"", anuncio:{...values.anuncio, anuncioProdutosDTO:[], idLoja:event.target.value}})}>                                                            
-                            <option value="0">Selecione uma loja</option>
+                        <select value={values.anuncio.idLoja} id="loja" style={{display:"inline", width:"75%"}} onChange={event=> setValues({...values, produtoID:"", anuncio:{...values.anuncio, anuncioProdutosDTO:[], idLoja:Number(event.target.value)}})}>                                                            
+                            <option key={0} value={0}>Selecione uma loja</option>
                             {values.lojas.map(l => <option key={l.id} value={l.id}>{l.nome}</option>)}
                         </select>  
                         <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} htmlFor="legenda">Legenda : </label>            
@@ -75,7 +76,7 @@ function CriarAnuncios(props){
                         <label required style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} htmlFor="preco">Preço : </label>            
                         <input required id="preco" style={{width:"75%"}} placeholder="preco" onChange={event=>setValues({...values,anuncio:{...values.anuncio,preco:event.target.value}})} value={values.anuncio.preco} type="number"/>                                                                      
                     </fieldset>
-                    {!values.anuncio.idLoja&&<fieldset>
+                    {values.anuncio.idLoja===0&&<fieldset>
                         <legend>Localização da loja</legend>   
                         <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} className="p-1 mb-4" htmlFor="localizacao">Local : {values.anuncio.latitude&&values.anuncio.longitude?'✅':'❌'}</label>            
                         <input style={{width:"75%"}} type="button" onClick={event => {event.preventDefault();getLocation();}} className="btn btn-sm btn-secondary" id="localizacao" value={"📌 Localização"}/>                 
@@ -85,7 +86,7 @@ function CriarAnuncios(props){
                         <input ref={ref} required={!values.anuncio.imagemPath||values.anuncio.imagemPath===""} id='imagem' className='mb-4' type="file" style={{textAlign:"center", width:"75%", backgroundColor: "#3498db", borderRadius: "5px", color: "#fff"}} accept='image/*' onChange={event => {event.preventDefault();setValues({...values, anuncio:{...values.anuncio, imagemPath:undefined, imagem:event.target.files[0]}});}}/>
                         {(values.anuncio.imagemPath||values.anuncio.imagem)&&<img alt="" style={{display:"block", width:"8em", height:"8em"}} src={values.anuncio.imagemPath?host+values.anuncio.imagemPath:URL.createObjectURL(values.anuncio.imagem)}/>}                                                                        
                     </fieldset>
-                    {values.anuncio.idLoja&&
+                    {values.anuncio.idLoja!==0&&
                         <fieldset id="produtos" className="mb-4"><legend>Produtos do Anúncio</legend>  
                             <label  style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} className="p-1 mb-4" htmlFor="produto">Id : </label>
                             <input style={{width:"50%"}} placeholder="Id do produto" size="15" step="any" id="produto" type="number" value={values.produtoID} onChange={event=> setValues({...values, produtoID:event.target.value})}/>                        
