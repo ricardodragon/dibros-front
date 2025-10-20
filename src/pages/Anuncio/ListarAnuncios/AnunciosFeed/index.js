@@ -49,7 +49,7 @@ function AnunciosFeed(props){
                     <header style={{padding: "2%"}}>
                         <Link style={{display:'inline'}} to={anuncio.lojaDTO?"/loja/"+anuncio.lojaDTO.id:"/perfil/"+anuncio.usuarioDTO}><img alt={"Foto anuncio : " +anuncio.legenda} src={host+(anuncio.lojaDTO.imagemPath?anuncio.lojaDTO.imagemPath:anuncio.usuarioDTO.imagemPath)} style={{borderRadius: "50%", width:"3em", height:"3em"}}/></Link>
                         <div style={{fontWeight:"bolder", float:"right", cursor:"pointer"}}>⋮</div>
-                        <Link style={{display:'inline'}} to={anuncio.lojaDTO?"/loja/"+anuncio.lojaDTO.id:"/perfil/"+anuncio.usuarioDTO}><h3 style={{display: "inline", fontSize:"11pt", verticalAlign:'top', whiteSpace:'break-spaces', fontWeight:'bolder'}}>{anuncio.lojaDTO.nome?anuncio.lojaDTO.nome:anuncio.usuarioDTO.nome}</h3></Link>                             
+                        <Link style={{display:'inline'}} to={anuncio.lojaDTO.nome?"/loja/"+anuncio.lojaDTO.id:"/perfil/"+anuncio.usuarioDTO.id}><h3 style={{display: "inline", fontSize:"11pt", verticalAlign:'top', whiteSpace:'break-spaces', fontWeight:'bolder'}}>{anuncio.lojaDTO.nome?anuncio.lojaDTO.nome:anuncio.usuarioDTO.nome}</h3></Link>                             
                     </header>
                     <h2 style={{paddingLeft: "2.5%", fontSize:"12pt", whiteSpace:'break-spaces'}}>{anuncio.legenda}</h2>                                                                    
 
@@ -60,18 +60,18 @@ function AnunciosFeed(props){
                     <div style={{fontWeight:"bolder", textAlign:"center", fontSize:"10pt", padding:"1%"}}>
                         R$ {anuncio.preco},00
                     </div>
-                    <div style={{fontSize:"10pt", padding:"1%", fontWeight:'bolder'}} onClick={event=>setValues({...values, anuncios:values.anuncios.map((x, indexA)=>indexA===index?{...x, expand:!x.expand}:x)})}>
+                    <div style={{fontSize:"10pt", padding:"1%", fontWeight:'bolder'}}>
                         <div style={{display:"inline-block", textOverflow: "ellipsis", maxWidth: "16ch", overflow: "hidden", whiteSpace: "nowrap", cursor: "pointer"}}>{anuncio.likeQTD} curtidas</div>
-                        <div style={{float:"right", textOverflow: "ellipsis", maxWidth: "16ch", overflow: "hidden", whiteSpace: "nowrap", cursor: "pointer"}}>{anuncio.comentarioQTD} comentarios</div>
+                        <div style={{float:"right", textOverflow: "ellipsis", maxWidth: "16ch", overflow: "hidden", whiteSpace: "nowrap", cursor: "pointer"}} onClick={event=>setValues({...values, anuncios:values.anuncios.map(x=>{return x.id===anuncio.id?{...x, expandComentarios:!x.expandComentarios}:x})})}>{anuncio.comentarioQTD} comentarios</div>
                     </div>
                     
                     <div style={{borderTop:"1px solid rgba(0, 0 , 0, 0.1)", textAlign:"center", fontSize:"11pt", padding:"1%"}}>                        
                         <div style={{display:"inline-block", width: "33%", textOverflow: "ellipsis", maxWidth: "16ch", overflow: "hidden", whiteSpace: "nowrap", cursor: "pointer"}} onClick={event=>anuncio.isLike?deleteLikeAnuncio(event, anuncio):likeAnuncio(event, anuncio)}><Link to={""} style={{textDecoration:'none'}}>{anuncio.isLike?'❤️':'🤍'}</Link></div>
-                        <div style={{display:"inline-block", width: "33%", textOverflow: "ellipsis", maxWidth: "14ch", overflow: "hidden", whiteSpace: "nowrap", cursor: "pointer"}}><Link style={{textDecoration:'none'}} to={""} onClick={event=>{event.preventDefault();setValues({...values, anuncios:values.anuncios.map(x=>{return x.id===anuncio.id?{...x, expandComentario:!x.expandComentario}:x})})}}>💬</Link></div>
+                        <div style={{display:"inline-block", width: "33%", textOverflow: "ellipsis", maxWidth: "14ch", overflow: "hidden", whiteSpace: "nowrap", cursor: "pointer"}}><Link style={{textDecoration:'none'}} to={""} onClick={event=>{event.preventDefault();setValues({...values, anuncios:values.anuncios.map(x=>{return x.id===anuncio.id?{...x, expandComentarios:!x.expandComentarios}:x})})}}>💬</Link></div>
                         <div style={{display:"inline-block", width: "33%", textOverflow: "ellipsis", maxWidth: "16ch", overflow: "hidden", whiteSpace: "nowrap", cursor: "pointer"}}><Link style={{textDecoration:'none'}} to={"/anuncio-detalhes/"+anuncio.id}>🛒</Link></div>
                     </div>
                     
-                    {values.usuario&&anuncio.expand&&<AnuncioComentarios id={anuncio.id}/>}                    
+                    {values.usuario&&anuncio.expandComentarios&&<AnuncioComentarios id={anuncio.id}/>}                    
                 </div>            
             )}
             <div style={{textAlign:"center"}}>{values.loader?<img style={{height:"5em"}} src={loader} alt="loading..."/>:"fim dos anuncios"}</div>

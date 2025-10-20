@@ -12,7 +12,7 @@ function CriarAnuncios(props){
         setValues({lojas:[], anuncios:[], load:true, anuncio:{preco:"", legenda:""}});
         axios.get("/loja/anuncios?page=0&size=99&idUsuario="+JSON.parse(localStorage.getItem("usuario")).id).then(res => 
             axios.get("/loja/lojas?page=0&size=99&idUsuario="+JSON.parse(localStorage.getItem('usuario')).id).then(response =>                
-                setValues({lojas:response.data, produtoID:"", anuncios:res.data, erro: response.data.length<=0?"É preciso criar uma loja em \"Menu > Lojas\"":false, load:false, anuncio:{preco:"", legenda:""}})))                  
+                setValues({lojas:response.data, produtoID:"", anuncios:res.data, erro: response.data.length<=0?"É preciso criar uma loja em \"Menu > Lojas\"":false, load:false, anuncio:{preco:"", idLoja:0, legenda:""}})))                  
     }, []);
 
     const submit = event => {
@@ -22,7 +22,7 @@ function CriarAnuncios(props){
         formData.append("files", values.anuncio.imagem)
         axios.post('/imagem/imagem', formData).then(imagens => 
             (!values.anuncio.id?
-                axios.post('/loja/anuncios', {...values.anuncio, idLoja:56, imagemPath:imagens.data?imagens.data:values.anuncio.imagemPath}):
+                axios.post('/loja/anuncios', {...values.anuncio, imagemPath:imagens.data?imagens.data:values.anuncio.imagemPath}):
                 axios.put('/loja/anuncios/'+values.anuncio.id, {...values.anuncio, imagemPath:imagens.data?imagens.data:values.anuncio.imagemPath}))
                     .then(callBackForm).catch(callBackForm))
             .catch(callBackForm); 
@@ -34,11 +34,12 @@ function CriarAnuncios(props){
     "Geolocation is not supported by this browser.";
 
     const callBackForm = response => { 
-        if(response.data&&response.data.id){
+        console.log(response.data)
+        if(response.data){
             ref.current.value="";
             setValues({
                 ...values, 
-                ok:`Anuncio '${response.data.legenda}' criado com sucesso.`, 
+                ok:`Anuncio '${response.data}' criado com sucesso.`, 
                 erro:false, 
                 load:false,
                 anuncio:{preco:"", legenda:"", idLoja:""},
@@ -66,7 +67,7 @@ function CriarAnuncios(props){
                     <fieldset id="anuncio"><legend>{values.anuncio.id?"Editar":"Criar"} Anucio {values.anuncio.legenda}</legend>                                        
                         <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} htmlFor='loja'>Loja : </label>     
                         <select value={values.anuncio.idLoja} id="loja" style={{display:"inline", width:"75%"}} onChange={event=> setValues({...values, produtoID:"", anuncio:{...values.anuncio, anuncioProdutosDTO:[], idLoja:event.target.value}})}>                                                            
-                            <option value="">Selecione uma loja</option>
+                            <option value="0">Selecione uma loja</option>
                             {values.lojas.map(l => <option key={l.id} value={l.id}>{l.nome}</option>)}
                         </select>  
                         <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} htmlFor="legenda">Legenda : </label>            
