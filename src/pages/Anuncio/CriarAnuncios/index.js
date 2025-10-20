@@ -13,7 +13,7 @@ function CriarAnuncios(props){
         setValues({lojas:[], anuncios:[], load:true, anuncio:{preco:"", legenda:""}});
         axios.get("/loja/anuncios?page=0&size=99&idUsuario="+JSON.parse(localStorage.getItem("usuario")).id).then(res => 
             axios.get("/loja/lojas?page=0&size=99&idUsuario="+JSON.parse(localStorage.getItem('usuario')).id).then(response =>                
-                setValues({lojas:response.data, produtoID:"", anuncios:res.data, erro: response.data.length<=0?"É preciso criar uma loja em \"Menu > Lojas\"":false, load:false, anuncio:{preco:"", idLoja:0, legenda:"", anuncioProdutosDTO:[]}})))                  
+                setValues({lojas:response.data, produtoID:"", anuncios:res.data, load:false, anuncio:{preco:"", idLoja:0, legenda:"", anuncioProdutosDTO:[]}})))                  
     }, []);
 
     const submit = event => {
