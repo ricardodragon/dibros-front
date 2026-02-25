@@ -71,7 +71,7 @@ function CriarLojas() {
                     <input style={{width:"75%"}} type="button" onClick={event => {event.preventDefault();getLocation();}} id="localizacao" value={"📌 Localização"}/>                 
                 </fieldset>
                 <input type="submit" value="enviar"/>    
-                <input onClick={event => {event.preventDefault();setValues({...values, loja:{nome:"", imagemPath:"", imagem:""}})}} type="submit" value="Limpar"/>                        
+                <input onClick={event => {event.preventDefault();setValues({...values, loja:{nome:"", imagemPath:"", imagem:""}})}} type="reset" value="limpar"/>                        
             </form>
 
             {values.usuarioLojas&&

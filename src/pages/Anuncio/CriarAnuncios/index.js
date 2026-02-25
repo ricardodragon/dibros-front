@@ -5,12 +5,11 @@ import './anuncios.css';
 
 function CriarAnuncios(props){
     
-    const [values, setValues] = useState({lojas:[], anuncios:[], produtoID:"", anuncio:{preco:"", legenda:""}})        
+    const [values, setValues] = useState({lojas:[], anuncios:[], produtoID:"", load:true, anuncio:{preco:"", legenda:""}})        
     const host = process.env.REACT_APP_URL;
     const ref = useRef();
 
     useEffect(() => {
-        setValues({lojas:[], anuncios:[], load:true, anuncio:{preco:"", legenda:""}});
         axios.get("/loja/anuncios?page=0&size=99&idUsuario="+JSON.parse(localStorage.getItem("usuario")).id).then(res => 
             axios.get("/loja/lojas?page=0&size=99&idUsuario="+JSON.parse(localStorage.getItem('usuario')).id).then(response =>                
                 setValues({lojas:response.data, produtoID:"", anuncios:res.data, load:false, anuncio:{preco:"", idLoja:0, legenda:"", anuncioProdutosDTO:[]}})))                  
@@ -20,7 +19,7 @@ function CriarAnuncios(props){
         setValues({...values, load:true});
         event.preventDefault();        
         var formData = new FormData();
-        formData.append("files", values.anuncio.imagem)
+        formData.append("files", values.anuncio.imagem)     
         axios.post('/imagem/imagem', formData).then(imagens => 
             (!values.anuncio.id?
                 axios.post('/loja/anuncios', {...values.anuncio, imagemPath:imagens.data?imagens.data:values.anuncio.imagemPath}):
@@ -54,9 +53,10 @@ function CriarAnuncios(props){
     const addProduto = event => {
         event.preventDefault();
         axios.get("/loja/produtos/"+values.produtoID).then(r=>
-            r.data?setValues({...values, anuncio:{...values.anuncio, anuncioProdutosDTO:[...values.anuncio.anuncioProdutosDTO, {imagemPath:r.data.imagemPath, preco:r.data.preco, idAnuncio:values.anuncio.id, idProduto:r.data.id, produtoDTO:r.data}]}}):""
+            r.data?setValues({...values, produtoID:"", anuncio:{...values.anuncio, anuncioProdutosDTO:[...values.anuncio.anuncioProdutosDTO, {idAnuncio:values.anuncio.id, idProduto:r.data.id, produtoDTO:r.data}]}}):""
         )
     }
+
     return (
         <div>            
             {values.load&&<div style={{position:"absolute", width:"100%", height:"100%", backgroundColor:"rgba(173, 181, 189, 50%)", zIndex:"1" }}>
@@ -78,19 +78,19 @@ function CriarAnuncios(props){
                     </fieldset>
                     {values.anuncio.idLoja===0&&<fieldset>
                         <legend>Localização da loja</legend>   
-                        <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} className="p-1 mb-4" htmlFor="localizacao">Local : {values.anuncio.latitude&&values.anuncio.longitude?'✅':'❌'}</label>            
-                        <input style={{width:"75%"}} type="button" onClick={event => {event.preventDefault();getLocation();}} className="btn btn-sm btn-secondary" id="localizacao" value={"📌 Localização"}/>                 
+                        <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} htmlFor="localizacao">Local : {values.anuncio.latitude&&values.anuncio.longitude?'✅':'❌'}</label>            
+                        <input style={{width:"75%"}} type="button" onClick={event => {event.preventDefault();getLocation();}} id="localizacao" value={"📌 Localização"}/>                 
                     </fieldset>}
                     <fieldset id="imagens"><legend>Fotos</legend>  
-                    <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} className="p-1" htmlFor='imagem'>Imagem : </label>            
-                        <input ref={ref} required={!values.anuncio.imagemPath||values.anuncio.imagemPath===""} id='imagem' className='mb-4' type="file" style={{textAlign:"center", width:"75%", backgroundColor: "#3498db", borderRadius: "5px", color: "#fff"}} accept='image/*' onChange={event => {event.preventDefault();setValues({...values, anuncio:{...values.anuncio, imagemPath:undefined, imagem:event.target.files[0]}});}}/>
+                    <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} htmlFor='imagem'>Imagem : </label>            
+                        <input ref={ref} required={!values.anuncio.imagemPath||values.anuncio.imagemPath===""} id='imagem' type="file" style={{textAlign:"center", width:"75%", backgroundColor: "#3498db", borderRadius: "5px", color: "#fff"}} accept='image/*' onChange={event => {event.preventDefault();setValues({...values, anuncio:{...values.anuncio, imagemPath:undefined, imagem:event.target.files[0]}});}}/>
                         {(values.anuncio.imagemPath||values.anuncio.imagem)&&<img alt="" style={{display:"block", width:"8em", height:"8em"}} src={values.anuncio.imagemPath?host+values.anuncio.imagemPath:URL.createObjectURL(values.anuncio.imagem)}/>}                                                                        
                     </fieldset>
                     {values.anuncio.idLoja!==0&&
-                        <fieldset id="produtos" className="mb-4"><legend>Produtos do Anúncio</legend>  
-                            <label  style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} className="p-1 mb-4" htmlFor="produto">Id : </label>
+                        <fieldset id="produtos"><legend>Produtos do Anúncio</legend>  
+                            <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} htmlFor="produto">Id : </label>
                             <input style={{width:"50%"}} placeholder="Id do produto" size="15" step="any" id="produto" type="number" value={values.produtoID} onChange={event=> setValues({...values, produtoID:event.target.value})}/>                        
-                            <button disabled={!values.produtoID||(values.anuncio.anuncioProdutosDTO.length&&values.anuncio.anuncioProdutosDTO.filter(x => x.idProduto===values.produtoID).length)} style={{cursor:"pointer", border:"none", backgroundColor:"white", width:"15%"}} className="m-1" onClick={addProduto}>➕</button>
+                            <button disabled={!values.produtoID||(values.anuncio.anuncioProdutosDTO.length&&values.anuncio.anuncioProdutosDTO.filter(x => x.idProduto===Number(values.produtoID)).length)} style={{cursor:"pointer", border:"none", backgroundColor:"white", width:"15%"}} onClick={addProduto}>➕</button>
                             <div style={{overflowX:"auto", color:"white"}}>
                                 <table style={{borderCollapse: "collapse", width: "100%"}}>
                                     <thead>
@@ -117,8 +117,8 @@ function CriarAnuncios(props){
                             </div>
                         </fieldset>
                     }
-                    <input type="submit" value="enviar" className="btn btn-sm btn-success mt-2 mb-4"/>    
-                    <input onClick={event => {event.preventDefault();ref.current.value="";setValues({...values, anuncio:{legenda:"", preco:"", idLoja:""}})}} type="submit" className="btn btn-sm btn-primary mt-2 mb-4" value="Limpar"/>                        
+                    <input type="submit" value="enviar"/>    
+                    <input type="reset" onClick={event => {event.preventDefault();ref.current.value="";setValues({...values, anuncio:{legenda:"", preco:"", idLoja:0}})}} value="limpar"/>                        
                 </form>
 
                 <div style={{overflowX:"auto", color:"white"}}>
