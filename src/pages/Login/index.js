@@ -23,7 +23,7 @@ function Login(props) {
     const enviaLink = event=>{
         event.preventDefault();
         setValues({...values, load:true})
-        axios.post("/auth/usuarios/email-token?email="+values.email+"&esqueci=true", null).then(r=>
+        axios.post("/auth/usuarios/public/email-token?email="+values.email+"&esqueci=true", null).then(r=>
             setValues({...values, ok:true, erro:false, load:false})
         ).catch(error=> setValues({...values, erro:"Erro ao enviar link", ok:false, load:false}))
     };

@@ -19,7 +19,7 @@ function Header(){
             axios.get("/auth/usuarios").then(response=> {
                 localStorage.setItem("usuario", JSON.stringify(response.data))
                 axios.get("/loja/notificacoes/quantidade").then(notificacao =>setValues({userMenu:"none", notificacaoQtd:notificacao.data, usuario:response.data}))  
-            }).catch(error=> localStorage.clear()):''        
+            }):''        
     , [])
 
     useEffect(() => {
@@ -56,7 +56,13 @@ function Header(){
             <Link to="/"><img className="logo" alt="" src={logo}/></Link> 
             <img className="login" alt="Foto perfil user" src={values.usuario&&values.usuario.imagemPath?
                 host+values.usuario.imagemPath:"https://freesvg.org/img/abstract-user-flat-3.png"} onClick={event=>{event.preventDefault();event.stopPropagation();document.getElementById("user-menu").style.display=document.getElementById("user-menu").style.display!=="inline-block"?"inline-block":"none"}}/>                                    
-
+            {/* <nav>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#sobre">Sobre</a></li>
+                    <li><a href="#servicos">Serviços</a></li>
+                </ul>
+            </nav> */}
             {values.usuario&&
                 <><label className="notificacao-botao" htmlFor="notificacao-check">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" focusable="false" aria-hidden="true" style={{borderRadius:'50%', backgroundColor:'#858080'}}>
@@ -84,7 +90,7 @@ function Header(){
                 </div></>
             }
             <div id="user-menu" className='user-menu'>
-                {values.usuario&&<><Link to='/perfil'>Olá : {values.usuario.nome?values.usuario.nome:values.usuario.email} ✏️</Link><br/></>}
+                {values.usuario&&<><Link to={'/perfil/editar/'+values.usuario.id}>Olá : {values.usuario.nome?values.usuario.nome:values.usuario.email} ✏️</Link><br/></>}
                 <Link to='/login' onClick={(event)=>localStorage.clear()}>Sair</Link>                
             </div>
         </header>
