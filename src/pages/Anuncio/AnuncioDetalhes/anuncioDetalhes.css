@@ -1,0 +1,52 @@
+.anuncio-conteudo{
+    height: 100%; 
+    width: 100%;
+    padding: 0 2%;
+    margin: 0;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+@media only screen and (min-width: 600px) {
+    .anuncio-conteudo{
+        padding-right: 30%;
+    }
+}
+
+.anuncio-header{
+    height:25%;
+    width: 100%;
+    overflow: hidden;
+}
+
+.anuncio-header img{
+    border-radius: 50%; 
+    width: 4em;
+    height: 4em;
+}
+
+.anuncio-header h1, .anuncio-header h2{
+    font-size: 12pt;
+}
+.anuncio-header h1{
+    width: 40%;
+}
+.anuncio-header h1, .anuncio-header h2{
+    display: inline-block;
+}
+
+.menu-anuncio ul{
+    list-style: none; 
+    text-align: center;  
+    margin: 0;          
+}
+
+.menu-anuncio{    
+    height: 2em;
+    box-sizing: border-box;
+    border: black;
+    position: relative;
+    white-space: nowrap;
+    background-image: linear-gradient(90deg, rgba(89,86,86,1) 0%, rgba(41,39,39,1) 100%);
+    box-shadow: 1px 1px 3px 0 rgba(89, 86, 86, 0.877);
+}
