@@ -45,7 +45,28 @@ function AnuncioDetalhes(props){
                     <div style={{width:'33.33%', height: "100%", display:'inline-block'}}><li>{values.anuncio.isLike?'❤️':'🤍'}<span style={{paddingRight:"10%"}}>{values.anuncio.likeQTD}</span>💬<span>{values.anuncio.comentarioQTD}</span></li></div>
                 </ul>
             </nav>
-            <img src={host+values.anuncio.imagemPath} alt=""/>
+            <img src={host+values.anuncio.imagemPath} alt="" style={{display:"inline-block", paddingRight:"10%", width:"40%"}}/>
+            {values.produtos&&<div style={{display:"inline-block", verticalAlign:"top", width:"50%"}}>
+                <h2 >Produtos: </h2>
+                <table style={{borderCollapse: "collapse"}}>
+                    <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">Título</th>
+                            <th scope="col">Preco</th>
+                            <th scope="col"></th>
+                        </tr>
+                        <tbody>
+                            {values.produtos.map(p=><tr>
+                                <td><img src={p.imagemPath}/></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>)}
+                        </tbody>
+                    </thead>
+                </table>
+            </div>}
         </div>
     );
 }
