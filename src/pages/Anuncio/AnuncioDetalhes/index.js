@@ -32,12 +32,13 @@ function AnuncioDetalhes(props){
             <header className='anuncio-header'>
                 <h1>
                     <figure>
-                        <img alt={"Foto do perfil : "} src={host+(values.anuncio.lojaDTO.imagemPath?values.anuncio.lojaDTO.imagemPath:values.anuncio.usuarioDTO.imagemPath)}/>
-                        <figcaption style={{width:'70%'}}>{values.anuncio.lojaDTO.nome?values.anuncio.lojaDTO.nome:values.anuncio.usuarioDTO.nome}</figcaption>
+                        <img alt={"Foto do anuncio : "} src={host+(values.anuncio.imagemPath)}/>
+                        <figcaption style={{width:'70%'}}>{values.anuncio.legenda}</figcaption>
                     </figure>
                 </h1>     
             </header>
 
+            {!values.produtos&&<input type="button" value="Comprar"/>}
             <nav className="menu-anuncio">
                 <ul>                    
                     <div style={{width:'33.33%', height: "100%", display:'inline-block'}}><li>{values.anuncio.legenda}</li></div>
@@ -45,10 +46,8 @@ function AnuncioDetalhes(props){
                     <div style={{width:'33.33%', height: "100%", display:'inline-block'}}><li>{values.anuncio.isLike?'❤️':'🤍'}<span style={{paddingRight:"10%"}}>{values.anuncio.likeQTD}</span>💬<span>{values.anuncio.comentarioQTD}</span></li></div>
                 </ul>
             </nav>
-            <img src={host+values.anuncio.imagemPath} alt="" style={{display:"inline-block", paddingRight:"10%", width:"40%"}}/>
-            {values.produtos&&<div style={{display:"inline-block", verticalAlign:"top", width:"50%"}}>
-                <h2 >Produtos: </h2>
-                <table style={{borderCollapse: "collapse"}}>
+            {values.produtos&&<div style={{textAlign:"center",width:"100%"}}>
+                <table style={{width:"100%"}}>
                     <thead>
                         <tr>
                             <th scope="col"></th>
@@ -56,17 +55,25 @@ function AnuncioDetalhes(props){
                             <th scope="col">Preco</th>
                             <th scope="col"></th>
                         </tr>
-                        <tbody>
-                            {values.produtos.map(p=><tr>
-                                <td><img src={p.imagemPath}/></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>)}
-                        </tbody>
                     </thead>
+
+                    <tbody>
+                        {values.produtos.map(p=><tr>
+                            <td><img  style={{width:"2em", height:"2em", display:"inline"}} src={host+p.imagemPath}/></td>
+                            <td>{p.titulo}</td>
+                            <td>{p.preco}</td>
+                            <td><input type="button" style={{fontSize: "15pt", padding: "0 3%", backgroundColor:"red"}} value="-"/> {p.qtd?p.qtd:0} <input type="button" style={{fontSize: "15pt", backgroundColor:"red", padding: "0 3%"}} value="+"/></td>
+                        </tr>)}
+                    </tbody>
                 </table>
-            </div>}
+                <input type="button" value="Adicionar carrinho"/>
+            </div>}            
+            {/* <h1>
+                <figure>
+                    <img alt={"Foto do perfil : "} src={host+(values.anuncio.lojaDTO.imagemPath?values.anuncio.lojaDTO.imagemPath:values.anuncio.usuarioDTO.imagemPath)}/>
+                    <figcaption style={{width:'70%'}}>{values.anuncio.lojaDTO.nome?values.anuncio.lojaDTO.nome:values.anuncio.usuarioDTO.nome}</figcaption>
+                </figure>
+            </h1>    */}
         </div>
     );
 }
