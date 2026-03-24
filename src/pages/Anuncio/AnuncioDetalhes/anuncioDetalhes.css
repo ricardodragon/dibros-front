@@ -20,33 +20,28 @@
 }
 
 .anuncio-header img{
-    border-radius: 50%; 
     width: 8em;
     height: 8em;
 }
 
-.anuncio-header h1, .anuncio-header h2{
-    font-size: 12pt;
+.anuncio-header{
+    font-size: 8pt;
 }
-.anuncio-header h1{
-    width: 40%;
-}
-.anuncio-header h1, .anuncio-header h2{
+
+
+.anuncio-header h1, .anuncio-header figcaption{
     display: inline-block;
 }
 
-.menu-anuncio ul{
-    list-style: none; 
-    text-align: center;  
-    margin: 0;          
+.anuncio-header figcaption{
+    vertical-align: top;
 }
 
-.menu-anuncio{    
-    height: 2em;
-    box-sizing: border-box;
-    border: black;
-    position: relative;
-    white-space: nowrap;
-    background-image: linear-gradient(90deg, rgba(89,86,86,1) 0%, rgba(41,39,39,1) 100%);
-    box-shadow: 1px 1px 3px 0 rgba(89, 86, 86, 0.877);
+.anuncio-estatisticas{
+    float: right;
+    width: 30%;
+}
+
+.anuncio-estatisticas h2{
+    display: inline-block;
 }

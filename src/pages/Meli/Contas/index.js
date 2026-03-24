@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import queryString from 'query-string';
-import axios from "axios";
+import axios from "../../../config/api/api";
 import './contas.css'
     
 function Contas(props){

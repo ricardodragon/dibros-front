@@ -37,12 +37,12 @@ function NovaSenha(props) {
                 {(values.ok||values.erro)&&<div style={{width: "100%", textAlign:"center"}}>{values.ok?"✅ Link enviado com sucesso":"❌ Erro: "+values.erro}</div>}                
                 <form onSubmit={novoUsuario}>
                     <fieldset><legend>Cadastro de {values.esqueci?'nova senha':'ususario'}</legend>                                    
-                        {!values.esqueci&&<>
+                        {/* {!values.esqueci&&<>
                             {values.usuario.imagem&&<img alt="imagem de perfil" style={{width:"3em", height:"3em", borderRadius: "5px"}} src={URL.createObjectURL(values.usuario.imagem)}/>}<br/>
                             <label htmlFor='imagem' style={{backgroundColor: "#3498db", borderRadius: "5px", color: "#fff", cursor: "pointer", width:"80%", display:"block", position:"relative", left:"10%"}}>📷 Foto</label>
                             <input id='imagem' name="imagem" style={{display:"none"}} type="file" accept='image/*' onChange={event=>setValues({...values, usuario:{...values.usuario, imagem:event.target.files[0]}})}/>                        
                             <input style={{width: "80%", textAlign:"center"}} required onChange={setUsuario} placeholder="Nome" id="nome" name="nome" type="text"/>                        
-                        </>}
+                        </>} */}
                         <input style={{width: "80%", textAlign:"center"}} required onChange={setUsuario} placeholder="Password" id="password" name="password" type="password" />
                         <input style={{width: "80%", textAlign:"center"}} required onChange={setUsuario} placeholder="Confirme Password" id="confirm" name="confirm" type="password"/>
                         <input style={{width: "80%", textAlign:"center"}} value="Entrar" type="submit"/><br/>                                        

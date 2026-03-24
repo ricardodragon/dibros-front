@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 import axios from "../../../config/api/api";
 import "./anuncioDetalhes.css"
+import { Link } from "react-router-dom";
 
 function AnuncioDetalhes(props){
 
@@ -33,19 +34,24 @@ function AnuncioDetalhes(props){
                 <h1>
                     <figure>
                         <img alt={"Foto do anuncio : "} src={host+(values.anuncio.imagemPath)}/>
-                        <figcaption style={{width:'70%'}}>{values.anuncio.legenda}</figcaption>
-                    </figure>
-                </h1>     
-            </header>
+                        <figcaption>
+                            <h2>{"titulo : " + values.anuncio.legenda}</h2>
+                            
+                            {!values.anuncio.produtos&&<h2>{"preço : " + values.anuncio.preco}</h2>}
+                            {values.anuncio.idLoja&&<h2>loja :  <Link style={{display:'inline'}} to={"/loja/"+values.anuncio.lojaDTO.id}>{values.anuncio.lojaDTO.nome}</Link></h2>}
+                            {!values.anuncio.idLoja&&<h2>vendedor : <Link style={{display:'inline'}} to={"/perfil/"+values.anuncio.usuarioDTO}>{values.anuncio.usuarioDTO.nome}</Link></h2>}
+                        </figcaption>
+                    </figure>                                         
+                </h1>  
 
+                <div className="anuncio-estatisticas">
+                    <h2 style={{paddingRight:"20%"}}><p style={{textAlign:"center"}}>0</p><p>vendas</p></h2>
+                    <h2><p style={{textAlign:"center"}}>0</p><p>avaliações</p></h2>               
+                </div> 
+            </header>
+                
             {!values.produtos&&<input type="button" value="Comprar"/>}
-            <nav className="menu-anuncio">
-                <ul>                    
-                    <div style={{width:'33.33%', height: "100%", display:'inline-block'}}><li>{values.anuncio.legenda}</li></div>
-                    <div style={{width:'33.33%', height: "100%", display:'inline-block'}}><li>{values.anuncio.preco}</li></div>
-                    <div style={{width:'33.33%', height: "100%", display:'inline-block'}}><li>{values.anuncio.isLike?'❤️':'🤍'}<span style={{paddingRight:"10%"}}>{values.anuncio.likeQTD}</span>💬<span>{values.anuncio.comentarioQTD}</span></li></div>
-                </ul>
-            </nav>
+
             {values.produtos&&<div style={{textAlign:"center",width:"100%"}}>
                 <table style={{width:"100%"}}>
                     <thead>
@@ -59,21 +65,22 @@ function AnuncioDetalhes(props){
 
                     <tbody>
                         {values.produtos.map(p=><tr>
-                            <td><img  style={{width:"2em", height:"2em", display:"inline"}} src={host+p.imagemPath}/></td>
+                            <td><img  style={{width:"2em", height:"2em", display:"inline"}} alt={"Foto do produto : "} src={host+p.imagemPath}/></td>
                             <td>{p.titulo}</td>
                             <td>{p.preco}</td>
                             <td><input type="button" style={{fontSize: "15pt", padding: "0 3%", backgroundColor:"red"}} value="-"/> {p.qtd?p.qtd:0} <input type="button" style={{fontSize: "15pt", backgroundColor:"red", padding: "0 3%"}} value="+"/></td>
                         </tr>)}
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>total: 0</td>
+                        </tr>
                     </tbody>
                 </table>
                 <input type="button" value="Adicionar carrinho"/>
             </div>}            
-            {/* <h1>
-                <figure>
-                    <img alt={"Foto do perfil : "} src={host+(values.anuncio.lojaDTO.imagemPath?values.anuncio.lojaDTO.imagemPath:values.anuncio.usuarioDTO.imagemPath)}/>
-                    <figcaption style={{width:'70%'}}>{values.anuncio.lojaDTO.nome?values.anuncio.lojaDTO.nome:values.anuncio.usuarioDTO.nome}</figcaption>
-                </figure>
-            </h1>    */}
+
         </div>
     );
 }
