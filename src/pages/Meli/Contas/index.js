@@ -26,10 +26,11 @@ function Contas(props){
     }
 
     return (
-        <div className="anuncios-conteudo">  
-            <div className={"alert alert-success "+(values.ok?"":"visually-hidden")} role="alert">✅ Link enviado com sucesso</div>
-            <div className={"alert alert-danger "+(values.erro?"":"visually-hidden")} role="alert">❌ Erro: {values.erro}</div>          
-            <div color="primary" className="btn btn-primary btn-sm mt-3 w-100 mb-2" onClick={redirectMeli}>🔗 ADICIONAR CONTA</div>
+        <div className="anuncios-conteudo"> 
+            <header style={{width:"100%", textAlign:"center", padding:"8% 0"}}>
+                <h1>contas mercado livre</h1>
+            </header> 
+            
             {
                 values.contas.map((value, index) => {
                     return (                        
@@ -41,14 +42,14 @@ function Contas(props){
                             <h5 className="header-card"><label>email: </label><span style={{fontWeight:"bold"}}>{value.email}</span></h5>
                             <hr/>
                             <div>
-                                <Link to={"/meli/anuncios/"+value.id+"/"+undefined} className="btn-link">Anuncios</Link>
-                                &nbsp;&nbsp;  
-                                <button className="btn btn-danger btn-sm" onClick={event=>{event.preventDefault();axios.delete('/meli/contas/'+value.idLocal);}}>Excluir</button>                       
+                                <Link style={{fontWeight:"bolder", color:"rgb(0, 112, 224)"}} to={"/meli/anuncios/"+value.id+"/"+undefined}>anuncios</Link>                                  
+                                <span style={{color:"red", float:"right", cursor:"pointer"}} onClick={event=>{event.preventDefault();axios.delete('/meli/contas/'+value.idLocal)}} value="excluir">excluir</span>
                             </div>
                         </div>                        
                     )
                 })
             }
+            <input style={{cursor:"pointer", float: "right", position: "absolute", right: "6%", bottom: "6%", backgroundColor:"yellow"}} onClick={redirectMeli} value="🔗 ADICIONAR CONTA"/>
         </div>
     )
 }
