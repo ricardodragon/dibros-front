@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from "react"
 import { useParams } from "react-router-dom";
-import LabelInput from "../../../estrutura/LabelInput";
 import TipoAnuncio from "./components/TipoAnuncio";
 import Categorias from "./components/Categorias";
 import Atributos from "./components/Atributos";
@@ -8,9 +7,9 @@ import Imagens from "./components/Imagens";
 import AtributosVariacoes from "./components/AtributosVariacoes";
 import Variacoes from "./components/Variacoes";
 import "./detalhes.css"
-import axios from "axios";
+import axios from "../../../../config/api/api";
 
-function Anuncio(){
+function AnuncioDetalhes(){
 
     const { idAnuncio, userId} = useParams(); 
         
@@ -18,13 +17,14 @@ function Anuncio(){
 
     const setAnuncio = useCallback(()=>{        
         if(idAnuncio==="0"){axios.get("/meli/contas/all").then(r=> setValues({contas:r.data, anuncio:{title:'', price:0, available_quantity:0, attributes:[], variations:[]}, loader:false, disabled: false})); return}
-        axios.get('/meli/anuncios/'+idAnuncio+'?userId='+userId)
+        axios.get('/meli/anuncios/'+idAnuncio+'?idMeli='+userId)
             .then(anuncio=> {
                 anuncio.data.variations = anuncio.data.variations?.map(v=>{return{...v, picture_ids:anuncio.data.pictures.filter(p=>v.picture_ids.includes(p.id))}});
                 anuncio.data.pictures = anuncio.data.pictures?.filter(p => anuncio.data.variations.filter(v => v.picture_ids.map(pi=>pi.id).includes(p.id)).length===0)                        
                 axios.get('/meli/atributos/'+anuncio.data.category_id)
                 .then(res => {anuncio.data.attributes = res.data.map(x=> { if(anuncio.data.attributes.filter(y=>y.id===x.id).length){ const {value_id, value_name} = anuncio.data.attributes.filter(y=>y.id===x.id)[0]; return {...x, value_id, value_name}}else return x});setValues({anuncio:anuncio.data, disabled:true, loader:false, editar:userId!=="0"&&idAnuncio!=="0", conta:0})})                
             })
+
     }, [idAnuncio, userId])
     
     const setVisits = () => axios.get('/meli/anuncios/visits/'+userId+'/'+idAnuncio).then(r => setValues({...values, visits: r.data[idAnuncio]}));
@@ -77,7 +77,7 @@ function Anuncio(){
                 <span className="visually-hidden">Loading...</span>
             </div>                 
         </div>:   
-        <div className="anuncios-conteudo">
+        <div >
             <div className={"alert alert-success "+(values.ok?"":"visually-hidden")} role="alert">✅ Anuncio enviado com sucesso</div>
             <div className={"alert alert-danger "+(values.erro?"":"visually-hidden")} role="alert">❌ Erro: {values.erro}</div>
             <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"20%", fontWeight:"bold"}}>Visitas : </label>
@@ -98,14 +98,22 @@ function Anuncio(){
                         </select>
                     </div>
                 </fieldset>}                                                     
-                <Categorias disabled={values.disabled} onChange={(category_id) =>setValues({...values, anuncio:{...values.anuncio, category_id}})} category_id={values.anuncio.category_id}/>                        
+                <Categorias idMeli={userId} disabled={values.disabled} onChange={(category_id) =>setValues({...values, anuncio:{...values.anuncio, category_id}})} category_id={values.anuncio.category_id}/>                        
                 {values.anuncio.category_id&&values.contas&&values.contas.map((conta)=><TipoAnuncio key={conta.id} conta={conta} categoria={values.anuncio.category_id} onChange={listing_type_id=>setValues({...values, anuncio: {...values.anuncio, listing_type_id}})}/>)}                                                                    
                 <h5 className="h3">Detalhes</h5>
                 <div className="row" style={{padding:'1.5em'}}>                
-                    <div className="col"><LabelInput required={true} disabled={values.disabled} value={values.anuncio.title} label="Título" id="titulo" type="text" onChange={title => setValues({...values, anuncio: {...values.anuncio, title}})}/></div>
+                    <div className="col">
+                        <label style={{whiteSpace:"nowrap", fontSize:"8pt"}} htmlFor="titulo">Título</label>            
+                        <input type="text" required={true} disabled={values.disabled} value={values.anuncio.title} id="titulo" onChange={title => setValues({...values, anuncio: {...values.anuncio, title}})}/>
+                        {/* <LabelInput required={true} disabled={values.disabled} value={values.anuncio.title} label="Título" id="titulo" type="text" onChange={title => setValues({...values, anuncio: {...values.anuncio, title}})}/>                             */}
+                    </div>
                     {values.anuncio.variations&&values.anuncio.variations.length>0&&<>
-                        <div className="col"><LabelInput disabled={values.disabled} value={values.anuncio.available_quantity} label="Quantidade" id="qtd_disponivel" type="number" onChange={available_quantity => setValues({...values, anuncio: {...values.anuncio, available_quantity}})}/></div>
-                        <div className="col"><LabelInput disabled={values.disabled} value={values.anuncio.price} label="Preço" id="preco" type="number" onChange={price => setValues({...values, anuncio: {...values.anuncio, price}})}/></div>
+                        <div className="col">
+                            {/* <LabelInput disabled={values.disabled} value={values.anuncio.available_quantity} label="Quantidade" id="qtd_disponivel" type="number" onChange={available_quantity => setValues({...values, anuncio: {...values.anuncio, available_quantity}})}/> */}
+                        </div>
+                        <div className="col">
+                            {/* <LabelInput disabled={values.disabled} value={values.anuncio.price} label="Preço" id="preco" type="number" onChange={price => setValues({...values, anuncio: {...values.anuncio, price}})}/> */}
+                        </div>
                     </>}
                 </div>
                 <hr/>   
@@ -140,4 +148,4 @@ function Anuncio(){
         </div>
     )
 }
-export default Anuncio
+export default AnuncioDetalhes

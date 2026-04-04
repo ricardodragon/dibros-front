@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import LabelInput from '../../../../../estrutura/LabelInput';
+import LabelInput from '../../../../../../estrutura/LabelInput';
 
 
 function Contas(props){

@@ -79,8 +79,8 @@ input[type=submit],input[type=file],input[type=button],input[type=reset]{
 input{
 	font-family: 'Architects Daughter', cursive;
 	padding: 0.2% 0.8% 0.2% 0.8%;	
-	border: none;	
-	border-bottom: 1px solid #ccc;
+	border-radius: 0.3em;	
+	border: 1px solid #ccc;
 	box-sizing: border-box;		
 	color: #000;		
 }

@@ -1,16 +1,45 @@
+.meli-contas-conteudo{
+    height: 100%; 
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
 
-
-.card-contas{
-    border-radius: 0.5%; 
-    margin-bottom: 1%;   
-    padding: 2em;
+.meli-card-conta{
+    border: 1px solid rgba(0, 0 , 0, 0.1);
+    border-radius: 1em;
+    margin-bottom: 4%;
+    color: black;
     background-color: white;
-    color: #000;
-}   
+}
 
-.header-card{
-    white-space: nowrap;    
-    overflow-x: scroll;
+.meli-conta-nickname{
+    padding: 0% 0 2% 2%;
+}
+
+.meli-conta-id{
+    display: inline;
+    float: right;
+    padding-right: 2%;
+}
+
+.meli-email{
+    padding: 0 2%;    
+}
+
+.meli-card-conta h5{
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+
+@media only screen and (min-width: 600px) {
+    .meli-contas-conteudo{
+        padding: 0 30%;
+    }
 }
 
 

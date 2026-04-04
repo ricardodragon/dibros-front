@@ -1,6 +1,6 @@
-import axios from '../../../../../config/api/api';
+import axios from '../../../../../../config/api/api';
 import { useEffect, useState } from 'react';
-import LabelSelect from "../../../../../estrutura/LabelSelect";
+import LabelSelect from "../../../../../../estrutura/LabelSelect";
 
 function Categorias(props){
 
@@ -13,9 +13,9 @@ function Categorias(props){
                 axios.get('/meli/dominios/MLB/categorias')
                     .then(resp => setValues({categorias:[{id:"MLB", lista:resp.data}], categoria:res.data}))
             )
-        :axios.get('/meli/dominios/MLB/categorias')
+        :axios.get('/meli/dominios/MLB/categorias?idMeli='+props.idMeli)
             .then(resp => setValues({categorias:[{id:"MLB", lista:resp.data}], categoria:{}}))
-    , [props.category_id, host]);
+    , [props.category_id, props.idMeli, host]);
     
     function addCategoria(index, i){                   
         if(i === "")

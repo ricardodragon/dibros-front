@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import queryString from 'query-string';
 import axios from "../../../config/api/api";
 import './contas.css'
     
 function Contas(props){
     const [values, setValues] = useState({contas:[]});        
-    const { code } = queryString.parse(props.location.search)
+    const code = undefined//queryString.parse(props.location.search)
     const host = process.env.REACT_APP_URL;
     const erroContaMessage = "Erro ao salvar conta, pressione f5 para tentar novamente ou clique no botão adicionar conta novamente, se persistir o erro verifique sua conta MELI";
     useEffect(() => {
@@ -20,36 +19,21 @@ function Contas(props){
             axios.get('/meli/contas/all').then(r=>setValues({contas:r.data}))   
     }, [props.history, code, host]);
 
-    const redirectMeli = () => {                
-        const uriRedirect = 'https://dibros.com.br/meli/contas'
-        window.location.href = `https://auth.mercadolivre.com.br/authorization?response_type=code&client_id=5401911184235214&redirect_uri=${uriRedirect}`;
-    }
-
     return (
-        <div className="anuncios-conteudo"> 
-            <header style={{width:"100%", textAlign:"center", padding:"8% 0"}}>
-                <h1>contas mercado livre</h1>
-            </header> 
-            
-            {
-                values.contas.map((value, index) => {
-                    return (                        
-                        <div key={index} className="card-contas">
-                            <h5 className="header-card">{value.nickname}</h5>                                                        
-                            <hr/>
-                            <label>id: </label>{value.id}                              
-                            <hr/>
-                            <h5 className="header-card"><label>email: </label><span style={{fontWeight:"bold"}}>{value.email}</span></h5>
-                            <hr/>
-                            <div>
-                                <Link style={{fontWeight:"bolder", color:"rgb(0, 112, 224)"}} to={"/meli/anuncios/"+value.id+"/"+undefined}>anuncios</Link>                                  
-                                <span style={{color:"red", float:"right", cursor:"pointer"}} onClick={event=>{event.preventDefault();axios.delete('/meli/contas/'+value.idLocal)}} value="excluir">excluir</span>
-                            </div>
-                        </div>                        
-                    )
-                })
-            }
-            <input style={{cursor:"pointer", float: "right", position: "absolute", right: "6%", bottom: "6%", backgroundColor:"yellow"}} onClick={redirectMeli} value="🔗 ADICIONAR CONTA"/>
+        <div className="meli-contas-conteudo"> 
+            {values.contas.map((value, index) => {
+                return (                        
+                    <div style={{padding:"2% 0", marginTop:"1%"}} className="meli-card-conta" key={"anuncio-"+index}>      
+                        <h5 className="meli-email"><span style={{fontWeight:"bold"}}>{value.email}</span></h5>
+                        <div className="meli-conta-id"><label>id: </label>{value.id}</div>                              
+                        <h5 className="meli-conta-nickname">{value.nickname}</h5>                                                        
+                        <div style={{padding:"0 2%"}}>
+                            <Link style={{fontWeight:"bolder", color:"rgb(0, 112, 224)"}} to={"/meli/anuncios/"+value.id+"/"+undefined}>anuncios</Link>                                  
+                            <span style={{color:"red", float:"right", cursor:"pointer"}} onClick={event=>{event.preventDefault();axios.delete('/meli/contas/'+value.idLocal)}} value="excluir">excluir</span>
+                        </div>
+                    </div>
+                )
+            })}            
         </div>
     )
 }

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import LabelSelect from "../../../../../estrutura/LabelSelect";
+import LabelSelect from "../../../../../../estrutura/LabelSelect";
 
 function TipoAnuncio(props){
 

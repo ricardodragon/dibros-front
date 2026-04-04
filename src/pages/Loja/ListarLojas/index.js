@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
 import axios from '../../../config/api/api';
 import loader from "./../../../assets/loadinfo.gif";
 import "./lojas.css";
+import { Link } from 'react-router-dom';
 
 function ListarLojas(props){
          
@@ -31,8 +32,10 @@ function ListarLojas(props){
             {values.lojas.map((loja, indexLoja) =>            
                 <section className="card-loja" key={"loja-"+indexLoja}> 
                     <header style={{padding: "2%", overflow:'hidden'}}>
-                        <img alt={"Foto loja : " +loja.nome} src={host+loja.imagemPath} style={{borderRadius: "50%", width:"3em", height:"3em"}}/>
-                        <h3 style={{textOverflow: "ellipsis", maxWidth: "16ch", overflow: "hidden", verticalAlign:'top', fontWeight:"bolder", display: "inline", fontSize:"11pt", paddingLeft:'2%'}}>{loja.nome}</h3>                             
+                        <Link style={{display:'inline'}} to={"/loja/"+loja.id}>
+                            <img alt={"Foto loja : " +loja.nome} src={host+loja.imagemPath} style={{borderRadius: "50%", width:"3em", height:"3em"}}/>
+                            <h3 style={{textOverflow: "ellipsis", maxWidth: "16ch", overflow: "hidden", verticalAlign:'top', fontWeight:"bolder", display: "inline", fontSize:"11pt", paddingLeft:'2%'}}>{loja.nome}</h3>                             
+                        </Link>
                         <div style={{fontWeight:"bolder", float:"right", cursor:"pointer"}}>⋮</div>
                     </header>
                 </section>            

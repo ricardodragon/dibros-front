@@ -1,9 +1,7 @@
 import { useEffect, useState } from 'react';
-import axios from '../../../../../config/api/api';
+import axios from "../../../../../../config/api/api";
 
-function 
-
-Atributos(props){
+function Atributos(props){
 
     const [values, setValues] = useState({atributos:[]});
     const host = process.env.REACT_APP_URL;
