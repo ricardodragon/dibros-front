@@ -19,6 +19,11 @@ function Contas(props){
             axios.get('/meli/contas/all').then(r=>setValues({contas:r.data}))   
     }, [props.history, code, host]);
 
+    const redirectMeli = () => {                
+        const uriRedirect = 'https://dibros.com.br/meli/contas'
+        window.location.href = `https://auth.mercadolivre.com.br/authorization?response_type=code&client_id=5401911184235214&redirect_uri=${uriRedirect}`;
+    }
+    
     return (
         <div className="meli-contas-conteudo"> 
             {values.contas.map((value, index) => {
@@ -31,6 +36,7 @@ function Contas(props){
                             <Link style={{fontWeight:"bolder", color:"rgb(0, 112, 224)"}} to={"/meli/anuncios/"+value.id+"/"+undefined}>anuncios</Link>                                  
                             <span style={{color:"red", float:"right", cursor:"pointer"}} onClick={event=>{event.preventDefault();axios.delete('/meli/contas/'+value.idLocal)}} value="excluir">excluir</span>
                         </div>
+                        <input style={{cursor:"pointer", float: "right", position: "absolute", right: "6%", bottom: "6%", backgroundColor:"yellow"}} onClick={redirectMeli} value="🔗 ADICIONAR CONTA"/>                    
                     </div>
                 )
             })}            
