@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "../../../config/api/api";
+import queryString from 'query-string';
 import './contas.css'
     
 function Contas(props){
     const [values, setValues] = useState({contas:[]});        
-    const code = undefined//queryString.parse(props.location.search)
+    const { code } = queryString.parse(props.location.search)
     const host = process.env.REACT_APP_URL;
     const erroContaMessage = "Erro ao salvar conta, pressione f5 para tentar novamente ou clique no botão adicionar conta novamente, se persistir o erro verifique sua conta MELI";
     useEffect(() => {
