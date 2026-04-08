@@ -55,25 +55,30 @@
     transition: all 0.3s ease-in-out;
 }
 
-.notificacao-botao{    
-    cursor:pointer;
-    display: inline-block;
+.notificacao-botao, .carrinho-botao{    
+    border-radius: 50%;
+    cursor: pointer;
+    text-align: center;
+    width: 2em;
+    transition: all 0.6s ease-in-out;
 }
 
-.notificacao-botao div{
-    top:25%; 
-    right:4rem; 
-    position:absolute; 
-    box-sizing:border-box;
-    font-size:7pt;
-    height:1.1rem;
-    width:1.1rem;
-    background-color:red;
-    border-radius:50%;
-    text-align:center;
+.notificacao-botao:hover, .carrinho-botao:hover{
+    background-color: rgb(255, 255, 255, 0.2);
 }
 
-#notificacao-check{
+.carrinho-qtd, .notificacao-qtd{
+    background-color: red;
+    color: white;
+    position: absolute;
+    text-align: center;
+    border-radius: 50%;
+    font-size: 6pt;
+    width: 1.8%;
+    top: 35%;
+}
+
+#notificacao-check, #carrinho-check{
     float: right;
     display: none;
 }
