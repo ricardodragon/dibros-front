@@ -26,31 +26,31 @@ function AnuncioDetalhes(props){
     const removeProduto = index => setValues({...values, cesta:values.cesta.map((x, i)=>i===index&&x.qtd>0?{...values.cesta[i], qtd:values.cesta[i].qtd-1}:x)})
 
     const comprar = index => {      
-        const items = values.anuncio.idLoja?
-            [{idLoja: values.anuncio.idLoja, idAnuncio: values.anuncio.id, qtd:values.qtd}]:
-            [{idVendedor: values.anuncio.idUsuario, idAnuncio: values.anuncio.id, qtd:values.qtd}]
         const carrinho = JSON.parse(localStorage.getItem("carrinho"));
         if(!carrinho){
-            localStorage.setItem("carrinho", JSON.stringify(items))
+            localStorage.setItem("carrinho", JSON.stringify([{...values.anuncio, qtd:values.qtd}]))
+            window.dispatchEvent(new Event("carrinho"));
             history.push("/carrinho");
-        }else if(items[0].idVendedor!==carrinho[0].idVendedor||items[0].idLoja!==carrinho[0].idLoja)
+        }else if(values.anuncio.idLoja!==carrinho[0].idLoja)
             console.log("limpar carrinho")
         else{
-            localStorage.setItem("carrinho", JSON.stringify(carrinho.concat(items)));
+            localStorage.setItem("carrinho", JSON.stringify(carrinho.concat({...values.anuncio, qtd:values.qtd})));
+            window.dispatchEvent(new Event("carrinho"));
             history.push("/carrinho");
         }
     }
 
     const addCarrinho = index => {  
-        var items = values.cesta.filter(x=>x.qtd>0).map(x=>{return {idLoja: values.anuncio.idLoja, idAnuncio: values.anuncio.id, idProduto: x.id, qtd:x.qtd}})
         const carrinho = JSON.parse(localStorage.getItem("carrinho"));
         if(!carrinho){
-            localStorage.setItem("carrinho", JSON.stringify(items))
+            localStorage.setItem("carrinho", JSON.stringify(values.cesta.filter(x=>x.qtd>0)))
+            window.dispatchEvent(new Event("carrinho"));
             history.push("/carrinho");
-        }else if(carrinho[0].idVendedor||carrinho[0].idLoja!==values.anuncio.idLoja)
+        }else if(carrinho[0].idLoja!==values.anuncio.idLoja)
             console.log("limpar carrinho");
         else{ 
-            localStorage.setItem("carrinho", JSON.stringify(carrinho.concat(items)))
+            localStorage.setItem("carrinho", JSON.stringify(carrinho.concat(values.cesta.filter(x=>x.qtd>0))))
+            window.dispatchEvent(new Event("carrinho"));
             history.push("/carrinho");
         }
     }

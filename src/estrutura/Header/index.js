@@ -7,6 +7,7 @@ import Seguidor from './Seguidor';
 import loader from "./../../assets/loadinfo.gif";
 import Seguido from './Seguido';
 import Colaborador from './Colaborador';
+import Carrinho from './Carrinho';
 
 function Header(){
     const [values, setValues] = useState({})
@@ -17,7 +18,7 @@ function Header(){
         localStorage.getItem('token')?
             axios.get("/auth/usuarios").then(response=> {
                 localStorage.setItem("usuario", JSON.stringify(response.data))
-                axios.get("/loja/notificacoes/quantidade").then(notificacao =>setValues({userMenu:"none", notificacaoQtd:notificacao.data, usuario:response.data}))  
+                axios.get("/loja/notificacoes/quantidade").then(notificacao =>setValues({userMenu:"none", notificacaoQtd:notificacao.data, usuario:response.data, carrinho:JSON.parse(localStorage.getItem("carrinho"))}))  
             }):''        
     , [])
 
@@ -28,6 +29,7 @@ function Header(){
             return () => socket.readyState===WebSocket.OPEN?socket.close():undefined
         }
     }, [notificacoesQTD, host])    
+
 
     const getNotificacoes = (event) => {
         if(event.target.checked&&!values.loader){
@@ -64,34 +66,30 @@ function Header(){
             </nav> */}
             {values.usuario&&
                 <>
-                
-                <label className="notificacao-botao" htmlFor="notificacao-check">
-                    🔔
-                    {(values.notificacaoQtd>0||notificacoesQTD>0)&&<div className='notificacao-qtd'>{values.notificacaoQtd+notificacoesQTD}</div>}                                    
-                </label>
-                <input type="checkbox" className="notificacao-check" id="notificacao-check" onChange={getNotificacoes}/>
-                
-                <label className="carrinho-botao" htmlFor="carrinho-check">
-                    🛒
-                    {localStorage.getItem('carrinho')&&<div className='carrinho-qtd'>{JSON.parse(localStorage.getItem('carrinho')).length}</div>}                                    
-                </label>
-                <input type="checkbox" className="carrinho-check" id="carrinho-check"/>
-
-                <div id="notificacao-menu">
-                    {values.notificacoes&&values.notificacoes.map((n, index)=>{
-                        if(n.tipo==='SEGUIDO') return <Seguidor key={index} index={index} setNotificacao={setNotificacao} removeNotificacao={removeNotificacao} id={n.id}/>;
-                        if(n.tipo==='SEGUIDO_ACEITO') return <Seguido key={index} id={n.id} />;
-                        if(n.tipo==='SEGUIDOR_ACEITO') return <Seguido key={index} id={n.id}/>;
-                        if(n.tipo==='LOJA') return <Colaborador key={index} id={n.id}/>;
-                        else return '';
-                    })}
-                    {
+                    
+                    <label className="notificacao-botao" htmlFor="notificacao-check">
+                        🔔
+                        {(values.notificacaoQtd>0||notificacoesQTD>0)&&<div className='notificacao-qtd'>{values.notificacaoQtd+notificacoesQTD}</div>}                                    
+                    </label>
+                    <input type="checkbox" className="notificacao-check" id="notificacao-check" onChange={getNotificacoes}/>
+                    
+                    <div id="notificacao-menu">
+                        {values.notificacoes&&values.notificacoes.map((n, index)=>{
+                            if(n.tipo==='SEGUIDO') return <Seguidor key={index} index={index} setNotificacao={setNotificacao} removeNotificacao={removeNotificacao} id={n.id}/>;
+                            if(n.tipo==='SEGUIDO_ACEITO') return <Seguido key={index} id={n.id} />;
+                            if(n.tipo==='SEGUIDOR_ACEITO') return <Seguido key={index} id={n.id}/>;
+                            if(n.tipo==='LOJA') return <Colaborador key={index} id={n.id}/>;
+                            else return '';
+                        })}
                         <div style={{textAlign:"center"}}>
                             {values.loader&&<img style={{height:"5em", top:"50%"}} src={loader} alt="loading..."/>}
                             {values.notificacoes&&!values.notificacoes.length&&<p>sem notificações</p>}
                         </div>
-                    }
-                </div></>
+                    </div>
+
+                    
+                    <Carrinho/>
+                </>
             }
             <div id="user-menu" className='user-menu'>
                 {values.usuario&&<><Link to={'/perfil/editar/'+values.usuario.id}>Olá : {values.usuario.nome?values.usuario.nome:values.usuario.email} ✏️</Link><br/></>}
