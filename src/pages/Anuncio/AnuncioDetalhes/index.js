@@ -107,7 +107,7 @@ function AnuncioDetalhes(props){
 
                         <tbody>
                             {values.produtos.map((p, index)=><tr key={p.id}>
-                                <td><img  style={{width:"2em", height:"2em", display:"inline"}} alt={"Foto do produto : "} src={host+p.imagemPath}/></td>
+                                <td><img  style={{width:"2em", height:"2em", display:"inline"}} alt={"Foto do produto : "} src={p.imagemPath?host+p.imagemPath:"https://thumbs.dreamstime.com/b/%C3%ADcone-de-imagem-sem-foto-ou-em-branco-carregamento-imagens-aus%C3%AAncia-marca-n%C3%A3o-dispon%C3%ADvel-sinal-breve-silhueta-natureza-simples-215973362.jpg"}/></td>
                                 <td>{p.titulo}</td>
                                 <td>{p.preco}</td>
                                 <td>

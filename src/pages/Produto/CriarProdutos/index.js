@@ -101,7 +101,7 @@ function CriarProdutos(){
                             {values.produtos.map(p=>
                                 <tr key={p.id} style={{cursor:"pointer", whiteSpace: "nowrap"}} onClick={event=>{event.preventDefault();setValues({...values, produto:{...p, loja:p.lojaDTO}});document.getElementsByClassName("anuncios-conteudo")[0].scrollTo(0, 0)}}>
                                     <td>{p.id}</td>
-                                    <td><img alt="" style={{width:"2em", height:"2em"}} src={host+p.imagemPath}/></td>                            
+                                    <td><img alt="" style={{width:"2em", height:"2em"}} src={p.imagemPath?host+p.imagemPath:"https://thumbs.dreamstime.com/b/%C3%ADcone-de-imagem-sem-foto-ou-em-branco-carregamento-imagens-aus%C3%AAncia-marca-n%C3%A3o-dispon%C3%ADvel-sinal-breve-silhueta-natureza-simples-215973362.jpg"}/></td>                            
                                     <td style={{fontWeight: "bold"}}>{p.titulo}</td>                                                             
                                     <td>{"R$ "+p.preco}</td>
                                     <td>{p.quantidade}</td>

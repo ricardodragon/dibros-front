@@ -54,7 +54,7 @@ function AnunciosFeed(props){
                     <h2 style={{paddingLeft: "2.5%", fontSize:"12pt", whiteSpace:'break-spaces'}}>{anuncio.legenda}</h2>                                                                    
 
                     <p className="teste">
-                        <img src={host+anuncio.imagemPath} alt="Anúncio" className='img-anuncio' />                                                         
+                        <img src={anuncio.imagemPath?host+anuncio.imagemPath:"https://thumbs.dreamstime.com/b/%C3%ADcone-de-imagem-sem-foto-ou-em-branco-carregamento-imagens-aus%C3%AAncia-marca-n%C3%A3o-dispon%C3%ADvel-sinal-breve-silhueta-natureza-simples-215973362.jpg"} alt="Anúncio" className='img-anuncio' />                                                         
                         {/* {anuncio.anuncioProdutosDTO.filter(x=>x.imagemPath).map(x=><img src={host+x.imagemPath} className='img-anuncio' alt="Anúncio"/>)} */}
                     </p>
                     <div style={{fontWeight:"bolder", textAlign:"center", fontSize:"10pt", padding:"1%"}}>
