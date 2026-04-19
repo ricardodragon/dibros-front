@@ -56,17 +56,9 @@ function Header(){
         <header className="header-app" onClick={event=>{event.stopPropagation();document.getElementById("user-menu").style.display="none"}}>
             <Link to="/"><img className="logo" alt="" src={logo}/></Link> 
             <img className="login" alt="Foto perfil user" src={values.usuario&&values.usuario.imagemPath?
-                host+values.usuario.imagemPath:"https://freesvg.org/img/abstract-user-flat-3.png"} onClick={event=>{event.preventDefault();event.stopPropagation();document.getElementById("user-menu").style.display=document.getElementById("user-menu").style.display!=="inline-block"?"inline-block":"none"}}/>                                    
-            {/* <nav>
-                <ul>
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#sobre">Sobre</a></li>
-                    <li><a href="#servicos">Serviços</a></li>
-                </ul>
-            </nav> */}
+                host+values.usuario.imagemPath:"https://freesvg.org/img/abstract-user-flat-3.png"} onClick={event=>{event.preventDefault();event.stopPropagation();document.getElementById("user-menu").style.display=document.getElementById("user-menu").style.display!=="inline-block"?"inline-block":"none"}}/>                                                
             {values.usuario&&
                 <>
-                    
                     <label className="notificacao-botao" htmlFor="notificacao-check">
                         🔔
                         {(values.notificacaoQtd>0||notificacoesQTD>0)&&<div className='notificacao-qtd'>{values.notificacaoQtd+notificacoesQTD}</div>}                                    

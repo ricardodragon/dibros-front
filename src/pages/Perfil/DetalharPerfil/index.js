@@ -36,7 +36,10 @@ function DetalharPerfil(props) {
         {values.usuario&&<header id='detalhar-perfil-header'>
             <h1>
                 <figure>
-                    <img alt={"Foto do perfil : "} src={values.usuario.imagemPath?host+values.usuario.imagemPath:"https://freesvg.org/img/abstract-user-flat-3.png"}/>
+                    <img 
+                        onError={({ currentTarget })=>{currentTarget.onError=null; currentTarget.src='https://freesvg.org/img/abstract-user-flat-3.png'}}
+                        alt={"Foto do perfil : "} 
+                        src={values.usuario.imagemPath?host+values.usuario.imagemPath:"https://freesvg.org/img/abstract-user-flat-3.png"}/>
                     <figcaption style={{width:'70%'}}>{values.usuario.nome}</figcaption>
                 </figure>
             </h1>
