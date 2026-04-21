@@ -46,9 +46,10 @@ function Carrinho(){
                     <div style={{display:'inline-block', width:'50%', fontSize:"6pt", verticalAlign:"top"}}>
                         <p style={{whiteSpace: "nowrap", fontSize:"8pt", fontWeight:"bolder", textOverflow: "ellipsis", overflow:"hidden", marginBottom:"0"}}>{n.legenda?n.legenda:n.titulo}</p>
                         quantidade : 
-                        <input type="button" style={{padding: "0 3%", backgroundColor:"red"}} value="-" onClick={event=>{removeProduto(event, index);}}/> 
+                        <input type="button" style={{padding: "0 3%", marginLeft:"3%", backgroundColor:"red"}} value="-" onClick={event=>{removeProduto(event, index);}}/> 
                         <span style={{margin:"0 3%", fontWeight:"bold"}}>{n.qtd}</span>
                         <input type="button" style={{backgroundColor:"red", padding: "0 3%"}} value="+" onClick={event=>{addProduto(event, index);}}/>
+
                     </div>                
                                   
                 </div>
