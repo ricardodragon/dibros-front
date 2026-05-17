@@ -15,6 +15,8 @@ import MeliListarAnuncios from "../../pages/Meli/Anuncio/ListarAnuncios";
 import MeliFeed from "../../pages/Meli/Feed";
 import PrivateRoutes from "./private-routes";
 import Carrinho from "../../pages/Carrinho";
+import ConversaListar from "../../pages/Conversa/ConversaListar";
+import ConversaDetalhes from "../../pages/Conversa/ConversaDetalhes";
 
 function Routes(props){    
 
@@ -30,12 +32,14 @@ function Routes(props){
                 <PrivateRoutes exact path="/perfil/:id" load={props.load} nome="Indentificação usuário" component={DetalharPerfil}/>
                 <PrivateRoutes exact path="/perfil/editar/:id" load={props.load} nome="Indentificação usuário" component={EditarPerfil}/>
                 <PrivateRoutes exact path="/lojas" load={props.load} nome={"Lojas"} component={CriarLojas}/>
-                <PrivateRoutes exact path="/loja/:id" component={LojaDetalhes}/>
+                <PrivateRoutes exact path="/loja/:id" load={props.load} component={LojaDetalhes}/>
                 <PrivateRoutes exact path="/produtos/:id" load={props.load} nome={"Produtos"} component={CriarProdutos}/>
                 <PrivateRoutes exact path="/anuncio" load={props.load} nome={"Gerenciamento de anuncios"} component={Anuncio}/>                                 
                 <PrivateRoutes exact path="/anuncio-detalhes/:id" load={props.load} nome={"AnuncioDetalhes"} component={AnuncioDetalhes}/>
                 <PrivateRoutes exact path="/carrinho" load={props.load} nome={"Carrinho"} component={Carrinho}/>
-
+                <PrivateRoutes exact path="/conversa" load={props.load} nome={"ConversaListar"} component={ConversaListar}/>
+                <PrivateRoutes exact path="/conversa-detalhes/:id" load={props.load} nome={"ConversaDetalhes"} component={ConversaDetalhes}/>
+                
                 {/* sub rota do e-commerce meli */}            
                 <PrivateRoutes exact path="/meli/contas" load={props.load} nome={"Gerencie suas contas MercadoLivre"} component={Contas}/>                       
                 <PrivateRoutes exact path="/meli/anuncios/:id/:sku" load={props.load} nome={"Anúncios"} component={MeliListarAnuncios}/>                                    

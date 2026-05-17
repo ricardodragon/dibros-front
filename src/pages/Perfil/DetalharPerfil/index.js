@@ -7,6 +7,7 @@ import ListarLojas from '../../Loja/ListarLojas';
 import ListarProdutos from '../../Produto/ListarProdutos';
 import './perfil.css';
 import AnunciosFeed from '../../Anuncio/ListarAnuncios/AnunciosFeed';
+import { Link } from 'react-router-dom';
 
 function DetalharPerfil(props) {
 
@@ -50,7 +51,7 @@ function DetalharPerfil(props) {
                     {(values.usuario.seguindo===null&&<button onClick={event=>axios.post('/loja/seguidores/'+id).then(r=>setValues({...values, usuario:{...values.usuario, seguindo:false}}))}>seguir</button>)||
                     (values.usuario.seguindo&&<button disabled={true} style={{color:'white', cursor:'default'}}>parar de seguir</button>)||
                     (!values.usuario.seguindo&&<button style={{color:'white'}} disabled>aguardando</button>)}                    
-                    <button >mensagem</button>
+                    <Link to={"/conversa-detalhes/"+values.usuario.id}><button >mensagem</button></Link>
                 </div>}
             </div>
         </header>}

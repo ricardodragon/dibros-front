@@ -12,14 +12,14 @@ function AnunciosFeed(props){
     const host = process.env.REACT_APP_URL;
 
     //No mundo perfeito não existem blocos de chaves !{...}! lambidinha
-    useEffect(() => 
+    useEffect(() => {   
         axios.get(props.url+'page=0&size=10').then(anuncios => setValues({
             anuncios:anuncios.data, 
             page:0, 
             usuario:JSON.parse(localStorage.getItem('usuario')), 
             load:false
         })).catch(error=> console.log(error))
-    , [props.url])    
+    }, [props.url])    
 
     const handlerScroll = (event) => {
         if(!values.load&&(event.target.scrollHeight - event.target.scrollTop)-10<=event.target.clientHeight&&values.anuncios!==undefined){  

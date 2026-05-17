@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import axios from '../../../config/api/api';
-import './../header.css';
+import axios from '../../../../config/api/api';
 
 function Seguidor(props){
     const [values, setValues] = useState({});
@@ -10,8 +9,6 @@ function Seguidor(props){
     useEffect(() => 
         axios.get("/loja/seguidores/"+props.id).then(seguidores => setValues({usuario:seguidores.data}))
     , [props.id])
-
-
 
     return values.usuario?
         <div style={{padding:'1%', textAlign:'left'}}>

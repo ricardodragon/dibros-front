@@ -1,0 +1,39 @@
+
+
+.card-mensagem{
+    max-width: 70%;
+    background-color: rgb(58, 53, 53, 0.8);
+    color: white;
+    border-radius: 0.7em;
+    margin: 2% 0 0 0;
+    padding: 1%;
+}
+
+.mensagem-header{
+    background-color: rgb(58, 53, 53, 0.8);
+    margin-bottom: 10%;
+    height: 10%;
+}
+
+.mensagem-header img{
+    max-height: 100%;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+}
+
+.mensagem-header h3{
+    font-weight: bolder;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    font-size: 12pt;
+    white-space: nowrap;
+    display: inline;
+    vertical-align: 100%;
+}
+
+.mensagem-input{
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    height: 5%;
+}

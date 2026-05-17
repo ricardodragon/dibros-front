@@ -64,12 +64,15 @@
     right:6rem; 
 }
 
-.notificacao-botao, .carrinho-botao{    
+.notificacao-botao, .carrinho-botao, .mensagem-botao{    
     border-radius: 50%;
     cursor: pointer;
     text-align: center;
     width: 2em;
     transition: all 0.6s ease-in-out;
+}
+.mensagem-botao{
+    float: right;
 }
 
 .notificacao-botao:hover, .carrinho-botao:hover{

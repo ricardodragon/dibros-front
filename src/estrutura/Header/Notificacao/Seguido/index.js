@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import axios from '../../../config/api/api';
-import './../header.css';
+import axios from '../../../../config/api/api';
 
 function Seguido(props){
     const [values, setValues] = useState({});

@@ -1,0 +1,38 @@
+.mensagens-conteudo header{
+    padding: 2%;
+    overflow: hidden;
+    background-color: white;
+    color: black;
+    border-radius: 1em;
+}
+
+.mensagens-conteudo img{
+    border-radius: 50%;
+    width: 3em;
+    height: 3em;
+    margin-right: 4%;
+}
+
+.mensagens-conteudo h3{
+    font-weight: bolder;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    vertical-align:'top';
+    font-size: 12pt;
+    white-space: nowrap;
+}
+
+.mensagens-conteudo section{
+    display: inline-block;
+    width: 80%;
+}
+
+.mensagem-qtd{
+    display: inline-block;
+    background-color: red;
+    color: white;
+    text-align: center;
+    border-radius: 50%;
+    font-size: 6pt;
+    width: 1.9em;
+}

@@ -71,15 +71,19 @@
 .criar-anuncios{
     position: relative;
     float: right;
-    top: -13%;
-    left: -5%;  
     border-radius: 50%;
-    font-size: 15pt;
+    top: -13%;
+    right: 90%;  
     cursor: pointer;
-    transition: all 0.6s ease-in-out;
+    transition: all 0.8s ease-in-out;
     z-index: 1000000000;
+    font-size: 18pt;
+    width: 6%;
+    background-color: black;
+    text-align: center;
 }
 
 .criar-anuncios:hover{
-    background-color: rgb(100, 100, 100, 0.5);
+    color: black;
+    background-color: rgb(255, 255, 255, 0.9);
 }
