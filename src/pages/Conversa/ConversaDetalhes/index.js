@@ -13,21 +13,27 @@ function ConversaDetalhes(){
 
     useEffect(() => axios.get("/loja/seguidores/"+id).then(resp=> setValues({usuario:resp.data, texto:""})), [id])
 
-    useEffect(() => axios.get("/loja/mensagem/"+id).then(r=> setMensagens(r.data)), [id])
+    useEffect(() => axios.get("/loja/mensagem/"+id+"?page=0&size=99").then(r=> {
+        setMensagens(r.data);
+        document.getElementById("mensagem-"+r.data[0].id).scrollIntoView({behavior: 'smooth'})
+    }), [id])
 
-
-    useEffect(() => {
+    useEffect(() => {        
         if(localStorage.getItem("token")!==null){
             const eventSource = new EventSource(`${host}/loja/mensagem/ws/${id}?Authorization=${localStorage.getItem("token")}`);
-            eventSource.onmessage = (event) => setMensagens([JSON.parse(event.data), ...mensagens]);    
+            eventSource.onmessage = (event) => setMensagens([JSON.parse(event.data), ...mensagens])
             eventSource.onerror = (error) => eventSource.close();  
-            return eventSource.close();          
+            return () => eventSource.close();        
         }
     }, [mensagens, id, host])  
 
     const enviar = (event) => {
         event.preventDefault();
-        axios.post("/loja/mensagem", {idRemetente:id, texto:values.texto})
+        axios.post("/loja/mensagem", {idRemetente:id, texto:values.texto}).then(r=>{
+            setMensagens([{id:r.data, idRemetente:id, idAutor: JSON.parse(localStorage.getItem("usuario")).id, texto:values.texto}, ...mensagens])
+            setValues({...values, texto:""})
+            document.getElementById("mensagem-"+r.data).scrollIntoView({behavior: 'smooth'})
+        })
     }
 
     const input = event => setValues({...values, texto:event.target.value})
@@ -41,11 +47,12 @@ function ConversaDetalhes(){
                     src={host+(values.usuario.imagemPath)} />
                 <h3>{values.usuario.nome}</h3>
             </header>}
-            {mensagens&&mensagens.toReversed().map((m, index)=><section className="card-mensagem" key={m.id} style={{"marginLeft": m.idAutor===JSON.parse(localStorage.getItem("usuario")).id?"30%":"none"}}>
-                <p>{m.texto}</p>
-            </section>)}
-            
-            <input type="button" onClick={enviar} value="enviar"/>
+            <div id="scroll" style={{overflowY:"scroll", height:"84.5%"}}>
+                {mensagens&&mensagens.toReversed().map((m, index)=><section className="card-mensagem" key={m.id} id={"mensagem-"+m.id} style={{"marginLeft": m.idAutor===JSON.parse(localStorage.getItem("usuario")).id?"30%":"none"}}>
+                    <p>{m.texto}</p>
+                </section>)}
+            </div>
+            <span className="enviar-mensagem" onClick={enviar}>➤</span>
             <input className="mensagem-input" type="text" id="texto" onChange={input} value={values.texto} placeholder="Digite a mensagem"/>
         </>
     )

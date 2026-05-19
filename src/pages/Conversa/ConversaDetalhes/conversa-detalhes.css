@@ -11,7 +11,7 @@
 
 .mensagem-header{
     background-color: rgb(58, 53, 53, 0.8);
-    margin-bottom: 10%;
+    margin-bottom: 0.1%;
     height: 10%;
 }
 
@@ -36,4 +36,13 @@
     position: fixed;
     bottom: 0;
     height: 5%;
+}
+
+.enviar-mensagem{
+    position: absolute;
+    bottom: 0%;    
+    z-index: 1;
+    right: 2%;
+    color: black;
+    cursor: pointer;
 }

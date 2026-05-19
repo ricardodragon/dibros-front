@@ -13,10 +13,10 @@ function ConversaListar(){
     
     useEffect(() => {
         if(localStorage.getItem("token")!==null){
-            const eventSource = new EventSource(`${host}/loja/mensagem?Authorization=${localStorage.getItem("token")}`);
+            const eventSource = new EventSource(`${host}/loja/mensagem/ws?Authorization=${localStorage.getItem("token")}`);
             eventSource.onmessage = (event) => console.log(event.data);    
             eventSource.onerror = (error) => eventSource.close();            
-            return () => eventSource.close();
+            return () => eventSource.close(); 
         }
     }, [host]) 
 
