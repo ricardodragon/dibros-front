@@ -37,14 +37,12 @@ html, body {
 
 *{
 	box-sizing:border-box;
-	padding-bottom: env(safe-area-inset-bottom)
 }
 
 body {
 	overflow: hidden;
 	color: white !important;	
 	background-color: rgb(0, 0, 0) !important;	
-	padding-bottom: env(safe-area-inset-bottom)
 }
 ol, ul {
 	list-style: none;
