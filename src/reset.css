@@ -31,6 +31,10 @@ footer, header, hgroup, menu, nav, section {
 	display: block;
 }
 
+html, body {
+  height: 100dvh;
+}
+
 *{
 	box-sizing:border-box;
 	padding-bottom: env(safe-area-inset-bottom)
@@ -130,9 +134,6 @@ table{
 tr:hover {
 	background-color: white;
 	color: #000;
-}
-body, html{
-    height: 100% !important;
 }
 
 label{
