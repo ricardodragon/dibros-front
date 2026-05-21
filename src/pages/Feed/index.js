@@ -12,13 +12,10 @@ function Feed(props){
     const [values, setValues] = useState({checkLayout:true})
     return (
         <Template>
-            <nav className="menu-feed">
-                <ul>
-                    <HashLink to="#anuncios"><div style={{width:'33.33%', display:'inline-block'}}><li className='perfil-menu-opaciti'>📢 anuncios</li><li className='perfil-menu'>📢 anuncios</li></div></HashLink>
-                    <HashLink to="#lojas"><div style={{width:'33.33%', display:'inline-block'}}><li className='perfil-menu-opaciti'>🏬 lojas</li><li className='perfil-menu'>🏬 lojas</li></div></HashLink>
-                    <HashLink to="#produtos"><div style={{width:'33.33%', display:'inline-block'}}><li className='perfil-menu-opaciti'>📦 produtos</li><li className='perfil-menu'>📦 produtos</li></div></HashLink>                
-                </ul>
-            </nav>
+            <HashLink to="#anuncios" className="menu-feed"><span className='feed-menu-opaciti'>📢 anuncios</span><span className='feed-menu'>📢 anuncios</span></HashLink>
+            <HashLink to="#lojas" className="menu-feed"><span className='feed-menu-opaciti'>🏬 lojas</span><span className='feed-menu'>🏬 lojas</span></HashLink>
+            <HashLink to="#produtos" className="menu-feed"><span className='feed-menu-opaciti'>📦 produtos</span><span className='feed-menu'>📦 produtos</span></HashLink> 
+
             <div className="tabs-feed">
                 <input type="checkbox" id="check-feed" onChange={event=>setValues({...values, checkLayout:!values.checkLayout})}/>
                 <label className="check-feed-label" htmlFor="check-feed">

@@ -38,11 +38,11 @@ function LojaDetalhes(props){
             </header>
             }
 
-            <nav className="menu-feed">
+            <nav className="loja-menu-feed">
                 <ul>
-                    <HashLink to="#anuncios"><div style={{width:'33.33%', display:'inline-block'}}><li className='perfil-menu-opaciti'>📢 anuncios</li><li className='perfil-menu'>📢 anuncios</li></div></HashLink>
-                    <HashLink to="#produtos"><div style={{width:'33.33%', display:'inline-block'}}><li className='perfil-menu-opaciti'>📦 produtos</li><li className='perfil-menu'>📦 produtos</li></div></HashLink>                
-                    <HashLink to="#colaboradores"><div style={{width:'33.33%', display:'inline-block'}}><li className='perfil-menu-opaciti'>👥 colaboradores</li><li className='perfil-menu'>👥 colaboradores</li></div></HashLink>
+                    <HashLink to="#anuncios"><div style={{width:'33.33%', display:'inline-block'}}><li className='loja-perfil-menu-opaciti'>📢 anuncios</li><li className='loja-perfil-menu'>📢 anuncios</li></div></HashLink>
+                    <HashLink to="#produtos"><div style={{width:'33.33%', display:'inline-block'}}><li className='loja-perfil-menu-opaciti'>📦 produtos</li><li className='loja-perfil-menu'>📦 produtos</li></div></HashLink>                
+                    <HashLink to="#colaboradores"><div style={{width:'33.33%', display:'inline-block'}}><li className='loja-perfil-menu-opaciti'>👥 colaboradores</li><li className='loja-perfil-menu'>👥 colaboradores</li></div></HashLink>
                 </ul>
             </nav> 
 

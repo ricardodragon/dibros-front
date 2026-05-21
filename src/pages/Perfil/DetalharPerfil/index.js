@@ -56,7 +56,7 @@ function DetalharPerfil(props) {
             </div>
         </header>}
 
-        <nav className="menu-feed">
+        <nav className="perfil-menu-feed">
             <ul>
                 <HashLink to="#anuncios"><div style={{width:'33.33%', display:'inline-block'}}><li className='perfil-menu-opaciti'>📢 anuncios</li><li className='perfil-menu'>📢 anuncios</li></div></HashLink>
                 <HashLink to="#lojas"><div style={{width:'33.33%', display:'inline-block'}}><li className='perfil-menu-opaciti'>🏬 lojas</li><li className='perfil-menu'>🏬 lojas</li></div></HashLink>

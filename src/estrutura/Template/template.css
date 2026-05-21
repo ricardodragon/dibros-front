@@ -2,8 +2,7 @@
 
 #conteudo{      
     width: 100%;  
-    border-radius: 1%;
-    height: 90vh;   
+    height: 91vh;   
     overflow: hidden;
     box-sizing: border-box;
 }

@@ -17,11 +17,15 @@ function Mensagem(props){
     }
 
     return (<div onClick={event=>{event.stopPropagation()}} style={{display:"inline"}}>        
-        <Link to="/conversa" className="mensagem-botao-pequeno">💬</Link>
         
-        <label className="mensagem-botao-grande" htmlFor="mensagem-check" >
+        <Link to="/conversa" className="mensagem-botao mensagem-botao-pequeno">
             💬
-            {<div className='mensagem-qtd'>{mensagensQtd}</div>}                                    
+            {mensagensQtd>0&&<div style={{width:"100%"}}><div className='mensagem-qtd'>{mensagensQtd}</div></div>}
+        </Link>
+        
+        <label className="mensagem-botao mensagem-botao-grande" htmlFor="mensagem-check" >
+            💬
+            {mensagensQtd>0&&<div className='mensagem-qtd'>{mensagensQtd}</div>}
         </label>
         <input type="checkbox" className="notificacao-check" id="mensagem-check" onChange={getMensagens}/>
 

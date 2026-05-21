@@ -1,46 +1,43 @@
-.menu-feed ul{
-    list-style: none; 
-    text-align: center;  
-    margin: 0;          
-}
+
 .menu-feed{    
-    height: 2vh;
-    border: black;
     position: relative;
+    display: inline-block;
     white-space: nowrap;
     background-image: linear-gradient(90deg, rgba(89,86,86,1) 0%, rgba(41,39,39,1) 100%);
-    box-shadow: 1px 1px 3px 0 rgba(89, 86, 86, 0.877);
+    box-shadow: 5px 1px 10px 0 rgba(89, 86, 86, 0.877);
+    width: 33.33%;    
+    height: 6%;
+    text-align: center;    
 }
 
-.perfil-menu, .perfil-menu-opaciti{
-    color: white;
+.feed-menu, .feed-menu-opaciti{
     border: none;
+    width: 100%;
+    height: 100%;
     transition: opacity 0.8s linear;
-    display: inline-block;    
     cursor: pointer;
     font-weight: bolder;
-    background-color: transparent;
+    display: flex;
+    justify-content: center; 
+    align-items: center;    
 }
-.perfil-menu{
+
+.feed-menu-opaciti{
     opacity: 0; 
-    z-index: 2; 
-    position: relative;
-    width: 100%;
-}
-.perfil-menu-opaciti{
-    z-index: 1;
     position: absolute;
-    width: 33.33%;
+    background-image: linear-gradient(90deg, rgb(182, 177, 177) 0%, rgb(133, 128, 128) 100%);
+    z-index: 1;
 }
-.perfil-menu:hover{ 
+
+.feed-menu-opaciti:hover{ 
     opacity: 1;
 }
-.perfil-menu:active{
+.feed-menu:active{
     border: 1px solid rgb(247, 247, 247);
 }
 .tabs-feed{
-    height: 92%;
-    margin-top: 1%;    
+    height: 93.5%;
+    margin-top: 0.2%;
     overflow-x: scroll;
     white-space: nowrap;
     scroll-behavior: smooth;
@@ -50,9 +47,7 @@
 
 .check-feed-label{
     position: absolute;
-    top: 9em;
     cursor: pointer;
-    padding-left: 2%;
 }
 
 #check-feed{
