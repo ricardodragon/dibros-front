@@ -33,7 +33,7 @@ footer, header, hgroup, menu, nav, section {
 }
 body {
 	line-height: 2;
-	/* overflow: hidden !important; */
+	overflow: hidden;
 	color: white !important;	
 	background-color: rgb(0, 0, 0) !important;	
 }

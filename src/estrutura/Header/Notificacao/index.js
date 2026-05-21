@@ -11,16 +11,22 @@ function Notificacao(props){
     const [notificacoesQTD, setNotificacoesQTD] = useState(0);
     const host = process.env.REACT_APP_URL;
 
-    useEffect(() => {
+    useEffect(() => 
+        axios.get("/loja/notificacoes/quantidade").then(notificacao => setValues({notificacaoQtd:notificacao.data}))
+    , [host]) 
+
+    useEffect(() => {        
         if(localStorage.getItem("token")!==null){
-            const socket = new WebSocket(`${host}/loja/notificacoes/ws?Authorization=${localStorage.getItem("token")}`);          
-            socket.addEventListener("message", (event) => setNotificacoesQTD(notificacoesQTD+1));              
-            return () => socket.readyState===WebSocket.OPEN?socket.close():undefined
+            const eventSource = new EventSource(`${host}/loja/notificacoes/ws?Authorization=${localStorage.getItem("token")}`);
+            eventSource.onmessage = (event) => setNotificacoesQTD(notificacoesQTD+1)
+            eventSource.onerror = (error) => eventSource.close();  
+            return () => eventSource.close();        
         }
-    }, [notificacoesQTD, host])    
-  
+    }, [notificacoesQTD, host]) 
 
     const getNotificacoes = (event) => {
+        document.getElementById("mensagem-check").checked = false;
+        document.getElementById("carrinho-check").checked = false;
         if(event.target.checked&&!values.loader){
             setValues({...values, loader:true, notificacoes:undefined});
             axios.get(`/loja/notificacoes?page=${0}&size=10`).then(notificacoes => 
@@ -41,8 +47,8 @@ function Notificacao(props){
     const removeNotificacao=index=>setValues({...values, notificacoes:values.notificacoes.filter((x,i)=>index!==i)})
 
     return(
-        <>
-            <label className="notificacao-botao" htmlFor="notificacao-check">
+        <div onClick={event=>{event.stopPropagation()}} style={{display:"inline"}}>
+            <label className="notificacao-botao" htmlFor="notificacao-check" onClick={event=>event.stopPropagation()}>
                 🔔
                 {(values.notificacaoQtd>0||notificacoesQTD>0)&&<div className='notificacao-qtd'>{values.notificacaoQtd+notificacoesQTD}</div>}                                    
             </label>
@@ -61,7 +67,7 @@ function Notificacao(props){
                     {values.notificacoes&&!values.notificacoes.length&&<p>sem notificações</p>}
                 </div>
             </div>
-        </>
+        </div>
     )
 }
 export default Notificacao

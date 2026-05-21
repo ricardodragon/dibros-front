@@ -15,8 +15,11 @@ function ConversaDetalhes(){
 
     useEffect(() => axios.get("/loja/mensagem/"+id+"?page=0&size=99").then(r=> {
         setMensagens(r.data);
-        document.getElementById("mensagem-"+r.data[0].id).scrollIntoView({behavior: 'smooth'})
+        if(r.data.length>0)
+            document.getElementById("mensagem-"+r.data[0].id).scrollIntoView({behavior: 'smooth'})
     }), [id])
+
+    useEffect(() => axios.put("/loja/mensagem/"+id), [id])
 
     useEffect(() => {        
         if(localStorage.getItem("token")!==null){
@@ -30,9 +33,9 @@ function ConversaDetalhes(){
     const enviar = (event) => {
         event.preventDefault();
         axios.post("/loja/mensagem", {idRemetente:id, texto:values.texto}).then(r=>{
-            setMensagens([{id:r.data, idRemetente:id, idAutor: JSON.parse(localStorage.getItem("usuario")).id, texto:values.texto}, ...mensagens])
+            setMensagens([r.data, ...mensagens])
             setValues({...values, texto:""})
-            document.getElementById("mensagem-"+r.data).scrollIntoView({behavior: 'smooth'})
+            document.getElementById("mensagem-"+r.data.id).scrollIntoView({behavior: 'smooth'})
         })
     }
 

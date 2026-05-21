@@ -30,12 +30,17 @@ function Carrinho(){
 
     const esvaziar = event => {event.preventDefault();localStorage.removeItem('carrinho');window.dispatchEvent(new Event("carrinho"));}
 
-    return (<>
-        <label className="carrinho-botao" htmlFor="carrinho-check">
+    const setChecks = (event) => {
+        document.getElementById("mensagem-check").checked = false;
+        document.getElementById("notificacao-check").checked = false;
+    }
+
+    return (<div onClick={event=>{event.stopPropagation()}} style={{display:"inline"}}>
+        <label className="carrinho-botao" htmlFor="carrinho-check" onClick={event=>event.stopPropagation()}>
             🛒
             {carrinho&&<div className='carrinho-qtd'>{carrinho.length}</div>}                                    
         </label>
-        <input type="checkbox" className="carrinho-check" id="carrinho-check"/>
+        <input type="checkbox" className="notificacao-check" id="carrinho-check" onChange={setChecks}/>
 
         <div id="carrinho-menu">
             <h1>carrinho</h1>
@@ -59,6 +64,6 @@ function Carrinho(){
                 {!localStorage.getItem('carrinho')&&<p>sem itens</p>}
             </div>
         </div>
-    </>);
+    </div>);
 }
 export default Carrinho

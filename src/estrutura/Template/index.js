@@ -4,13 +4,12 @@ import "./template.css";
 function Template(props){
     
     return (
-        <>            
+        <div onClick={event=>{console.log("template");[...document.getElementsByClassName("notificacao-check")].forEach(x=>x.checked=false)}}>            
             <Header/>            
-            {/* <Menu/>             */}
-            <div id="conteudo" onClick={event=>{document.getElementById("user-menu").style.display="none"}}>                                
+            <div id="conteudo">                                
                 {props.children}                    
             </div>                        
-        </>
+        </div>
     )
 }
 
