@@ -1,7 +1,9 @@
 .produtos-conteudo{
-    width: 100vw;
-    overflow-y: scroll;
-    height: 100%;  
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    overflow-y: auto;
     box-sizing: border-box;
 }
 

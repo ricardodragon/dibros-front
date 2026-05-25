@@ -6,59 +6,62 @@ import AnunciosFeed from "../../Anuncio/ListarAnuncios/AnunciosFeed";
 import ListarProdutos from "../../Produto/ListarProdutos";
 import Colaboradores from "./Colaboradores";
 import './loja-detalhes.css';
+import AnunciosTabela from "../../Anuncio/ListarAnuncios/AnunciosTabela";
 
 function LojaDetalhes(props){
  
-    const [values, setValues] = useState({})    
+    const [values, setValues] = useState({checkLayout:true})    
     const { id } = useParams();
     const host = process.env.REACT_APP_URL;
         
     useEffect(() =>{
-        axios.get("/loja/lojas/perfil/"+id).then(loja => setValues({loja:loja.data, scroll:0}))
+        axios.get("/loja/lojas/perfil/"+id).then(loja => setValues({loja:loja.data, checkLayout:true}))
     }, [id]);   
 
-    return(
-        <div id="" style={{height:'100%'}}>   
-            {values.loja&&<header id='loja-perfil-header'>
-                <h1>
-                    <figure>
-                        <img alt={"Foto da loja : "} src={values.loja.imagemPath?host+values.loja.imagemPath:"https://freesvg.org/img/abstract-user-flat-3.png"}/>
-                        <figcaption style={{width:'70%'}}>{values.loja.nome}</figcaption>
-                    </figure>
-                </h1>
-                <div className='loja-seguidores'>
-                    <h2 >{values.loja.seguidores}<p>seguidores</p></h2>
-                    <h2>35<p>vendas</p></h2>
-                    <div id='botoes'>                                            
-                        {(!values.loja.seguindo&&
-                            <button onClick={event=>axios.post('/loja/seguidores/'+id).then(r=>setValues({...values, loja:{...values.loja, seguindo:false}}))}>seguir</button>)||
-                            <button disabled={true} style={{color:'white', cursor:'default'}}>seguindo</button>}                    
-                    </div>
-                </div>
-            </header>
-            }
+    const onError = ({ currentTarget })=>{currentTarget.onError=null; currentTarget.src='https://freesvg.org/img/abstract-user-flat-3.png'};
 
-            <nav className="loja-menu-feed">
-                <ul>
-                    <HashLink to="#anuncios"><div style={{width:'33.33%', display:'inline-block'}}><li className='loja-perfil-menu-opaciti'>📢 anuncios</li><li className='loja-perfil-menu'>📢 anuncios</li></div></HashLink>
-                    <HashLink to="#produtos"><div style={{width:'33.33%', display:'inline-block'}}><li className='loja-perfil-menu-opaciti'>📦 produtos</li><li className='loja-perfil-menu'>📦 produtos</li></div></HashLink>                
-                    <HashLink to="#colaboradores"><div style={{width:'33.33%', display:'inline-block'}}><li className='loja-perfil-menu-opaciti'>👥 colaboradores</li><li className='loja-perfil-menu'>👥 colaboradores</li></div></HashLink>
-                </ul>
-            </nav> 
-
-            <main id='tabs'>
-                <div id="anuncios" className="tab">
-                    <AnunciosFeed url={`/loja/anuncios/loja/${id}?`}/>
-                </div>                
-                <div id="produtos" className="tab">
-                    <ListarProdutos url={`/loja/produtos?idLoja=${id}&`}/>
+    return(<>   
+        {values.loja&&<header id='loja-perfil-header'>
+            <figure>
+                <img alt={"Foto da loja : "} onError={onError} src={values.loja.imagemPath?host+values.loja.imagemPath:"https://freesvg.org/img/abstract-user-flat-3.png"}/>
+                <figcaption>{values.loja.nome}</figcaption>
+            </figure>
+            <div className='loja-seguidores'>
+                <h2 >{values.loja.seguidores}<p>seguidores</p></h2>
+                <h2>35<p>vendas</p></h2>
+                <div id='botoes'>                                            
+                    {(!values.loja.seguindo&&
+                        <button onClick={event=>axios.post('/loja/seguidores/'+id).then(r=>setValues({...values, loja:{...values.loja, seguindo:false}}))}>seguir</button>)||
+                        <button disabled={true} style={{color:'white', cursor:'default'}}>seguindo</button>}                    
                 </div>
-                <div id="colaboradores" className="tab">
-                    <Colaboradores id={id}/>
-                </div> 
-            </main>    
-        </div>
-    )
+            </div>
+        </header>
+        }
+
+        <HashLink to="#anuncios" className="menu-feed"><span className='feed-menu-opaciti'>📢 anuncios</span><span className='feed-menu'>📢 anuncios</span></HashLink>
+        <HashLink to="#produtos" className="menu-feed"><span className='feed-menu-opaciti'>📦 produtos</span><span className='feed-menu'>📦 produtos</span></HashLink> 
+        <HashLink to="#colaboradores" className="menu-feed"><span className='feed-menu-opaciti'>👥 colaboradores</span><span className='feed-menu'>👥 colaboradores</span></HashLink>
+        
+        <div className="tabs-feed" style={{height:"74%"}}>
+            <input type="checkbox" id="check-feed" onChange={event=>setValues({...values, checkLayout:!values.checkLayout})}/>
+            <label className="check-feed-label" htmlFor="check-feed">
+                {values.checkLayout&&<span><i className="fa-solid fa-list" style={{backgroundColor:"black", fontSize: "32px"}}></i></span>}
+                {!values.checkLayout&&<span><i className="fa-solid fa-table-cells" style={{backgroundColor:"black", fontSize: "32px"}}></i></span>}
+            </label>
+            <section id="anuncios" className="tab">
+                {values.checkLayout&&<AnunciosFeed url={`/loja/anuncios/loja/${id}?`}/>}
+                {!values.checkLayout&&<AnunciosTabela url={`/loja/anuncios/loja/${id}?`}/>}
+                {/* <Link className="criar-anuncios" to={'/anuncio'}>+</Link> */}
+            </section>
+            <section id="produtos" className="tab">
+                <ListarProdutos url={'/loja/produtos'+(localStorage.getItem("token")?'?':'/public?')}/>
+                {/* <Link className="criar-anuncios" to={'/produtos/'+0}>+</Link> */}
+            </section>  
+            <section id="colaboradores" className="tab">
+                <Colaboradores id={id}/>
+            </section>
+        </div> 
+    </>)
 }
 
 export default LojaDetalhes;

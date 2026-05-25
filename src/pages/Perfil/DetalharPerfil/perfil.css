@@ -1,26 +1,26 @@
-#detalhar-perfil-header{
+#loja-perfil-header{
     height: 20%;
     width: 100%;
 }
 
-#detalhar-perfil-header figure{
+#loja-perfil-header figure{
     display: inline-block;
     width: 50%;
 }
 
-#detalhar-perfil-header figure img{
+#loja-perfil-header figure img{
     width: 20%;
     display: inline;
     aspect-ratio: 1 / 1;
     border-radius: 50%;
 }
 
-#detalhar-perfil-header figure figcaption{
+#loja-perfil-header figure figcaption{
     display: inline;
     width: 80%;
 }
 
-.seguidores{
+.loja-seguidores{
     width: 50%;
     padding-top: 2%;
     display: inline-block;
@@ -28,11 +28,11 @@
     vertical-align: top;
 }
 
-.seguidores h2{
+.loja-seguidores h2{
     display: inline-block;
     padding: 0 2%;
 }
 
-.seguidores p{
+.loja-seguidores p{
     text-align: center;
 }
