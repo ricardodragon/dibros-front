@@ -20,22 +20,22 @@
     width: 95%;
     display: inline-block;
     padding: 2%;
-    cursor: pointer;
 }
 
 .card-anuncio-header img{
     border-radius: 50%;
     aspect-ratio: 1 / 1;
     width: 12%;
+    cursor: pointer;
 }
 
 .card-anuncio-header h3{
     display: inline-block;
-    width: 80%;
     font-size: 11pt;
     vertical-align: top;
     white-space: break-spaces;
     font-weight: bolder;
+    cursor: pointer;
 }
 
 .anuncio-opcoes{

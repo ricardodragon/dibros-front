@@ -50,9 +50,9 @@ function AnunciosFeed(props){
         <div className="anuncios-conteudo" onScroll={handlerScroll}>
             {values.anuncios&&values.anuncios.filter(x=>x.legenda!=="vai me perder").map((anuncio, index) =>            
                 <div className="card-anuncio" key={"anuncio-"+index}>                  
-                    <header className="card-anuncio-header" onClick={event=>history.push(anuncio.lojaDTO.id?"/loja/"+anuncio.lojaDTO.id:"/perfil/"+anuncio.usuarioDTO.id)}>                        
-                        <img alt={"Foto anuncio : " +anuncio.legenda} onError={onError} src={host+(anuncio.lojaDTO.imagemPath?anuncio.lojaDTO.imagemPath:anuncio.usuarioDTO.imagemPath)}/>
-                        <h3>{anuncio.lojaDTO.nome?anuncio.lojaDTO.nome:anuncio.usuarioDTO.nome}</h3>
+                    <header className="card-anuncio-header">                        
+                        <img alt={"Foto anuncio : " +anuncio.legenda} onClick={event=>history.push(anuncio.lojaDTO.id?"/loja/"+anuncio.lojaDTO.id:"/perfil/"+anuncio.usuarioDTO.id)} onError={onError} src={host+(anuncio.lojaDTO.imagemPath?anuncio.lojaDTO.imagemPath:anuncio.usuarioDTO.imagemPath)}/>
+                        <h3 onClick={event=>history.push(anuncio.lojaDTO.id?"/loja/"+anuncio.lojaDTO.id:"/perfil/"+anuncio.usuarioDTO.id)}>{anuncio.lojaDTO.nome?anuncio.lojaDTO.nome:anuncio.usuarioDTO.nome}</h3>
                     </header>
                     <div className="anuncio-opcoes">⋮</div>
                     <h2>{anuncio.legenda}</h2>                                                                    
