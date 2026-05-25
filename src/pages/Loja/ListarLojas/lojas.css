@@ -1,6 +1,9 @@
 .lojas-conteudo{
+    width: 100%;
     height: 100%; 
-    overflow-y: scroll;
+    padding: 0;
+    margin: 0;
+    overflow-y: auto;
     box-sizing: border-box;
 }
 
@@ -14,14 +17,30 @@
     background-color: white;
 }
 
-.img-loja{
-    min-width: 100%; 
-    max-width: 100%; 
-    max-height: 16em;
+.card-loja header{
+    padding: 2%;
+    overflow: hidden;
+}
+
+.card-loja img{
+    border-radius: 50%;
+    width: 15%;
+    aspect-ratio: 1 / 1;
+}
+
+.card-loja h3{
+    text-overflow: ellipsis;
+    max-width: 16ch;
+    overflow: hidden;
+    vertical-align: top;
+    font-weight : bolder;
+    display: inline;
+    font-size: 11pt;
+    padding-left: 2%;
 }
 
 @media only screen and (min-width: 600px) {
     .lojas-conteudo{
-        padding: 0 30%;
+        width: 60%;
     }
 }

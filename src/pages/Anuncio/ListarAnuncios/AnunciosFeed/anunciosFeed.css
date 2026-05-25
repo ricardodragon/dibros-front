@@ -1,33 +1,101 @@
 .anuncios-conteudo{
-    height: 100%; 
     width: 100%;
+    height: 100%;
     padding: 0;
     margin: 0;
     overflow-y: auto;
-    box-sizing: border-box;
+    box-sizing: border-box;    
 }
 
 .card-anuncio{
     border: 1px solid rgba(0, 0 , 0, 0.1);
     border-radius: 1em;
-    margin-bottom: 4%;
+    margin-bottom: 2%;
     color: black;
     background-color: white;
 }
 
-.img-anuncio{
-    min-width: 100%; 
-    max-width: 100%; 
-    max-height: 16em;
+.card-anuncio-header{
+    height: 15%;
+    width: 95%;
     display: inline-block;
+    padding: 2%;
+    cursor: pointer;
+}
+
+.card-anuncio-header img{
+    border-radius: 50%;
+    aspect-ratio: 1 / 1;
+    width: 12%;
+}
+
+.card-anuncio-header h3{
+    display: inline-block;
+    width: 80%;
+    font-size: 11pt;
+    vertical-align: top;
+    white-space: break-spaces;
+    font-weight: bolder;
+}
+
+.anuncio-opcoes{
+    font-weight: bolder;
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: top;
+    padding-top: 3%;
+}
+
+.card-anuncio h2{
+    padding-left: 2.5%;
+    font-size: 12pt;
+    white-space: break-spaces;
+}
+
+.img-anuncio{
+    display: inline-block;
+    aspect-ratio: 1 / 1;
+    width: 100%;
+}
+
+.anuncio-preco{
+    font-weight: bolder;
+    text-align: center;
+    font-size: 10pt;
+    padding: 1%;
+}
+
+.anuncio-curtidas{
+    font-size: 10pt;
+    padding: 1%;
+    font-weight: bolder;
+    display: inline-block;
+    width: 48%;    
+    overflow: hidden;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.anuncio-like{
+    position: relative;
+    display: inline-block;
+    width: 33%;
+    cursor: pointer;
+}
+
+.like-container{
+    border-top:1px solid rgba(0, 0 , 0, 0.1);
+    text-align:center;
+    font-size:11pt;
+    padding:1%;
 }
 
 .teste{
-overflow-x: scroll;
+    overflow-x: scroll;
 }
 
 @media only screen and (min-width: 600px) {
     .anuncios-conteudo{
-        padding: 0 30%;
+        width: 60%;
     }
 }

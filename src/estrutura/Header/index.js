@@ -6,10 +6,12 @@ import axios from '../../config/api/api';
 import Carrinho from './Carrinho';
 import Notificacao from './Notificacao';
 import Mensagem from './Mensagem';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 function Header(){
     const [values, setValues] = useState({})
     const host = process.env.REACT_APP_URL;
+    const history = useHistory();
 
     useEffect(() => 
         localStorage.getItem('token')?
@@ -19,10 +21,11 @@ function Header(){
             }):''        
     , [])     
 
+    const home = (event) => history.location.pathname==="/"?history.go(0):history.push("/")
 
     return (
         <header className="header-app">
-            <Link to="/"><img className="logo" alt="" src={logo}/></Link> 
+            <img onClick={home} className="logo" alt="" src={logo}/>
             <img className="login" alt="Foto perfil user" src={values.usuario&&values.usuario.imagemPath?
                 host+values.usuario.imagemPath:"https://freesvg.org/img/abstract-user-flat-3.png"} onClick={event=>{event.preventDefault();event.stopPropagation();document.getElementById("user-menu").style.display=document.getElementById("user-menu").style.display!=="inline-block"?"inline-block":"none"}}/>                                                
             {values.usuario&&

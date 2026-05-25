@@ -6,6 +6,8 @@ import "./listar.css";
 function ListarProdutos(props){
     const [values, setValues] = useState({})    
     const host =process.env.REACT_APP_URL;
+    const lojaNotFound = "https://thumbs.dreamstime.com/b/%C3%ADcone-de-imagem-sem-foto-ou-em-branco-carregamento-imagens-aus%C3%AAncia-marca-n%C3%A3o-dispon%C3%ADvel-sinal-breve-silhueta-natureza-simples-215973362.jpg";;
+    const produtoNotFound = "https://thumbs.dreamstime.com/b/%C3%ADcone-de-imagem-sem-foto-ou-em-branco-carregamento-imagens-aus%C3%AAncia-marca-n%C3%A3o-dispon%C3%ADvel-sinal-breve-silhueta-natureza-simples-215973362.jpg";
 
     useEffect(() => 
         axios.get(props.url+`page=${0}&size=${10}`).then(produtos =>setValues({produtos:produtos.data, page:0, usuario:JSON.parse(localStorage.getItem('usuario'))}))        
@@ -18,20 +20,21 @@ function ListarProdutos(props){
         if(props.onScroll)props.onScroll(event);
     }
     
+    const onErrorLoja = ({ currentTarget })=>{currentTarget.onError=null; currentTarget.src=lojaNotFound}
+    const onErrorProduto = ({ currentTarget })=>{currentTarget.onError=null; currentTarget.src=produtoNotFound}
+
     return (        
         <div className="produtos-conteudo" onScroll={handlerScroll}>
             {values.produtos&&values.produtos.map((produto, indexProduto) =>            
                 <section className="card-produto" key={"produtos-"+indexProduto}>                  
-                    <header style={{padding: "2%"}}>
-                        <img alt={"Foto produto : " +produto.legenda} src={host+produto.lojaDTO.imagemPath} style={{borderRadius: "50%", width:"3em", height:"3em"}}/>
-                        <h3 style={{textOverflow: "ellipsis", maxWidth: "16ch", overflow: "hidden", verticalAlign:'top', fontWeight:"bolder", display: "inline", fontSize:"11pt", paddingLeft:'2%'}}>{produto.lojaDTO.nome}</h3>                             
-                        <div style={{fontWeight:"bolder", float:"right", cursor:"pointer"}}>⋮</div>
+                    <header>
+                        <img alt={"Foto loja : " +produto.lojaDTO.nome} src={host+produto.lojaDTO.imagemPath} onError={onErrorLoja}/>
+                        <h3>{produto.lojaDTO.nome}</h3>                             
                     </header>
-                    <h2 style={{paddingLeft: "2.5%", fontSize:"12pt"}}>{produto.titulo}</h2>                                                                    
+                    <div className="opcoes">⋮</div>
+                    <h2>{produto.titulo}</h2>                                                                    
                     
-                    <p className="teste">
-                        <img src={host+produto.imagemPath} alt="Produto" id={{}} className='img-produto' />                                                         
-                    </p>
+                    <img src={host+produto.imagemPath} alt={"Foto produto : " +produto.legenda} onError={onErrorProduto} className='img-produto' />                                                         
                     <div style={{boxSizing:'border-box', fontWeight:"bolder", textAlign:"center", fontSize:"10pt", width:"100%", padding:"1%"}}>
                         R$ {produto.preco},00
                     </div>   

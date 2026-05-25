@@ -11,42 +11,25 @@ import { Link } from 'react-router-dom';
 
 function DetalharPerfil(props) {
 
-    const [values, setValues] = useState({})    
+    const [values, setValues] = useState({checkLayout:true})    
     const { id } = useParams();
     const host = process.env.REACT_APP_URL;
 
     useEffect(() =>{
-        axios.get("/loja/seguidores/"+id).then(seguidores => setValues({usuario:seguidores.data, scroll:0}))
+        axios.get("/loja/seguidores/"+id).then(seguidores => setValues({usuario:seguidores.data, checkLayout:true}))
     }, [id]);        
 
-    const onScroll = (event) =>{       
-        const conteudoHeight = document.getElementById('cont').clientHeight;
-        const tabsHeight = document.getElementById('tabs').clientHeight;
-        if(values.scroll<event.target.scrollTop&&Math.round((tabsHeight/conteudoHeight)*100+1)<80){
-            document.getElementById('detalhar-perfil-header').style.height='0%'; 
-            document.getElementById('tabs').style.height='96%';                        
-        }        
-        else if(values.scroll>event.target.scrollTop&&Math.round((tabsHeight/conteudoHeight)*100+1)>80){
-            document.getElementById('detalhar-perfil-header').style.height='25%'; 
-            document.getElementById('tabs').style.height='71%';                         
-        }
-        setValues({...values, scroll:event.target.scrollTop});            
-    }
+    const onError = ({ currentTarget })=>{currentTarget.onError=null; currentTarget.src='https://freesvg.org/img/abstract-user-flat-3.png'};
 
-    return <div id="cont" style={{height:'100%'}}>        
+    return <>        
         {values.usuario&&<header id='detalhar-perfil-header'>
-            <h1>
-                <figure>
-                    <img 
-                        onError={({ currentTarget })=>{currentTarget.onError=null; currentTarget.src='https://freesvg.org/img/abstract-user-flat-3.png'}}
-                        alt={"Foto do perfil : "} 
-                        src={values.usuario.imagemPath?host+values.usuario.imagemPath:"https://freesvg.org/img/abstract-user-flat-3.png"}/>
-                    <figcaption style={{width:'70%'}}>{values.usuario.nome}</figcaption>
-                </figure>
-            </h1>
+            <figure>
+                <img onError={onError} alt={"Foto do perfil : "} src={values.usuario.imagemPath?host+values.usuario.imagemPath:"https://freesvg.org/img/abstract-user-flat-3.png"}/>
+                <figcaption>{values.usuario.nome}</figcaption>
+            </figure>
             <div className='seguidores'>
-                <h2 style={{paddingRight:'5%'}}>{values.usuario.seguidoresQTD}<p>seguidores</p></h2>
-                <h2>{values.usuario.seguindoQTD}<p>seguindo</p></h2>
+                <h2><p>{values.usuario.seguidoresQTD}</p>seguidores</h2>
+                <h2><p>{values.usuario.seguindoQTD}</p>seguindo</h2>
                 {JSON.parse(localStorage.getItem('usuario'))?.id!==values.usuario.id&&<div id='botoes' style={{cursor:'pointer'}}>                                            
                     {(values.usuario.seguindo===null&&<button onClick={event=>axios.post('/loja/seguidores/'+id).then(r=>setValues({...values, usuario:{...values.usuario, seguindo:false}}))}>seguir</button>)||
                     (values.usuario.seguindo&&<button disabled={true} style={{color:'white', cursor:'default'}}>parar de seguir</button>)||
@@ -56,32 +39,31 @@ function DetalharPerfil(props) {
             </div>
         </header>}
 
-        <nav className="perfil-menu-feed">
-            <ul>
-                <HashLink to="#anuncios"><div style={{width:'33.33%', display:'inline-block'}}><li className='perfil-menu-opaciti'>📢 anuncios</li><li className='perfil-menu'>📢 anuncios</li></div></HashLink>
-                <HashLink to="#lojas"><div style={{width:'33.33%', display:'inline-block'}}><li className='perfil-menu-opaciti'>🏬 lojas</li><li className='perfil-menu'>🏬 lojas</li></div></HashLink>
-                <HashLink to="#produtos"><div style={{width:'33.33%', display:'inline-block'}}><li className='perfil-menu-opaciti'>📦 produtos</li><li className='perfil-menu'>📦 produtos</li></div></HashLink>                
-            </ul>
-        </nav>         
+        <HashLink to="#anuncios" className="menu-feed"><span className='feed-menu-opaciti'>📢 anuncios</span><span className='feed-menu'>📢 anuncios</span></HashLink>
+        <HashLink to="#lojas" className="menu-feed"><span className='feed-menu-opaciti'>🏬 lojas</span><span className='feed-menu'>🏬 lojas</span></HashLink>
+        <HashLink to="#produtos" className="menu-feed"><span className='feed-menu-opaciti'>📦 produtos</span><span className='feed-menu'>📦 produtos</span></HashLink> 
 
-        <main id='tabs'>
+        <div className="tabs-feed" style={{height:"74%"}}>
             <input type="checkbox" id="check-feed" onChange={event=>setValues({...values, checkLayout:!values.checkLayout})}/>
             <label className="check-feed-label" htmlFor="check-feed">
-                {values.checkLayout&&<span><i className="fa-solid fa-list" style={{fontSize: "32px"}}></i></span>}
-                {!values.checkLayout&&<span><i className="fa-solid fa-table-cells" style={{fontSize: "32px"}}></i></span>}
+                {values.checkLayout&&<span><i className="fa-solid fa-list" style={{backgroundColor:"black", fontSize: "32px"}}></i></span>}
+                {!values.checkLayout&&<span><i className="fa-solid fa-table-cells" style={{backgroundColor:"black", fontSize: "32px"}}></i></span>}
             </label>
-            <div id="anuncios" className="tab">
-                {values.checkLayout&&<AnunciosFeed onScroll={onScroll} url={`/loja/anuncios?idUsuario=${id}&`}/>}
-                {!values.checkLayout&&<AnunciosTabela onScroll={onScroll} url={`/loja/anuncios?idUsuario=${id}&`}/>}                
-            </div>
-            <div id="lojas" className="tab">
-                <ListarLojas onScroll={onScroll}/>
-            </div>
-            <div id="produtos" className="tab">
-                <ListarProdutos onScroll={onScroll} url={`/loja/produtos?idUsuario=${id}&`}/>
-            </div> 
-        </main>
-    </div>
+            <section id="anuncios" className="tab">
+                {values.checkLayout&&<AnunciosFeed url={`/loja/anuncios?idUsuario=${id}&`}/>}
+                {!values.checkLayout&&<AnunciosTabela url={`/loja/anuncios?idUsuario=${id}&`}/>}  
+                {/* <Link className="criar-anuncios" to={'/anuncio'}>+</Link> */}
+            </section>
+            <section id="lojas" className="tab">
+                <ListarLojas/>
+                {/* <Link className="criar-anuncios" to={'/lojas'}>+</Link> */}
+            </section>
+            <section id="produtos" className="tab">
+                <ListarProdutos url={'/loja/produtos'+(localStorage.getItem("token")?'?':'/public?')}/>
+                {/* <Link className="criar-anuncios" to={'/produtos/'+0}>+</Link> */}
+            </section>  
+        </div>
+    </>
 }
 
 export default DetalharPerfil;

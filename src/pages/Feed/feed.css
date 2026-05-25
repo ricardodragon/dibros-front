@@ -74,3 +74,12 @@
     color: black;
     background-color: rgb(255, 255, 255, 0.9);
 }
+
+.tab{
+    background-color: black;
+    display: inline-flex;
+    justify-content: center;
+    width: 100vw;
+    height: 100%;
+    vertical-align: top;
+}

@@ -1,81 +1,38 @@
 #detalhar-perfil-header{
-    height:25%;
+    height: 20%;
     width: 100%;
-    overflow: hidden;
-}
-#detalhar-perfil-header img{
-    border-radius: 50%; 
-    width: 4em;
-    height: 4em;
-}
-#detalhar-perfil-header h1, #detalhar-perfil-header h2{
-    font-size: 12pt;
-}
-#detalhar-perfil-header h1{
-    width: 40%;
-}
-#detalhar-perfil-header h1, .seguidores, #detalhar-perfil-header h2{
-    display: inline-block;
-}
-.seguidores{
-    vertical-align: top;
-    text-align: center;
-    width: 60%;
-}
-.seguidores button{
-    cursor: pointer;
-    width: 7.5em;
-}
-.perfil-menu-feed{    
-    height: 2rem;
-    box-sizing: border-box;
-    border: black;
-    position: relative;
-    white-space: nowrap;
-    background-image: linear-gradient(90deg, rgba(89,86,86,1) 0%, rgba(41,39,39,1) 100%);
-    box-shadow: 1px 1px 5px 0 rgba(89, 86, 86, 0.877);
-}
-.perfil-menu, .perfil-menu-opaciti{
-    color: white;
-    border: none;
-    transition: opacity 0.8s linear;
-    display: inline-block;    
-    cursor: pointer;
-    font-weight: bolder;
-    background-color: transparent;
-    
-}
-.perfil-menu{
-    opacity: 0; 
-    background-image: linear-gradient(90deg, rgb(182, 177, 177) 0%, rgb(133, 128, 128) 100%);
-    z-index: 2; 
-    position: relative;
-}
-.perfil-menu-opaciti{
-    z-index: 1;
-    position: absolute;
-}
-.perfil-menu:hover{ 
-    opacity: 1;
-}
-.perfil-menu:active{
-    border: 1px solid rgb(247, 247, 247);
-    box-sizing: border-box;
-}
-#tabs{
-    padding-top: 0.5%;
-    height: 69%; 
-    overflow-x: scroll;
-    white-space: nowrap;
-    scroll-behavior: smooth;
-    -ms-overflow-style: none;  
-    scrollbar-width: none; 
 }
 
-.tab{
-    background-color: black; 
-    display: inline-block; 
-    width: 100vw; 
-    height: 100%; 
-    vertical-align:top;    
+#detalhar-perfil-header figure{
+    display: inline-block;
+    width: 50%;
+}
+
+#detalhar-perfil-header figure img{
+    width: 20%;
+    display: inline;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+}
+
+#detalhar-perfil-header figure figcaption{
+    display: inline;
+    width: 80%;
+}
+
+.seguidores{
+    width: 50%;
+    padding-top: 2%;
+    display: inline-block;
+    text-align: center;
+    vertical-align: top;
+}
+
+.seguidores h2{
+    display: inline-block;
+    padding: 0 2%;
+}
+
+.seguidores p{
+    text-align: center;
 }

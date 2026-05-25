@@ -10,6 +10,7 @@ function ListarLojas(props){
     const [values, setValues] = useState({lojas:[]})    
     const host = process.env.REACT_APP_URL;
     const { id } = useParams();
+    const lojaNotFound = "https://thumbs.dreamstime.com/b/%C3%ADcone-de-imagem-sem-foto-ou-em-branco-carregamento-imagens-aus%C3%AAncia-marca-n%C3%A3o-dispon%C3%ADvel-sinal-breve-silhueta-natureza-simples-215973362.jpg";
 
     useEffect(() => 
         axios.get('/loja/lojas'+(id?`?idUsuario=${id}&`:localStorage.getItem("token")?'?':'/public?')+`page=${0}&size=${10}`).then(lojas =>             
@@ -27,20 +28,24 @@ function ListarLojas(props){
         if(props.onScroll)props.onScroll(event);
     }
 
+    const onError = ({ currentTarget })=>{currentTarget.onError=null; currentTarget.src=lojaNotFound}
+
     return (        
         <div className="lojas-conteudo" onScroll={handlerScroll}>
             {values.lojas.map((loja, indexLoja) =>            
                 <section className="card-loja" key={"loja-"+indexLoja}> 
-                    <header style={{padding: "2%", overflow:'hidden'}}>
-                        <Link style={{display:'inline'}} to={"/loja/"+loja.id}>
-                            <img alt={"Foto loja : " +loja.nome} src={host+loja.imagemPath} style={{borderRadius: "50%", width:"3em", height:"3em"}}/>
-                            <h3 style={{textOverflow: "ellipsis", maxWidth: "16ch", overflow: "hidden", verticalAlign:'top', fontWeight:"bolder", display: "inline", fontSize:"11pt", paddingLeft:'2%'}}>{loja.nome}</h3>                             
+                    <header>
+                        <Link to={"/loja/"+loja.id}>
+                            <img alt={"Foto loja : " +loja.nome} src={host+loja.imagemPath} onError={onError} />                            
+                            <h3>{loja.nome}</h3>                             
                         </Link>
-                        <div style={{fontWeight:"bolder", float:"right", cursor:"pointer"}}>⋮</div>
+                        <div className='opcoes'>⋮</div>
                     </header>
                 </section>            
             )}
-            <div style={{textAlign:"center"}}>{values.total&&values.lojas.length>=values.total?"fim das lojas":<img style={{height:"5em"}} src={loader} alt="loading..."/>}</div>
+            <div style={{textAlign:"center"}}>
+                {values.total&&values.lojas.length>=values.total?"fim das lojas":<img style={{height:"5em"}} src={loader} alt="loading..."/>}
+            </div>
         </div>                
     )
 }

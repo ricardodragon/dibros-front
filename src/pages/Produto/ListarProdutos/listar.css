@@ -13,11 +13,35 @@
     background-color: white;
 }
 
-.img-produto{
-    min-width: 100%; 
-    max-width: 100%; 
-    max-height: 16em;
+
+.card-produto header{
+    padding: 2%;
+    overflow: hidden;
 }
+
+.card-produto header img{
+    border-radius: 50%;
+    width: 15%;
+    aspect-ratio: 1 / 1;
+}
+
+.img-produto{
+    display: inline-block;
+    aspect-ratio: 1 / 1;
+    width: 100%;
+}
+
+.card-produto h3{
+    text-overflow: ellipsis;
+    max-width: 16ch;
+    overflow: hidden;
+    vertical-align: top;
+    font-weight : bolder;
+    display: inline;
+    font-size: 11pt;
+    padding-left: 2%;
+}
+
 .teste{
     overflow-x: scroll;
     display: inline-flex;
@@ -27,6 +51,6 @@
 
 @media only screen and (min-width: 600px) {
     .produtos-conteudo{
-        padding: 0 30%;
+        width: 60%;
     }
 }

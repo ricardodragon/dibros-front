@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import axios from "../../../config/api/api";
+import './anuncio-comentario.css'
 
 
 
@@ -8,15 +9,14 @@ function AnuncioComentarios(props){
 
      const [values, setValues] = useState({})    
      const host = process.env.REACT_APP_URL;
+     const history = useHistory();
 
     useEffect(() =>{
-        axios.get("/loja/anuncios/comentarios/"+(localStorage.getItem("token")?props.id:"public/"+props.id)).then(res=>setValues({comentarios:res.data, resposta:'', usuario:JSON.parse(localStorage.getItem("usuario"))}));
+        axios.get("/loja/anuncios/comentarios/"+(localStorage.getItem("token")?props.id:"public/"+props.id)).then(res=>setValues({comentarios:res.data, comentario:'', usuario:JSON.parse(localStorage.getItem("usuario"))}));
     }, [props.id]); 
     
-    const postComentario = (event) => {
-        event.preventDefault();
-        axios.post("/loja/anuncios/comentarios", {idAnuncio:props.id, texto:values.resposta}).then(r=>setValues({...values, resposta:'', comentarios:[{id:r.data, texto:values.resposta, usuarioDTO:values.usuario, idAnuncio:props.id}].concat(values.comentarios)}))
-    }
+    const postComentario = (event) => axios.post("/loja/anuncios/comentarios", {idAnuncio:props.id, texto:values.comentario}).then(r=>setValues({...values, comentario:'', comentarios:[{id:r.data, texto:values.resposta, usuarioDTO:values.usuario, idAnuncio:props.id}].concat(values.comentarios)}))
+    
     
     const deleteComentario = (event, id) => {
         event.preventDefault();
@@ -40,7 +40,6 @@ function AnuncioComentarios(props){
         event.stopPropagation();
         axios.delete("/loja/anuncios/comentarios/like/"+id).then(r=>setValues({...values, comentarios:values.comentarios.map(c=>c.id===id?{...c, isLike:false, likesQTD:c.likesQTD-1}:c)}));
     }
-
     
     const expandComentario = (event, index) => {
         event.preventDefault();
@@ -49,33 +48,39 @@ function AnuncioComentarios(props){
         setValues({...values, comentarios});
     }
 
+    const irPerfil = id => history.push("/perfil/"+id); 
+    const onError = ({ currentTarget })=>{currentTarget.onError=null; currentTarget.src='https://freesvg.org/img/abstract-user-flat-3.png'}
+    const opcoes = (id) => document.getElementById(id).showModal();
+    const responder = (event, index) => setValues({...values, comentarios:values.comentarios.map((x, indexC)=>indexC===index?{...x, inputResposta:event.target.value}:x)})
+    const postResposta = (event) => null;
+    const expandResposta = (index) => setValues({...values, comentarios:values.comentarios.map((c, indexC)=>indexC===index?{...c, expandRespostas:!c.expandRespostas}:c)});
+
+    
     return<>
         {values.comentarios&&values.comentarios.map((x, index)=> 
-            <div style={{fontSize:"10pt", width:'100%', paddingBottom:"4%"}} key={index}> 
-                <Link style={{display:'inline', verticalAlign:'top'}} to={"/perfil/"+x.usuarioDTO.id}><img alt="Imagem perfil user" src={x.usuarioDTO.imagemPath?host+x.usuarioDTO.imagemPath:"https://freesvg.org/img/abstract-user-flat-3.png"} style={{borderRadius: "50%", width:"2.7em", height:"2.7em"}}/></Link>                                      
-                
-                {values.usuario&&x.usuarioDTO.id===values.usuario.id&&<div style={{fontWeight:"bolder", float:"right", cursor:"pointer", paddingLeft:"3%"}} onClick={event=>{event.preventDefault();document.getElementById(x.id).showModal();}}>⋮</div>}
-                
-                <dialog onClick={event=>{event.preventDefault();document.getElementById(x.id).close();}} id={x.id} style={{borderRadius:"0.5%", borderStyle:"none", width:"100%", top:'85%', textAlign:'center'}}>
-                    <label style={{width:'100%', cursor:'pointer', padding:"0.5%"}} onClick={event=>{event.stopPropagation();}}>✏️ EDITAR</label><br/>
-                    <label style={{width:'100%', cursor:'pointer', padding:"0.5%"}} onClick={event=>{deleteComentario(event, x.id);}}>❌ EXCLUIR</label>
-                </dialog>
-
-                {values.usuario&&x.isLike?
-                    <p onClick={event=>deleteLikeComentario(event, x.id)} style={{float:"right", paddingRight:"3%", cursor:"pointer"}} >{x.likesQTD} ❤️</p>:
-                    <p onClick={event=>postLikeComentario(event, x.id)} style={{float:"right", paddingRight:"3%", cursor:"pointer"}}>{x.likesQTD} 🤍</p>}                                                
-                <div style={{display:'inline-block', width:'80%'}}><Link to={"/perfil/"+x.usuarioDTO.id}><p style={{whiteSpace: "nowrap", fontSize:"8pt", fontWeight:"bolder", textOverflow: "ellipsis", overflow:"hidden", marginBottom:"0"}}>{x.usuarioDTO.nome||x.usuarioDTO.email}</p></Link><p style={{whiteSpace:'break-spaces', lineHeight:'normal'}}>{x.texto}</p></div>
-                
-                <div>
-                    <p style={{margin:"0 4% 0 2.3em", display:"inline-block"}}>{x.likesQTD} curtidas</p>{values.usuario&&<label style={{cursor:"pointer", textDecoration:"underline"}} onClick={event=>expandComentario(event, index)}>Responder</label>}  
+            <div className="comentario-conteudo" key={index}> 
+                <img className="comentario-usuario-imagem" alt="Imagem perfil user" onClick={event=>irPerfil(x.usuarioDTO.id)} onError={onError} src={x.usuarioDTO.imagemPath?host+x.usuarioDTO.imagemPath:"https://freesvg.org/img/abstract-user-flat-3.png"}/>
+                <div className="nome-texto">
+                    <p className="nome-perfil" onClick={event=>irPerfil(x.usuarioDTO.id)}>{x.usuarioDTO.nome||x.usuarioDTO.email}</p>
+                    <p className="comentario-texto">{x.texto}</p>
+                    {values.usuario&&x.isLike?
+                        <p className="comentario-like" onClick={event=>deleteLikeComentario(event, x.id)}>❤️ {x.likesQTD}</p>:
+                        <p className="comentario-like" onClick={event=>postLikeComentario(event, x.id)}>🤍 {x.likesQTD}</p>}
+                    {values.usuario&&<label style={{cursor:"pointer", textDecoration:"underline", float: "right"}} onClick={event=>expandComentario(event, index)}>Responder</label>}
                 </div>
 
-                {x.expand&&<>
-                    <input id={x.id+"comentario"} value={x.inputComentario} style={{width:"88%", border:"none", margin:"0 0 2% 2%"}} placeholder="comentario" onChange={event=>setValues({...values, comentarios:values.comentarios.map((x, indexC)=>indexC===index?{...x, inputResposta:event.target.value}:x)})} type="text"/>
-                    <button style={{width:"8%", background:"none", border:"none", padding:"0"}} onClick={event=>postComentario(event)} disabled={true}>➡️</button>
-                </>}                      
+                {values.usuario&&x.usuarioDTO.id===values.usuario.id&&<div className="opcoes" onClick={event=>opcoes(x.id)}>⋮</div>}
+                <dialog onClick={event=>document.getElementById(x.id).close()} id={x.id}>
+                    <label onClick={event=>{event.stopPropagation();}}>✏️ EDITAR</label><br/>
+                    <label onClick={event=>deleteComentario(event, x.id)}>❌ EXCLUIR</label>
+                </dialog>            
+
+                {x.expand&&<div style={{width:"100%", position:"relative"}}>
+                    <textarea id={x.id+"comentario"} value={x.inputComentario} className="responder-input" placeholder="comentario" onChange={event=>responder(event, index)} type="text"/>
+                    <button className="responder-botao" onClick={postResposta} disabled={!values.resposta}>➡️</button>
+                </div>}                      
                 
-                {x.respostasQTD>0&&<p style={{marginBottom:"0", marginLeft:"2.3em", cursor:"pointer"}} onClick={event=>{event.preventDefault();setValues({...values, comentarios:values.comentarios.map((c, indexC)=>indexC===index?{...c, expandRespostas:!c.expandRespostas}:c)})}}>⎯ Ver mais {x.respostasQTD} respostas</p>}
+                {x.respostasQTD>0&&<p className="expand-resposta" onClick={event=>expandResposta(index)}>⎯ Ver mais {x.respostasQTD} respostas</p>}
                 
                 {/* {x.expandRespostas&&x.comentariosDTO.map((cc, i)=>                             
                     <div style={{marginLeft:"2.3em"}}>                   
@@ -96,8 +101,8 @@ function AnuncioComentarios(props){
             </div>
         )}
         {values.usuario&&<>
-            <input value={values.resposta} style={{width:"88%", border:"none", margin:"0 0 2% 2%"}} placeholder="comentario" onChange={event=>setValues({...values, resposta:event.target.value})} type="text"/>
-            <button style={{width:"8%", background:"none", border:"none", padding:"0", cursor:'pointer'}} onClick={postComentario} disabled={!values.resposta}>➡️</button>
+            <input value={values.comentario} style={{width:"88%", border:"none", margin:"0 0 2% 2%"}} placeholder="comentario" onChange={event=>setValues({...values, comentario:event.target.value})} type="text"/>
+            <button style={{width:"8%", background:"none", border:"none", padding:"0", cursor:'pointer'}} onClick={postComentario} disabled={!values.comentario}>➡️</button>
         </>}
     </>
 }
