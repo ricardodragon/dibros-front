@@ -52,15 +52,12 @@ function DetalharPerfil(props) {
             <section id="anuncios" className="tab">
                 {values.checkLayout&&<AnunciosFeed url={`/loja/anuncios?idUsuario=${id}&`}/>}
                 {!values.checkLayout&&<AnunciosTabela url={`/loja/anuncios?idUsuario=${id}&`}/>}  
-                <Link className="criar-anuncios" to={'/anuncio'}>+</Link>
             </section>
             <section id="lojas" className="tab">
                 <ListarLojas/>
-                <Link className="criar-anuncios" to={'/lojas'}>+</Link>
             </section>
             <section id="produtos" className="tab">
-                <ListarProdutos url={'/loja/produtos'+(localStorage.getItem("token")?'?':'/public?')}/>
-                <Link className="criar-anuncios" to={'/produtos/'+0}>+</Link>
+                <ListarProdutos url={`/loja/produtos?idUsuario=${id}&`}/>
             </section>  
         </div>
     </>

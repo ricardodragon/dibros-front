@@ -45,11 +45,13 @@
     scroll-behavior: smooth;
     -ms-overflow-style: none;  
     scrollbar-width: none;  
+    position: relative;
 }
 
 .check-feed-label{
     position: absolute;
     cursor: pointer;
+    z-index: 1;
 }
 
 #check-feed{

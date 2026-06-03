@@ -48,7 +48,7 @@ function AnunciosFeed(props){
 
     return (        
         <div className="anuncios-conteudo" onScroll={handlerScroll}>
-            {values.anuncios&&values.anuncios.filter(x=>x.legenda!=="vai me perder").map((anuncio, index) =>            
+            {values.anuncios&&values.anuncios.map((anuncio, index) =>            
                 <div className="card-anuncio" key={"anuncio-"+index}>                  
                     <header className="card-anuncio-header">                        
                         <img alt={"Foto anuncio : " +anuncio.legenda} onClick={event=>history.push(anuncio.lojaDTO.id?"/loja/"+anuncio.lojaDTO.id:"/perfil/"+anuncio.usuarioDTO.id)} onError={onError} src={host+(anuncio.lojaDTO.imagemPath?anuncio.lojaDTO.imagemPath:anuncio.usuarioDTO.imagemPath)}/>

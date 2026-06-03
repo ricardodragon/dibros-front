@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from "react-router-dom";
-import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
+import { useHistory, useParams } from 'react-router-dom/cjs/react-router-dom.min';
 import axios from '../../../config/api/api';
 import loader from "./../../../assets/loadinfo.gif";
 import './produtos.css';
@@ -12,77 +12,89 @@ function CriarProdutos(){
     const { id } = JSON.parse(localStorage.getItem('usuario'))
     const ref = useRef();
     const host = process.env.REACT_APP_URL;
-    
+    const history = useHistory();
+
     useEffect(() => 
-        axios.get(`/loja/produtos?idUsuario=${id}&idLoja=${idLoja}&page=${0}&size=${99}`).then(produtos => 
+        axios.get(`/loja/produtos?idUsuario=${id}&idLoja=${idLoja}&page=${0}&size=${10}`).then(produtos => 
             axios.get(`/loja/lojas?idUsuario=${id}&page=${0}&size=${99}`).then(lojas =>
-                setValues({lojas:lojas.data, produtos:produtos.data, erro: lojas.data.length<=0?"É preciso criar uma loja em \"Menu > Lojas\"":false, idLoja:id, produto:{titulo:'', quantidade:'', preco:''}, load:false})))            
+                setValues({lojas:lojas.data, page:0, produtos:produtos.data, erro: lojas.data.length<=0?"É preciso criar uma loja em \"Menu > Lojas\"":false, produto:{titulo:'', quantidade:'', preco:'', idLoja:'0'}, load:false, loaderProdutos:false})))            
     , [idLoja, id]);    
 
+    const handlerScroll = (event) => {
+        if(!values.loaderProdutos&&(event.target.scrollHeight - event.target.scrollTop)<=event.target.clientHeight&&values.produtos!==undefined){  
+            setValues({...values, loaderProdutos:true}); 
+            const page = values.page+1;
+            axios.get(`/loja/produtos?idUsuario=${id}&idLoja=${idLoja}&page=${page}&size=10`)
+                .then(produtos => setValues({...values, page, produtos:values.produtos.concat(produtos.data), loaderProdutos:false}));
+        }
+    }
+    
     const enviaImagens = () => {
         var formData = new FormData();
-        formData.append('files', values.produto.imagem);    
+        if(values.produto.imagem)
+            formData.append('files', values.produto.imagem);    
         return axios.post('/imagem/imagem', formData).catch(error=>console.log(error));
     }
 
-    const getImagens = (imagens) => {return {...values.produto, imagemPath:imagens.data?imagens.data:values.produto.imagemPath}}
+    const getImagens = (imagens) => {return {...values.produto, lojaDTO:undefined, imagemPath:imagens.data?imagens.data:values.produto.imagemPath}}
 
-    const post = () => 
+    const post = () => {
+        setValues({...values, loader:true});
         enviaImagens().then(imagens => 
-            axios.post("/loja/produtos", getImagens(imagens)).then(res=>setValues({...values, erro:false, ok:true}))
-                .catch(error=>setValues({...values, erro:error.response&&error.response.data.message?error.response.data.message:"Erro desconhecido", ok:false, load:false})))
-
-    const put = () => enviaImagens.then(imagens => axios.put("/loja/produtos/"+values.produto.id, getImagens(imagens)))                                                               
+            axios.post("/loja/produtos", getImagens(imagens))
+                .then(res=>setValues({...values, loader:false, erro:false, ok:true, produto:{preco:"", quantidade:"", titulo:"", idLoja:""}}))
+                .catch(error=>setValues({...values, loader:false, erro:error.response&&error.response.data.message?error.response.data.message:"Erro desconhecido", ok:false, load:false})))
+    }
     
-    // const callBackForm = (response) => {
-    //     ref.current.value="";
-    //     response.data&&response.data.id?
-    //         setValues({...values, ok:true, erro:false, produto:{idLoja:"", imagem: "", preco:"", quantidade:"", titulo:""}, produtos:values.produto.id?values.produtos.map(x=>x.id===values.produto.id?response.data:x):values.produtos.concat(response.data), load:false}):
-    //         setValues({...values, erro:response&&response.response&&response.response.data&&response.response.data.message?response.response.data.message:"Erro desconhecido", ok:false, load:false})
-    //     document.getElementsByClassName("anuncios-conteudo")[0].scrollTo(0, 0);
-    // }
+    const put = () => {
+        setValues({...values, loader:true});
+        enviaImagens().then(imagens => 
+            axios.put("/loja/produtos/"+values.produto.id, getImagens(imagens))
+                .then(r=>setValues({...values, loader:false, erro:false, ok:true, produtos:values.produtos.map(p=>p.id===values.produto.id?values.produto:p)})
+        ))
+    }
     
     const excluirProduto = (id) => axios.delete("/loja/produtos/"+id)
         .then(res => setValues({...values, erro:false, ok:true, produtos:values.produtos.filter(pro=>id!==pro.id)}))
         .catch(error => setValues({...values, erro:error.response.data.message}))
 
+    const changeLoja = (event) => history.push({pathname: '/produtos/'+event.target.value});
+
     return (
         <>
-            {values.load&&<div style={{position:"absolute", width:"100%", height:"100%", backgroundColor:"rgba(173, 181, 189, 50%)", zIndex:"1" }}>
-                <img style={{height:"5em", position:'relative', top:'38%', left:'42%'}} src={loader} alt="loading..."/>
-            </div>}
-            <div style={{overflowX:"hidden", overflowΥ:'scroll', height:'89vh'}}>
-                {(values.ok||values.erro)&&<div style={{width: "100%", textAlign:"center"}}>{values.ok?"✅ Operação realizada com sucesso":"❌ Erro: "+values.erro}</div>}                
+            {values.load&&<div className='loader-produto'><img src={loader} alt="loading..."/></div>}
+            <div className='produto-conteudo' onScroll={handlerScroll}>
+                <div className='mensagem-produto'>{values.ok?"✅ Operação realizada com sucesso":(values.erro?"❌ Erro: "+values.erro:"")}</div>
                 {values.produto&&<form onSubmit={event=>{event.preventDefault();setValues({...values, load:true});values.produto.id?put():post()}}>                
-                    <fieldset id="usuario"><legend>{values.produto.id?"Editar":"Criar"} Produto {values.produto.id}</legend>                                      
-                        <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} htmlFor='loja'>Loja :</label>  
+                    <fieldset id="produto"><legend>{values.produto.id?"Editar":"Criar"} Produto {values.produto.id}</legend>                                      
+                        <label htmlFor='loja'>Loja :</label>  
                         <select disabled={values.produto.id} required value={values.produto.idLoja} id="loja" style={{width:"75%"}} onChange={event=>setValues({...values, produto:{...values.produto, idLoja:event.target.value}})}>                                                            
-                            <option value="">Selecione uma loja</option>
+                            <option value="0">Selecione uma loja</option>
                             {values.lojas.map(l => <option key={l.id} value={l.id}>{l.nome}</option>)}
                         </select> 
-                        <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} htmlFor="titulo">Título : </label>            
-                        <input required style={{width:"75%", marginBottom:"4%"}} id="titulo" placeholder="Título do produto" value={values.produto.titulo} type="text" onChange={event=>setValues({...values,produto:{...values.produto,titulo:event.target.value}})}/>                                                                                                        
-                        <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} htmlFor="quantidade">Quantidade: </label>            
-                        <input required style={{width:"75%", marginBottom:"4%"}} id="quantidade" placeholder="quantidade" value={values.produto.quantidade} type="number" onChange={event=>setValues({...values,produto:{...values.produto,quantidade:event.target.value}})}/>                                                                                                        
-                        <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} htmlFor="preco">Valor: </label>            
-                        <input required style={{width:"75%", marginBottom:"4%"}} id="preco" placeholder="valor" value={values.produto.preco} type="number" step="0.2" onChange={event=>setValues({...values,produto:{...values.produto,preco:event.target.value}})}/>                                                                                                                                                                                                                                    
+                        <label htmlFor="titulo">Título : </label>            
+                        <input required id="titulo" placeholder="Título do produto" value={values.produto.titulo} type="text" onChange={event=>setValues({...values,produto:{...values.produto,titulo:event.target.value}})}/>                                                                                                        
+                        <label htmlFor="quantidade">Quantidade: </label>            
+                        <input required id="quantidade" placeholder="quantidade" value={values.produto.quantidade} type="number" onChange={event=>setValues({...values,produto:{...values.produto,quantidade:event.target.value}})}/>                                                                                                        
+                        <label htmlFor="preco">Valor: </label>            
+                        <input required id="preco" placeholder="valor" value={values.produto.preco} type="number" step="0.2" onChange={event=>setValues({...values,produto:{...values.produto,preco:event.target.value}})}/>                                                                                                                                                                                                                                    
                     </fieldset>    
-                    <fieldset id="usuario"><legend>Imagem</legend>                                      
-                        <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} htmlFor='imagem'>Imagem : </label>            
-                        <input ref={ref} required={!values.produto.imagemPath||values.produto.imagemPath===""} id='imagem' type="file" style={{textAlign:"center", width:"75%", backgroundColor: "#3498db", borderRadius: "5px", color: "#fff"}} accept='image/*' onChange={event => {event.preventDefault();setValues({...values, produto:{...values.produto, imagemPath:undefined, imagem:event.target.files[0]}});}}/>
-                        {(values.produto.imagemPath||values.produto.imagem)&&<img alt="" style={{display:"block", width:"8em", height:"8em"}} src={values.produto.imagemPath?host+values.produto.imagemPath:URL.createObjectURL(values.produto.imagem)}/>}                        
+                    <fieldset className='field-imagem'><legend>Imagem</legend>                                      
+                        <label htmlFor='imagem'>Imagem : </label>            
+                        <input ref={ref} required={!values.produto.imagemPath||values.produto.imagemPath===""} id='imagem' type="file" accept='image/*' onChange={event => {event.preventDefault();setValues({...values, produto:{...values.produto, imagemPath:undefined, imagem:event.target.files[0]}});}}/>
+                        {(values.produto.imagemPath||values.produto.imagem)&&<img alt="" src={values.produto.imagemPath?host+values.produto.imagemPath:URL.createObjectURL(values.produto.imagem)}/>}                        
                     </fieldset>
                     <input type="submit" value="enviar"/>    
                     <input onClick={event => {event.preventDefault();ref.current.value="";setValues({...values, produto:{preco:"", quantidade:"", titulo:"", idLoja:""}})}} type="submit" value="Limpar"/>                                        
                 </form>}
                 
-                {values.idLoja&&<fieldset style={{overflowX:"auto", color:"white"}}><legend>Meus produtos</legend> 
-                    <select id="lojas" value={values.idLoja} onChange={async event=>{event.preventDefault();setValues({...values, idLoja:event.target.value, produtos:(await axios.get(`/loja/produtos?idUsuario=${id}&idLoja=${event.target.value}&page=${0}&size=${100}`)).data})}}>                                                            
-                        <option value="">Selecione a loja</option>
+                <fieldset style={{overflowX:"auto", color:"white"}}><legend>Meus produtos</legend> 
+                    {values.lojas&&<select id="lojas" value={idLoja} onChange={changeLoja}>
+                        <option value="0">Selecione a loja</option>
                         {values.lojas.map((value, index) => <option key={index} value={value.id}>{value.nome}</option>)}
-                    </select> 
+                    </select>} 
                     
-                    <table style={{borderCollapse: "collapse", width: "100%", textAlign:'center'}}>    
+                    {values.produtos&&<table style={{borderCollapse: "collapse", width: "100%", textAlign:'center'}}>    
                         <thead>
                             <tr>
                                 <th scope="col">ID/SKU</th>
@@ -99,7 +111,7 @@ function CriarProdutos(){
 
                         <tbody>
                             {values.produtos.map(p=>
-                                <tr key={p.id} style={{cursor:"pointer", whiteSpace: "nowrap"}} onClick={event=>{event.preventDefault();setValues({...values, produto:{...p, loja:p.lojaDTO}});document.getElementsByClassName("anuncios-conteudo")[0].scrollTo(0, 0)}}>
+                                <tr key={p.id} style={{cursor:"pointer", whiteSpace: "nowrap"}} onClick={event=>{event.preventDefault();setValues({...values, produto:{...p}});document.getElementsByClassName("mensagem-produto")[0].scrollIntoView({behavior: 'smooth'})}}>
                                     <td>{p.id}</td>
                                     <td><img alt="" style={{width:"2em", height:"2em"}} src={p.imagemPath?host+p.imagemPath:"https://thumbs.dreamstime.com/b/%C3%ADcone-de-imagem-sem-foto-ou-em-branco-carregamento-imagens-aus%C3%AAncia-marca-n%C3%A3o-dispon%C3%ADvel-sinal-breve-silhueta-natureza-simples-215973362.jpg"}/></td>                            
                                     <td style={{fontWeight: "bold"}}>{p.titulo}</td>                                                             
@@ -108,12 +120,13 @@ function CriarProdutos(){
                                     <td><Link onClick={event=>event.stopPropagation()} target="_blank" to={"/anuncios/"+0+"/"+p.id}>Anuncios</Link></td>
                                     <td></td>
                                     <td></td>                                
-                                    <td onClick={event=>{event.stopPropagation();event.preventDefault();excluirProduto(p.id)}}>❌</td>
+                                    {(p.lojaDTO.usuarioId===JSON.parse(localStorage.getItem("usuario")).id||(p.lojaDTO.usuarioLojasDTO&&p.lojaDTO.usuarioLojasDTO[0].admin))&&<td onClick={event=>{event.stopPropagation();event.preventDefault();excluirProduto(p.id)}}>❌</td>}
                                 </tr>
-                            )}               
+                            )}
+                            {values.loaderProdutos?<tr><td colSpan="9"><img style={{height:"5em"}} src={loader} alt="loading..."/></td></tr>:<tr><td colSpan="9">"fim dos produtos"</td></tr>}
                         </tbody>
-                    </table> 
-                </fieldset>}    
+                    </table>} 
+                </fieldset>    
             </div>
         </>
     );

@@ -51,11 +51,9 @@ function LojaDetalhes(props){
             <section id="anuncios" className="tab">
                 {values.checkLayout&&<AnunciosFeed url={`/loja/anuncios/loja/${id}?`}/>}
                 {!values.checkLayout&&<AnunciosTabela url={`/loja/anuncios/loja/${id}?`}/>}
-                {/* <Link className="criar-anuncios" to={'/anuncio'}>+</Link> */}
             </section>
             <section id="produtos" className="tab">
-                <ListarProdutos url={'/loja/produtos'+(localStorage.getItem("token")?'?':'/public?')}/>
-                {/* <Link className="criar-anuncios" to={'/produtos/'+0}>+</Link> */}
+                <ListarProdutos url={`/loja/produtos?idUsuario=${id}&`}/>
             </section>  
             <section id="colaboradores" className="tab">
                 <Colaboradores id={id}/>

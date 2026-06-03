@@ -3,17 +3,29 @@ import axios from '../../../config/api/api';
 import loader from "./../../../assets/loadinfo.gif";
 import Colaboradores from './Colaboradores';
 import './criarLojas.css';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import { Link } from 'react-router-dom';
 
 function CriarLojas() {
-    
-    const [values, setValues] = useState( {lojas:[], loja:{nome:"", imagemPath:"", imagem:""}} )
+
+    const lojaBuilder = {nome:"", imagemPath:"", imagem:""};
+    const [values, setValues] = useState( {lojas:[], loja:lojaBuilder} )
     const host = process.env.REACT_APP_URL;
     const ref = useRef();
+    const history = useHistory();
 
-    useEffect(() =>{
-        setValues({lojas:[], loja:{nome:"", imagemPath:"", imagem:""}, load:true})
-        axios.get(`/loja/lojas/usuarios?page=${0}&size=${10}&idUsuario=`+JSON.parse(localStorage.getItem("usuario")).id).then(res => setValues({usuarioLojas:res.data, load:false, loja:{nome:"", imagemPath:"", imagem:""}}))
+    useEffect(() =>{        
+        axios.get(`/loja/lojas?page=${0}&size=${10}&idUsuario=`+JSON.parse(localStorage.getItem("usuario")).id).then(res => setValues({lojas:res.data, page:0, load:false, loja:lojaBuilder}))
     }, []);
+
+    const handlerScroll = (event) => {
+        if(!values.loaderLojas&&(event.target.scrollHeight - event.target.scrollTop)<=event.target.clientHeight&&values.lojas!==undefined){  
+            setValues({...values, loaderLojas:true}); 
+            const page = values.page+1;
+            axios.get(`/loja/lojas?page=${page}&size=10`)
+                .then(lojas => setValues({...values, page, lojas:values.lojas.concat(lojas.data), loaderLojas:false}));
+        }
+    }
 
     const getLocation = () => navigator.geolocation?
         navigator.geolocation.getCurrentPosition(position=>
@@ -22,48 +34,50 @@ function CriarLojas() {
 
     const enviaImagens = () => {
         var formData = new FormData();
-        formData.append('files', values.loja.imagem);    
+        if(values.loja.imagem)
+            formData.append('files', values.loja.imagem);    
         return axios.post('/imagem/imagem', formData).catch(error=>console.log(error));
     }
 
-    const getImagens = (imagens) => {return {...values.loja, imagemPath:imagens.data?imagens.data:values.loja.imagemPath}}
+    const getImagens = (imagens) => {return {...values.loja, usuarioDTO:undefined, imagemPath:imagens.data?imagens.data:values.loja.imagemPath}}
 
-    const post = () => 
+    const post = event => {
+        setValues({...values, loader:true});
         enviaImagens().then(imagens => 
-            axios.post("/loja/lojas", getImagens(imagens)).then(res=>setValues({...values, erro:false, ok:true}))
-            .catch(error=>setValues({...values, erro:error.response&&error.response.data.message?error.response.data.message:"Erro desconhecido", ok:false, load:false})))
+            axios.post("/loja/lojas", getImagens(imagens))
+                .then(res=>setValues({...values, loader:false, erro:false, ok:true, loja:lojaBuilder}))
+                .catch(error=>setValues({...values, erro:error.response&&error.response.data.message?error.response.data.message:"Erro desconhecido", ok:false, load:false})))
+    }
 
-    const put = event => {                  
+    const put = event => {    
+        setValues({...values, loader:true});              
         enviaImagens().then(imagens=>
-            axios.post('/loja/lojas', {...values.loja, imagemPath:imagens.data}).then(callBackForm).catch(callBackForm))        
-    }
-    
-    const callBackForm = (response) => {
-        ref.current.value="";
-        response.data&&response.data.id?
-            setValues({...values, ok:true, erro:false, loja:{nome:"", imagemPath:"", imagem:""}, lojas:values.loja.id?values.lojas.map(x=>x.id===values.loja.id?response.data:x):[...values.lojas, response.data],load:false}):
-            setValues({...values, error:response.response&&response.response.data.message?response.response.data.message:"Erro desconhecido", ok:false, load:false})
-    }
+            axios.post('/loja/lojas', getImagens(imagens))
+                .then(r=>setValues({...values, loader:false, erro:false, ok:true, lojas:values.lojas.map(p=>p.id===values.loja.id?values.loja:p)}))
+                .catch()
+        );        
+    }    
 
     const excluirLoja = (id) => axios.delete("/loja/lojas/"+id)
         .then(res => setValues({...values, erro:false, ok:true, lojas:values.lojas.filter(l=>id!==l.id)}))
         .catch(error => setValues({...values, erro:error.response.data.message}))
 
+    const onErrorUsuario = ({ currentTarget })=>{currentTarget.onError=null; currentTarget.src='https://freesvg.org/img/abstract-user-flat-3.png'}
+    const onError = ({ currentTarget })=>{currentTarget.onError=null; currentTarget.src="https://thumbs.dreamstime.com/b/%C3%ADcone-de-imagem-sem-foto-ou-em-branco-carregamento-imagens-aus%C3%AAncia-marca-n%C3%A3o-dispon%C3%ADvel-sinal-breve-silhueta-natureza-simples-215973362.jpg"}
+    
     return <>
-        {values.load&&<div style={{position:"absolute", width:"100%", height:"100%", backgroundColor:"rgba(173, 181, 189, 50%)", zIndex:"1" }}>
-            <img style={{height:"5em", position:'relative', top:'38%', left:'42%'}} src={loader} alt="loading..."/>
-        </div>}
-        <div style={{overflowX:"hidden", overflowΥ:'scroll', height:'89vh'}}>        
-            {(values.ok||values.erro)&&<div style={{width: "100%", textAlign:"center"}}>{values.ok?"✅ Operação realizada com sucesso":"❌ Erro: "+values.erro}</div>}                
+        {values.load&&<div className='loader-loja'><img src={loader} alt="loading..."/></div>}
+        <div className='loja-conteudo' onScroll={handlerScroll}> 
+            <div className='mensagem-loja'>{values.ok?"✅ Operação realizada com sucesso":(values.erro?"❌ Erro: "+values.erro:"")}</div>       
             <form onSubmit={event=>{event.preventDefault();setValues({...values, load:true});values.loja.id?put():post()}}> 
                 <fieldset>
                     <legend>{values.loja.id?"Editar":"Criar"} Loja {values.loja.id}</legend>                                    
-                    <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} htmlFor="nome">Nome : </label>            
+                    <label htmlFor="nome">Nome : </label>            
                     <input required style={{width:"75%"}} id="nome" placeholder="nome da loja" value={values.loja.nome} type="text" onChange={event=>setValues({...values, loja:{...values.loja, nome:event.target.value}})}/>                                                                      
                 </fieldset>
-                <fieldset><legend>Foto da loja</legend>                                    
-                    <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} htmlFor='imagem'>Imagem : </label>            
-                    <input ref={ref} required={!values.loja.imagemPath||values.loja.imagemPath===""} id='imagem' type="file" style={{textAlign:"center", width:"75%", backgroundColor: "#3498db", borderRadius: "5px", color: "#fff"}} accept='image/*' onChange={event => {event.preventDefault();setValues({...values, loja:{...values.loja, imagemPath:undefined, imagem:event.target.files[0]}});}}/>
+                <fieldset className='field-imagem'><legend>Foto da loja</legend>                                    
+                    <label htmlFor='imagem'>Imagem : </label>            
+                    <input ref={ref} required={!values.loja.imagemPath||values.loja.imagemPath===""} id='imagem' type="file" accept='image/*' onChange={event => {event.preventDefault();setValues({...values, loja:{...values.loja, imagemPath:undefined, imagem:event.target.files[0]}});}}/>
                     {(values.loja.imagemPath||values.loja.imagem)&&<img alt="" style={{display:"block", width:"8em", height:"8em"}} src={values.loja.imagemPath?host+values.loja.imagemPath:URL.createObjectURL(values.loja.imagem)}/>}                        
                 </fieldset>
                 <fieldset><legend>Localização da loja</legend>   
@@ -71,30 +85,35 @@ function CriarLojas() {
                     <input style={{width:"75%"}} type="button" onClick={event => {event.preventDefault();getLocation();}} id="localizacao" value={"📌 Localização"}/>                 
                 </fieldset>
                 <input type="submit" value="enviar"/>    
-                <input onClick={event => {event.preventDefault();setValues({...values, loja:{nome:"", imagemPath:"", imagem:""}})}} type="reset" value="limpar"/>                        
+                <input onClick={event=>setValues({...values, loja:lojaBuilder})} type="reset" value="limpar"/>                        
             </form>
 
-            {values.usuarioLojas&&
-                <table id="criar-lojas" style={{textAlign:'center', width:'100%'}}>
+            {values.lojas&&
+                <table id="tabela-lojas">
                     <thead>
-                        <tr> 
+                        <tr>
+                            <th></th> 
                             <th></th>
                             <th>nome</th>
-                            <th>adm</th>
+                            <th>dono</th>
                             <th>colaboradores</th>
+                            <th>admin</th>
                             <th>excluir</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {values.usuarioLojas.map(usuarioLoja=>
-                            <tr key={usuarioLoja.lojaDTO.id}>
-                                <td>{(usuarioLoja.lojaDTO.imagemPath&&<img alt={"Foto loja : " +usuarioLoja.lojaDTO.nome} src={host+usuarioLoja.lojaDTO.imagemPath} style={{borderRadius: "50%", width:"1.8em", height:"1.8em"}}/>)||'🏬'}</td>
-                                <td>{usuarioLoja.lojaDTO.nome}</td>
-                                <td>{usuarioLoja.admin?'✅':'❌'}</td>
-                                <td style={{cursor:'pointer'}} onClick={event=>{event.preventDefault();setValues({...values, usuarioLoja:usuarioLoja});document.getElementById("modal").showModal();}}>👥</td>
-                                <td style={{cursor:"pointer"}} onClick={event=>{event.preventDefault();excluirLoja(usuarioLoja.lojaDTO.id)}}>{usuarioLoja.admin?'❌':'apenas adm'}</td>
+                        {values.lojas.map(loja=>
+                            <tr key={loja.id} onClick={event=>{event.preventDefault();setValues({...values, loja:{...loja}});document.getElementsByClassName("mensagem-loja")[0].scrollIntoView({behavior: 'smooth'})}}>
+                                <td>{loja.id}</td>
+                                <td><img alt={"Foto loja : " +loja.nome} src={host+loja.imagemPath} onError={onError}/></td>
+                                <td>{loja.nome}</td>
+                                <td><Link to={"/perfil/"+loja.usuarioDTO.id}><img alt={"Foto usuario : " +loja.usuarioDTO.nome} src={host+loja.usuarioDTO.imagemPath} onError={onErrorUsuario}/></Link></td>
+                                <td style={{cursor:'pointer'}} onClick={event=>{event.preventDefault();document.getElementById("modal").showModal();}}>👥</td>
+                                <td>{loja.usuarioDTO.id===JSON.parse(localStorage.getItem("usuario")).id||(loja.usuarioLojasDTO&&loja.usuarioLojasDTO[0].admin)?'✅':'❌'}</td>
+                                {(loja.usuarioDTO.id===JSON.parse(localStorage.getItem("usuario")).id||(loja.usuarioLojasDTO&&loja.usuarioLojasDTO[0].admin))&&<td style={{cursor:"pointer"}} onClick={event=>{event.preventDefault();excluirLoja(loja.id)}}>❌</td>}
                             </tr>                                                        
                         )}
+                        {values.loaderLojas?<tr><td colSpan="9"><img style={{height:"5em"}} src={loader} alt="loading..."/></td></tr>:<tr><td colSpan="9">"fim dos produtos"</td></tr>}
                     </tbody>
                 </table>
             }
