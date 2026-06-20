@@ -10,49 +10,82 @@
 .card-produto{
     border: 1px solid rgba(0, 0 , 0, 0.1);
     border-radius: 1em;
-    margin-bottom: 4%;
+    margin-bottom: 2%;
     color: black;
     background-color: white;
 }
 
 
 .card-produto header{
+    height: 15%;
+    width: 95%;
+    display: inline-block;
     padding: 2%;
-    overflow: hidden;
 }
 
 .card-produto header img{
     border-radius: 50%;
-    width: 15%;
     aspect-ratio: 1 / 1;
+    width: 12%;
+    cursor: pointer;
 }
 
 .img-produto{
-    display: inline-block;
-    aspect-ratio: 1 / 1;
+    display: block;    
+    aspect-ratio: 2 / 1;
     width: 100%;
 }
 
-.card-produto h3{
-    text-overflow: ellipsis;
-    max-width: 16ch;
-    overflow: hidden;
-    vertical-align: top;
-    font-weight : bolder;
-    display: inline;
-    font-size: 11pt;
-    padding-left: 2%;
+.card-produto h2{
+    padding-left: 2.5%;
+    font-size: 12pt;
+    white-space: break-spaces;
 }
 
-.teste{
-    overflow-x: scroll;
-    display: inline-flex;
-    width:100%;
-    height:100%;
+.card-produto h3{
+    display: inline-block;
+    font-size: 11pt;
+    vertical-align: top;
+    white-space: break-spaces;
+    font-weight: bolder;
+    cursor: pointer;
+}
+
+.produto-opcoes{
+    font-weight: bolder;
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: top;
+    padding-top: 3%;
+}
+
+.produto-curtidas{
+    font-size: 10pt;
+    padding: 1%;
+    font-weight: bolder;
+    display: inline-block;
+    width: 48%;    
+    overflow: hidden;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.like-container{
+    border-top:1px solid rgba(0, 0 , 0, 0.1);
+    text-align:center;
+    font-size:11pt;
+    padding:1%;
+}
+
+.produto-like{
+    position: relative;
+    display: inline-block;
+    width: 33%;
+    cursor: pointer;
 }
 
 @media only screen and (min-width: 600px) {
     .produtos-conteudo{
-        width: 60%;
+        width: 50%;
     }
 }

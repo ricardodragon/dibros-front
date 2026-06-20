@@ -1,27 +1,27 @@
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import axios from "../../../config/api/api";
-import './anuncio-comentario.css'
+import './produto-comentario.css'
 
 
 
-function AnuncioComentarios(props){
+function ProdutoComentarios(props){
 
      const [values, setValues] = useState({})    
      const host = process.env.REACT_APP_URL;
      const history = useHistory();
 
     useEffect(() =>{
-        axios.get("/loja/anuncios/comentarios/"+(localStorage.getItem("token")?props.id:"public/"+props.id)).then(res=>setValues({comentarios:res.data, comentario:'', usuario:JSON.parse(localStorage.getItem("usuario"))}));
+        axios.get("/loja/produto/comentarios/"+(localStorage.getItem("token")?props.id:"public/"+props.id)).then(res=>setValues({comentarios:res.data, comentario:'', usuario:JSON.parse(localStorage.getItem("usuario"))}));
     }, [props.id]); 
     
-    const postComentario = (event) => axios.post("/loja/anuncios/comentarios", {idAnuncio:props.id, texto:values.comentario}).then(r=>setValues({...values, comentario:'', comentarios:[{id:r.data, texto:values.resposta, usuarioDTO:values.usuario, idAnuncio:props.id}].concat(values.comentarios)}))
+    const postComentario = (event) => axios.post("/loja/produto/comentarios", {idProduto:props.id, texto:values.comentario}).then(r=>setValues({...values, comentario:'', comentarios:[{id:r.data, texto:values.resposta, usuarioDTO:values.usuario, idProduto:props.id}].concat(values.comentarios)}))
     
     
     const deleteComentario = (event, id) => {
         event.preventDefault();
         event.stopPropagation();
-        axios.delete("/loja/anuncios/comentarios/"+id).then(r=>{
+        axios.delete("/loja/produto/comentarios/"+id).then(r=>{
             document.getElementById(id).close();
             setValues({...values, comentarios:values.comentarios.filter(x=> x.id!==id)})            
         });
@@ -30,7 +30,7 @@ function AnuncioComentarios(props){
     const postLikeComentario = (event, id) => {
         event.preventDefault();
         event.stopPropagation();
-        axios.post("/loja/anuncios/comentarios/like/"+id).then(r=>{
+        axios.post("/loja/produto/comentarios/like/"+id).then(r=>{
             setValues({...values, comentarios:values.comentarios.map(x=>x.id===id?{...x, isLike:true, likesQTD:x.likesQTD+1}:x)})
         })
     }
@@ -38,7 +38,7 @@ function AnuncioComentarios(props){
     const deleteLikeComentario = (event, id) => {
         event.preventDefault();
         event.stopPropagation();
-        axios.delete("/loja/anuncios/comentarios/like/"+id).then(r=>setValues({...values, comentarios:values.comentarios.map(c=>c.id===id?{...c, isLike:false, likesQTD:c.likesQTD-1}:c)}));
+        axios.delete("/loja/produto/comentarios/like/"+id).then(r=>setValues({...values, comentarios:values.comentarios.map(c=>c.id===id?{...c, isLike:false, likesQTD:c.likesQTD-1}:c)}));
     }
     
     const expandComentario = (event, index) => {
@@ -107,4 +107,4 @@ function AnuncioComentarios(props){
     </>
 }
 
-export default AnuncioComentarios
+export default ProdutoComentarios

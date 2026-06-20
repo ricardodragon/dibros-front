@@ -59,3 +59,11 @@
     width: 1.8em;
     height: 1.8em;
 }
+
+#modal-colaboradores{
+    border-radius: 0.5%; 
+    border-style: none; 
+    width: 70%; 
+    height: 70%; 
+    text-align: center;
+}

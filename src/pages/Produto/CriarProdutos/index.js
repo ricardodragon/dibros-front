@@ -15,7 +15,7 @@ function CriarProdutos(){
     const history = useHistory();
 
     useEffect(() => 
-        axios.get(`/loja/produtos?idUsuario=${id}&idLoja=${idLoja}&page=${0}&size=${10}`).then(produtos => 
+        axios.get(`/loja/produtos/usuario?page=${0}&size=${10}`).then(produtos => 
             axios.get(`/loja/lojas?idUsuario=${id}&page=${0}&size=${99}`).then(lojas =>
                 setValues({lojas:lojas.data, page:0, produtos:produtos.data, erro: lojas.data.length<=0?"É preciso criar uma loja em \"Menu > Lojas\"":false, produto:{titulo:'', quantidade:'', preco:'', idLoja:'0'}, load:false, loaderProdutos:false})))            
     , [idLoja, id]);    

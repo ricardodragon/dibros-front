@@ -1,22 +1,24 @@
-import { useEffect, useRef, useState } from 'react';
+import { useMemo, useEffect, useRef, useState } from 'react';
 import axios from '../../../config/api/api';
 import loader from "./../../../assets/loadinfo.gif";
 import Colaboradores from './Colaboradores';
 import './criarLojas.css';
-import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import { Link } from 'react-router-dom';
 
 function CriarLojas() {
 
-    const lojaBuilder = {nome:"", imagemPath:"", imagem:""};
-    const [values, setValues] = useState( {lojas:[], loja:lojaBuilder} )
+    const lojaBuilder = useMemo(() => {return {nome:"", imagemPath:"", imagem:""}}, [])
+    const [values, setValues] = useState( {lojas:[], loja:lojaBuilder, load:true} )
     const host = process.env.REACT_APP_URL;
     const ref = useRef();
-    const history = useHistory();
 
     useEffect(() =>{        
         axios.get(`/loja/lojas?page=${0}&size=${10}&idUsuario=`+JSON.parse(localStorage.getItem("usuario")).id).then(res => setValues({lojas:res.data, page:0, load:false, loja:lojaBuilder}))
-    }, []);
+    }, [lojaBuilder]);
+
+    useEffect(()=>
+        document.getElementById('modal-colaboradores').addEventListener('close', () => setValues({...values, usuarioLoja:undefined}))
+    , [values]);
 
     const handlerScroll = (event) => {
         if(!values.loaderLojas&&(event.target.scrollHeight - event.target.scrollTop)<=event.target.clientHeight&&values.lojas!==undefined){  
@@ -61,6 +63,17 @@ function CriarLojas() {
     const excluirLoja = (id) => axios.delete("/loja/lojas/"+id)
         .then(res => setValues({...values, erro:false, ok:true, lojas:values.lojas.filter(l=>id!==l.id)}))
         .catch(error => setValues({...values, erro:error.response.data.message}))
+    
+    const editar = (event, loja) => {
+        setValues({...values, loja});
+        document.getElementsByClassName("mensagem-loja")[0].scrollIntoView({behavior: 'smooth'});
+    }
+
+    const modalColab = (event, loja) =>{
+        event.stopPropagation();
+        document.getElementById("modal-colaboradores").showModal();
+        setValues({...values, usuarioLoja:loja})
+    }
 
     const onErrorUsuario = ({ currentTarget })=>{currentTarget.onError=null; currentTarget.src='https://freesvg.org/img/abstract-user-flat-3.png'}
     const onError = ({ currentTarget })=>{currentTarget.onError=null; currentTarget.src="https://thumbs.dreamstime.com/b/%C3%ADcone-de-imagem-sem-foto-ou-em-branco-carregamento-imagens-aus%C3%AAncia-marca-n%C3%A3o-dispon%C3%ADvel-sinal-breve-silhueta-natureza-simples-215973362.jpg"}
@@ -103,21 +116,24 @@ function CriarLojas() {
                     </thead>
                     <tbody>
                         {values.lojas.map(loja=>
-                            <tr key={loja.id} onClick={event=>{event.preventDefault();setValues({...values, loja:{...loja}});document.getElementsByClassName("mensagem-loja")[0].scrollIntoView({behavior: 'smooth'})}}>
+                            <tr key={loja.id} onClick={event=>editar(event, loja)}>
                                 <td>{loja.id}</td>
                                 <td><img alt={"Foto loja : " +loja.nome} src={host+loja.imagemPath} onError={onError}/></td>
                                 <td>{loja.nome}</td>
                                 <td><Link to={"/perfil/"+loja.usuarioDTO.id}><img alt={"Foto usuario : " +loja.usuarioDTO.nome} src={host+loja.usuarioDTO.imagemPath} onError={onErrorUsuario}/></Link></td>
-                                <td style={{cursor:'pointer'}} onClick={event=>{event.preventDefault();document.getElementById("modal").showModal();}}>👥</td>
+                                <td style={{cursor:'pointer'}} onClick={event=>modalColab(event, loja)}>👥</td>
                                 <td>{loja.usuarioDTO.id===JSON.parse(localStorage.getItem("usuario")).id||(loja.usuarioLojasDTO&&loja.usuarioLojasDTO[0].admin)?'✅':'❌'}</td>
-                                {(loja.usuarioDTO.id===JSON.parse(localStorage.getItem("usuario")).id||(loja.usuarioLojasDTO&&loja.usuarioLojasDTO[0].admin))&&<td style={{cursor:"pointer"}} onClick={event=>{event.preventDefault();excluirLoja(loja.id)}}>❌</td>}
-                            </tr>                                                        
+                                <td style={{cursor:"pointer"}}>{(loja.usuarioDTO.id===JSON.parse(localStorage.getItem("usuario")).id||(loja.usuarioLojasDTO&&loja.usuarioLojasDTO[0].admin))&&<button onClick={event=>{event.preventDefault();excluirLoja(loja.id)}}>❌</button>}</td>
+                            </tr>                                                                                  
                         )}
                         {values.loaderLojas?<tr><td colSpan="9"><img style={{height:"5em"}} src={loader} alt="loading..."/></td></tr>:<tr><td colSpan="9">"fim dos produtos"</td></tr>}
                     </tbody>
                 </table>
             }
-            <Colaboradores usuarioLoja={values.usuarioLoja}/>
+
+            <dialog onClick={event=>document.getElementById("modal-colaboradores").close()} id="modal-colaboradores">
+                {values.usuarioLoja&&<Colaboradores loja={values.usuarioLoja}/>}
+            </dialog>
         </div>        
     </>
 }

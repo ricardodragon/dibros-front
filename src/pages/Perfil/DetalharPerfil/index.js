@@ -2,11 +2,9 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
 import { HashLink } from 'react-router-hash-link';
 import axios from '../../../config/api/api';
-import AnunciosTabela from '../../Anuncio/ListarAnuncios/AnunciosTabela';
 import ListarLojas from '../../Loja/ListarLojas';
 import ListarProdutos from '../../Produto/ListarProdutos';
 import './perfil.css';
-import AnunciosFeed from '../../Anuncio/ListarAnuncios/AnunciosFeed';
 import { Link } from 'react-router-dom';
 
 function DetalharPerfil(props) {
@@ -39,7 +37,6 @@ function DetalharPerfil(props) {
             </div>
         </header>}
 
-        <HashLink to="#anuncios" className="menu-feed"><span className='feed-menu-opaciti'>📢 anuncios</span><span className='feed-menu'>📢 anuncios</span></HashLink>
         <HashLink to="#lojas" className="menu-feed"><span className='feed-menu-opaciti'>🏬 lojas</span><span className='feed-menu'>🏬 lojas</span></HashLink>
         <HashLink to="#produtos" className="menu-feed"><span className='feed-menu-opaciti'>📦 produtos</span><span className='feed-menu'>📦 produtos</span></HashLink> 
 
@@ -49,15 +46,11 @@ function DetalharPerfil(props) {
                 {values.checkLayout&&<span><i className="fa-solid fa-list" style={{backgroundColor:"black", fontSize: "32px"}}></i></span>}
                 {!values.checkLayout&&<span><i className="fa-solid fa-table-cells" style={{backgroundColor:"black", fontSize: "32px"}}></i></span>}
             </label>
-            <section id="anuncios" className="tab">
-                {values.checkLayout&&<AnunciosFeed url={`/loja/anuncios?idUsuario=${id}&`}/>}
-                {!values.checkLayout&&<AnunciosTabela url={`/loja/anuncios?idUsuario=${id}&`}/>}  
-            </section>
             <section id="lojas" className="tab">
                 <ListarLojas/>
             </section>
             <section id="produtos" className="tab">
-                <ListarProdutos url={`/loja/produtos?idUsuario=${id}&`}/>
+                <ListarProdutos url={`/loja/produtos/usuario?id=${id}&`}/>
             </section>  
         </div>
     </>

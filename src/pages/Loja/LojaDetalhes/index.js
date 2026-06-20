@@ -2,11 +2,9 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 import { HashLink } from "react-router-hash-link";
 import axios from '../../../config/api/api';
-import AnunciosFeed from "../../Anuncio/ListarAnuncios/AnunciosFeed";
 import ListarProdutos from "../../Produto/ListarProdutos";
 import Colaboradores from "./Colaboradores";
 import './loja-detalhes.css';
-import AnunciosTabela from "../../Anuncio/ListarAnuncios/AnunciosTabela";
 
 function LojaDetalhes(props){
  
@@ -38,7 +36,6 @@ function LojaDetalhes(props){
         </header>
         }
 
-        <HashLink to="#anuncios" className="menu-feed"><span className='feed-menu-opaciti'>📢 anuncios</span><span className='feed-menu'>📢 anuncios</span></HashLink>
         <HashLink to="#produtos" className="menu-feed"><span className='feed-menu-opaciti'>📦 produtos</span><span className='feed-menu'>📦 produtos</span></HashLink> 
         <HashLink to="#colaboradores" className="menu-feed"><span className='feed-menu-opaciti'>👥 colaboradores</span><span className='feed-menu'>👥 colaboradores</span></HashLink>
         
@@ -48,12 +45,8 @@ function LojaDetalhes(props){
                 {values.checkLayout&&<span><i className="fa-solid fa-list" style={{backgroundColor:"black", fontSize: "32px"}}></i></span>}
                 {!values.checkLayout&&<span><i className="fa-solid fa-table-cells" style={{backgroundColor:"black", fontSize: "32px"}}></i></span>}
             </label>
-            <section id="anuncios" className="tab">
-                {values.checkLayout&&<AnunciosFeed url={`/loja/anuncios/loja/${id}?`}/>}
-                {!values.checkLayout&&<AnunciosTabela url={`/loja/anuncios/loja/${id}?`}/>}
-            </section>
             <section id="produtos" className="tab">
-                <ListarProdutos url={`/loja/produtos?idUsuario=${id}&`}/>
+                <ListarProdutos url={`/loja/produtos/loja/${id}?`}/>
             </section>  
             <section id="colaboradores" className="tab">
                 <Colaboradores id={id}/>

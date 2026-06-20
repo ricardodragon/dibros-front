@@ -4,7 +4,8 @@ import './../header.css';
 import loader from "./../../../assets/loadinfo.gif";
 import Seguido from './Seguido';
 import Seguidor from './Seguidor';
-import Colaborador from '../Colaborador';
+import Colaborador from './Colaborador';
+import ColaboradorAceito from './ColaboradorAceito';
 
 function Notificacao(props){
     const [values, setValues] = useState({})
@@ -40,9 +41,8 @@ function Notificacao(props){
             setValues({...values, loader:false, notificacoes:undefined});        
     }
     
-    const setNotificacao=index=>
-        setValues({...values, notificacoes:values.notificacoes.map((x,i)=>index===i?{...x, tipo:'SEGUIDO_ACEITO'}:x)})
-    
+    const setNotificacao=(index, valor)=>
+        setValues({...values, notificacoes:values.notificacoes.map((x,i)=>index===i?{...x, tipo:valor}:x)})
 
     const removeNotificacao=index=>setValues({...values, notificacoes:values.notificacoes.filter((x,i)=>index!==i)})
 
@@ -59,7 +59,8 @@ function Notificacao(props){
                     if(n.tipo==='SEGUIDO') return <Seguidor key={index} index={index} setNotificacao={setNotificacao} removeNotificacao={removeNotificacao} id={n.id}/>;
                     if(n.tipo==='SEGUIDO_ACEITO') return <Seguido key={index} id={n.id} />;
                     if(n.tipo==='SEGUIDOR_ACEITO') return <Seguido key={index} id={n.id}/>;
-                    if(n.tipo==='LOJA') return <Colaborador key={index} id={n.id}/>;
+                    if(n.tipo==='COLABORADOR') return <Colaborador setNotificacao={setNotificacao} key={index} index={index} id={n.id}/>;
+                    if(n.tipo==='COLABORADOR_ACEITO') return <ColaboradorAceito key={index} id={n.id}/>;
                     else return '';
                 })}
                 <div style={{textAlign:"center"}}>
