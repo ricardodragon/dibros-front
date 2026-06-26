@@ -39,18 +39,18 @@ function ListarProdutos(props){
         window.open('/loja/'+event.target.name, event.ctrlKey||event.metaKey?'_blank':'_self'); 
     }
 
-    const comprar = index => {      
-        const carrinho = JSON.parse(localStorage.getItem("carrinho"));
-        if(!carrinho){
-            localStorage.setItem("carrinho", JSON.stringify([{...values.anuncio, qtd:values.qtd}]))
-            window.dispatchEvent(new Event("carrinho"));
-        }else if(values.anuncio.idLoja!==carrinho[0].idLoja)
-            console.log("limpar carrinho")
-        else{
-            localStorage.setItem("carrinho", JSON.stringify(carrinho.concat({...values.anuncio, qtd:values.qtd})));
-            window.dispatchEvent(new Event("carrinho"));
-        }
-    }
+    // const comprar = index => {      
+    //     const carrinho = JSON.parse(localStorage.getItem("carrinho"));
+    //     if(!carrinho){
+    //         localStorage.setItem("carrinho", JSON.stringify([{...values.anuncio, qtd:values.qtd}]))
+    //         window.dispatchEvent(new Event("carrinho"));
+    //     }else if(values.anuncio.idLoja!==carrinho[0].idLoja)
+    //         console.log("limpar carrinho")
+    //     else{
+    //         localStorage.setItem("carrinho", JSON.stringify(carrinho.concat({...values.anuncio, qtd:values.qtd})));
+    //         window.dispatchEvent(new Event("carrinho"));
+    //     }
+    // }
 
     return (        
         <div className="produtos-conteudo" onScroll={handlerScroll}>
