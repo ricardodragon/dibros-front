@@ -39,6 +39,31 @@
     padding-left: 2%;
 }
 
+.loja-curtidas{
+    font-size: 10pt;
+    padding: 1%;
+    font-weight: bolder;
+    display: inline-block;
+    width: 48%;    
+    overflow: hidden;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.like-container{
+    border-top:1px solid rgba(0, 0 , 0, 0.1);
+    text-align:center;
+    font-size:11pt;
+    padding:1%;
+}
+
+.loja-like{
+    position: relative;
+    display: inline-block;
+    width: 33%;
+    cursor: pointer;
+}
+
 @media only screen and (min-width: 600px) {
     .lojas-conteudo{
         width: 60%;

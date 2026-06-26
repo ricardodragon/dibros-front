@@ -1,0 +1,83 @@
+.comentario-conteudo{
+    font-size: 10pt;
+    width: 100%;
+    padding: 4% 0%;
+}
+
+.comentario-usuario-imagem{
+    display: inline-block;
+    vertical-align: top;
+    aspect-ratio: 1 / 1;
+    width: 8%;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.nome-texto{
+    width: 75%;
+    display: inline-block;
+    padding: 0% 2%;
+}
+
+.nome-perfil{
+    white-space: nowrap;
+    cursor: pointer;
+    font-size: 8pt;
+    font-weight: bolder;
+    text-overflow:  ellipsis;
+    overflow: hidden;
+    margin-bottom: 0;
+}
+
+.comentario-texto{
+    white-space: break-spaces;
+    line-height: normal;
+    padding: 3% 0%;
+}
+
+.comentario-like{
+    display: inline;
+}
+
+.opcoes{
+    font-weight: bolder;
+    float: right;
+    cursor: pointer;
+}
+
+.comentario-conteudo dialog{
+    border-radius: 0.5%;
+    border-style: none;
+    width: 100%;
+    top: 85%;
+    text-align: center;
+}
+
+.comentario-conteudo dialog label{
+    width: 100%;
+    cursor: pointer;
+    padding: 0.5%;
+}
+
+.responder-input{
+    display: inline;
+    width: 100%;
+    border: none;
+}
+
+.responder-botao{
+    font-size: 18pt;
+    position: absolute;
+    right: 1%;
+    width: 8%;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.expand-resposta{
+    margin-bottom: 0;
+    margin-left: 2.3em;
+    cursor: pointer;
+}

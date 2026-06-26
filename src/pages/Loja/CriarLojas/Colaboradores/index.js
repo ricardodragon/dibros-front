@@ -10,7 +10,9 @@ function Colaboradores(props) {
 
     useEffect(() =>{
         setValues({loader:true})
-        return axios.get(`/loja/lojas/usuarios/${props.loja.id}?page=${0}&size=${10}`).then(res => setValues({usuarioLojas:res.data, loader:false, colabEmail:""}))
+        return props.loja?
+            axios.get(`/loja/lojas/usuarios/${props.loja.id}?page=${0}&size=${10}`)
+                .then(res => setValues({usuarioLojas:res.data, loader:false, colabEmail:""})):""
     }, [props.loja]);
 
     const convidarUsuario = event => axios.post('/loja/lojas/usuarios', {idLoja:props.loja.id, idUsuario:values.colaborador.usuarioDTO.id, admin:false})
@@ -20,7 +22,6 @@ function Colaboradores(props) {
         <div style={{width:'98%', height:'100%', padding:'1%'}} onClick={event=>event.stopPropagation()}>
             
             {values.loader&&<img style={{height:"5em", top:"50%"}} src={loader} alt="loading..."/>}
-            
             
             {props.loja&&<fieldset style={{margin:'0', border:'solid 1px', marginBottom:'3%'}}>
                 <div style={{textAlign:'left'}}>

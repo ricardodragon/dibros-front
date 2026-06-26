@@ -13,7 +13,7 @@ function LojaDetalhes(props){
     const host = process.env.REACT_APP_URL;
         
     useEffect(() =>{
-        axios.get("/loja/lojas/perfil/"+id).then(loja => setValues({loja:loja.data, checkLayout:true}))
+        axios.get("/loja/lojas/"+id).then(loja => setValues({loja:loja.data, checkLayout:true}))
     }, [id]);   
 
     const onError = ({ currentTarget })=>{currentTarget.onError=null; currentTarget.src='https://freesvg.org/img/abstract-user-flat-3.png'};
@@ -46,7 +46,7 @@ function LojaDetalhes(props){
                 {!values.checkLayout&&<span><i className="fa-solid fa-table-cells" style={{backgroundColor:"black", fontSize: "32px"}}></i></span>}
             </label>
             <section id="produtos" className="tab">
-                <ListarProdutos url={`/loja/produtos/loja/${id}?`}/>
+                <ListarProdutos id={id}/>
             </section>  
             <section id="colaboradores" className="tab">
                 <Colaboradores id={id}/>

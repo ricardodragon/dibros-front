@@ -20,11 +20,11 @@ function Feed(props){
                     {!values.checkLayout&&<span><i className="fa-solid fa-table-cells" style={{backgroundColor:"black", fontSize: "32px"}}></i></span>}
                 </label>
                 <section id="lojas" className="tab">
-                    <ListarLojas/>
+                    <ListarLojas id={0}/>
                     <Link className="criar-anuncios" to={'/lojas'}>+</Link>
                 </section>
                 <section id="produtos" className="tab">
-                    <ListarProdutos url={'/loja/produtos'+(localStorage.getItem("token")?'?':'/public?')}/>
+                    <ListarProdutos id={0}/>
                     <Link className="criar-anuncios" to={'/produtos/'+0}>+</Link>
                 </section>  
             </div>

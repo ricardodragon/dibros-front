@@ -8,23 +8,22 @@ import './produtos.css';
 function CriarProdutos(){
     
     const [values, setValues] = useState({})    
-    const idLoja = useParams().id;
-    const { id } = JSON.parse(localStorage.getItem('usuario'))
+    const id = useParams().id;
     const ref = useRef();
     const host = process.env.REACT_APP_URL;
     const history = useHistory();
 
     useEffect(() => 
-        axios.get(`/loja/produtos/usuario?page=${0}&size=${10}`).then(produtos => 
-            axios.get(`/loja/lojas?idUsuario=${id}&page=${0}&size=${99}`).then(lojas =>
+        axios.get(`/loja/produtos/loja/${id}?page=${0}&size=${10}`).then(produtos => 
+            axios.get(`/loja/lojas/usuario?page=${0}&size=${99}`).then(lojas =>
                 setValues({lojas:lojas.data, page:0, produtos:produtos.data, erro: lojas.data.length<=0?"É preciso criar uma loja em \"Menu > Lojas\"":false, produto:{titulo:'', quantidade:'', preco:'', idLoja:'0'}, load:false, loaderProdutos:false})))            
-    , [idLoja, id]);    
+    , [id]);    
 
     const handlerScroll = (event) => {
         if(!values.loaderProdutos&&(event.target.scrollHeight - event.target.scrollTop)<=event.target.clientHeight&&values.produtos!==undefined){  
             setValues({...values, loaderProdutos:true}); 
             const page = values.page+1;
-            axios.get(`/loja/produtos?idUsuario=${id}&idLoja=${idLoja}&page=${page}&size=10`)
+            axios.get(`/loja/produtos/loja/${id}?&page=${page}&size=10`)
                 .then(produtos => setValues({...values, page, produtos:values.produtos.concat(produtos.data), loaderProdutos:false}));
         }
     }
@@ -89,7 +88,7 @@ function CriarProdutos(){
                 </form>}
                 
                 <fieldset style={{overflowX:"auto", color:"white"}}><legend>Meus produtos</legend> 
-                    {values.lojas&&<select id="lojas" value={idLoja} onChange={changeLoja}>
+                    {values.lojas&&<select id="lojas" value={id} onChange={changeLoja}>
                         <option value="0">Selecione a loja</option>
                         {values.lojas.map((value, index) => <option key={index} value={value.id}>{value.nome}</option>)}
                     </select>} 

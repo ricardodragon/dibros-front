@@ -12,13 +12,13 @@ function ListarProdutos(props){
     const produtoNotFound = "https://thumbs.dreamstime.com/b/%C3%ADcone-de-imagem-sem-foto-ou-em-branco-carregamento-imagens-aus%C3%AAncia-marca-n%C3%A3o-dispon%C3%ADvel-sinal-breve-silhueta-natureza-simples-215973362.jpg";
 
     useEffect(() => 
-        axios.get(props.url+`page=${0}&size=${10}`).then(produtos =>setValues({produtos:produtos.data, page:0, usuario:JSON.parse(localStorage.getItem('usuario'))}))        
-    , [props.url]);        
+        axios.get(`/loja/produtos?page=${0}&size=${10}&idLoja=${props.id}`).then(produtos =>setValues({produtos:produtos.data, page:0, usuario:JSON.parse(localStorage.getItem('usuario'))}))        
+    , [props.id]);        
     
     const handlerScroll = (event) => {  
         const page = values.page+1; 
         if((event.target.scrollHeight - event.target.scrollTop)-10<=event.target.clientHeight&&values.produtos)
-            axios.get(props.url+`page=${page}&size=${10}`).then(produtos =>{ setValues({...values, page, produtos:values.produtos.concat(produtos.data)})});
+            axios.get(`/loja/produtos?page=${page}&size=${10}&idLoja=${props.id}`).then(produtos =>{ setValues({...values, page, produtos:values.produtos.concat(produtos.data)})});
         if(props.onScroll)props.onScroll(event);
     }
     
@@ -39,6 +39,19 @@ function ListarProdutos(props){
         window.open('/loja/'+event.target.name, event.ctrlKey||event.metaKey?'_blank':'_self'); 
     }
 
+    const comprar = index => {      
+        const carrinho = JSON.parse(localStorage.getItem("carrinho"));
+        if(!carrinho){
+            localStorage.setItem("carrinho", JSON.stringify([{...values.anuncio, qtd:values.qtd}]))
+            window.dispatchEvent(new Event("carrinho"));
+        }else if(values.anuncio.idLoja!==carrinho[0].idLoja)
+            console.log("limpar carrinho")
+        else{
+            localStorage.setItem("carrinho", JSON.stringify(carrinho.concat({...values.anuncio, qtd:values.qtd})));
+            window.dispatchEvent(new Event("carrinho"));
+        }
+    }
+
     return (        
         <div className="produtos-conteudo" onScroll={handlerScroll}>
             {values.produtos&&values.produtos.map((produto, indexProduto) =>            
@@ -48,12 +61,14 @@ function ListarProdutos(props){
                         <h3 name={produto.lojaDTO.id} onClick={redirectLoja}>{produto.lojaDTO.nome}</h3>                             
                     </header>
                     <div className="produto-opcoes">⋮</div>
-                    <h2>{produto.titulo}</h2>                                                                    
-                    {/* <div style={{boxSizing:'border-box', fontWeight:"bolder", textAlign:"center", fontSize:"10pt", width:"100%", padding:"1%"}}>
-                        R$ {produto.preco},00
-                    </div>  */}
+                    <h2>{produto.titulo}</h2>                                                                                        
                     
                     <img src={host+produto.imagemPath} alt={"Foto produto : " +produto.legenda} onError={onErrorProduto} className='img-produto' />                                                         
+
+                    <div style={{boxSizing:'border-box', fontWeight:"bolder", textAlign:"center", fontSize:"10pt", width:"100%", padding:"1%"}}>
+                        R$ {produto.preco},00
+                    </div> 
+
                     <div className="produto-curtidas">{produto.likeProdutosQTD} curtidas</div>
                     <div className="produto-curtidas" style={{textAlign: "end"}} onClick={event=>setValues({...values, produtos:values.produtos.map(x=>{return x.id===produto.id?{...x, expandComentarios:!x.expandComentarios}:x})})}>{produto.comentarioProdutosQTD} comentarios</div>
                     

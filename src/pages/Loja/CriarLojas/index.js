@@ -13,7 +13,7 @@ function CriarLojas() {
     const ref = useRef();
 
     useEffect(() =>{        
-        axios.get(`/loja/lojas?page=${0}&size=${10}&idUsuario=`+JSON.parse(localStorage.getItem("usuario")).id).then(res => setValues({lojas:res.data, page:0, load:false, loja:lojaBuilder}))
+        axios.get(`/loja/lojas/usuario?page=${0}&size=${10}`).then(res => setValues({lojas:res.data, page:0, load:false, loja:lojaBuilder}))
     }, [lojaBuilder]);
 
     useEffect(()=>
