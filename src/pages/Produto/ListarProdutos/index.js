@@ -39,18 +39,17 @@ function ListarProdutos(props){
         window.open('/loja/'+event.target.name, event.ctrlKey||event.metaKey?'_blank':'_self'); 
     }
 
-    // const comprar = index => {      
-    //     const carrinho = JSON.parse(localStorage.getItem("carrinho"));
-    //     if(!carrinho){
-    //         localStorage.setItem("carrinho", JSON.stringify([{...values.anuncio, qtd:values.qtd}]))
-    //         window.dispatchEvent(new Event("carrinho"));
-    //     }else if(values.anuncio.idLoja!==carrinho[0].idLoja)
-    //         console.log("limpar carrinho")
-    //     else{
-    //         localStorage.setItem("carrinho", JSON.stringify(carrinho.concat({...values.anuncio, qtd:values.qtd})));
-    //         window.dispatchEvent(new Event("carrinho"));
-    //     }
-    // }
+    const comprar = produto => { 
+        const carrinho = JSON.parse(localStorage.getItem("carrinho"))||[];
+        carrinho.length>0&&produto.idLoja!==carrinho[0].produto.idLoja?
+            console.log("limpar carrinho"):        
+            localStorage.setItem("carrinho", JSON.stringify(
+                carrinho.filter(x=>x.produto.id===produto.id).length>0?
+                    carrinho.map(x=>x.produto.id===produto.id?{...x, qtd:x.qtd+1}:x):
+                    [...carrinho, {produto, qtd:1}]
+            ));
+        window.dispatchEvent(new Event("carrinho"));
+    }
 
     return (        
         <div className="produtos-conteudo" onScroll={handlerScroll}>
@@ -74,7 +73,7 @@ function ListarProdutos(props){
                     
                     <div className="like-container">                        
                         <div className="produto-like" onClick={event=>produto.isLike?deleteLikeProduto(event, produto):likeProduto(event, produto)}><Link to={""} style={{textDecoration:'none'}}>{produto.isLike?'❤️':'🤍'}</Link></div>
-                        <div className="produto-like"><Link style={{textDecoration:'none'}} to={"/anuncio-detalhes/"+produto.id}>🛒</Link></div>
+                        <div className="produto-like" onClick={(event)=>comprar(produto)}>🛒</div>
                         <div className="produto-like"><Link style={{textDecoration:'none'}} to={""} onClick={event=>{event.preventDefault();setValues({...values, produtos:values.produtos.map(x=>{return x.id===produto.id?{...x, expandComentarios:!x.expandComentarios}:x})})}}>💬</Link></div>
                     </div>
                     {values.usuario&&produto.expandComentarios&&<ProdutoComentarios id={produto.id}/>}      
