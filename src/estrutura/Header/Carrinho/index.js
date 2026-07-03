@@ -8,12 +8,12 @@ function Carrinho(){
     
     useEffect(() =>{         
         const carrinho = (e) => {
-            setChecked(true);
+            setChecked(!checked);
             setCarrinho(JSON.parse(localStorage.getItem("carrinho")))
         }
         window.addEventListener('carrinho', carrinho);        
         return () => window.removeEventListener('carrinho', carrinho);
-    }, [])
+    }, [checked])
 
     const addProduto = (event, index) => {
         event.preventDefault();
@@ -37,17 +37,17 @@ function Carrinho(){
     const setChecks = (event) => {
         document.getElementById("mensagem-check").checked = false;
         document.getElementById("notificacao-check").checked = false;
-        setChecked(true);
+        setChecked(!checked);
     }
 
-    return (<div onClick={event=>{event.stopPropagation()}} style={{display:"inline"}}>
-        <label className="carrinho-botao" htmlFor="carrinho-check" onClick={event=>event.stopPropagation()}>
+    return (<div style={{display:"inline"}}>
+        <label className="carrinho-botao" htmlFor="carrinho-check">
             🛒
             {carrinho&&<div className='carrinho-qtd'>{carrinho.length}</div>}                                    
         </label>
-        <input type="checkbox" className="notificacao-check" id="carrinho-check" checked={checked} onChange={setChecks}/>
+        <input type="checkbox" className="carrinho-check" id="carrinho-check" checked={checked} onChange={setChecks}/>
 
-        <div id="carrinho-menu">
+        <div id="carrinho-menu" onClick={event=>event.stopPropagation()}>
             <h1>carrinho</h1>
             {localStorage.getItem('carrinho')&&
                 <>

@@ -28,7 +28,6 @@
     opacity: 0; 
     position: absolute;
     background-image: linear-gradient(90deg, rgb(182, 177, 177) 0%, rgb(133, 128, 128) 100%);
-    z-index: 1;
 }
 
 .feed-menu-opaciti:hover{ 

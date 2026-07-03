@@ -1,4 +1,3 @@
-import { HashLink } from "react-router-hash-link";
 import Template from "../../estrutura/Template";
 import ListarLojas from "../Loja/ListarLojas";
 import ListarProdutos from "../Produto/ListarProdutos";
@@ -8,10 +7,12 @@ import { Link } from "react-router-dom";
 
 function Feed(props){
     const [values, setValues] = useState({checkLayout:true})
+
+
     return (
         <Template>
-            <HashLink to="#lojas" className="menu-feed"><span className='feed-menu-opaciti'>🏬 lojas</span><span className='feed-menu'>🏬 lojas</span></HashLink>
-            <HashLink to="#produtos" className="menu-feed"><span className='feed-menu-opaciti'>📦 produtos</span><span className='feed-menu'>📦 produtos</span></HashLink> 
+            <a className="menu-feed" href="#lojas"><span className='feed-menu-opaciti'>🏬 lojas</span><span className='feed-menu'>🏬 lojas</span></a>
+            <a href="#produtos" className="menu-feed"><span className='feed-menu-opaciti'>📦 produtos</span><span className='feed-menu'>📦 produtos</span></a> 
 
             <div className="tabs-feed">
                 <input type="checkbox" id="check-feed" onChange={event=>setValues({...values, checkLayout:!values.checkLayout})}/>

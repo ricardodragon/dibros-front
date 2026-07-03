@@ -4,7 +4,7 @@ import "./template.css";
 function Template(props){
     
     return (
-        <div onClick={event=>[...document.getElementsByClassName("notificacao-check")].forEach(x=>x.checked=false)}>            
+        <div id="dibros" onClick={event=>[...document.getElementsByClassName("notificacao-check")].forEach(x=>x.checked=false)}>            
             <Header/>            
             <div id="conteudo">                                
                 {props.children}                    

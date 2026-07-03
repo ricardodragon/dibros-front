@@ -18,7 +18,7 @@ function Carrinho(props){
         const carrinhoFunction = (e) => setCarrinho(JSON.parse(localStorage.getItem("carrinho")));
         window.addEventListener('carrinho', carrinhoFunction);        
         return () => window.removeEventListener('carrinho', carrinho);
-    },[carrinho, history])
+    }, [carrinho, history])
 
     const addProduto = (event, index) => true
 
