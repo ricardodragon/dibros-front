@@ -1,4 +1,4 @@
-.lojas-conteudo{
+.pedido-conteudo{
     width: 100%;
     height: 100%; 
     padding: 0;
@@ -7,7 +7,7 @@
     box-sizing: border-box;
 }
 
-.card-loja{
+.card-pedido{
     border: 1px solid rgba(0, 0 , 0, 0.1);
     box-sizing: border-box;
     border-radius: 1em;
@@ -17,18 +17,19 @@
     background-color: white;
 }
 
-.card-loja header{
+
+.card-pedido header{
     padding: 2%;
     overflow: hidden;
 }
 
-.imagem-loja{
+.card-pedido img{
     border-radius: 50%;
     width: 15%;
     aspect-ratio: 1 / 1;
 }
 
-.card-loja h3{
+.card-pedido h3{
     text-overflow: ellipsis;
     max-width: 16ch;
     overflow: hidden;
@@ -39,33 +40,41 @@
     padding-left: 2%;
 }
 
-.loja-curtidas{
+.pedido-criacao{
+    text-align: end;
     font-size: 10pt;
     padding: 1%;
     font-weight: bolder;
-    display: inline-block;
-    width: 48%;    
     overflow: hidden;
     white-space: nowrap;
     cursor: pointer;
 }
 
-.like-container{
+.status-container{
     border-top:1px solid rgba(0, 0 , 0, 0.1);
     text-align:center;
     font-size:11pt;
     padding:1%;
 }
 
-.loja-like{
+.pedido-status{
     position: relative;
     display: inline-block;
-    width: 33%;
+    width: 50%;
     cursor: pointer;
 }
 
-@media only screen and (min-width: 600px) {
-    .lojas-conteudo{
-        width: 60%;
-    }
+.loader-pedido{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(173, 181, 189, 50%);
+    z-index: 1;
+}
+
+.loader-pedido img{
+    height: 5em;
+    position: relative;
+    top: 38%;
+    left: 42%;
 }

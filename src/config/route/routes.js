@@ -13,6 +13,8 @@ import PrivateRoutes from "./private-routes";
 import Carrinho from "../../pages/Carrinho";
 import ConversaListar from "../../pages/Conversa/ConversaListar";
 import ConversaDetalhes from "../../pages/Conversa/ConversaDetalhes";
+import PedidoDetalhes from "../../pages/Pedido/PedidoDetalhes";
+import ListarPedidos from "../../pages/Pedido/ListarPedidos";
 
 function Routes(props){    
 
@@ -33,6 +35,8 @@ function Routes(props){
                 <PrivateRoutes exact path="/carrinho" load={props.load} nome={"Carrinho"} component={Carrinho}/>
                 <PrivateRoutes exact path="/conversa" load={props.load} nome={"ConversaListar"} component={ConversaListar}/>
                 <PrivateRoutes exact path="/conversa-detalhes/:id" load={props.load} nome={"ConversaDetalhes"} component={ConversaDetalhes}/>
+                <PrivateRoutes exact path="/pedidos" load={props.load} nome={"ListarPedidos"} component={ListarPedidos}/>
+                <PrivateRoutes exact path="/pedido-detalhes/:id" load={props.load} nome={"PedidoDetalhes"} component={PedidoDetalhes}/>
                 
                 {/* sub rota do e-commerce meli */}            
                 <PrivateRoutes exact path="/meli/contas" load={props.load} nome={"Gerencie suas contas MercadoLivre"} component={Contas}/>                       

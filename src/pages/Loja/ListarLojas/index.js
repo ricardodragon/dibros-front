@@ -52,7 +52,7 @@ function ListarLojas(props){
                 <section className="card-loja" key={"loja-"+indexLoja}> 
                     <header>
                         <Link to={"/loja/"+loja.id}>
-                            <img alt={"Foto loja : " +loja.nome} src={host+loja.imagemPath} onError={onError} />                            
+                            <img className='imagem-loja' alt={"Foto loja : " +loja.nome} src={host+loja.imagemPath} onError={onError} />                            
                             <h3>{loja.nome}</h3>                             
                         </Link>
                         <div className='opcoes'>⋮</div>

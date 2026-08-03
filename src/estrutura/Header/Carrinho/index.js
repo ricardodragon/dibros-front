@@ -65,7 +65,7 @@ function Carrinho(){
                             </div>                
                         </div>)}
                     <input type='button' onClick={esvaziar} value={'esvaziar'}/><br/>
-                    <input type="button" style={{backgroundColor:"green", padding: "0 3%"}} value="finalizar compra"/>
+                    <a href='/carrinho' style={{backgroundColor:"green", padding: "0 3%"}}>finalizar compra</a>
                 </>
             }             
             <div style={{textAlign:"center"}}>

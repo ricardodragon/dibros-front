@@ -32,7 +32,11 @@ function Header(){
                 </>
             }
             <div id="user-menu" className='user-menu'>
-                {values.usuario&&<><Link to={'/perfil/editar/'+values.usuario.id}>Olá : {values.usuario.nome?values.usuario.nome:values.usuario.email} ✏️</Link><br/></>}
+                {values.usuario&&<>
+                    <Link to={'/perfil/editar/'+values.usuario.id}>{values.usuario.nome?values.usuario.nome:values.usuario.email} ✏️</Link><br/>
+                    <Link to={'/pedidos'}>Pedidos 📝</Link><br/>
+                </>}                
+                
                 <Link to='/login' onClick={(event)=>localStorage.clear()}>Sair</Link>                
             </div>
         </header>

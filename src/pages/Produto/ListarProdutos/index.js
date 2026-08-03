@@ -40,13 +40,13 @@ function ListarProdutos(props){
     }
 
     const comprar = produto => { 
-        const carrinho = JSON.parse(localStorage.getItem("carrinho"))||[];
-        carrinho.length>0&&produto.idLoja!==carrinho[0].produto.idLoja?
-            console.log("limpar carrinho"):        
+        const carrinho = JSON.parse(localStorage.getItem("carrinho"))||[];        
+        carrinho.length>0&&produto.idLoja!==carrinho[0].idLoja?
+            console.log("limpar carrinho"):
             localStorage.setItem("carrinho", JSON.stringify(
-                carrinho.filter(x=>x.produto.id===produto.id).length>0?
-                    carrinho.map(x=>x.produto.id===produto.id?{...x, qtd:x.qtd+1}:x):
-                    [...carrinho, {produto, qtd:1}]
+                carrinho.filter(x=>x.id===produto.id).length>0?
+                    carrinho.map(x=>x.id===produto.id?{...x, qtd:x.qtd+1}:x):
+                    [...carrinho, {...produto, qtd:1}]
             ));
         window.dispatchEvent(new Event("carrinho"));
     }

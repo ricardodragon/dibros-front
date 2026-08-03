@@ -1,0 +1,11 @@
+
+.pedido-loja-img{
+    border-radius: 50%;
+    width: 15%;
+    aspect-ratio: 1 / 1;
+}
+
+.pedido-qr-code{
+    width: 100%;
+    aspect-ratio: 1 / 1;
+}

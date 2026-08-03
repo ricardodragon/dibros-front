@@ -2,11 +2,12 @@
 import { useEffect, useState } from 'react';
 import './carrinho.css'
 import api from '../../config/api/api';
+import loader from "./../../assets/loadinfo.gif";
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 function Carrinho(props){
     const [carrinho, setCarrinho] = useState(JSON.parse(localStorage.getItem("carrinho")));
-    const [values, setValues] = useState({});
+    const [values, setValues] = useState({load:true});
     const history = useHistory();  
     const host = process.env.REACT_APP_URL;
 
@@ -14,7 +15,7 @@ function Carrinho(props){
         if(!carrinho||carrinho.length===0)
             return history.push("/");
         if(carrinho[0].idLoja)
-            api.get("/loja/lojas/perfil/"+carrinho[0].idLoja).then(res=> setValues({loja:res.data}));
+            api.get("/loja/lojas/"+carrinho[0].idLoja).then(res=> setValues({loja:res.data, load:false}));
         const carrinhoFunction = (e) => setCarrinho(JSON.parse(localStorage.getItem("carrinho")));
         window.addEventListener('carrinho', carrinhoFunction);        
         return () => window.removeEventListener('carrinho', carrinho);
@@ -24,12 +25,21 @@ function Carrinho(props){
 
     const removeProduto = (event, index) => true
 
+    const criarPedido = (event) => {
+        setValues({...values, load:true});
+        const c = JSON.parse(localStorage.getItem("carrinho"));
+        api.post("/loja/pedido", {produtoPedido:c, idLoja:c[0].idLoja}).then(r => {
+            history.push("/pedido-detalhes/"+r.data);
+            localStorage.removeItem("carrinho");
+        })
+    }
+
     return (<>
+            {values.load&&<div className='loader-loja'><img src={loader} alt="loading..."/></div>}
             {carrinho&&<div className='carrinho-info' style={{overflowY:"scroll", height:"73vh", paddingBottom:"12vh"}}>
                 <h1 className='carrinho-titulo'>Finalizar pedido</h1>
                 <label className='carrinho-label'>Seu pedido em</label>
-                {values.loja&&<h2 className='carrinho-loja-nome'>{values.loja.nome}</h2>}
-                {carrinho[0].usuarioDTO&&<h2 className='carrinho-loja-nome'>{carrinho[0].usuarioDTO.nome}</h2>}
+                {values.loja&&<h2 className='carrinho-loja-nome'>{values.loja.nome}</h2>}                
                 <hr/>                 
                 <h1>carrinho</h1>
                 {carrinho.map((n, index)=> 
@@ -43,14 +53,13 @@ function Carrinho(props){
                             <input type="button" style={{backgroundColor:"red", marginRight:"3%", padding: "0 2%"}} value="+" onClick={event=>{addProduto(event, index);}}/>
                             R$ {parseFloat(n.preco*n.qtd).toFixed(2)}
                         </div>                
-                                    
                     </div>
                 )}
 
                 <hr/>
                 Total R$ {parseFloat(carrinho.reduce((total, p) => total + p.preco*p.qtd, 0)).toFixed(2)}
                 <input id="esvaziar" style={{cursor: "pointer", backgroundColor:"lightblue", color:"black", display: "block"}} value="esvaziar"/>
-                <input id="finalizar" style={{cursor: "pointer", position: "fixed", right:"2em", backgroundColor:"red", color:"white", bottom:"2em"}} value="finalizar compra"/>
+                <input onClick={criarPedido} id="finalizar" style={{cursor: "pointer", position: "fixed", right:"2em", backgroundColor:"red", color:"white", bottom:"2em"}} value="finalizar compra"/>
             </div>}
         </>
     );
