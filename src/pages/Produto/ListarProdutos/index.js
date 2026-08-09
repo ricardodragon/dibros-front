@@ -7,18 +7,18 @@ import ProdutoComentarios from "../ProdutoComentarios";
 
 function ListarProdutos(props){
     const [values, setValues] = useState({})    
-    const host =process.env.REACT_APP_URL;
+    const host = process.env.REACT_APP_URL;
     const lojaNotFound = "https://thumbs.dreamstime.com/b/%C3%ADcone-de-imagem-sem-foto-ou-em-branco-carregamento-imagens-aus%C3%AAncia-marca-n%C3%A3o-dispon%C3%ADvel-sinal-breve-silhueta-natureza-simples-215973362.jpg";;
     const produtoNotFound = "https://thumbs.dreamstime.com/b/%C3%ADcone-de-imagem-sem-foto-ou-em-branco-carregamento-imagens-aus%C3%AAncia-marca-n%C3%A3o-dispon%C3%ADvel-sinal-breve-silhueta-natureza-simples-215973362.jpg";
 
     useEffect(() => 
-        axios.get(`/loja/produtos?page=${0}&size=${10}&idLoja=${props.id}`).then(produtos =>setValues({produtos:produtos.data, page:0, usuario:JSON.parse(localStorage.getItem('usuario'))}))        
-    , [props.id]);        
+        axios.get(`${props.url}?page=${0}&size=${10}`).then(produtos =>setValues({produtos:produtos.data, page:0, usuario:JSON.parse(localStorage.getItem('usuario'))}))        
+    , [props.url]);        
     
     const handlerScroll = (event) => {  
         const page = values.page+1; 
         if((event.target.scrollHeight - event.target.scrollTop)-10<=event.target.clientHeight&&values.produtos)
-            axios.get(`/loja/produtos?page=${page}&size=${10}&idLoja=${props.id}`).then(produtos =>{ setValues({...values, page, produtos:values.produtos.concat(produtos.data)})});
+            axios.get(`${props.url}?page=${page}&size=${10}&idLoja=${props.id}`).then(produtos =>{ setValues({...values, page, produtos:values.produtos.concat(produtos.data)})});
         if(props.onScroll)props.onScroll(event);
     }
     
@@ -62,7 +62,7 @@ function ListarProdutos(props){
                     <div className="produto-opcoes">⋮</div>
                     <h2>{produto.titulo}</h2>                                                                                        
                     
-                    <img src={host+produto.imagemPath} alt={"Foto produto : " +produto.legenda} onError={onErrorProduto} className='img-produto' />                                                         
+                    <img src={host+`/loja/produtos/imagem/${produto.id}/${produto.imagem}?Authorization=${localStorage.getItem("token")}`} alt={"Foto produto : " +produto.legenda} onError={onErrorProduto} className='img-produto' />                                                         
 
                     <div style={{boxSizing:'border-box', fontWeight:"bolder", textAlign:"center", fontSize:"10pt", width:"100%", padding:"1%"}}>
                         R$ {produto.preco},00

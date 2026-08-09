@@ -18,6 +18,8 @@ function Colaboradores(props) {
     const convidarUsuario = event => axios.post('/loja/lojas/usuarios', {idLoja:props.loja.id, idUsuario:values.colaborador.usuarioDTO.id, admin:false})
         .then(r=>setValues({...values, usuarioLojas:[{...values.colaborador, idLoja:props.loja.id, idUsuario:values.colaborador.usuarioDTO.id, criacao:new Date().toLocaleString()}].concat(values.usuarioLojas), colaborador:undefined}))
 
+    const excluir = (event, userLoja) => axios.delete(`/loja/lojas/usuarios/${userLoja.idUsuario}/${userLoja.idLoja}`).then(r=>setValues({...values, colaboradores:values.colaboradores.filter(x=>x.idUsuario!==userLoja.idUsuario)}))
+    
     return(         
         <div style={{width:'98%', height:'100%', padding:'1%'}} onClick={event=>event.stopPropagation()}>
             
@@ -58,7 +60,9 @@ function Colaboradores(props) {
                         </Link>
                         <p style={{whiteSpace:'break-spaces', lineHeight:'normal'}}></p>
                         <button style={{display:'inline-block', width:'47%'}} disabled>{userLoja.conviteAceito?'colaborador':'aguardando'}</button>
-                        {(props.loja.usuarioDTO.id===JSON.parse(localStorage.getItem("usuario")).id||(props.loja.usuarioLojasDTO&&props.loja.usuarioLojasDTO[0].admin))&&<button onClick={event=> axios.delete(`/loja/lojas/usuarios/${userLoja.idUsuario}/${userLoja.idLoja}`).then(r=>setValues({...values, colaboradores:values.colaboradores.filter(x=>x.idUsuario!==userLoja.idUsuario)}))} style={{display:'inline-block', color:'white', backgroundColor:'rgba(255, 0, 0, 0.70)', width:'47%', cursor:'pointer'}}>{userLoja.conviteAceito?'excluir':'cancelar'}</button>}
+                        {props.loja.isAdmin&&
+                            <button onClick={event=>excluir(event, userLoja)} style={{display:'inline-block', color:'white', backgroundColor:'rgba(255, 0, 0, 0.70)', width:'47%', cursor:'pointer'}}>{userLoja.conviteAceito?'excluir':'cancelar'}</button>
+                        }
                     </div>            
                     <hr></hr>
                 </div>

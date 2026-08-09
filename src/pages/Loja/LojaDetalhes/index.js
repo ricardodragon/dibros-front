@@ -46,7 +46,7 @@ function LojaDetalhes(props){
                 {!values.checkLayout&&<span><i className="fa-solid fa-table-cells" style={{backgroundColor:"black", fontSize: "32px"}}></i></span>}
             </label>
             <section id="produtos" className="tab">
-                <ListarProdutos id={id}/>
+                <ListarProdutos url={`/loja/produtos/loja/${id}`}/>
             </section>  
             <section id="colaboradores" className="tab">
                 <Colaboradores id={id}/>

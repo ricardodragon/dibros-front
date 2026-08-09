@@ -13,15 +13,15 @@ function ListarLojas(props){
     const lojaNotFound = "https://thumbs.dreamstime.com/b/%C3%ADcone-de-imagem-sem-foto-ou-em-branco-carregamento-imagens-aus%C3%AAncia-marca-n%C3%A3o-dispon%C3%ADvel-sinal-breve-silhueta-natureza-simples-215973362.jpg";
 
     useEffect(() => 
-        axios.get(`/loja/lojas?idUser=${props.id}&page=${0}&size=${10}`).then(lojas =>             
+        axios.get(`${props.url}?page=${0}&size=${10}`).then(lojas =>             
             setValues({lojas:lojas.data, page:0, usuario:JSON.parse(localStorage.getItem('usuario'))})                
         )
-    , [props.id]);      
+    , [props.url]);      
 
     const handlerScroll = (event) => {  
         const page = values.page+1; 
         if((event.target.scrollHeight - event.target.scrollTop)<=event.target.clientHeight&&values.lojas&&values.total&&values.lojas.length<values.total){                                                                   
-            axios.get(`/loja/lojas?idUser=${props.id}&page=${page}&size=${10}`).then(lojas =>
+            axios.get(`${props.url}?page=${page}&size=${10}`).then(lojas =>
                 setValues({...values, page, lojas:values.lojas.concat(lojas.data), total:lojas.headers.total})                
             )
         }

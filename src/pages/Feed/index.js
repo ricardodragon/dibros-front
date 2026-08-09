@@ -21,11 +21,11 @@ function Feed(props){
                     {!values.checkLayout&&<span><i className="fa-solid fa-table-cells" style={{backgroundColor:"black", fontSize: "32px"}}></i></span>}
                 </label>
                 <section id="lojas" className="tab">
-                    <ListarLojas id={0}/>
+                    <ListarLojas url={`/loja/lojas`}/>
                     <Link className="criar-anuncios" to={'/lojas'}>+</Link>
                 </section>
                 <section id="produtos" className="tab">
-                    <ListarProdutos id={0}/>
+                    <ListarProdutos url={`/loja/produtos`}/>
                     <Link className="criar-anuncios" to={'/produtos/'+0}>+</Link>
                 </section>  
             </div>

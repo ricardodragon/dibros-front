@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
-import { HashLink } from 'react-router-hash-link';
 import axios from '../../../config/api/api';
 import ListarLojas from '../../Loja/ListarLojas';
 import './perfil.css';
 import { Link } from 'react-router-dom';
+import ListarProdutos from '../../Produto/ListarProdutos';
 
 function DetalharPerfil(props) {
 
@@ -36,7 +36,8 @@ function DetalharPerfil(props) {
             </div>
         </header>}
 
-        <HashLink to="#lojas" className="menu-feed" style={{width:"100%"}}><span className='feed-menu-opaciti'>🏬 lojas</span><span className='feed-menu'>🏬 lojas</span></HashLink>
+        <a href={`/perfil/${id}/#lojas`} className="menu-feed"><span className='feed-menu-opaciti'>🏬 lojas</span><span className='feed-menu'>🏬 lojas</span></a>
+        <a href={`/perfil/${id}/#produtos`} className="menu-feed"><span className='feed-menu-opaciti'>📦 produtos</span><span className='feed-menu'>📦 produtos</span></a> 
 
         <div className="tabs-feed" style={{height:"74%"}}>
             <input type="checkbox" id="check-feed" onChange={event=>setValues({...values, checkLayout:!values.checkLayout})}/>
@@ -45,7 +46,10 @@ function DetalharPerfil(props) {
                 {!values.checkLayout&&<span><i className="fa-solid fa-table-cells" style={{backgroundColor:"black", fontSize: "32px"}}></i></span>}
             </label>
             <section id="lojas" className="tab">
-                <ListarLojas id={id}/>
+                <ListarLojas url={`/loja/lojas/usuario/${id}`}/>
+            </section>
+            <section id="produtos" className="tab">
+                <ListarProdutos url={`/loja/produtos/usuario/${id}`}/>
             </section>
         </div>
     </>
