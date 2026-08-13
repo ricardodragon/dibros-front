@@ -38,7 +38,7 @@ function ConversaListar(){
         <section className="conversas-conteudo">
             {conversas.map((conversa, index) =>            
                 <Link to={"/conversa-detalhes/"+(conversa.idAutor===JSON.parse(localStorage.getItem("usuario")).id?conversa.idRemetente:conversa.idAutor)} key={conversa.id}>
-                    <img alt={"Foto usuario : " +conversa.usuario.nome} src={conversa.usuario.imagemPath?host+conversa.usuario.imagemPath:"https://freesvg.org/img/abstract-user-flat-3.png"}/>                        
+                    <img alt={"Foto usuario : " +conversa.usuario.nome} src={`${host}/auth/usuarios/imagem/${conversa.usuario.id}/${conversa.usuario.imagem}?Authorization=${localStorage.getItem("token")}`}/>                        
                     <div className="conversa-info">
                         <h3>{conversa.usuario.nome}</h3>
                         <p style={{fontWeight:'normal', display: "inline-block"}}>{conversa.texto}</p>         

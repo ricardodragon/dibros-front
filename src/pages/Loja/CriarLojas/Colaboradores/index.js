@@ -34,7 +34,7 @@ function Colaboradores(props) {
 
                 {values.colaborador&&<div>
                     <div style={{textAlign:'left', width:'100%'}}>
-                        <img alt="Imagem perfil user" src={values.colaborador.usuarioDTO.imagemPath?host+values.colaborador.usuarioDTO.imagemPath:"https://freesvg.org/img/abstract-user-flat-3.png"} style={{display:'inline', verticalAlign:'top', borderRadius: "50%", width:"1.8em", height:"1.8em"}}/>                                     
+                        <img alt="Imagem perfil user" src={`${host}/auth/usuarios/imagem/${values.colaborador.usuarioDTO.id}/${values.colaborador.usuarioDTO.imagem}?Authorization=${localStorage.getItem("token")}`} style={{display:'inline', verticalAlign:'top', borderRadius: "50%", width:"1.8em", height:"1.8em"}}/>                                     
                         <div style={{display:'inline-block', width:'40%'}}>
                             {values.colaborador.usuarioDTO.nome&&<p style={{whiteSpace: "nowrap", fontSize:"8pt", fontWeight:"bolder", textOverflow: "ellipsis", overflow:"hidden", marginBottom:"0"}}>{values.colaborador.usuarioDTO.nome}</p>}
                             {values.colaborador.usuarioDTO.email&&<p style={{whiteSpace: "nowrap", fontSize:"8pt", fontWeight:"bolder", textOverflow: "ellipsis", overflow:"hidden", marginBottom:"0"}}>{values.colaborador.usuarioDTO.email}</p>}
@@ -52,7 +52,7 @@ function Colaboradores(props) {
 
             {values.usuarioLojas&&values.usuarioLojas.map(userLoja=>
                 <div style={{textAlign:'left'}} key={userLoja.idUsuario+''+userLoja.idLoja}>
-                    <Link style={{display:'inline', verticalAlign:'top'}} to={"/perfil/"+userLoja.usuarioDTO.id}><img alt="Imagem perfil user" src={userLoja.usuarioDTO.imagemPath?host+userLoja.usuarioDTO.imagemPath:"https://freesvg.org/img/abstract-user-flat-3.png"} style={{borderRadius: "50%", width:"2.7em", height:"2.7em"}}/></Link>                                      
+                    <Link style={{display:'inline', verticalAlign:'top'}} to={"/perfil/"+userLoja.usuarioDTO.id}><img alt="Imagem perfil user" src={`${host}/auth/usuarios/imagem/${userLoja.usuarioDTO.id}/${userLoja.usuarioDTO.imagem}?Authorization=${localStorage.getItem("token")}`} style={{borderRadius: "50%", width:"2.7em", height:"2.7em"}}/></Link>                                      
                     <div style={{display:'inline-block', width:'80%'}}>
                         <Link to={"/perfil/"+userLoja.usuarioDTO.id} style={{display:'inline-block'}}>
                             {userLoja.usuarioDTO.nome&&<p style={{whiteSpace: "nowrap", fontSize:"8pt", fontWeight:"bolder", textOverflow: "ellipsis", overflow:"hidden", marginBottom:"0"}}>{userLoja.usuarioDTO.nome}</p>}

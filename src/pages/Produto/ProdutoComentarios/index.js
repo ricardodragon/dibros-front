@@ -58,7 +58,7 @@ function ProdutoComentarios(props){
     return<>
         {values.comentarios&&values.comentarios.map((x, index)=> 
             <div className="comentario-conteudo" key={index}> 
-                <img className="comentario-usuario-imagem" alt="Imagem perfil user" onClick={event=>irPerfil(x.usuarioDTO.id)} onError={onError} src={x.usuarioDTO.imagemPath?host+x.usuarioDTO.imagemPath:"https://freesvg.org/img/abstract-user-flat-3.png"}/>
+                <img className="comentario-usuario-imagem" alt="Imagem perfil user" onClick={event=>irPerfil(x.usuarioDTO.id)} onError={onError} src={`${host}/auth/usuarios/imagem/${x.usuarioDTO.id}/${x.usuarioDTO.imagem}?Authorization=${localStorage.getItem("token")}`}/>
                 <div className="nome-texto">
                     <p className="nome-perfil" onClick={event=>irPerfil(x.usuarioDTO.id)}>{x.usuarioDTO.nome||x.usuarioDTO.email}</p>
                     <p className="comentario-texto">{x.texto}</p>

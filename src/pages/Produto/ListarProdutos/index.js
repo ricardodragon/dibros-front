@@ -12,7 +12,7 @@ function ListarProdutos(props){
     const produtoNotFound = "https://thumbs.dreamstime.com/b/%C3%ADcone-de-imagem-sem-foto-ou-em-branco-carregamento-imagens-aus%C3%AAncia-marca-n%C3%A3o-dispon%C3%ADvel-sinal-breve-silhueta-natureza-simples-215973362.jpg";
 
     useEffect(() => 
-        axios.get(`${props.url}?page=${0}&size=${10}`).then(produtos =>setValues({produtos:produtos.data, page:0, usuario:JSON.parse(localStorage.getItem('usuario'))}))        
+        props.url?axios.get(`${props.url}?page=${0}&size=${10}`).then(produtos =>setValues({produtos:produtos.data, page:0, usuario:JSON.parse(localStorage.getItem('usuario'))})):""
     , [props.url]);        
     
     const handlerScroll = (event) => {  
@@ -56,7 +56,7 @@ function ListarProdutos(props){
             {values.produtos&&values.produtos.map((produto, indexProduto) =>            
                 <section className="card-produto" key={"produtos-"+indexProduto}>                  
                     <header>  
-                        <img name={produto.lojaDTO.id} alt={"Foto loja : " +produto.lojaDTO.nome} src={host+produto.lojaDTO.imagemPath} onError={onErrorLoja} onClick={redirectLoja}/>
+                        <img name={produto.lojaDTO.id} alt={"Foto loja : " +produto.lojaDTO.nome} src={host+`/loja/lojas/imagem/${produto.lojaDTO.id}/${produto.lojaDTO.imagem}?Authorization=${localStorage.getItem("token")}`} onError={onErrorLoja} onClick={redirectLoja}/>
                         <h3 name={produto.lojaDTO.id} onClick={redirectLoja}>{produto.lojaDTO.nome}</h3>                             
                     </header>
                     <div className="produto-opcoes">⋮</div>

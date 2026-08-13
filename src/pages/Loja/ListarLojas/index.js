@@ -13,9 +13,8 @@ function ListarLojas(props){
     const lojaNotFound = "https://thumbs.dreamstime.com/b/%C3%ADcone-de-imagem-sem-foto-ou-em-branco-carregamento-imagens-aus%C3%AAncia-marca-n%C3%A3o-dispon%C3%ADvel-sinal-breve-silhueta-natureza-simples-215973362.jpg";
 
     useEffect(() => 
-        axios.get(`${props.url}?page=${0}&size=${10}`).then(lojas =>             
-            setValues({lojas:lojas.data, page:0, usuario:JSON.parse(localStorage.getItem('usuario'))})                
-        )
+        props.url?
+            axios.get(`${props.url}?page=${0}&size=${10}`).then(lojas => setValues({lojas:lojas.data, page:0, usuario:JSON.parse(localStorage.getItem('usuario'))})):""                
     , [props.url]);      
 
     const handlerScroll = (event) => {  
@@ -52,7 +51,7 @@ function ListarLojas(props){
                 <section className="card-loja" key={"loja-"+indexLoja}> 
                     <header>
                         <Link to={"/loja/"+loja.id}>
-                            <img className='imagem-loja' alt={"Foto loja : " +loja.nome} src={host+loja.imagemPath} onError={onError} />                            
+                            <img className='imagem-loja' alt={"Foto loja : " +loja.nome} src={host+`/loja/lojas/imagem/${loja.id}/${loja.imagem}?Authorization=${localStorage.getItem("token")}`} onError={onError} />                            
                             <h3>{loja.nome}</h3>                             
                         </Link>
                         <div className='opcoes'>⋮</div>

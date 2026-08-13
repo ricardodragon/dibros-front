@@ -4,7 +4,6 @@ import Login from "../../pages/Login";
 import CriarLojas from "../../pages/Loja/CriarLojas";
 import LojaDetalhes from "../../pages/Loja/LojaDetalhes";
 import Contas from "../../pages/Meli/Contas";
-import NovaSenha from "../../pages/NovaSenha";
 import DetalharPerfil from "../../pages/Perfil/DetalharPerfil";
 import EditarPerfil from "../../pages/Perfil/EditarPerfil";
 import CriarProdutos from "../../pages/Produto/CriarProdutos";
@@ -15,6 +14,8 @@ import ConversaListar from "../../pages/Conversa/ConversaListar";
 import ConversaDetalhes from "../../pages/Conversa/ConversaDetalhes";
 import PedidoDetalhes from "../../pages/Pedido/PedidoDetalhes";
 import ListarPedidos from "../../pages/Pedido/ListarPedidos";
+import Cadastro from "../../pages/Cadastro";
+import NovaSenha from "../../pages/NovaSenha";
 
 function Routes(props){    
 
@@ -23,6 +24,7 @@ function Routes(props){
             <Switch>
                 {/* Estrutra Auth etc */}
                 <Route exact path="/login" component={Login}></Route>
+                <Route exact path="/cadastro/:token" component={Cadastro}></Route>
                 <Route exact path="/nova-senha/:token" component={NovaSenha}></Route>
                 <Route exact path="/" component={Feed}/>                                                        
 

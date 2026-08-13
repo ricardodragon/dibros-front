@@ -1,55 +1,60 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from "react-router-dom";
 import axios from '../../config/api/api';
-import './login.css';
+import loader from "./../../assets/loadinfo.gif";
+import './../Cadastro/login.css';
 
 function NovaSenha(props) {
-    const [values, setValues] = useState( {usuario:{}, esqueci:new URLSearchParams((props.location.search)).get('esqueci')==="true"} )
+    const [values, setValues] = useState( {usuario:{}} )
     const { token } = useParams(props.location.search);
-
         
     const setUsuario = (event)=>
         setValues({...values,usuario:{...values.usuario,[event.target.name]:event.target.value}})    
     
+    useEffect(() => {
+        const input = document.getElementById('confirm');
+        values.usuario.confirm!==values.usuario.password?
+            input.setCustomValidity('As senhas não coincidem!'):input.setCustomValidity('');
+    }, [values.usuario.password, values.usuario.confirm]); 
+
     const novoUsuario = (event) => {
         event.preventDefault();
-        if(values.usuario.password !== values.usuario.confirm) return alert("Erro na confirmação da senha!!")
+        setValues({...values, load:true});        
         localStorage.setItem("token", "Bearer "+token);        
-        var formData = new FormData();   
-        formData.append('files', values.usuario.imagem);                  
-        // axios.post('/imagem/imagem', formData).then(imagens => 
-            axios.post('/auth/usuarios', {...values.usuario, imagemPath:"imagens.data[0]"}).then(response =>{
-                localStorage.removeItem("token"); 
-                axios.post('/auth/login', {password:values.usuario.password, email:response.data.email}).then(res => {
-                    localStorage.setItem("token", res.headers['authorization']);                
-                    axios.get("/auth/usuarios").then(res =>{
-                        localStorage.setItem("usuario", JSON.stringify(res.data));
-                        props.history.replace("/");
-                    })
-                })
-            });
-        // ); 
+        axios.put('/auth/usuarios/password', {password:values.usuario.password}).then(response => {
+            setValues({...values, load:false, ok:true, erro:false});
+            setTimeout(() => props.history.replace("/login"), 2000);
+        }).catch(r=>setValues({...values, load:false, ok:false, erro:true}));
+    }
+
+    const mostrarSenha = event => {
+        event.stopPropagation();
+        setValues({...values, [event.target.id]:!values[event.target.id]});
     }
 
     return (
-        <div className="background">    
-            <div className="conteudo-login">
-                {(values.ok||values.erro)&&<div style={{width: "100%", textAlign:"center"}}>{values.ok?"✅ Link enviado com sucesso":"❌ Erro: "+values.erro}</div>}                
+        <>
+            {values.load&&<div className='loader-produto'><img src={loader} alt="loading..."/></div>}
+            <div className="conteudo-cadastro">
+                <h1 style={{textAlign:"center", fontWeight:"bolder", padding:"5%"}}>Dibros</h1>
+                {(values.ok||values.erro)&&<div style={{width: "100%", textAlign:"start", paddingBottom:"3%"}}>{values.ok?"✅ Senha cadastrada com sucesso":"❌ Erro ao cadastrar nova senha"}</div>}                
                 <form onSubmit={novoUsuario}>
-                    <fieldset><legend>Cadastro de {values.esqueci?'nova senha':'ususario'}</legend>                                    
-                        {/* {!values.esqueci&&<>
-                            {values.usuario.imagem&&<img alt="imagem de perfil" style={{width:"3em", height:"3em", borderRadius: "5px"}} src={URL.createObjectURL(values.usuario.imagem)}/>}<br/>
-                            <label htmlFor='imagem' style={{backgroundColor: "#3498db", borderRadius: "5px", color: "#fff", cursor: "pointer", width:"80%", display:"block", position:"relative", left:"10%"}}>📷 Foto</label>
-                            <input id='imagem' name="imagem" style={{display:"none"}} type="file" accept='image/*' onChange={event=>setValues({...values, usuario:{...values.usuario, imagem:event.target.files[0]}})}/>                        
-                            <input style={{width: "80%", textAlign:"center"}} required onChange={setUsuario} placeholder="Nome" id="nome" name="nome" type="text"/>                        
-                        </>} */}
-                        <input style={{width: "80%", textAlign:"center"}} required onChange={setUsuario} placeholder="Password" id="password" name="password" type="password" />
-                        <input style={{width: "80%", textAlign:"center"}} required onChange={setUsuario} placeholder="Confirme Password" id="confirm" name="confirm" type="password"/>
-                        <input style={{width: "80%", textAlign:"center"}} value="Entrar" type="submit"/><br/>                                        
+                    <fieldset style={{textAlign:"start"}}><legend>Nova senha</legend>                                
+                        <div style={{position: "relative", textAlign:"start", margin: "auto"}}>
+                            <input style={{width: "100%", textAlign:"center"}} minLength="8" required onChange={setUsuario} placeholder="Password" id="password" name="password" type={values.mostrarSenha?"text":"password"} />
+                            {values.usuario.password&&<span id="mostrarSenha" style={{position: "absolute", transform: "translateY(-50%)", right: "10px", top: "50%", cursor:"pointer"}} onClick={mostrarSenha}>{values.mostrarSenha?'🙈':'👁️'}</span>}
+                        </div>
+                        
+                        <div style={{position: "relative", textAlign:"start", margin: "auto"}}>
+                            <input style={{width: "100%", textAlign:"center"}} minLength="8" required onChange={setUsuario} placeholder="Confirme Password" id="confirm" name="confirm" type={values.mostrarConfirmarSenha?"text":"password"} />
+                            {values.usuario.confirm&&<span id="mostrarConfirmarSenha"  style={{position: "absolute", transform: "translateY(-50%)", right: "10px", top: "50%", cursor:"pointer"}} onClick={mostrarSenha}>{values.mostrarConfirmarSenha?'🙈':'👁️'}</span>}
+                        </div>
+
+                        <input style={{width: "100%", textAlign:"center"}} value="enviar" type="submit"/><br/>                                        
                     </fieldset>
                 </form>
             </div>
-        </div>
+        </>
     )
 }
 

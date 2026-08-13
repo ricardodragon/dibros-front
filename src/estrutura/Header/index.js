@@ -22,8 +22,7 @@ function Header(){
     return (
         <header className="header-app">
             <a href='/'><img className="logo" alt="" src={logo}/></a>
-            <img className="login" alt="Foto perfil user" src={values.usuario&&values.usuario.imagemPath?
-                host+values.usuario.imagemPath:"https://freesvg.org/img/abstract-user-flat-3.png"} onClick={event=>{event.preventDefault();event.stopPropagation();document.getElementById("user-menu").style.display=document.getElementById("user-menu").style.display!=="inline-block"?"inline-block":"none"}}/>                                                
+            <img className="login" alt="Foto perfil user" src={values.usuario&&`${host}/auth/usuarios/imagem/${values.usuario.id}/${values.usuario.imagem}?Authorization=${localStorage.getItem("token")}`} onClick={event=>{event.preventDefault();event.stopPropagation();document.getElementById("user-menu").style.display=document.getElementById("user-menu").style.display!=="inline-block"?"inline-block":"none"}}/>                                                
             {values.usuario&&
                 <>               
                     <Notificacao/>                    
