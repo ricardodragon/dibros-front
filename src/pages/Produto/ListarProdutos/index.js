@@ -65,7 +65,7 @@ function ListarProdutos(props){
                     <img src={host+`/loja/produtos/imagem/${produto.id}/${produto.imagem}?Authorization=${localStorage.getItem("token")}`} alt={"Foto produto : " +produto.legenda} onError={onErrorProduto} className='img-produto' />                                                         
 
                     <div style={{boxSizing:'border-box', fontWeight:"bolder", textAlign:"center", fontSize:"10pt", width:"100%", padding:"1%"}}>
-                        R$ {produto.preco},00
+                        {Number(produto.preco).toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})}
                     </div> 
 
                     <div className="produto-curtidas">{produto.likeProdutosQTD} curtidas</div>

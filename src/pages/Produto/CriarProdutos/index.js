@@ -111,7 +111,7 @@ function CriarProdutos(){
                                     <td>{p.id}</td>
                                     <td><img alt="" style={{width:"2em", height:"2em"}} src={host+`/loja/produtos/imagem/${p.id}/${p.imagem}?Authorization=${localStorage.getItem("token")}`}/></td>                            
                                     <td style={{fontWeight: "bold"}}>{p.titulo}</td>                                                             
-                                    <td>{"R$ "+p.preco}</td>
+                                    <td>{Number(p.preco).toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})}</td>
                                     <td>{p.quantidade}</td>
                                     {(p.lojaDTO.usuarioId===JSON.parse(localStorage.getItem("usuario")).id||(p.lojaDTO.usuarioLojasDTO&&p.lojaDTO.usuarioLojasDTO[0].admin))&&<td onClick={event=>{event.stopPropagation();event.preventDefault();excluirProduto(p.id)}}>❌</td>}
                                 </tr>

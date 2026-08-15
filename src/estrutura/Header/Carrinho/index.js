@@ -53,7 +53,7 @@ function Carrinho(){
                 <>
                     {JSON.parse(localStorage.getItem('carrinho')).map((n, index)=> 
                         <div key={index} style={{padding:'1%', textAlign:'left'}}>
-                            <img alt="Imagem item" src={n.imagemPath?host+n.imagemPath:"https://thumbs.dreamstime.com/b/%C3%ADcone-de-imagem-sem-foto-ou-em-branco-carregamento-imagens-aus%C3%AAncia-marca-n%C3%A3o-dispon%C3%ADvel-sinal-breve-silhueta-natureza-simples-215973362.jpg"} style={{borderRadius: "50%", width:"2.7em", height:"2.7em"}}/>                    
+                            <img alt="Imagem item" src={`${host}/loja/produtos/imagem/${n.id}/${n.imagem}?Authorization=${localStorage.getItem("token")}`} style={{borderRadius: "50%", width:"2.7em", height:"2.7em"}}/>                    
                             
                             <div style={{display:'inline-block', width:'50%', fontSize:"6pt", verticalAlign:"top"}}>
                                 <p style={{whiteSpace: "nowrap", fontSize:"8pt", fontWeight:"bolder", textOverflow: "ellipsis", overflow:"hidden", marginBottom:"0"}}>{n.legenda?n.legenda:n.titulo}</p>
@@ -61,8 +61,10 @@ function Carrinho(){
                                 <input type="button" style={{padding: "0 3%", marginLeft:"3%", backgroundColor:"red"}} value="-" onClick={event=>{removeProduto(event, index);}}/> 
                                 <span style={{margin:"0 3%", fontWeight:"bold"}}>{n.qtd}</span>
                                 <input type="button" style={{backgroundColor:"red", padding: "0 3%"}} value="+" onClick={event=>{addProduto(event, index);}}/>
-
+                                preço: {Number(n.preco).toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})}<br/>
+                                total: {Number(n.preco*n.qtd).toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})}
                             </div>                
+                            
                         </div>)}
                     <input type='button' onClick={esvaziar} value={'esvaziar'}/><br/>
                     <a href='/carrinho' style={{backgroundColor:"green", padding: "0 3%"}}>finalizar compra</a>

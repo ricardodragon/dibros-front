@@ -21,7 +21,7 @@ function LojaDetalhes(props){
     return(<>   
         {values.loja&&<header id='loja-perfil-header'>
             <figure>
-                <img alt={"Foto da loja : "} onError={onError} src={values.loja.imagemPath?host+values.loja.imagemPath:"https://freesvg.org/img/abstract-user-flat-3.png"}/>
+                <img alt={"Foto da loja : "} onError={onError} src={`${host}/loja/lojas/imagem/${values.loja.id}/${values.loja.imagem}?Authorization=${localStorage.getItem("token")}`}/>
                 <figcaption>{values.loja.nome}</figcaption>
             </figure>
             <div className='loja-seguidores'>

@@ -1,3 +1,9 @@
+.pedido-pix{
+    overflow-y: scroll;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+}
 
 .pedido-loja-img{
     border-radius: 50%;
@@ -6,6 +12,13 @@
 }
 
 .pedido-qr-code{
-    width: 100%;
+    width: 70%;
     aspect-ratio: 1 / 1;
 }
+
+.pix-box { padding: 2% 0; font-family: sans-serif; display: flex; flex-direction: column; gap: 8px; align-items: center;}
+.input-group { display: flex; gap: 8px; }
+.pix-box button { padding: 10px 16px; background: #00b894; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; transition: background 0.2s; }
+.pix-box button:hover { background: #00a381; }
+.hidden { display: none; }
+#mensagem-sucesso { color: #00b894; font-size: 13px; font-weight: bold; }

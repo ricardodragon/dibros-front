@@ -34,7 +34,7 @@ function ListarPedidos(props) {
             {values.pedidos.map(pedido=>                
                 <section className="card-pedido" onClick={(event)=>redirectPedido(event, pedido.id)} key={"pedido-"+pedido.id}> 
                     <header>
-                        <img onClick={(event)=>redirectLoja(event, pedido.lojaDTO.id)} alt={"Foto loja : " +pedido.lojaDTO.nome} src={host+pedido.lojaDTO.imagemPath} onError={onError} />                            
+                        <img onClick={(event)=>redirectLoja(event, pedido.lojaDTO.id)} alt={"Foto loja : " +pedido.lojaDTO.nome} src={`${host}/loja/lojas/imagem/${pedido.loja.id}/${pedido.loja.imagem}?Authorization=${localStorage.getItem("token")}`} onError={onError} />                            
                         <h3 onClick={(event)=>redirectLoja(event, pedido.lojaDTO.id)}>{pedido.lojaDTO.nome}</h3>                             
                     </header>
                     

@@ -21,7 +21,7 @@ function DetalharPerfil(props) {
     return <>        
         {values.usuario&&<header id='detalhar-perfil-header'>
             <figure>
-                <img onError={onError} alt={"Foto do perfil : "} src={values.usuario.imagemPath?host+values.usuario.imagemPath:"https://freesvg.org/img/abstract-user-flat-3.png"}/>
+                <img onError={onError} alt={"Foto do perfil : "} src={`${host}/auth/usuarios/imagem/${values.usuario.id}/${values.usuario.imagem}?Authorization=${localStorage.getItem("token")}`}/>
                 <figcaption>{values.usuario.nome}</figcaption>
             </figure>
             <div className='seguidores'>

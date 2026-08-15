@@ -47,7 +47,7 @@ function ConversaDetalhes(){
                 <img 
                     alt={"Foto usuario : " +values.usuario.nome} 
                     onError={({ currentTarget })=>{currentTarget.onError=null; currentTarget.src='https://freesvg.org/img/abstract-user-flat-3.png'}}
-                    src={host+(values.usuario.imagemPath)} />
+                    src={`${host}/auth/usuarios/imagem/${values.usuario.id}/${values.usuario.imagem}?Authorization=${localStorage.getItem("token")}`} />
                 <h3>{values.usuario.nome}</h3>
             </header>}
             <div id="scroll" style={{overflowY:"scroll", height:"84.5%"}}>

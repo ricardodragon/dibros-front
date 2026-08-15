@@ -3,8 +3,8 @@ import axios from '../../../config/api/api';
 import loader from "./../../../assets/loadinfo.gif";
 import "./lojas.css";
 import { Link } from 'react-router-dom';
-import Colaboradores from '../CriarLojas/Colaboradores';
 import LojaComentarios from '../LojaComentarios';
+import Colaboradores from './Colaboradores';
 
 function ListarLojas(props){
          
