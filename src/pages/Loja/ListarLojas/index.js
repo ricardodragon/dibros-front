@@ -17,15 +17,14 @@ function ListarLojas(props){
             axios.get(`${props.url}?page=${0}&size=${10}`).then(lojas => setValues({lojas:lojas.data, page:0, usuario:JSON.parse(localStorage.getItem('usuario'))})):""                
     , [props.url]);      
 
-    const handlerScroll = (event) => {  
-        const page = values.page+1; 
-        if((event.target.scrollHeight - event.target.scrollTop)<=event.target.clientHeight&&values.lojas&&values.total&&values.lojas.length<values.total){                                                                   
-            axios.get(`${props.url}?page=${page}&size=${10}`).then(lojas =>
-                setValues({...values, page, lojas:values.lojas.concat(lojas.data), total:lojas.headers.total})                
-            )
-        }
-        if(props.onScroll)props.onScroll(event);
-    }
+    const loadEvento = (load) => {        
+        if(!load||values.carregando) return;
+        setValues({...values, carregando:true})
+        const buscar = () => axios.get(`${props.url}?page=${values.page+1}&size=${10}&idLoja=${props.id}`).then(lojas=>setValues({...values, carregando:false, page:values.page+(lojas.data.length===0?0:1), load:lojas.data.length===0, lojas:values.lojas.concat(lojas.data)}))
+        
+        const observador = new IntersectionObserver(([entry]) => entry.isIntersecting?buscar():"");
+        observador.observe(load);
+    };
 
     const likeLoja = (event, loja) => {
         event.preventDefault();
@@ -46,7 +45,7 @@ function ListarLojas(props){
     const onError = ({ currentTarget })=>{currentTarget.onError=null; currentTarget.src=lojaNotFound}
 
     return (        
-        <div className="lojas-conteudo" onScroll={handlerScroll}>
+        <div className="lojas-conteudo">
             {values.lojas.map((loja, indexLoja) =>            
                 <section className="card-loja" key={"loja-"+indexLoja}> 
                     <header>
@@ -56,6 +55,7 @@ function ListarLojas(props){
                         </Link>
                         <div className='opcoes'>⋮</div>
                     </header>
+                    <div style={{padding:"10%"}}></div>
                     <div className="loja-curtidas">{loja.likeLojasQTD} curtidas</div>
                     <div className="loja-curtidas" style={{textAlign: "end"}} onClick={event=>setValues({...values, lojas:values.lojas.map(x=>{return x.id===loja.id?{...x, expandComentarios:!x.expandComentarios}:x})})}>{loja.comentarioLojasQTD} comentarios</div>
                     
@@ -67,13 +67,14 @@ function ListarLojas(props){
                     {loja.expandComentarios&&<LojaComentarios id={loja.id}/>}                                      
                 </section>            
             )}
+            
 
             <dialog onClick={event=>document.getElementById("modal-colaboradores").close()} id="modal-colaboradores">
                 <Colaboradores loja={values.loja}/>
             </dialog> 
-            
-            <div style={{textAlign:"center"}}>
-                {values.total&&values.lojas.length>=values.total?"fim das lojas":<img style={{height:"5em"}} src={loader} alt="loading..."/>}
+
+            <div className="loader-listar-loja">
+                {values.load?"fim dos lojas":<img style={{height:"5em"}} src={loader} ref={loadEvento} alt="loading..."/>}
             </div>
         </div>                
     )

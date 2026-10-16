@@ -1,0 +1,30 @@
+/* Container para isolar o select e evitar que ele empurre o conteúdo de baixo */
+.select-container {
+    width: 50%;
+    height: 100%; /* Altura exata do select fechado */
+    font-family: Arial, sans-serif;
+    display: inline-block;
+}
+
+/* Estilização do Select Nativo */
+.select-scroll {
+    width: 100%;
+    font-size: 16px;
+    color: #333;
+    background-color: #ffffff;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    cursor: pointer;
+    z-index: 10;
+    transition: border-color 0.2s;
+}
+
+.select-scroll:focus {
+    border-color: #007bff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.select-scroll::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 4px;
+}

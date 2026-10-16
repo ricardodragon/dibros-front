@@ -13,14 +13,16 @@ function ListarProdutos(props){
 
     useEffect(() => 
         props.url?axios.get(`${props.url}?page=${0}&size=${10}`).then(produtos =>setValues({produtos:produtos.data, page:0, usuario:JSON.parse(localStorage.getItem('usuario'))})):""
-    , [props.url]);        
-    
-    const handlerScroll = (event) => {  
-        const page = values.page+1; 
-        if((event.target.scrollHeight - event.target.scrollTop)-10<=event.target.clientHeight&&values.produtos)
-            axios.get(`${props.url}?page=${page}&size=${10}&idLoja=${props.id}`).then(produtos =>{ setValues({...values, page, produtos:values.produtos.concat(produtos.data)})});
-        if(props.onScroll)props.onScroll(event);
-    }
+    , [props.url]);             
+
+    const loadEvento = (load) => {        
+        if(!load||values.carregando) return;
+        setValues({...values, carregando:true})
+        const buscar = () => axios.get(`${props.url}?page=${values.page+1}&size=${10}&idLoja=${props.id}`).then(produtos=>setValues({...values, carregando:false, page:values.page+(produtos.data.length===0?0:1), load:produtos.data.length===0, produtos:values.produtos.concat(produtos.data)}))
+        
+        const observador = new IntersectionObserver(([entry]) => entry.isIntersecting?buscar():"");
+        observador.observe(load);
+    };
     
     const onErrorLoja = ({ currentTarget })=>{currentTarget.onError=null; currentTarget.src=lojaNotFound}
     const onErrorProduto = ({ currentTarget })=>{currentTarget.onError=null; currentTarget.src=produtoNotFound}
@@ -52,7 +54,7 @@ function ListarProdutos(props){
     }
 
     return (        
-        <div className="produtos-conteudo" onScroll={handlerScroll}>
+        <div className="produtos-conteudo">
             {values.produtos&&values.produtos.map((produto, indexProduto) =>            
                 <section className="card-produto" key={"produtos-"+indexProduto}>                  
                     <header>  
@@ -79,7 +81,9 @@ function ListarProdutos(props){
                     {values.usuario&&produto.expandComentarios&&<ProdutoComentarios id={produto.id}/>}      
                 </section>
             )}
-            <div style={{textAlign:"center"}}>{values.total&&values.produtos&&values.produtos.length>=values.total?"fim dos produtos":<img style={{height:"5em"}} src={loader} alt="loading..."/>}</div>
+            <div className="loader-listar-produto">
+                {values.load?"fim dos produtos":<img style={{height:"5em"}} src={loader} ref={loadEvento} alt="loading..."/>}
+            </div>
         </div>                
     )
 }

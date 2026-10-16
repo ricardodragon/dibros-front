@@ -21,6 +21,7 @@ function PedidoDetalhes(props) {
     
     useEffect(() =>{
         api.get("/loja/pedido/"+id).then(p => {
+
             if(!p.data)
                 history.push("/")
             setValues({pedido:p.data, load:false})
@@ -29,7 +30,8 @@ function PedidoDetalhes(props) {
     }, [id, history]); 
 
     useEffect(()=>{
-        if (segundosRestantes <= 0) return;
+        if(segundosRestantes <= 0) return;
+        if(values.pedido && values.pedido.pago) return;
         const intervalo = setInterval(() => {
             if(Math.floor((tempoExpiracao - Date.now()) / 1000) <= 0) {
                 clearInterval(intervalo);
@@ -38,7 +40,7 @@ function PedidoDetalhes(props) {
                 setSegundosRestantes(Math.floor((tempoExpiracao - Date.now()) / 1000));
         }, 1000);
         return () => clearInterval(intervalo);
-    }, [tempoExpiracao, segundosRestantes, history]);
+    }, [tempoExpiracao, segundosRestantes, history, values.pedido]);
 
     const onError = ({ currentTarget })=>{currentTarget.onError=null; currentTarget.src=lojaNotFound}
 

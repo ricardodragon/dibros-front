@@ -1,4 +1,8 @@
 .lojas-conteudo{
+    padding: 0 15% 0 15% !important;
+    gap: 3%;
+    grid-template-columns: repeat(4, 1fr);
+    display: grid;
     width: 100%;
     height: 100%; 
     padding: 0;
@@ -64,8 +68,46 @@
     cursor: pointer;
 }
 
-@media only screen and (min-width: 600px) {
+.loader-listar-loja{
+    text-align: center;
+    grid-column: span 3;
+}
+
+
+@media (min-width: 1300px) {
+    .lojas-conteudo {
+        grid-template-columns: repeat(4, 1fr); /* Passa para 3 cards por linha */
+    }
+    .loader-listar-loja{
+        grid-column: span 4;
+    }
+}
+
+@media (max-width: 1300px) {
+    .lojas-conteudo {
+        grid-template-columns: repeat(3, 1fr); /* Passa para 3 cards por linha */
+    }
+    .loader-listar-loja{
+        grid-column: span 3;
+    }
+}
+
+@media (max-width: 768px) {
+    .lojas-conteudo {
+        grid-template-columns: repeat(2, 1fr); /* Passa para 2 cards por linha em tablets */
+        padding: 0 !important;
+    }
+    .loader-listar-loja{
+        grid-column: span 2;
+    }
+}
+
+@media (max-width: 480px) {
     .lojas-conteudo{
-        width: 60%;
+        grid-template-columns: 1fr; /* Em celulares, exibe de 1 em 1 */
+        padding: 0 !important;
+    }
+    .loader-listar-loja{
+        grid-column: auto;
     }
 }

@@ -64,19 +64,31 @@ function CriarProdutos(){
             <div className='produto-conteudo' onScroll={handlerScroll}>
                 <div className='mensagem-produto'>{values.ok?"✅ Operação realizada com sucesso":(values.erro?"❌ Erro: "+values.erro:"")}</div>
                 {values.produto&&<form onSubmit={event=>{event.preventDefault();setValues({...values, load:true});values.produto.id?put():post()}}>                
-                    <fieldset id="produto"><legend>{values.produto.id?"Editar":"Criar"} Produto {values.produto.id}</legend>                                      
-                        <label htmlFor='loja'>Loja :</label>  
+                    <fieldset id="produto">
+                        <legend>{values.produto.id?"Editar":"Criar"} Produto {values.produto.id}</legend>                                      
+                        <label htmlFor='loja'>loja :</label>  
                         <select disabled={values.produto.id} required value={values.produto.idLoja} id="loja" style={{width:"75%"}} onChange={event=>setValues({...values, produto:{...values.produto, idLoja:event.target.value}})}>                                                            
                             <option value="">Selecione uma loja</option>
                             {values.lojas.map(l => <option key={l.id} value={l.id}>{l.nome}</option>)}
                         </select> 
                         <label htmlFor="titulo">Título : </label>            
                         <input required id="titulo" placeholder="Título do produto" value={values.produto.titulo} type="text" onChange={event=>setValues({...values,produto:{...values.produto,titulo:event.target.value}})}/>                                                                                                        
-                        <label htmlFor="quantidade">Quantidade: </label>            
+                        <label htmlFor="quantidade">quantidade: </label>            
                         <input required id="quantidade" placeholder="quantidade" value={values.produto.quantidade} type="number" onChange={event=>setValues({...values,produto:{...values.produto,quantidade:Number(event.target.value)}})}/>                                                                                                        
-                        <label htmlFor="preco">Valor: </label>            
+                        <label htmlFor="preco">valor: </label>            
                         <input required id="preco" placeholder="valor" value={values.produto.preco} type="number" step="0.2" onChange={event=>setValues({...values,produto:{...values.produto,preco:event.target.value}})}/>                                                                                                                                                                                                                                    
-                    </fieldset>    
+                    </fieldset>  
+                    <fieldset id="produto">
+                        <legend>Informações</legend>
+                        <label htmlFor="peso">peso : </label>            
+                        <input required id="peso" placeholder="peso do produto" value={values.produto.peso} type="number" onChange={event=>setValues({...values,produto:{...values.produto,peso:event.target.value}})}/>                                                                                                        
+                        <label htmlFor="comprimento">comprimento: </label>            
+                        <input required id="comprimento" placeholder="comprimento do produto" value={values.produto.comprimento} type="number" onChange={event=>setValues({...values,produto:{...values.produto,comprimento:Number(event.target.value)}})}/>                                                                                                        
+                        <label htmlFor="largura">largura: </label>            
+                        <input required id="largura" placeholder="largura do produto" value={values.produto.largura} type="number" step="0.2" onChange={event=>setValues({...values,produto:{...values.produto,largura:event.target.value}})}/>                                                                                                                                                                                                                                    
+                        <label htmlFor="altura">altura: </label>            
+                        <input required id="altura" placeholder="altura do produto" value={values.produto.altura} type="number" step="0.2" onChange={event=>setValues({...values,produto:{...values.produto,altura:event.target.value}})}/>                                                                                                                                                                                                                                    
+                    </fieldset>
                     <fieldset className='field-imagem'>
                         <legend>Imagem</legend>                                      
                         <label htmlFor='imagem'>Imagem : </label>            

@@ -22,6 +22,7 @@ function Header(){
     return (
         <header className="header-app">
             <a href='/'><img className="logo" alt="" src={logo}/></a>
+            {/* <Buscar/> */}
             <img className="login" alt="Foto perfil user" src={values.usuario&&`${host}/auth/usuarios/imagem/${values.usuario.id}/${values.usuario.imagem}?Authorization=${localStorage.getItem("token")}`} onClick={event=>{event.preventDefault();event.stopPropagation();document.getElementById("user-menu").style.display=document.getElementById("user-menu").style.display!=="inline-block"?"inline-block":"none"}}/>                                                
             {values.usuario&&
                 <>               
@@ -33,7 +34,8 @@ function Header(){
             <div id="user-menu" className='user-menu'>
                 {values.usuario&&<>
                     <Link to={'/perfil/editar/'+values.usuario.id}>{values.usuario.nome?values.usuario.nome:values.usuario.email} ✏️</Link><br/>
-                    <Link to={'/pedidos'}>Pedidos 📝</Link><br/>
+                    <Link to={'/enderecos'}>endereços 📍</Link><br/>
+                    <Link to={'/pedidos'}>pedidos 📝</Link><br/>
                 </>}                
                 
                 <Link to='/login' onClick={(event)=>localStorage.clear()}>Sair</Link>                

@@ -28,7 +28,7 @@ function Cadastro(props) {
         axios.post('/auth/usuarios', formData).then(response => {
             setValues({...values, load:false, ok:true, erro:false});
             setTimeout(() => props.history.replace("/login"), 2000);
-        }).catch(r=>setValues({...values, load:false, ok:false, erro:true}));
+        }).catch(r=>setValues({...values, load:false, ok:false, erro:JSON.stringify(r)}));
     }
 
     const mostrarSenha = event => {
@@ -41,7 +41,7 @@ function Cadastro(props) {
             {values.load&&<div className='loader-produto'><img src={loader} alt="loading..."/></div>}
             <div className="conteudo-cadastro">
                 <h1 style={{textAlign:"center", fontWeight:"bolder", padding:"5%"}}>Dibros</h1>
-                {(values.ok||values.erro)&&<div style={{width: "100%", textAlign:"start", paddingBottom:"3%"}}>{values.ok?"✅ Cadastro realizado com sucesso":"❌ Erro ao cadastrar usuario"}</div>}                
+                {(values.ok||values.erro)&&<div style={{width: "100%", textAlign:"start", paddingBottom:"3%"}}>{values.ok?"✅ Cadastro realizado com sucesso":"❌ Erro ao cadastrar usuario"+"/n"+values.erro}</div>}                
                 <form onSubmit={novoUsuario}>
                     <fieldset style={{textAlign:"start"}}><legend>Cadastro de ususario</legend>        
                         <fieldset className='cadastro-imagem'><legend>Foto</legend>

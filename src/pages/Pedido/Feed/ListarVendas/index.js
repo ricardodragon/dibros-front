@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
-import axios from "../../../config/api/api";
-import loader from "./../../../assets/loadinfo.gif";
-import "./listar-pedidos.css";
+import axios from "../../../../config/api/api";
+import loader from "./../../../../assets/loadinfo.gif";
+import "./listar-venda.css";
 
-function ListarPedidos(props) {
+function ListarVendas(props) {
 
     const [values, setValues] = useState({pedidos:[], load:true, fim:false, page:0})    
     const host = process.env.REACT_APP_URL;
     const lojaNotFound = "https://thumbs.dreamstime.com/b/%C3%ADcone-de-imagem-sem-foto-ou-em-branco-carregamento-imagens-aus%C3%AAncia-marca-n%C3%A3o-dispon%C3%ADvel-sinal-breve-silhueta-natureza-simples-215973362.jpg";    
 
     useEffect(() => 
-        axios.get(`/loja/pedido?page=${0}&size=${10}`).then(r=> setValues({pedidos:r.data, load:false, fim:r.data.length<10, page:0}))
+        axios.get(`/loja/pedido/loja?page=${0}&size=${10}`).then(r=> setValues({pedidos:r.data, load:false, fim:r.data.length<10, page:0}))
     , [])
 
     const onError = ({ currentTarget })=>{currentTarget.onError=null; currentTarget.src=lojaNotFound}
@@ -30,19 +30,23 @@ function ListarPedidos(props) {
 
     return (<>
         {values.load&&<div className='loader-pedido'><img src={loader} alt="loading..."/></div>}
-        <div className="pedido-conteudo" onScroll={handlerScroll}>
-            {values.pedidos.map(pedido=>                
-                <section className="card-pedido" onClick={(event)=>redirectPedido(event, pedido.id)} key={"pedido-"+pedido.id}> 
+        <div className="venda-conteudo" onScroll={handlerScroll}>
+            {values.pedidos.map(pedido=> 
+                <section className="card-venda" onClick={(event)=>redirectPedido(event, pedido.id)} key={"pedido-"+pedido.id}> 
                     <header>
-                        <img onClick={(event)=>redirectLoja(event, pedido.lojaDTO.id)} alt={"Foto loja : " +pedido.lojaDTO.nome} src={`${host}/loja/lojas/imagem/${pedido.loja.id}/${pedido.loja.imagem}?Authorization=${localStorage.getItem("token")}`} onError={onError} />                            
+                        <img onClick={(event)=>redirectLoja(event, pedido.lojaDTO.id)} alt={"Foto loja : " +pedido.lojaDTO.nome} src={`${host}/loja/lojas/imagem/${pedido.lojaDTO.id}/${pedido.lojaDTO.imagem}?Authorization=${localStorage.getItem("token")}`} onError={onError} />                            
                         <h3 onClick={(event)=>redirectLoja(event, pedido.lojaDTO.id)}>{pedido.lojaDTO.nome}</h3>                             
                     </header>
+
+                    <form>
+                        <label htmlFor="codigo-entrega">codigo da entrega</label>
+                        <input type="text" id="codigo-entrega"/>
+                    </form>
+                    <div className="venda-criacao">{pedido.criacao}</div>
                     
-                    <div className="pedido-criacao">{pedido.criacao}</div>
-                    
-                    <div className="status-container">                        
-                        <div className="pedido-status">pago: {pedido.pago?'✅':'⛔'}</div>
-                        <div className="pedido-status">entregue: {pedido.entregue?'✅':'⛔'}</div>
+                    <div className="status-venda-container">                        
+                        <div className="venda-status">pago: {pedido.pago?'✅':'⛔'}</div>
+                        <div className="venda-status">entregue: {pedido.entregue?'✅':'⛔'}</div>
                     </div>                                                      
                 </section>     
             )}
@@ -54,4 +58,4 @@ function ListarPedidos(props) {
         
     </>)
 }
-export default ListarPedidos
+export default ListarVendas

@@ -15,11 +15,21 @@ function Carrinho(props){
         if(!carrinho||carrinho.length===0)
             return history.push("/");
         if(carrinho[0].idLoja)
-            api.get("/loja/lojas/"+carrinho[0].idLoja).then(res=> setValues({loja:res.data, load:false}));
+            api.get("/loja/lojas/"+carrinho[0].idLoja).then(res=> 
+                api.get("/loja/lojas/endereco/ativo/"+carrinho[0].idLoja).then(enderecoLoja=>
+                    api.get("/loja/endereco/selecionado").then(enderecoUsuario=>
+                        api.get(`/loja/fretes/${carrinho[0].idLoja}?distancia=${distancia(enderecoLoja.data.latitude, enderecoLoja.data.longitude, enderecoUsuario.data.latitude, enderecoUsuario.data.longitude)}&peso=${parseFloat(carrinho.reduce((total, p) => total + p.peso*p.qtd, 0))}&comprimento=${parseFloat(carrinho.reduce((total, p) => total + p.comprimento*p.qtd, 0))}&largura=${parseFloat(carrinho.reduce((total, p) => total + p.largura*p.qtd, 0))}&altura=${parseFloat(carrinho.reduce((total, p) => total + p.altura*p.qtd, 0))}`).then(r=>
+                            setValues({loja:res.data, load:false, enderecoUsuario:enderecoUsuario.data, enderecoLoja:enderecoLoja.data, frete:r.data, tipoFrete:"RETIRADA"})
+                        )
+                    )
+                )
+            );
         const carrinhoFunction = (e) => setCarrinho(JSON.parse(localStorage.getItem("carrinho")));
         window.addEventListener('carrinho', carrinhoFunction);        
         return () => window.removeEventListener('carrinho', carrinho);
     }, [carrinho, history])
+
+    const distancia = (lat1, lon1, lat2, lon2) => Math.ceil(Number(Math.sqrt(((lat2 - lat1) * 111.13)**2+((lon2 - lon1) * 111.13 * Math.cos(lat1 * Math.PI / 180))**2)||0));
 
     const addProduto = (event, index) => true
 
@@ -27,19 +37,23 @@ function Carrinho(props){
 
     const criarPedido = (event) => {
         setValues({...values, load:true});
-        const c = JSON.parse(localStorage.getItem("carrinho"));
-        api.post("/loja/pedido", {produtoPedido:c, idLoja:c[0].idLoja}).then(r => {
+        api.post("/loja/pedido", {produtoPedido:carrinho, idLoja:carrinho[0].idLoja, tipoFrete:values.tipoFrete, frete:values.frete}).then(r => {
             history.push("/pedido-detalhes/"+r.data);
             localStorage.removeItem("carrinho");
         })
     }
-
+    
+    const getFrete = () => values.frete&&values.tipoFrete!=="RETIRADA"&&distancia(values.enderecoLoja.latitude, values.enderecoLoja.longitude, values.enderecoUsuario.latitude, values.enderecoUsuario.longitude)*values.frete.valorKm;
+    
+    const getTotal = () => parseFloat(carrinho.reduce((total, p) => total + p.preco*p.qtd, 0))+getFrete();
+    
     return (<>
             {values.load&&<div className='loader-loja'><img src={loader} alt="loading..."/></div>}
-            {carrinho&&<div className='carrinho-info' style={{overflowY:"scroll", height:"73vh", paddingBottom:"12vh"}}>
+            {carrinho&&values.loja&&<div className='carrinho-info' style={{overflowY:"scroll", height:"73vh", paddingBottom:"12vh"}}>
                 <h1 className='carrinho-titulo'>Finalizar pedido</h1>
                 <label className='carrinho-label'>Seu pedido em</label>
-                {values.loja&&<h2 className='carrinho-loja-nome'>{values.loja.nome}</h2>}                
+                <a href={"/loja/"+values.loja.id}><h2 style={{textDecoration:"underline"}} className='carrinho-loja-nome'>{values.loja.nome}</h2></a>
+                <h3>Tempo de preparação {values.loja.preparacaoValor + " " + values.loja.preparacaoUnidadeDTO}</h3>            
                 <hr/>                 
                 <h1>carrinho</h1>
                 {carrinho.map((n, index)=> 
@@ -56,9 +70,20 @@ function Carrinho(props){
                         </div>                
                     </div>
                 )}
+                
+                <select placeholder="unidade" value={values.tipoFrete} onChange={event=>setValues({...values, tipoFrete:event.target.value})}>
+                    {values.loja&&values.loja.retirada&&<option value="RETIRADA">retirada</option>}
+                    {values.frete.id&&<option value="LOJA">frete loja</option>}
+                    {/* <option value="dibros">frete dibros</option> */}
+                </select>
+                
+                {values.tipoFrete!=="RETIRADA"&&<h3>Tempo de entrega {distancia(values.enderecoLoja.latitude, values.enderecoLoja.longitude, values.enderecoUsuario.latitude, values.enderecoUsuario.longitude)*values.frete.prazoEntrega} MINUTOS</h3>}
 
                 <hr/>
-                Total R$ {parseFloat(carrinho.reduce((total, p) => total + p.preco*p.qtd, 0)).toFixed(2)}
+                
+                Frete {Number(getFrete()).toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})}
+                <br/>
+                Total {Number(getTotal()).toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})}
                 <input readOnly id="esvaziar" style={{cursor: "pointer", backgroundColor:"lightblue", color:"black", display: "block"}} value="esvaziar"/>
                 <input readOnly onClick={criarPedido} id="finalizar" style={{cursor: "pointer", position: "fixed", right:"2em", backgroundColor:"red", color:"white", bottom:"2em"}} value="finalizar compra"/>
             </div>}

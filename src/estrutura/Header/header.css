@@ -36,6 +36,7 @@
     right: 0; 
     top: 2.5em; 
     position: absolute;
+    text-align: justify;
 }
 
 #notificacao-menu, #carrinho-menu, #mensagem-menu{
