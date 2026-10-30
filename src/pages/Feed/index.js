@@ -2,12 +2,9 @@ import Template from "../../estrutura/Template";
 import ListarLojas from "../Loja/ListarLojas";
 import ListarProdutos from "../Produto/ListarProdutos";
 import "./feed.css";
-import { useState } from "react";
 import { Link } from "react-router-dom";
 
 function Feed(props){
-    const [values, setValues] = useState({checkLayout:true})
-
 
     return (
         <Template>
@@ -15,11 +12,6 @@ function Feed(props){
             <a href="#produtos" className="menu-feed"><span className='feed-menu-opaciti'>📦 produtos</span><span className='feed-menu'>📦 produtos</span></a> 
 
             <div className="tabs-feed">
-                <input type="checkbox" id="check-feed" onChange={event=>setValues({...values, checkLayout:!values.checkLayout})}/>
-                <label className="check-feed-label" htmlFor="check-feed">
-                    {values.checkLayout&&<span><i className="fa-solid fa-list" style={{backgroundColor:"black", fontSize: "32px"}}></i></span>}
-                    {!values.checkLayout&&<span><i className="fa-solid fa-table-cells" style={{backgroundColor:"black", fontSize: "32px"}}></i></span>}
-                </label>
                 <section id="lojas" className="tab">
                     <ListarLojas url={`/loja/lojas`}/>
                     <Link className="criar-anuncios" to={'/lojas'}>+</Link>

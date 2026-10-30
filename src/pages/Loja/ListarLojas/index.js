@@ -55,7 +55,11 @@ function ListarLojas(props){
                         </Link>
                         <div className='opcoes'>⋮</div>
                     </header>
-                    <div style={{padding:"10%"}}></div>
+                    <div style={{padding:"2% 0"}}>
+                        <div>preparo: {`${loja.preparacaoValor} ${loja.preparacaoUnidadeDTO}`}</div>
+                        <div>entrega: </div>
+                    </div>
+
                     <div className="loja-curtidas">{loja.likeLojasQTD} curtidas</div>
                     <div className="loja-curtidas" style={{textAlign: "end"}} onClick={event=>setValues({...values, lojas:values.lojas.map(x=>{return x.id===loja.id?{...x, expandComentarios:!x.expandComentarios}:x})})}>{loja.comentarioLojasQTD} comentarios</div>
                     

@@ -9,6 +9,7 @@
     height: 6%;
     text-align: center;   
     filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 0.3));
+    anchor-name: --meu-topo;
 }
 
 .feed-menu, .feed-menu-opaciti{
@@ -37,14 +38,17 @@
     border: 1px solid rgb(247, 247, 247);
 }
 .tabs-feed{
-    height: 94%;
+    position: absolute;
+    top: anchor(--meu-topo bottom);
+    bottom: 0;
+    left: 0;
+    right: 0;
     padding-top: 1%;
     overflow-x: scroll;
     white-space: nowrap;
     scroll-behavior: smooth;
     -ms-overflow-style: none;  
     scrollbar-width: none;  
-    position: relative;
 }
 
 .check-feed-label{

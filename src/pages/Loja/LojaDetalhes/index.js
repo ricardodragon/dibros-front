@@ -8,7 +8,7 @@ import './loja-detalhes.css';
 
 function LojaDetalhes(props){
  
-    const [values, setValues] = useState({checkLayout:true})    
+    const [values, setValues] = useState({})    
     const { id } = useParams();
     const host = process.env.REACT_APP_URL;
         
@@ -23,7 +23,12 @@ function LojaDetalhes(props){
             <figure>
                 <img alt={"Foto da loja : "} onError={onError} src={`${host}/loja/lojas/imagem/${values.loja.id}/${values.loja.imagem}?Authorization=${localStorage.getItem("token")}`}/>
                 <figcaption>{values.loja.nome}</figcaption>
+                <div style={{padding:"2% 0"}}>
+                    <div>preparo: {`${values.loja.preparacaoValor} ${values.loja.preparacaoUnidadeDTO}`}</div>
+                    <div>entrega: </div>
+                </div>
             </figure>
+            
             <div className='loja-seguidores'>
                 <h2 >{values.loja.seguidores}<p>seguidores</p></h2>
                 <h2>35<p>vendas</p></h2>
@@ -39,12 +44,7 @@ function LojaDetalhes(props){
         <HashLink to="#produtos" className="menu-feed"><span className='feed-menu-opaciti'>📦 produtos</span><span className='feed-menu'>📦 produtos</span></HashLink> 
         <HashLink to="#colaboradores" className="menu-feed"><span className='feed-menu-opaciti'>👥 colaboradores</span><span className='feed-menu'>👥 colaboradores</span></HashLink>
         
-        <div className="tabs-feed" style={{height:"74%"}}>
-            <input type="checkbox" id="check-feed" onChange={event=>setValues({...values, checkLayout:!values.checkLayout})}/>
-            <label className="check-feed-label" htmlFor="check-feed">
-                {values.checkLayout&&<span><i className="fa-solid fa-list" style={{backgroundColor:"black", fontSize: "32px"}}></i></span>}
-                {!values.checkLayout&&<span><i className="fa-solid fa-table-cells" style={{backgroundColor:"black", fontSize: "32px"}}></i></span>}
-            </label>
+        <div className="tabs-feed">
             <section id="produtos" className="tab">
                 <ListarProdutos url={`/loja/produtos/loja/${id}`}/>
             </section>  

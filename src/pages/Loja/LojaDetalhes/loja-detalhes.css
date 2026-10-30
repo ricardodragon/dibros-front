@@ -1,101 +1,27 @@
-/* #loja-perfil-header{
-    height:25%;
+
+#loja-perfil-header{
     width: 100%;
-    overflow: hidden;
-}
-#loja-perfil-header img{
-    border-radius: 50%; 
-    width: 4em;
-    height: 4em;
-}
-#loja-perfil-header h1, #loja-perfil-header h2{
-    font-size: 12pt;
-}
-#loja-perfil-header h1{
-    width: 40%;
-}
-#loja-perfil-header h1, .loja-seguidores, #loja-perfil-header h2{
-    display: inline-block;
-}
-.loja-seguidores{
-    vertical-align: top;
-    text-align: center;
-    width: 60%;
-}
-.loja-seguidores button{
-    cursor: pointer;
-    width: 7.5em;
-}
-.loja-menu-feed{    
-    height: 2rem;
-    box-sizing: border-box;
-    border: black;
-    position: relative;
-    white-space: nowrap;
-    background-image: linear-gradient(90deg, rgba(89,86,86,1) 0%, rgba(41,39,39,1) 100%);
-    box-shadow: 1px 1px 5px 0 rgba(89, 86, 86, 0.877);
-}
-.loja-perfil-menu, .loja-perfil-menu-opaciti{
-    color: white;
-    border: none;
-    transition: opacity 0.8s linear;
-    display: inline-block;    
-    cursor: pointer;
-    font-weight: bolder;
-    background-color: transparent;
-    
-}
-.loja-perfil-menu{
-    opacity: 0; 
-    background-image: linear-gradient(90deg, rgb(182, 177, 177) 0%, rgb(133, 128, 128) 100%);
-    z-index: 2; 
-    position: relative;
-}
-.loja-perfil-menu-opaciti{
-    z-index: 1;
-    position: absolute;
-}
-.loja-perfil-menu:hover{ 
-    opacity: 1;
-}
-.loja-perfil-menu:active{
-    border: 1px solid rgb(247, 247, 247);
-    box-sizing: border-box;
-}
-#tabs{
-    padding-top: 0.5%;
-    height: 69%; 
-    overflow-x: scroll;
-    white-space: nowrap;
-    scroll-behavior: smooth;
-    -ms-overflow-style: none;  
-    scrollbar-width: none; 
-} */
-
-
-#detalhar-perfil-header{
-    height: 20%;
-    width: 100%;
+    padding: 2% 0;
 }
 
-#detalhar-perfil-header figure{
+#loja-perfil-header figure{
     display: inline-block;
     width: 50%;
 }
 
-#detalhar-perfil-header figure img{
-    width: 20%;
+#loja-perfil-header figure img{
+    width: 15%;
     display: inline;
     aspect-ratio: 1 / 1;
     border-radius: 50%;
 }
 
-#detalhar-perfil-header figure figcaption{
+#loja-perfil-header figure figcaption{
     display: inline;
     width: 80%;
 }
 
-.seguidores{
+.loja-seguidores{
     width: 50%;
     padding-top: 2%;
     display: inline-block;
@@ -103,11 +29,28 @@
     vertical-align: top;
 }
 
-.seguidores h2{
+.loja-seguidores h2{
     display: inline-block;
     padding: 0 2%;
 }
 
-.seguidores p{
+.loja-seguidores p{
+    text-align: center;
+}
+
+.loja-seguidores{
+    width: 50%;
+    padding-top: 2%;
+    display: inline-block;
+    text-align: center;
+    vertical-align: top;
+}
+
+.loja-seguidores h2{
+    display: inline-block;
+    padding: 0 2%;
+}
+
+.loja-seguidores p{
     text-align: center;
 }

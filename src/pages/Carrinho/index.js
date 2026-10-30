@@ -19,7 +19,7 @@ function Carrinho(props){
                 api.get("/loja/lojas/endereco/ativo/"+carrinho[0].idLoja).then(enderecoLoja=>
                     api.get("/loja/endereco/selecionado").then(enderecoUsuario=>
                         api.get(`/loja/fretes/${carrinho[0].idLoja}?distancia=${distancia(enderecoLoja.data.latitude, enderecoLoja.data.longitude, enderecoUsuario.data.latitude, enderecoUsuario.data.longitude)}&peso=${parseFloat(carrinho.reduce((total, p) => total + p.peso*p.qtd, 0))}&comprimento=${parseFloat(carrinho.reduce((total, p) => total + p.comprimento*p.qtd, 0))}&largura=${parseFloat(carrinho.reduce((total, p) => total + p.largura*p.qtd, 0))}&altura=${parseFloat(carrinho.reduce((total, p) => total + p.altura*p.qtd, 0))}`).then(r=>
-                            setValues({loja:res.data, load:false, enderecoUsuario:enderecoUsuario.data, enderecoLoja:enderecoLoja.data, frete:r.data, tipoFrete:"RETIRADA"})
+                            setValues({loja:res.data, load:false, enderecoLoja:enderecoLoja.data, frete:r.data, tipoFrete:"RETIRADA"})
                         )
                     )
                 )

@@ -100,16 +100,10 @@ function CriarLojas() {
                     {values.loja.fretesDTO&&values.loja.fretesDTO.map((x, i)=><fieldset key={"frete-"+x.index}>
                         <label htmlFor={"max-peso-"+x.index}>max peso por pedido : </label>            
                         <input required disabled={x.confirmar} style={{width:"75%"}} id={"max-peso-"+x.index} placeholder="max peso por pedido" value={x.pesoMaximo} type="number" onChange={event=>setValues({...values, loja:{...values.loja, fretesDTO:values.loja.fretesDTO.map((f, index)=>i===index?{...f, pesoMaximo:event.target.value}:f)}})}/>                                                                      
-                        {/* <label htmlFor={"min-peso-"+x.index}>min peso por pedido : </label>             */}
-                        {/* <input required disabled={x.confirmar} style={{width:"75%"}} id={"min-peso-"+x.index} placeholder="min peso por pedido" value={x.pesoMinimo} type="number" onChange={event=>setValues({...values, loja:{...values.loja, fretesDTO:values.loja.fretesDTO.map((f, index)=>i===index?{...f, pesoMinimo:event.target.value}:f)}})}/>                                                                       */}
                         <label htmlFor={"max-comprimento-"+x.index}>max comprimento por pedido : </label>            
                         <input required disabled={x.confirmar} style={{width:"75%"}} id={"max-comprimento-"+x.index} placeholder="max comprimento por pedido" value={x.comprimentoMaximo} type="number" onChange={event=>setValues({...values, loja:{...values.loja, fretesDTO:values.loja.fretesDTO.map((f, index)=>i===index?{...f, comprimentoMaximo:event.target.value}:f)}})}/>                                                                      
-                        {/* <label htmlFor={"min-comprimento-"+x.index}>min comprimento por pedido : </label>             */}
-                        {/* <input required disabled={x.confirmar} style={{width:"75%"}} id={"min-comprimento-"+x.index} placeholder="min comprimento por pedido" value={x.comprimentoMinimo} type="number" onChange={event=>setValues({...values, loja:{...values.loja, fretesDTO:values.loja.fretesDTO.map((f, index)=>i===index?{...f, comprimentoMinimo:event.target.value}:f)}})}/>                                                                       */}
                         <label htmlFor={"max-largura-"+x.index}>max largura por pedido : </label>            
                         <input required disabled={x.confirmar} style={{width:"75%"}} id={"max-largura-"+x.index} placeholder="max largura por pedido" value={x.larguraMaximo} type="number" onChange={event=>setValues({...values, loja:{...values.loja, fretesDTO:values.loja.fretesDTO.map((f, index)=>i===index?{...f, larguraMaximo:event.target.value}:f)}})}/>                                                                      
-                        {/* <label htmlFor={"min-largura-"+x.index}>min largura por pedido : </label>             */}
-                        {/* <input required disabled={x.confirmar} style={{width:"75%"}} id={"min-largura-"+x.index} placeholder="min largura por pedido" value={x.larguraMinimo} type="number" onChange={event=>setValues({...values, loja:{...values.loja, fretesDTO:values.loja.fretesDTO.map((f, index)=>i===index?{...f, larguraMinimo:event.target.value}:f)}})}/>                                                                       */}
                         <label htmlFor={"valor-km-"+x.index}>valor/km : </label>            
                         <input required disabled={x.confirmar} style={{width:"75%"}} id={"valor-km-"+x.index} placeholder="valor da entrega por km" value={x.valorKm} type="number" onChange={event=>setValues({...values, loja:{...values.loja, fretesDTO:values.loja.fretesDTO.map((f, index)=>i===index?{...f, valorKm:event.target.value}:f)}})}/>                                                                      
                         <label htmlFor={"prazo-km-"+x.index}>prazo minutos/km : </label>            
@@ -120,19 +114,11 @@ function CriarLojas() {
                         <button onClick={event=>{event.preventDefault();setValues({...values, loja:{...values.loja, fretesDTO:values.loja.fretesDTO.filter((_, index)=>index!==i)}});}}>excluir</button>
                     </fieldset>)}
                 </fieldset>
-                    {/* <label htmlFor="max-peso">max peso por pedido : </label>            
-                    <input required style={{width:"75%"}} id="max-peso" placeholder="max peso por pedido" value={values.loja.fretesDTO[0].pesoMaximo} type="number" onChange={event=>setValues({...values, loja:{...values.loja, fretesDTO:values.loja.fretesDTO.map((x, i)=>i===0?{...x, pesoMaximo:event.target.value}:x)}})}/>                                                                      
-                    <label htmlFor="min-peso">min peso por pedido : </label>            
-                    <input required style={{width:"75%"}} id="min-peso" placeholder="min peso por pedido" value={values.loja.fretesDTO[0].pesoMinimo} type="number" onChange={event=>setValues({...values, loja:{...values.loja, fretesDTO:values.loja.fretesDTO.map((x, i)=>i===0?{...x, pesoMinimo:event.target.value}:x)}})}/>                                                                       */}
                 <fieldset className='field-imagem'><legend>foto da loja</legend>                                    
                     <label htmlFor='imagem'>imagem : </label>            
                     <input required={!values.loja.imagem} id='imagem' type="file" accept='image/*' onChange={event => {event.preventDefault();setValues({...values, loja:{...values.loja, imagem:event.target.files[0]}});}}/>
                     {values.loja.imagem&&<img alt="" style={{display:"block", width:"8em", height:"8em"}}  src={typeof values.loja.imagem === 'string'?`${host}/loja/lojas/imagem/${values.loja.id}/${values.loja.imagem}?Authorization=${localStorage.getItem("token")}`:URL.createObjectURL(values.loja.imagem)}/>}                        
                 </fieldset>
-                {/* <fieldset><legend>Localização da loja</legend>   
-                    <label style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} htmlFor="localizacao">Local : {values.loja.endereco&&values.loja.endereco.latitude&&values.loja.endereco.longitude?'✅':'❌'}</label>            
-                    <input style={{width:"75%"}} type="text" onKeyDown={(e) => e.preventDefault()} onClick={event => {getLocation();}} id="localizacao"/>                 
-                </fieldset> */}
                 <input type="submit" value="enviar"/>    
                 <input onClick={event=>setValues({...values, loja:lojaBuilder})} type="reset" value="limpar"/>                        
             </form>

@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
-
-
-
+import axios from '../../../../config/api/api';
 
 function CardEndereco(props) {
 
@@ -9,7 +7,12 @@ function CardEndereco(props) {
 
     useEffect(()=>setValues({endereco:props.endereco}), [props.endereco])
 
-    const enviar = event => console.log()
+    const enviar = event => event.preventDefault();
+
+    const excluir = event => {
+        event.preventDefault();
+        axios.delete("/loja/endereco/"+values.endereco.id).then(r=>r?.data>0?props.excluir(values.endereco.id):null)
+    }
 
     return (<>
         <form onSubmit={enviar} className="endereco-conteudo">
@@ -32,11 +35,14 @@ function CardEndereco(props) {
                 </fieldset>
                 <fieldset>
                     <label className="switch">
-                        <input type="checkbox" checked={values.endereco.selecionado} onChange={event=>setValues({...values, endereco:{...values.endereco, selecionado:event.target.checked}})}/>
+                        <input type="checkbox" checked={values.endereco?.selecionado ?? false} onChange={event=>setValues({...values, endereco:{...values.endereco, selecionado:event.target.checked}})}/>
                         <span className="slider"></span>
                     </label>
                 </fieldset>
-                <p><input type="submit" value="Enviar" className="btn btn-sm btn-success mt-2"/></p>
+                <p>
+                    <input type="submit" value="enviar"/>
+                    <input type="submit" onClick={excluir} value="excluir" style={{backgroundColor:"red", color:"white"}}/>
+                </p>
             </fieldset>
         </form>
     </>)

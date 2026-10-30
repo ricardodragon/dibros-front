@@ -1,21 +1,21 @@
-#loja-perfil-header{
-    height: 20%;
+#detalhar-perfil-header{
     width: 100%;
+    padding: 2% 0;
 }
 
-#loja-perfil-header figure{
+#detalhar-perfil-header figure{
     display: inline-block;
     width: 50%;
 }
 
-#loja-perfil-header figure img{
-    width: 20%;
+#detalhar-perfil-header figure img{
+    width: 15%;
     display: inline;
     aspect-ratio: 1 / 1;
     border-radius: 50%;
 }
 
-#loja-perfil-header figure figcaption{
+#detalhar-perfil-header figure figcaption{
     display: inline;
     width: 80%;
 }

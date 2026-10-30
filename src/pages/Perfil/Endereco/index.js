@@ -31,11 +31,13 @@ function Endereco(props) {
         
     const enviar = (event) => {
         event.preventDefault();
-        axios.post("/loja/endereco", values.endereco).then(r=>console.log(r.data))
+        axios.post("/loja/endereco", values.endereco).then(r=>setValues({...values, endereco:{}, enderecos:[{...values.endereco, id:r.data}, ...values.enderecos]}))
     }
 
     const convertNominatim = (endereco) => ({latitude:endereco.lat, longitude:endereco.lon, estado:endereco.address["ISO3166-2-lvl4"].split('-')[1], cidade:endereco.address.city, cep:endereco.address.postcode.replace(/\D/g, ""), bairro:endereco.address.suburb, rua:endereco.name})
     const convertBrasilapi = (endereco) => ({latitude:endereco.location.coordinates.latitude, longitude:endereco.location.coordinates.longitude, estado:endereco.state, cidade:endereco.city, cep:endereco.cep, bairro:endereco.neighborhood, rua:endereco.street})
+
+    const excluir = (id) => setValues({...values, enderecos:values.enderecos.filter(x=>x.id!==id)});
 
     return <>
         {values.load&&<div className='loader-loja'><img src={loader} alt="loading..."/></div>}
@@ -71,11 +73,11 @@ function Endereco(props) {
                         <span className="slider"></span>
                     </label>
                 </fieldset>
-                <p><input type="submit" value="Enviar" className="btn btn-sm btn-success mt-2"/></p>
+                <p><input type="submit" value="enviar"/></p>
             </fieldset>
         </form>       
         {values.enderecos&&values.enderecos.map(e=>
-            <CardEndereco endereco={e}/>
+            <CardEndereco endereco={e} excluir={excluir} key={"endereco-usuario-"+e.id}/>
         )} 
     </>;
 }
