@@ -1,4 +1,3 @@
-import Template from "../../../estrutura/Template"
 import Contas from "../Contas"
 import './feed.css'
 
@@ -10,7 +9,7 @@ function Feed(props){
     }
 
     return (
-        <Template>
+        <>
             <header style={{textAlign:"center"}}>
                 <h1>contas mercado livre</h1>
             </header>
@@ -20,7 +19,7 @@ function Feed(props){
                     <input style={{cursor:"pointer", float: "right", position: "absolute", right: "6%", bottom: "6%", backgroundColor:"yellow"}} onClick={redirectMeli} value="🔗 ADICIONAR CONTA"/>                    
                 </section>
             </div>
-        </Template>
+        </>
     )
 }
 export default Feed

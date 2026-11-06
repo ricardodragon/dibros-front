@@ -1,28 +1,41 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "../../../config/api/api";
 import loader from "./../../../assets/loadinfo.gif";
 import "./listar.css";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import ProdutoComentarios from "../ProdutoComentarios";
 
 function ListarProdutos(props){
-    const [values, setValues] = useState({})    
+    const [values, setValues] = useState({}) 
+    const loadRef = useRef(null);
     const host = process.env.REACT_APP_URL;
     const lojaNotFound = "https://thumbs.dreamstime.com/b/%C3%ADcone-de-imagem-sem-foto-ou-em-branco-carregamento-imagens-aus%C3%AAncia-marca-n%C3%A3o-dispon%C3%ADvel-sinal-breve-silhueta-natureza-simples-215973362.jpg";;
     const produtoNotFound = "https://thumbs.dreamstime.com/b/%C3%ADcone-de-imagem-sem-foto-ou-em-branco-carregamento-imagens-aus%C3%AAncia-marca-n%C3%A3o-dispon%C3%ADvel-sinal-breve-silhueta-natureza-simples-215973362.jpg";
+    const paginaInicial = parseInt(new URLSearchParams(useLocation().search).get("pageProduto") || "0");
 
     useEffect(() => 
-        props.url?axios.get(`${props.url}?page=${0}&size=${10}`).then(produtos =>setValues({produtos:produtos.data, page:0, usuario:JSON.parse(localStorage.getItem('usuario'))})):""
-    , [props.url]);             
+        props.url?(setValues(prev => ({ ...prev, carregando: true })),
+            axios.get(`${props.url}?page=${paginaInicial}&size=${10}`).then(produtos =>setValues({produtos:produtos.data, page:paginaInicial, carregando: false, load: produtos.data.length<10, usuario:JSON.parse(localStorage.getItem('usuario'))})),
+            undefined)
+        :undefined
+    , [props.url, paginaInicial]);             
 
-    const loadEvento = (load) => {        
-        if(!load||values.carregando) return;
-        setValues({...values, carregando:true})
-        const buscar = () => axios.get(`${props.url}?page=${values.page+1}&size=${10}&idLoja=${props.id}`).then(produtos=>setValues({...values, carregando:false, page:values.page+(produtos.data.length===0?0:1), load:produtos.data.length===0, produtos:values.produtos.concat(produtos.data)}))
-        
-        const observador = new IntersectionObserver(([entry]) => entry.isIntersecting?buscar():"");
-        observador.observe(load);
-    };
+    useEffect(() => {
+        if (values.load || values.page === undefined || !loadRef.current) return;
+
+        const observador = new IntersectionObserver(([entry]) => {
+            if (!values.carregando && entry.isIntersecting) {
+                setValues(prev => ({ ...prev, carregando: true }));
+
+                axios.get(`${props.url}?page=${values.page + 1}&size=${10}&idLoja=${props.id}`).then(produtos => setValues(prev => ({
+                    ...prev, carregando: false, page: prev.page + (produtos.data.length<10 ? 0 : 1), load: produtos.data.length<10, produtos: prev.produtos.concat(produtos.data)
+                })));
+            }
+        });
+
+        observador.observe(loadRef.current);
+        return () => observador.disconnect(); // Limpa o observer antigo
+    }, [values.carregando, values.load, values.page, props.url, props.id]);
     
     const onErrorLoja = ({ currentTarget })=>{currentTarget.onError=null; currentTarget.src=lojaNotFound}
     const onErrorProduto = ({ currentTarget })=>{currentTarget.onError=null; currentTarget.src=produtoNotFound}
@@ -35,10 +48,6 @@ function ListarProdutos(props){
     const deleteLikeProduto = (event, produto) => {
         event.preventDefault();
         axios.delete("/loja/produto/like/"+produto.id).then(r=>setValues({...values, produtos:values.produtos.map(x=>{return x.id===produto.id?{...x, isLike:false, likeQTD:x.likeQTD-1}:x})}))
-    }
-
-    const redirectLoja = event => {
-        window.open('/loja/'+event.target.name, event.ctrlKey||event.metaKey?'_blank':'_self'); 
     }
 
     const comprar = produto => { 
@@ -58,8 +67,10 @@ function ListarProdutos(props){
             {values.produtos&&values.produtos.map((produto, indexProduto) =>            
                 <section className="card-produto" key={"produtos-"+indexProduto}>                  
                     <header>  
-                        <img name={produto.lojaDTO.id} alt={"Foto loja : " +produto.lojaDTO.nome} src={host+`/loja/lojas/imagem/${produto.lojaDTO.id}/${produto.lojaDTO.imagem}?Authorization=${localStorage.getItem("token")}`} onError={onErrorLoja} onClick={redirectLoja}/>
-                        <h3 name={produto.lojaDTO.id} onClick={redirectLoja}>{produto.lojaDTO.nome}</h3>                             
+                        <a href={'/loja/' + produto.lojaDTO.id}>
+                            <img name={produto.lojaDTO.id} alt={"Foto loja : " +produto.lojaDTO.nome} src={host+`/loja/lojas/imagem/${produto.lojaDTO.id}/${produto.lojaDTO.imagem}?Authorization=${localStorage.getItem("token")}`} onError={onErrorLoja}/>
+                            <h3 name={produto.lojaDTO.id}>{produto.lojaDTO.nome}</h3>
+                        </a>
                     </header>
                     <div className="produto-opcoes">⋮</div>
                     <h2>{produto.titulo}</h2>                                                                                        
@@ -78,12 +89,13 @@ function ListarProdutos(props){
                         <div className="produto-like" onClick={(event)=>comprar(produto)}>🛒</div>
                         <div className="produto-like"><Link style={{textDecoration:'none'}} to={""} onClick={event=>{event.preventDefault();setValues({...values, produtos:values.produtos.map(x=>{return x.id===produto.id?{...x, expandComentarios:!x.expandComentarios}:x})})}}>💬</Link></div>
                     </div>
-                    {values.usuario&&produto.expandComentarios&&<ProdutoComentarios id={produto.id}/>}      
+                    {values.usuario&&produto.expandComentarios&&<ProdutoComentarios id={produto.id}/>}                                          
                 </section>
             )}
+            <a className='google-boot' href={"?pageProduto="+(values.page+1)}>teste</a> 
             <div className="loader-listar-produto">
-                {values.load?"fim dos produtos":<img style={{height:"5em"}} src={loader} ref={loadEvento} alt="loading..."/>}
-            </div>
+                {values.load?"fim dos produtos":<img style={{height:"5em"}} src={loader} ref={loadRef} alt="loading..."/>}
+            </div>      
         </div>                
     )
 }

@@ -95,6 +95,18 @@
     grid-column: span 3;
 }
 
+.google-boot{
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
 @media (min-width: 1300px) {
     .produtos-conteudo {
         grid-template-columns: repeat(4, 1fr); /* Passa para 3 cards por linha */

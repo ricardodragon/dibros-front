@@ -7,7 +7,7 @@ function CardEndereco(props) {
     useEffect(() => setValues({endereco:props.endereco}), [props.endereco])
 
     return (<>
-        <form onSubmit={event=>props.criar?props.criar(event,values.endereco):props.alterar(event,values.endereco)} className="endereco-conteudo">
+        <div className="endereco-conteudo">
             <fieldset id="endereco">                          
                 <fieldset>
                     <label>rua</label>
@@ -25,15 +25,9 @@ function CardEndereco(props) {
                     <label>cidade</label>
                     <input type='text' required readOnly value={values.endereco.cidade || ''}/>
                 </fieldset>
-                <fieldset>
-                    <label className="switch">
-                        <input type="checkbox" checked={values.endereco.selecionado} onChange={event=>setValues({...values, endereco:{...values.endereco, selecionado:event.target.checked}})}/>
-                        <span className="slider"></span>
-                    </label>
-                </fieldset>
-                <p><input type="submit" value="Enviar" className="btn btn-sm btn-success mt-2"/></p>
+                <p><button onClick={event=>props.criar?props.criar(event,values.endereco):props.alterar(event,values.endereco)} className="btn btn-sm btn-success mt-2"/></p>
             </fieldset>
-        </form>
+        </div>
     </>)
 }
 

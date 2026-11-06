@@ -10,20 +10,23 @@ import Mensagem from './Mensagem';
 function Header(){
     const [values, setValues] = useState({})
     const host = process.env.REACT_APP_URL;
+    const FALLBACK_AVATAR = 'https://freesvg.org/img/abstract-user-flat-3.png';
 
     useEffect(() => 
-        localStorage.getItem('token')?
+        localStorage.getItem('token')?(
             axios.get("/auth/usuarios").then(response=> {
                 localStorage.setItem("usuario", JSON.stringify(response.data))
                 setValues({userMenu:"none", usuario:response.data, carrinho:JSON.parse(localStorage.getItem("carrinho"))})  
-            }):''        
+            }), undefined):undefined        
     , [])     
+
+    const onError = ({ currentTarget })=>{currentTarget.onerror=null; currentTarget.src=FALLBACK_AVATAR}
 
     return (
         <header className="header-app">
             <a href='/'><img className="logo" alt="" src={logo}/></a>
             {/* <Buscar/> */}
-            <img className="login" alt="Foto perfil user" src={values.usuario&&`${host}/auth/usuarios/imagem/${values.usuario.id}/${values.usuario.imagem}?Authorization=${localStorage.getItem("token")}`} onClick={event=>{event.preventDefault();event.stopPropagation();document.getElementById("user-menu").style.display=document.getElementById("user-menu").style.display!=="inline-block"?"inline-block":"none"}}/>                                                
+            <img className="login" alt="Foto perfil user" onError={onError} src={values.usuario?.id?`${host}/auth/usuarios/imagem/${values.usuario.id}/${values.usuario.imagem}?Authorization=${localStorage.getItem("token")}`:FALLBACK_AVATAR} onClick={event=>{event.preventDefault();event.stopPropagation();document.getElementById("user-menu").style.display=document.getElementById("user-menu").style.display!=="inline-block"?"inline-block":"none"}}/>                                                
             {values.usuario&&
                 <>               
                     <Notificacao/>                    

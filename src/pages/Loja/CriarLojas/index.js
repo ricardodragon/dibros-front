@@ -3,10 +3,11 @@ import axios from '../../../config/api/api';
 import loader from "./../../../assets/loadinfo.gif";
 import Colaboradores from './Colaboradores';
 import './criarLojas.css';
+import CardEndereco from '../Endereco/CardEndereco';
 
 function CriarLojas() {
 
-    const lojaBuilder = useMemo(() => {return {nome:"", imagem:"", retirada:true}}, [])
+    const lojaBuilder = useMemo(() => {return {nome:"", imagem:"", retirada:true, endereco:{}}}, [])
     const [values, setValues] = useState( {lojas:[], loja:lojaBuilder, load:true} )
     const host = process.env.REACT_APP_URL;
 
@@ -27,12 +28,16 @@ function CriarLojas() {
         }
     }
 
-    const getLocation = () => navigator.geolocation?
-        navigator.geolocation.getCurrentPosition(position=>
-            setValues({...values, loja:{...values.loja, endereco:{latitude:position.coords.latitude, longitude:position.coords.longitude}}}),
+    const getLocation = (event) => {
+        event.preventDefault();
+        setValues({...values, load:true});
+        navigator.geolocation?navigator.geolocation.getCurrentPosition(position=>
+            axios.get(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${position.coords.latitude}&lon=${position.coords.longitude}&accept-language=pt-BR`).then(r=>
+                setValues({...values, endereco:{...values.loja.endereco, ...convertNominatim(r.data)}, load:false})),
             (error) => setValues({...values, erro:"erro ao buscar localização"}),
             { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
-        ):"Geolocation is not supported by this browser.";
+        ):console.log("Geolocation is not supported by this browser.");
+    }
 
     const post = () => {
         setValues({...values, load:true});
@@ -74,6 +79,19 @@ function CriarLojas() {
 
     const onError = ({ currentTarget })=>{currentTarget.onError=null; currentTarget.src="https://thumbs.dreamstime.com/b/%C3%ADcone-de-imagem-sem-foto-ou-em-branco-carregamento-imagens-aus%C3%AAncia-marca-n%C3%A3o-dispon%C3%ADvel-sinal-breve-silhueta-natureza-simples-215973362.jpg"}
     
+    const alterar = () => console.log("oi");
+
+    const buscarCep = (event) => {
+        event.preventDefault();
+        setValues({...values, load:true});
+        axios.get("https://brasilapi.com.br/api/cep/v2/"+values.endereco.cep).then(r=> 
+            setValues({...values, endereco:{...values.endereco, ...convertBrasilapi(r.data)}, load:false})
+        )
+    }
+
+    const convertNominatim = (endereco) => ({latitude:endereco.lat, longitude:endereco.lon, estado:endereco.address["ISO3166-2-lvl4"].split('-')[1], cidade:endereco.address.city, cep:endereco.address.postcode.replace(/\D/g, ""), bairro:endereco.address.suburb, rua:endereco.name})
+    const convertBrasilapi = (endereco) => ({latitude:endereco.location.coordinates.latitude, longitude:endereco.location.coordinates.longitude, estado:endereco.state, cidade:endereco.city, cep:endereco.cep, bairro:endereco.neighborhood, rua:endereco.street})
+
     return <>
         {values.load&&<div className='loader-loja'><img src={loader} alt="loading..."/></div>}
         <div className='loja-conteudo' onScroll={handlerScroll}> 
@@ -85,13 +103,13 @@ function CriarLojas() {
                     <input required style={{width:"75%"}} id="nome" placeholder="nome da loja" value={values.loja.nome} type="text" onChange={event=>setValues({...values, loja:{...values.loja, nome:event.target.value}})}/>                                                                                          
                     <label style={{width:"25%"}} htmlFor="prazo-preparacao">
                         prazo preparação em&nbsp;              
-                        <select required id="prazo-preparacao" placeholder="unidade" value={values.loja.unidadePrazoPreparacao}>                                                                      
-                            <option>minutos</option>
-                            <option>horas</option>
-                            <option>dias</option>
+                        <select required id="prazo-preparacao" placeholder="unidade" defaultValue={"DIAS"} onChange={event=>setValues({...values, preparacaoUnidadeDTO:event.target.value})} value={values.loja.preparacaoUnidadeDTO}>                                                                      
+                            <option value={"MINUTOS"}>minutos</option>
+                            <option value={"HORAS"}>horas</option>
+                            <option value={"DIAS"}>dias</option>
                         </select> : 
                     </label>
-                    <input required style={{width:"75%"}} id="prazo-preparacao" placeholder="valor" value={values.loja.prazoPreparacao} type="number" onChange={event=>setValues({...values, loja:{...values.loja, prazoPreparacao:event.target.value}})}/>                            
+                    <input required style={{width:"75%"}} id="prazo-preparacao" placeholder="valor" value={values.loja.preparacaoValor} type="number" onChange={event=>setValues({...values, loja:{...values.loja, preparacaoValor:event.target.value}})}/>                            
                     <label htmlFor="nome-frete">permitir retirada : </label>            
                     <input required id="nome-frete" placeholder="nome do frete" checked={values.loja.retirada} type="checkbox" onChange={event=>setValues({...values, loja:{...values.loja, retirada:!values.loja.retirada}})}/> 
                 </fieldset>                                                                          
@@ -119,6 +137,15 @@ function CriarLojas() {
                     <input required={!values.loja.imagem} id='imagem' type="file" accept='image/*' onChange={event => {event.preventDefault();setValues({...values, loja:{...values.loja, imagem:event.target.files[0]}});}}/>
                     {values.loja.imagem&&<img alt="" style={{display:"block", width:"8em", height:"8em"}}  src={typeof values.loja.imagem === 'string'?`${host}/loja/lojas/imagem/${values.loja.id}/${values.loja.imagem}?Authorization=${localStorage.getItem("token")}`:URL.createObjectURL(values.loja.imagem)}/>}                        
                 </fieldset>
+
+                <fieldset style={{textAlign:"center"}}>
+                    <button style={{whiteSpace:"nowrap", fontSize:"8pt", fontWeight:"bold"}} onClick={getLocation}>📍 </button>            
+                    ou                          
+                    <input required style={{whiteSpace:"nowrap", fontSize:"8pt", width:"25%", fontWeight:"bold"}} id="cep" placeholder="digite o cep" value={values.loja.endereco.cep ?? ''} type="number" onChange={event=>setValues({...values, loja:{...values.loja, endereco:{...values.loja.endereco, cep:event.target.value}}})}/>                                                                      
+                    <button onClick={buscarCep} style={{cursor:"pointer", position: "absolute", border: "none", left:"58%", backgroundColor: "rgb(249 249 249 / 0%)"}}/>
+                </fieldset>
+
+                <CardEndereco endereco={values.loja.endereco} alterar={alterar}/>
                 <input type="submit" value="enviar"/>    
                 <input onClick={event=>setValues({...values, loja:lojaBuilder})} type="reset" value="limpar"/>                        
             </form>

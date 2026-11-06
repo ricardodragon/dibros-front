@@ -17,6 +17,7 @@ import Cadastro from "../../pages/Cadastro";
 import NovaSenha from "../../pages/NovaSenha";
 import Endereco from "../../pages/Perfil/Endereco";
 import LojaEndereco from "../../pages/Loja/Endereco";
+import Template from "../../estrutura/Template";
 
 function Routes(props){    
 
@@ -25,27 +26,34 @@ function Routes(props){
             <Switch>
                 {/* Estrutra Auth etc */}
                 <Route exact path="/login" component={Login}></Route>
-                <Route exact path="/cadastro/:token" component={Cadastro}></Route>
-                <Route exact path="/nova-senha/:token" component={NovaSenha}></Route>
-                <Route exact path="/" component={Feed}/>                                                        
 
-                {/* e-commerce dibros */}
-                <PrivateRoutes exact path="/perfil/:id" load={props.load} nome="Indentificação usuário" component={DetalharPerfil}/>
-                <PrivateRoutes exact path="/enderecos" load={props.load} nome="Indentificação usuário" component={Endereco}/>
-                <PrivateRoutes exact path="/lojas" load={props.load} nome={"Lojas"} component={CriarLojas}/>
-                <PrivateRoutes exact path="/loja/:id" load={props.load} component={LojaDetalhes}/>
-                <PrivateRoutes exact path="/loja/enderecos/:id" load={props.load} component={LojaEndereco}/>
-                <PrivateRoutes exact path="/produtos/:id" load={props.load} nome={"Produtos"} component={CriarProdutos}/>
-                <PrivateRoutes exact path="/carrinho" load={props.load} nome={"Carrinho"} component={Carrinho}/>
-                <PrivateRoutes exact path="/conversa" load={props.load} nome={"ConversaListar"} component={ConversaListar}/>
-                <PrivateRoutes exact path="/conversa-detalhes/:id" load={props.load} nome={"ConversaDetalhes"} component={ConversaDetalhes}/>
-                <PrivateRoutes exact path="/pedidos" load={props.load} nome={"ListarPedidos"} component={FeedPedidos}/>
-                <PrivateRoutes exact path="/pedido-detalhes/:id" load={props.load} nome={"PedidoDetalhes"} component={PedidoDetalhes}/>
+                <Route>
+                    <Template>
+                        <Switch>
+                            <Route exact path="/cadastro/:token" component={Cadastro}></Route>
+                            <Route exact path="/nova-senha/:token" component={NovaSenha}></Route>
+                            <Route exact path="/" component={Feed}/>                                                        
+                            <Route exact path="/carrinho" load={props.load} nome={"Carrinho"} component={Carrinho}/>
                 
-                {/* sub rota do e-commerce meli */}            
-                <PrivateRoutes exact path="/meli/contas" load={props.load} nome={"Gerencie suas contas MercadoLivre"} component={Contas}/>                       
-                <PrivateRoutes exact path="/meli/feed" load={props.load} nome={"Anúncios - detalhes"} component={MeliFeed}/>                        
-                <Redirect to="/"/>
+                            {/* e-commerce dibros */}
+                            <PrivateRoutes exact path="/perfil/:id" load={props.load} nome="Indentificação usuário" component={DetalharPerfil}/>
+                            <PrivateRoutes exact path="/enderecos" load={props.load} nome="Indentificação usuário" component={Endereco}/>
+                            <PrivateRoutes exact path="/lojas" load={props.load} nome={"Lojas"} component={CriarLojas}/>
+                            <PrivateRoutes exact path="/loja/:id" load={props.load} component={LojaDetalhes}/>
+                            <PrivateRoutes exact path="/loja/enderecos/:id" load={props.load} component={LojaEndereco}/>
+                            <PrivateRoutes exact path="/produtos/:id" load={props.load} nome={"Produtos"} component={CriarProdutos}/>
+                            <PrivateRoutes exact path="/conversa" load={props.load} nome={"ConversaListar"} component={ConversaListar}/>
+                            <PrivateRoutes exact path="/conversa-detalhes/:id" load={props.load} nome={"ConversaDetalhes"} component={ConversaDetalhes}/>
+                            <PrivateRoutes exact path="/pedidos" load={props.load} nome={"ListarPedidos"} component={FeedPedidos}/>
+                            <PrivateRoutes exact path="/pedido-detalhes/:id" load={props.load} nome={"PedidoDetalhes"} component={PedidoDetalhes}/>
+                            
+                            {/* sub rota do e-commerce meli */}            
+                            <PrivateRoutes exact path="/meli/contas" load={props.load} nome={"Gerencie suas contas MercadoLivre"} component={Contas}/>                       
+                            <PrivateRoutes exact path="/meli/feed" load={props.load} nome={"Anúncios - detalhes"} component={MeliFeed}/>                        
+                            <Redirect to="/"/>
+                        </Switch>
+                    </Template>
+                </Route>
             </Switch>
         </BrowserRouter>
     )
