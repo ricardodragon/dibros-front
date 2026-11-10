@@ -56,6 +56,7 @@ function ListarLojas(props){
 
     const onError = ({ currentTarget })=>{currentTarget.onError=null; currentTarget.src=lojaNotFound}
 
+
     return (        
         <div className="lojas-conteudo">
             {values.lojas.map((loja, indexLoja) =>            
@@ -70,10 +71,11 @@ function ListarLojas(props){
                     <div style={{padding:"2% 0"}}>
                         <div>preparo: {`${loja.preparacaoValor} ${loja.preparacaoUnidadeDTO}`}</div>
                         <div>entrega: </div>
+                        <div>distancia: {loja.distancia/1000} km</div>
                     </div>
 
                     <div className="loja-curtidas">{loja.likeLojasQTD} curtidas</div>
-                    <div className="loja-curtidas" style={{textAlign: "end"}} onClick={event=>setValues({...values, lojas:values.lojas.map(x=>{return x.id===loja.id?{...x, expandComentarios:!x.expandComentarios}:x})})}>{loja.comentarioLojasQTD} comentarios</div>
+                    <div className="loja-curtidas" style={{textAlign: "end"}} onClick={event=>{event.preventDefault();setValues({...values,lojas:values.lojas.map(x=>{return x.id===loja.id?{...x, expandComentarios:!x.expandComentarios}:x})})}}>{loja.comentarioLojasQTD} comentarios</div>
                     
                     <div className="like-container">                        
                         <div className="loja-like" onClick={event=>loja.isLike?deleteLikeLoja(event, loja):likeLoja(event, loja)}>{loja.isLike?'❤️':'🤍'}</div>

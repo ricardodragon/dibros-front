@@ -7,12 +7,14 @@ import './loja-comentario.css'
 
 function LojaComentarios(props){
 
-     const [values, setValues] = useState({})    
+     const [values, setValues] = useState({loading:true})    
      const host = process.env.REACT_APP_URL;
      const history = useHistory();
 
     useEffect(() =>{
-        axios.get("/loja/loja/comentarios/"+props.id).then(res=>setValues({comentarios:res.data, comentario:'', usuario:JSON.parse(localStorage.getItem("usuario"))}));
+        setValues(prev=>({...prev, loading:true}));
+        axios.get("/loja/loja/comentarios/"+props.id)
+            .then(res=>setValues(prev=>({...prev, loading:false, comentarios:res.data, comentario:'', usuario:JSON.parse(localStorage.getItem("usuario"))})))
     }, [props.id]); 
     
     const postComentario = (event) => axios.post("/loja/loja/comentarios", {idLoja:props.id, texto:values.comentario}).then(r=>setValues({...values, comentario:'', comentarios:[{id:r.data, texto:values.comentario, usuarioDTO:values.usuario, idLoja:props.id}].concat(values.comentarios)}))
@@ -56,6 +58,9 @@ function LojaComentarios(props){
     const expandResposta = (index) => setValues({...values, comentarios:values.comentarios.map((c, indexC)=>indexC===index?{...c, expandRespostas:!c.expandRespostas}:c)});
 
     
+    if(values.loading) 
+        return <div style={{ minHeight: "150px", display: "flex", justifyContent: "center", alignItems: "center" }}>Carregando comentários...</div>;
+
     return<>
         {values.comentarios&&values.comentarios.map((x, index)=> 
             <div className="comentario-conteudo" key={index}> 

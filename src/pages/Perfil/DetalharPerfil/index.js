@@ -18,8 +18,13 @@ function DetalharPerfil(props) {
 
     const onError = ({ currentTarget })=>{currentTarget.onError=null; currentTarget.src='https://freesvg.org/img/abstract-user-flat-3.png'};
 
+    const trocarFeed = (event, id)=>{
+        event.preventDefault();
+        document.getElementById(id).scrollIntoView({ behavior: "smooth" });
+    }
+
     return <>        
-        {values.usuario&&<header id='loja-perfil-header'>
+        {values.usuario&&<header id='detalhar-perfil-header'>
             <figure>
                 <img onError={onError} alt={"Foto do perfil : "} src={`${host}/auth/usuarios/imagem/${values.usuario.id}/${values.usuario.imagem}?Authorization=${localStorage.getItem("token")}`}/>
                 <figcaption>{values.usuario.nome}</figcaption>
@@ -36,10 +41,10 @@ function DetalharPerfil(props) {
             </div>
         </header>}
 
-        <a href={`/perfil/${id}/#lojas`} className="menu-feed"><span className='feed-menu-opaciti'>🏬 lojas</span><span className='feed-menu'>🏬 lojas</span></a>
-        <a href={`/perfil/${id}/#produtos`} className="menu-feed"><span className='feed-menu-opaciti'>📦 produtos</span><span className='feed-menu'>📦 produtos</span></a> 
+        <span className="menu-feed-perfil" onClick={event=>trocarFeed(event, "lojas")}><span className='feed-menu-opaciti'>🏬 lojas</span><span className='feed-menu'>🏬 lojas</span></span>
+        <span className="menu-feed-perfil" onClick={event=>trocarFeed(event, "produtos")}><span className='feed-menu-opaciti'>📦 produtos</span><span className='feed-menu'>📦 produtos</span></span> 
 
-        <div className="tabs-feed">
+        <div className="tabs-feed-perfil">
             <section id="lojas" className="tab">
                 <ListarLojas url={`/loja/lojas/usuario/${id}`}/>
             </section>

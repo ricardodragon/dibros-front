@@ -16,7 +16,6 @@ import FeedPedidos from "../../pages/Pedido/Feed";
 import Cadastro from "../../pages/Cadastro";
 import NovaSenha from "../../pages/NovaSenha";
 import Endereco from "../../pages/Perfil/Endereco";
-import LojaEndereco from "../../pages/Loja/Endereco";
 import Template from "../../estrutura/Template";
 
 function Routes(props){    
@@ -40,7 +39,7 @@ function Routes(props){
                             <PrivateRoutes exact path="/enderecos" load={props.load} nome="Indentificação usuário" component={Endereco}/>
                             <PrivateRoutes exact path="/lojas" load={props.load} nome={"Lojas"} component={CriarLojas}/>
                             <PrivateRoutes exact path="/loja/:id" load={props.load} component={LojaDetalhes}/>
-                            <PrivateRoutes exact path="/loja/enderecos/:id" load={props.load} component={LojaEndereco}/>
+                            {/* <PrivateRoutes exact path="/loja/enderecos/:id" load={props.load} component={LojaEndereco}/> */}
                             <PrivateRoutes exact path="/produtos/:id" load={props.load} nome={"Produtos"} component={CriarProdutos}/>
                             <PrivateRoutes exact path="/conversa" load={props.load} nome={"ConversaListar"} component={ConversaListar}/>
                             <PrivateRoutes exact path="/conversa-detalhes/:id" load={props.load} nome={"ConversaDetalhes"} component={ConversaDetalhes}/>

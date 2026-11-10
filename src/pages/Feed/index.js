@@ -12,8 +12,8 @@ function Feed(props){
 
     return (
         <>
-            <a className="menu-feed" href="#lojas" name="lojas" onClick={event=>trocarFeed(event, "lojas")}><span className='feed-menu-opaciti'>🏬 lojas</span><span className='feed-menu'>🏬 lojas</span></a>
-            <a href="#produtos" name="produtos" onClick={event=>trocarFeed(event, "produtos")} className="menu-feed"><span className='feed-menu-opaciti'>📦 produtos</span><span className='feed-menu'>📦 produtos</span></a> 
+            <span className="menu-feed" name="lojas" onClick={event=>trocarFeed(event, "lojas")}><span className='feed-menu-opaciti'>🏬 lojas</span><span className='feed-menu'>🏬 lojas</span></span>
+            <span name="produtos" onClick={event=>trocarFeed(event, "produtos")} className="menu-feed"><span className='feed-menu-opaciti'>📦 produtos</span><span className='feed-menu'>📦 produtos</span></span> 
 
             <div className="tabs-feed">
                 <section id="lojas" className="tab">

@@ -1,15 +1,18 @@
 
-.menu-feed{    
+.menu-feed {    
     position: relative;
     display: inline-block;
     white-space: nowrap;
     background-image: linear-gradient(90deg, rgba(89,86,86,1) 0%, rgba(41,39,39,1) 100%);
     box-shadow: 5px 1px 10px 0 rgb(255, 255, 255, 0.4);
     width: 50%;    
-    height: 6%;
+    /* Mantemos a sua altura original de 6% */
+    height: 5dvh;
     text-align: center;   
     filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 0.3));
-    anchor-name: --meu-topo;
+    
+    /* REMOVA OU COMENTE ESSA LINHA (O iOS não aceita): */
+    /* anchor-name: --meu-topo; */
 }
 
 .feed-menu, .feed-menu-opaciti{
@@ -37,9 +40,8 @@
 .feed-menu:active{
     border: 1px solid rgb(247, 247, 247);
 }
-.tabs-feed{
-    position: absolute;
-    top: anchor(--meu-topo bottom);
+.tabs-feed {
+    height: 86dvh;
     bottom: 0;
     left: 0;
     right: 0;
