@@ -11,14 +11,14 @@ function ListarProdutos(props){
     const host = process.env.REACT_APP_URL;
     const lojaNotFound = "https://thumbs.dreamstime.com/b/%C3%ADcone-de-imagem-sem-foto-ou-em-branco-carregamento-imagens-aus%C3%AAncia-marca-n%C3%A3o-dispon%C3%ADvel-sinal-breve-silhueta-natureza-simples-215973362.jpg";;
     const produtoNotFound = "https://thumbs.dreamstime.com/b/%C3%ADcone-de-imagem-sem-foto-ou-em-branco-carregamento-imagens-aus%C3%AAncia-marca-n%C3%A3o-dispon%C3%ADvel-sinal-breve-silhueta-natureza-simples-215973362.jpg";
-    const paginaInicial = parseInt(new URLSearchParams(useLocation().search).get("pageProduto") || "0");
+    const paginaInicial = parseInt(new URLSearchParams(useLocation().search).get("pageProduto") || "0");    
 
     useEffect(() => 
         props.url?(setValues(prev => ({ ...prev, carregando: true })),
             axios.get(`${props.url}?page=${paginaInicial}&size=${10}`).then(produtos =>setValues({produtos:produtos.data, page:paginaInicial, carregando: false, load: produtos.data.length<10, usuario:JSON.parse(localStorage.getItem('usuario'))})),
             undefined)
         :undefined
-    , [props.url, paginaInicial]);             
+    , [props.url, paginaInicial]); 
 
     useEffect(() => {
         if (values.load || values.page === undefined || !loadRef.current) return;
@@ -62,6 +62,7 @@ function ListarProdutos(props){
         window.dispatchEvent(new Event("carrinho"));
     }
 
+
     return (        
         <div className="produtos-conteudo">
             {values.produtos&&values.produtos.map((produto, indexProduto) =>            
@@ -73,6 +74,8 @@ function ListarProdutos(props){
                         </a>
                     </header>
                     <div className="produto-opcoes">⋮</div>
+
+
                     <h2>{produto.titulo}</h2>                                                                                        
                     
                     <img src={host+`/loja/produtos/imagem/${produto.id}/${produto.imagem}?Authorization=${localStorage.getItem("token")}`} alt={"Foto produto : " +produto.legenda} onError={onErrorProduto} className='img-produto' />                                                         
@@ -92,7 +95,8 @@ function ListarProdutos(props){
                     {values.usuario&&produto.expandComentarios&&<ProdutoComentarios id={produto.id}/>}                                          
                 </section>
             )}
-            <a className='google-boot' href={"?pageProduto="+(values.page+1)}>teste</a> 
+                        
+            {!values.produtos||values.produtos.length<10?"":<a className='google-boot' href={"?pageProduto="+(values.page+1)}>próxima página</a> }
             <div className="loader-listar-produto">
                 {values.load?"fim dos produtos":<img style={{height:"5em"}} src={loader} ref={loadRef} alt="loading..."/>}
             </div>      

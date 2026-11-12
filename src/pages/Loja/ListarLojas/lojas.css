@@ -87,6 +87,34 @@
     border: 0;
 }
 
+.modal-opcoes {
+    position: fixed;
+    margin: 0; /* Remove a centralização padrão da tag <dialog> */
+    padding: 4px 0;
+    width: 170px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    transform-origin: top right;
+    opacity: 0;
+    transform: scale(0.8);
+    pointer-events: none;
+    transition: opacity 0.18s ease, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modal-opcoes-lista {
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-opcoes.aberto {
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: auto;
+}
+
 @media (min-width: 1300px) {
     .lojas-conteudo {
         grid-template-columns: repeat(4, 1fr); /* Passa para 3 cards por linha */

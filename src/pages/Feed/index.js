@@ -17,7 +17,7 @@ function Feed(props){
 
             <div className="tabs-feed">
                 <section id="lojas" className="tab">
-                    <ListarLojas url={`/loja/lojas/public`}/>
+                    <ListarLojas url={`/loja/lojas/public`} rotaEdicao="/lojas"/>
                     <Link className="criar-anuncios" to={'/lojas'}>+</Link>
                 </section>
                 <section id="produtos" className="tab">

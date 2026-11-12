@@ -39,7 +39,7 @@ function Endereco(props) {
 
     const excluir = (id) => setValues({...values, enderecos:values.enderecos.filter(x=>x.id!==id)});
 
-    return <>
+    return <div style={{overflowY:"scroll", height:"100%"}}>
         {values.load&&<div className='loader-loja'><img src={loader} alt="loading..."/></div>}
         <form onSubmit={buscarCep}>
             <fieldset style={{textAlign:"center"}}>
@@ -79,7 +79,7 @@ function Endereco(props) {
         {values.enderecos&&values.enderecos.map(e=>
             <CardEndereco endereco={e} excluir={excluir} key={"endereco-usuario-"+e.id}/>
         )} 
-    </>;
+    </div>;
 }
 
 export default Endereco;

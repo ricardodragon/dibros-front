@@ -23,13 +23,6 @@
     text-align: center;
 }
 
-.loja-conteudo label{
-    white-space: nowrap;
-    font-size: 8pt;
-    width: 25%;
-    font-weight: bold;
-}
-
 #loja input{
     width: 75%;
     margin-bottom: 4%;
@@ -53,15 +46,42 @@
     height: 8em;
 }
 
-#tabela-lojas{
-    text-align: center;
-    width: 100%;
+.loja-conteudo label{
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
 }
 
-#tabela-lojas img{
-    border-radius: 50%;
-    width: 1.8em;
-    height: 1.8em;
+.loja-conteudo fieldset{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    align-items: end; /* Nivela inputs, checkboxes e botões pela base */
+}
+
+.loja-conteudo fieldset input:not([type="checkbox"]):not([type="file"]),
+.loja-conteudo fieldset select {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.loja-conteudo fieldset button {
+    width: 100%;
+    cursor: pointer;
+}
+
+.loja-conteudo fieldset label:has(input[type="checkbox"]) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    cursor: pointer;
+}
+
+/* Mantém a faixa azul da imagem compacta */
+.loja-conteudo input[type="file"] {
+    width: fit-content;
+    max-width: 100%;
 }
 
 #modal-colaboradores{
@@ -70,4 +90,27 @@
     width: 70%; 
     height: 70%; 
     text-align: center;
+}
+
+button {
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 0 16px;
+    transition: opacity 0.2s;
+}
+
+button:hover {
+    opacity: 0.85;
+}
+
+.btn-confirmar {
+    background-color: #2e7d32; /* Verde destaque */
+    color: #fff;
+}
+
+.btn-excluir {
+    background-color: #c62828; /* Vermelho discreto */
+    color: #fff;
 }

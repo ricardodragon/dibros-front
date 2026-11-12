@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import './carrinho.css'
 import api from '../../config/api/api';
@@ -11,44 +10,19 @@ function Carrinho(props){
     const [values, setValues] = useState({load:true});
     const history = useHistory();  
     const host = process.env.REACT_APP_URL;
-    const id = new URLSearchParams(window.location.search).get("id");
-
-    useEffect(()=>{
-        if(id)
-            api.get("/loja/produtos/public/"+id).then(r=>{  
-                const produto = r.data;
-                const carrinho = JSON.parse(localStorage.getItem("carrinho"))||[];        
-                carrinho.length>0&&produto.idLoja!==carrinho[0].idLoja?
-                    console.log("limpar carrinho"):
-                    localStorage.setItem("carrinho", JSON.stringify(
-                        carrinho.filter(x=>x.id===produto.id).length>0?
-                            carrinho.map(x=>x.id===produto.id?{...x, qtd:1}:x):
-                            [...carrinho, {...produto, qtd:1}]
-                    ));      
-                setCarrinho(JSON.parse(localStorage.getItem("carrinho")))
-            })        
-    }, [id]);
 
     useEffect(()=>{        
         if(!carrinho||carrinho.length<=0) return;
         if (carrinho[0].idLoja)
-            api.get("/loja/lojas/public/"+carrinho[0].idLoja).then(res=> 
-                api.get("/loja/lojas/endereco/public/"+carrinho[0].idLoja).then(enderecoLoja=>{
-                    if(localStorage.getItem("token"))
-                        api.get("/loja/endereco/selecionado").then(enderecoUsuario=>                            
-                            api.get(`/loja/fretes/${carrinho[0].idLoja}?distancia=${distancia(enderecoLoja.data.latitude, enderecoLoja.data.longitude, enderecoUsuario.data.latitude, enderecoUsuario.data.longitude)}&peso=${parseFloat(carrinho.reduce((total, p) => total + p.peso*p.qtd, 0))}&comprimento=${parseFloat(carrinho.reduce((total, p) => total + p.comprimento*p.qtd, 0))}&largura=${parseFloat(carrinho.reduce((total, p) => total + p.largura*p.qtd, 0))}&altura=${parseFloat(carrinho.reduce((total, p) => total + p.altura*p.qtd, 0))}`).then(r=>
-                                setValues({loja:res.data, load:false, enderecoUsuario:enderecoUsuario.data, enderecoLoja:enderecoLoja.data, frete:r.data, tipoFrete:"LOJA"})))
-                    else                     
-                        setValues({loja:res.data, load:false, enderecoLoja:enderecoLoja.data, tipoFrete:"LOJA"})
-                    
-                }
-            ))
+            api.get("/loja/lojas/"+carrinho[0].idLoja).then(loja=> 
+                api.get("/loja/endereco/selecionado").then(enderecoUsuario=>                            
+                    api.get(`/loja/fretes/${carrinho[0].idLoja}?distancia=${distancia(loja.data.enderecoLojaDTO.latitude, loja.data.enderecoLojaDTO.longitude, enderecoUsuario.data.latitude, enderecoUsuario.data.longitude)}&peso=${parseFloat(carrinho.reduce((total, p) => total + p.peso*p.qtd, 0))}&comprimento=${parseFloat(carrinho.reduce((total, p) => total + p.comprimento*p.qtd, 0))}&largura=${parseFloat(carrinho.reduce((total, p) => total + p.largura*p.qtd, 0))}&altura=${parseFloat(carrinho.reduce((total, p) => total + p.altura*p.qtd, 0))}`).then(r=>
+                        setValues({loja:loja.data, load:false, enderecoUsuario:enderecoUsuario.data, frete:r.data, tipoFrete:"LOJA"})
+            )))
         const carrinhoFunction = (e) => setCarrinho(JSON.parse(localStorage.getItem("carrinho")));
         window.addEventListener('carrinho', carrinhoFunction);        
         return () => window.removeEventListener('carrinho', carrinhoFunction);        
     }, [carrinho, history])
-
-    // const getEnderecoFrete = ()=> api.get("").then(r=>)
 
     const distancia = (lat1, lon1, lat2, lon2) => Math.ceil(Number(Math.sqrt(((lat2 - lat1) * 111.13)**2+((lon2 - lon1) * 111.13 * Math.cos(lat1 * Math.PI / 180))**2)||0));
 
@@ -64,7 +38,7 @@ function Carrinho(props){
         })
     }
     
-    const getFrete = () => values.frete&&values.tipoFrete!=="RETIRADA"&&distancia(values.enderecoLoja.latitude, values.enderecoLoja.longitude, values.enderecoUsuario.latitude, values.enderecoUsuario.longitude)*values.frete.valorKm;
+    const getFrete = () => values.frete&&values.tipoFrete!=="RETIRADA"&&distancia(values.loja.enderecoLojaDTO.latitude, values.loja.enderecoLojaDTO.longitude, values.enderecoUsuario.latitude, values.enderecoUsuario.longitude)*values.frete.valorKm;
     
     const getTotal = () => parseFloat(carrinho.reduce((total, p) => total + p.preco*p.qtd, 0))+getFrete();
     
@@ -115,7 +89,7 @@ function Carrinho(props){
                     {/* <option value="dibros">frete dibros</option> */}
                 </select>}
                 
-                {getFrete()&&!values.tipoFrete!=="LOJA"&&<h3>Tempo de entrega {distancia(values.enderecoLoja.latitude, values.enderecoLoja.longitude, values.enderecoUsuario.latitude, values.enderecoUsuario.longitude)*values.frete.prazoEntrega} MINUTOS</h3>}
+                {getFrete()&&!values.tipoFrete!=="LOJA"&&<h3>Tempo de entrega {distancia(values.loja.enderecoLojaDTO.latitude, values.loja.enderecoLojaDTO.longitude, values.enderecoUsuario.latitude, values.enderecoUsuario.longitude)*values.frete.prazoEntrega} MINUTOS</h3>}
 
                 <hr/>
                 {!getFrete()&&<form>
